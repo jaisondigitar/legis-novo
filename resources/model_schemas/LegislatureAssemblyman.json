@@ -1,0 +1,22 @@
+[
+    {
+        "fieldInput": "legislature_id:integer",
+        "htmlType": "text",
+        "validations": "",
+        "searchable": false,
+        "fillable": false,
+        "primary": false,
+        "inForm": false,
+        "inIndex": false
+    },
+    {
+        "fieldInput": "assemblyman_id:integer",
+        "htmlType": "text",
+        "validations": "",
+        "searchable": false,
+        "fillable": false,
+        "primary": false,
+        "inForm": false,
+        "inIndex": false
+    }
+]

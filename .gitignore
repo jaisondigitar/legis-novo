@@ -1,0 +1,13 @@
+/vendor
+/node_modules
+Homestead.yaml
+Homestead.json
+.env
+.idea
+composer.lock
+.DS_Store
+public/uploads
+public/error_log
+error_log
+storage
+bootstrap

@@ -1,0 +1,75 @@
+# config.
+version: "3"
+
+# volumes.
+volumes:
+  # MySQL Data.
+  mysql-data:
+  # Redis Data.
+  redis-data:
+  # .config.
+  dot-config:
+  # .local.
+  dot-local:
+  # .cache.
+  dot-cache:
+  # .composer.
+  dot-composer:
+
+# services.
+services:
+  # MySQL.
+  mysql:
+    image: mysql:5.7
+    container_name: legis-mysql
+    restart: unless-stopped
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=legisblit
+      - MYSQL_DATABASE=legis
+      - MYSQL_USER=legis
+      - MYSQL_PASSWORD=legis
+
+  # API.
+  api:
+    image: ambientum/php:7.1-nginx
+    container_name: legis-api
+    restart: unless-stopped
+    environment:
+      - PHP_IDE_CONFIG=legisName=ambientum
+    volumes:
+      - .:/var/www/app:cached
+      - dot-config:/home/ambientum/.config
+      - dot-cache:/home/ambientum/.cache
+      - dot-local:/home/ambientum/.local
+      - dot-composer:/home/ambientum/.composer
+    ports:
+      - 80:8080
+      - 443:8083
+    links:
+      - mysql
+      
+  # # Redis.
+  # cache:
+  #   image: redis:4.0-alpine
+  #   container_name: legis-redis
+  #   restart: unless-stopped
+  #   volumes:
+  #     - redis-data:/data
+  #   ports:
+  #     - 6379:6379
+
+  # QUEUE
+  # queue:
+  #   image: ambientum/php:7.1
+  #   container_name: legis-queue
+  #   command: php artisan horizon
+  #   volumes:
+  #     - .:/var/www/app
+  #   restart: unless-stopped
+  #   links:
+  #     - mysql
+  #     - cache
