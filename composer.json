@@ -4,12 +4,6 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
-    "repositories": [
-      {
-        "type": "git",
-        "url": "https://github.com/mitulgolakiya/laracast-flash"
-      }
-    ],
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
@@ -29,7 +23,7 @@
         "infyomlabs/laravel-generator": "dev-master",
         "infyomlabs/core-templates": "dev-master",
         "infyomlabs/swagger-generator": "dev-master",
-        "doctrine/dbal": "~2.3",
+        "doctrine/dbal": "2.9",
         "owen-it/laravel-auditing": "^2.2",
         "infyomlabs/generator-builder": "dev-master",
         "milon/barcode": "^5.2",
@@ -59,13 +53,11 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "php artisan clear-compiled",
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
             "php artisan optimize"
         ],
-        "pre-update-cmd": [
-            "php artisan clear-compiled"
-        ],
         "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize"
         ],
         "post-root-package-install": [

@@ -35,7 +35,7 @@ services:
 
   # API.
   api:
-    image: ambientum/php:7.1-nginx
+    image: ambientum/php:7.3-nginx
     container_name: legis-api
     restart: unless-stopped
     environment:
@@ -47,7 +47,7 @@ services:
       - dot-local:/home/ambientum/.local
       - dot-composer:/home/ambientum/.composer
     ports:
-      - 80:8080
+      - 8080:8080
       - 443:8083
     links:
       - mysql
