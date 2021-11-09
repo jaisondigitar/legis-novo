@@ -9,3 +9,5 @@ composer.lock
 public/uploads
 public/error_log
 error_log
+
+storage/logs/
