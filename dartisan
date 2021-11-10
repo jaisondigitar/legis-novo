@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTAINER_PHP="legis-api"
+CONTAINER_PHP="legis-web"
 PHP_VERSAO=5.5
 
 PARAMS=$@
