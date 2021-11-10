@@ -49,6 +49,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.DO_KEY }}
       - name: Deployment
         run: |
           cd /var/www/html/legis
