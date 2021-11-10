@@ -4,11 +4,6 @@ on:
   push:
     branches: [ develop ]
 
-env:
-  DB_HOST: ${{ secrets.DB_HOST }}
-  DB_USERNAME: ${{ secrets.DB_USERNAME }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
 jobs:
   composer-dependencies:
 
@@ -26,7 +21,13 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
       - name: Run migrations
-        run: php artisan migrate
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          echo "$DB_USERNAME"
+#        run: php artisan migrate
       - name: Run seeds
         run: php artisan db:seed
       - name: Directory Permissions
