@@ -50,13 +50,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Deployment
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          script: |
-            cd /var/www/html/legis
-            git checkout -f
-            git pull
-            php artisan migrate --seed
+        run: |
+          cd /var/www/html/legis
+          git checkout -f
+          git pull
+          php artisan migrate --seed
