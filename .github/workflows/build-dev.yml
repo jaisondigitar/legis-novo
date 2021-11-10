@@ -47,10 +47,10 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Deployment
+      - name: Checkout
         uses: actions/checkout@v2
+      - name: Deployment
         run: |
           cd /var/www/html/legis
-          git checkout -f
           git pull
           php artisan migrate --seed
