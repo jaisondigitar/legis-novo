@@ -14,12 +14,20 @@ jobs:
         with:
           php-version: '7.4.3'
       - uses: actions/checkout@v2
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Generate key
         run: php artisan key:generate
       - name: Run migrations
-        run: php artisan migrate
+        with:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          echo "$DB_USERNAME"
+#        run: php artisan migrate
       - name: Run seeds
         run: php artisan db:seed
       - name: Directory Permissions
