@@ -5,6 +5,7 @@
 - Docker-compose
 - PHP 5.5+
 - Composer
+- Node v6.17.1
 
 #### Step by step
 1.Atualize as dependências do *PHP* com o comando:
@@ -28,9 +29,9 @@
 *.env*
 
 6.Gerar a *APP_KEY* com o comando:
-> dartisan key:generate
+> ./dartisan key:generate
 
 7.Gerar as tabelas e alimentá-las:
-> dartisan migrate ou dartisan migrate --seed
+> ./dartisan migrate ou ./dartisan migrate --seed
 
 **Testes existentes com falha!**
