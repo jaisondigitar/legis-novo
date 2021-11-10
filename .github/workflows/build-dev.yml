@@ -22,8 +22,16 @@ jobs:
         run: php artisan key:generate
       - name: Run migrations
         run: php artisan migrate
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USERNAME: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       - name: Run seeds
         run: php artisan db:seed
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USERNAME: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
