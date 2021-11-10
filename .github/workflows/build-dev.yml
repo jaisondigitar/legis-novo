@@ -25,9 +25,7 @@ jobs:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: |
-          echo "$DB_USERNAME"
-#        run: php artisan migrate
+        run: php artisan migrate
       - name: Run seeds
         run: php artisan db:seed
       - name: Directory Permissions
