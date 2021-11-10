@@ -36,7 +36,7 @@
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-            filter: blur(2px);
+            filter: blur(1px);
         }
         .button-submit {
             border-radius: 5px;
@@ -83,7 +83,7 @@
 </form>
 <footer id="main">
     <a href="https://www.genesis.tec.br/"
-       onMouseOver="this.style.color='blue'"
+       onMouseOver="this.style.color='red'"
        onMouseOut="this.style.color='white'"
        style="color: white;">
         Gênesis Tecnologia e Inovação
