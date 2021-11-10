@@ -7,6 +7,11 @@ on:
 jobs:
   composer-dependencies:
 
+    env:
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
     runs-on: ubuntu-20.04
 
     steps:
@@ -22,10 +27,6 @@ jobs:
         run: php artisan key:generate
       - name: Run migrations
         run: php artisan migrate
-        with:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       - name: Run seeds
         run: php artisan db:seed
       - name: Directory Permissions
