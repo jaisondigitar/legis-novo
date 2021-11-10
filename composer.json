@@ -30,7 +30,8 @@
         "maatwebsite/excel": "~2.1.0",
         "league/csv": "^8.0",
         "copam/phpjasper": "^1.3",
-        "chumper/zipper": "1.0.x"
+        "chumper/zipper": "1.0.x",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

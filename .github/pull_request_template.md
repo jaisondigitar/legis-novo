@@ -13,5 +13,3 @@
 - [ ] Meu código segue o estilo do projeto
 - [ ] Minha mudança requer uma alteração na documentação
 - [ ] Alterei a documentação apropriadamente
-- [ ] Adicionei testes que certificam minha alteração
-- [ ] Todos os testes existentes estão passando

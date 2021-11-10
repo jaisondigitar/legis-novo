@@ -1,42 +1,30 @@
-# config.
 version: "3"
 
-# volumes.
 volumes:
-  # MySQL Data.
   mysql-data:
-  # Redis Data.
   redis-data:
-  # .config.
   dot-config:
-  # .local.
   dot-local:
-  # .cache.
   dot-cache:
-  # .composer.
   dot-composer:
 
-# services.
 services:
-  # MySQL.
-  mysql:
+  db:
     image: mysql:5.7
-    container_name: legis-mysql
+    container_name: legis-db
     restart: unless-stopped
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
-      - 3307:3306
+      - 3308:3306
     environment:
       - MYSQL_ROOT_PASSWORD=legisblit
       - MYSQL_DATABASE=legis
       - MYSQL_USER=legis
       - MYSQL_PASSWORD=legis
-
-  # API.
-  api:
+  web:
     image: ambientum/php:7.3-nginx
-    container_name: legis-api
+    container_name: legis-web
     restart: unless-stopped
     environment:
       - PHP_IDE_CONFIG=legisName=ambientum
@@ -50,7 +38,7 @@ services:
       - 8080:8080
       - 443:8083
     links:
-      - mysql
+      - db
       
   # # Redis.
   # cache:

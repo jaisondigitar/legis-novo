@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'legis'),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,18 +45,16 @@ return [
     */
 
     'connections' => [
-
         'sqlite' => [
             'driver'   => 'sqlite',
             'database' => storage_path('database.sqlite'),
             'prefix'   => '',
         ],
-
-        'mysql' => [
+        'legis' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', 'forge'),
-            'username'  => env('DB_USERNAME', 'forge'),
+            'host'      => env('DB_HOST', 'db'),
+            'database'  => env('DB_DATABASE', 'legis'),
+            'username'  => env('DB_USERNAME', ''),
             'password'  => env('DB_PASSWORD', ''),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
@@ -64,7 +62,6 @@ return [
             'strict'    => false,
             //'unix_socket'   => env('DB_SOCKET', '/tmp/mysql.sock'),
         ],
-
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),
@@ -75,7 +72,6 @@ return [
             'prefix'   => '',
             'schema'   => 'public',
         ],
-
         'sqlsrv' => [
             'driver'   => 'sqlsrv',
             'host'     => env('DB_HOST', 'localhost'),
@@ -85,7 +81,6 @@ return [
             'charset'  => 'utf8',
             'prefix'   => '',
         ],
-
     ],
 
     /*
@@ -113,15 +108,12 @@ return [
     */
 
     'redis' => [
-
         'cluster' => false,
-
         'default' => [
             'host'     => '127.0.0.1',
             'port'     => 6379,
             'database' => 0,
         ],
-
     ],
 
 ];

@@ -11,3 +11,5 @@ public/error_log
 error_log
 
 storage/logs/
+
+docker-compose.yml
