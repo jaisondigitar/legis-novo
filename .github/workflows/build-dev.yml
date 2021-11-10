@@ -47,11 +47,8 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ssh-key: ${{ secrets.DO_KEY }}
       - name: Deployment
+        uses: actions/checkout@v2
         run: |
           cd /var/www/html/legis
           git checkout -f
