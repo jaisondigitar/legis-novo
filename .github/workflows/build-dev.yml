@@ -7,12 +7,7 @@ on:
 jobs:
   composer-dependencies:
 
-    env:
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
 
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -28,7 +23,7 @@ jobs:
 
   build-dependencies:
 
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
 
     strategy:
       matrix:
@@ -49,7 +44,7 @@ jobs:
 
   deploy:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout
