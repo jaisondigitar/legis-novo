@@ -202,9 +202,9 @@ BEGIN PAGE
 
             <!-- Begin Logo brand -->
             <a href="/admin">
-                <div class="logo-brand">
+                <div class="logo-brand" style="padding: 5px 0">
                     <img
-                        src="/assets/images/genesis-white.png"
+                        src="/assets/images/not-name.png"
                         alt="Logo"
                         style="max-width: 100%;
                         height: 100%;"
