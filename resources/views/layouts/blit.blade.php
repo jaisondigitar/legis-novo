@@ -201,9 +201,16 @@ BEGIN PAGE
         <div class="top-navbar-inner">
 
             <!-- Begin Logo brand -->
-            <div class="logo-brand">
-                <img src="/assets/images/genesis-white.png" alt="Logo" style="max-width: 100%; height: 100%;">
-            </div><!-- /.logo-brand -->
+            <a href="/admin">
+                <div class="logo-brand" style="padding: 5px 0">
+                    <img
+                        src="/assets/images/not-name.png"
+                        alt="Logo"
+                        style="max-width: 100%;
+                        height: 100%;"
+                    >
+                </div><!-- /.logo-brand -->
+            </a>
             <!-- End Logo brand -->
 
             <div class="top-nav-content main-top-nav-layout">

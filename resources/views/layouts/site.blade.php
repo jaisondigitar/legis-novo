@@ -41,8 +41,12 @@
 <div id="f">
     <div class="container">
         <div class="row centered">
-            <h2>{{ \App\Models\Company::first()->shortName }}</h2>
-            <h5>{{ \App\Models\Company::first()->phone1 }} | {{ \App\Models\Company::first()->email }}</h5>
+            <h2>Gênesis</h2>
+            <h5>
+                <a href="tel: 3423-0055">(67) 3423-0055</a> |
+                <a href="tel: 99978-1420">(67) 99978-1420</a> |
+                <a href="mailto: comercial@genesis.tec.br">comercial@genesis.tec.br</a>
+            </h5>
             <h6 class="mt">© {{ date('Y') }} MakerLegis - Software mantido por
                 <a href="https://www.genesis.tec.br/" target="_blank">
                     Gênesis Tecnologia e Inovação

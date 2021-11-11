@@ -12,14 +12,14 @@ class CompanyTableSeeder extends Seeder
      */
     public function run()
     {
-        $obj = Company::find(1);
+        $obj = Company::find(2);
         if(is_null($obj))
         {
             Company::create([
                 'shortName'=>'Gênesis',
                 'fullName'=>'Gênesis Tecnologia e Inovação',
                 'email'=>'comercial@genesis.tec.br',
-                'phone1'=>'(67) 9 99222-2332',
+                'phone1'=>'(67) 9 9978-1420',
                 'mayor'=>'Igor M. Oliveira',
                 'cnpjCpf'=>'000.000.000-00',
                 'ieRG'=>'00000-0 SSP/MT',
