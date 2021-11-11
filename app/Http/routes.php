@@ -1,16 +1,25 @@
 <?php
 
-Route::controllers([
+    // Authentication routes...
+    Route::get('/', 'Auth\AuthController@getLogin');
+    Route::post('login', 'Auth\AuthController@postLogin');
+    Route::get('logout', 'Auth\AuthController@getLogout');
+
+    // Registration routes...
+//    Route::get('auth/register', 'Auth\AuthController@getRegister');
+//    Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+/*Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
-]);
+]);*/
 
 
 /**
  *  ROTAS DE FRONT-END DE CONSULTAS PUBLICAS
  */
 
-Route::get('/','SiteController@index');
+Route::get('/arquivo','SiteController@index');
 Route::get('/documentPdf/{id}', 'DocumentController@show');
 Route::get('/lawPdf/{id}', 'LawsProjectController@show');
 
