@@ -18,11 +18,11 @@ class UsersTableSeeder extends Seeder
         $usr = User::findOrNew(1);
 
         $usr->company_id = 1;
-        $usr->name = 'Administrador Root';
+        $usr->name = 'Administrador';
         $usr->sector_id = 1;
-        $usr->email = 'admin@blitsoft.com.br';
+        $usr->email = 'admin@genesis.tec.br';
         $usr->active = 1;
-        $usr->password = bcrypt('blit1843');
+        $usr->password = bcrypt('G&nesis***');
 
         $usr->save();
 

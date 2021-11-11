@@ -43,7 +43,11 @@
         <div class="row centered">
             <h2>{{ \App\Models\Company::first()->shortName }}</h2>
             <h5>{{ \App\Models\Company::first()->phone1 }} | {{ \App\Models\Company::first()->email }}</h5>
-            <h6 class="mt">© {{ date('Y') }} MakerLegis - Software mantido por <a href="http://www.digitar.info" target="_blank">Digitar Informática</a> </h6>
+            <h6 class="mt">© {{ date('Y') }} MakerLegis - Software mantido por
+                <a href="https://www.genesis.tec.br/" target="_blank">
+                    Gênesis Tecnologia e Inovação
+                </a>
+            </h6>
         </div><!--/row-->
     </div><!--/container-->
 </div><!--/F-->

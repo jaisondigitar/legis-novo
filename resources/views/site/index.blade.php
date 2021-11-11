@@ -33,10 +33,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 centered">
-                    <h1>
-                        <img src="/uploads/company/{{ \App\Models\Company::first()->image }}">
-                        {{ \App\Models\Company::first()->shortName }}
-                    </h1>
+                    <img src="/assets/images/genesis-black.png" alt="image" style="max-width: 100%; height: 50%;">
                     <div class="mtb">
                         <div>
                             <ul class="nav nav-tabs centered" role="tablist">

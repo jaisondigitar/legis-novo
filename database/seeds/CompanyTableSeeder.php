@@ -16,11 +16,11 @@ class CompanyTableSeeder extends Seeder
         if(is_null($obj))
         {
             Company::create([
-                'shortName'=>'i7 Creative',
-                'fullName'=>'i7 Creative Tecnologia',
-                'email'=>'lucas@i7creative.com.br',
-                'phone1'=>'(67) 8107-4917',
-                'mayor'=>'Lucas R. Pasquetto',
+                'shortName'=>'Gênesis',
+                'fullName'=>'Gênesis Tecnologia e Inovação',
+                'email'=>'test@genesis.tec.br',
+                'phone1'=>'(67) 9 99222-2332',
+                'mayor'=>'Igor M. Oliveira',
                 'cnpjCpf'=>'000.000.000-00',
                 'ieRG'=>'00000-0 SSP/MT',
                 'city'=>'5120',

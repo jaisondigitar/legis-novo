@@ -8,8 +8,9 @@
     <meta name="keywords" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ Auth::user()->company->shortName }} - MakerLegis</title>
+    <title>MakerLegis</title>
 
+    <link rel="shortcut icon" href="{!! asset('/assets/images/genesis.ico') !!}" >
 
 
     <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
@@ -68,6 +69,10 @@
 
         .dropdown-submenu {
             position: relative;
+        }
+
+        .logo-brand img {
+            margin-top: 0px;
         }
 
         .dropdown-submenu>.dropdown-menu {
@@ -183,7 +188,7 @@
 </head>
 
 <body class="tooltips top-navigation">
-  
+
 
 <!--
 ===========================================================
@@ -197,7 +202,7 @@ BEGIN PAGE
 
             <!-- Begin Logo brand -->
             <div class="logo-brand">
-                <img src="/assets/images/maker_legis3.png" alt="Logo">
+                <img src="/assets/images/genesis-white.png" alt="Logo" style="max-width: 100%; height: 100%;">
             </div><!-- /.logo-brand -->
             <!-- End Logo brand -->
 
@@ -405,7 +410,9 @@ BEGIN PAGE
 
         <!-- BEGIN FOOTER -->
         <footer>
-            &copy; {{Date('Y')}} <a>MakerLegis</a>. Todos os Direitos Reservados
+            &copy; {{Date('Y')}} <a href="https://www.genesis.tec.br/" target="_blank">
+                Gênesis Tecnologia e Inovação
+            </a>. Todos os Direitos Reservados
         </footer>
         <!-- END FOOTER -->
     </div><!-- /.page-content -->
