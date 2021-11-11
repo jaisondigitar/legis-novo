@@ -12,7 +12,7 @@ class CompanyTableSeeder extends Seeder
      */
     public function run()
     {
-        $obj = Company::find(1);
+        $obj = Company::find(2);
         if(is_null($obj))
         {
             Company::create([
