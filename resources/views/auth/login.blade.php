@@ -59,7 +59,7 @@
 
 <body class="banner">
 <div class="bg"></div>
-<form class="box login banner" action="/auth/login" method="post">
+<form class="box login banner" action="login" method="post">
     <div class="logo">
         <img src="/assets/images/genesis-black.png" style="max-width: 250px;" class="img-responsive" alt="Logo">
     </div>

@@ -18,7 +18,7 @@ class CompanyTableSeeder extends Seeder
             Company::create([
                 'shortName'=>'Gênesis',
                 'fullName'=>'Gênesis Tecnologia e Inovação',
-                'email'=>'test@genesis.tec.br',
+                'email'=>'comercial@genesis.tec.br',
                 'phone1'=>'(67) 9 99222-2332',
                 'mayor'=>'Igor M. Oliveira',
                 'cnpjCpf'=>'000.000.000-00',
