@@ -71,7 +71,7 @@
                 @endforeach
             </ul>
         @endif
-        {!! Form::token() !!}
+        @csrf
         <label>E-mail:</label>
         <input type="text" name="email" tabindex="1" placeholder="email" required>
         <label><a href="#" class="rLink" tabindex="5">Esqueci a senha?</a>Senha:</label>
