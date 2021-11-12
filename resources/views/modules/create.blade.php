@@ -12,7 +12,7 @@
                     <h3 class="panel-title">NOVO REGISTRO</h3>
                 </div>
                 <div class="panel-body">
-                    {!! Form::open(['route' => 'config.modules.store','files' => true]) !!}
+                    {!! Form::open(['route' => 'modules.store','files' => true]) !!}
                     @include('modules.fields')
                     {!! Form::close() !!}
                 </div><!-- /.panel-body -->

@@ -27,7 +27,7 @@ class ModuleController extends AppBaseController
 	 */
 	public function index()
 	{
-            $modules = $this->moduleRepository->paginate(30);
+            $modules = $this->moduleRepository->newQuery()->paginate(30);
             return view('modules.index')
                 ->with('modules', $modules);
 
