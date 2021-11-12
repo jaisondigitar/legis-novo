@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\AuditingTrait;
 
 /**
  * @SWG\Definition(
@@ -53,7 +52,6 @@ use OwenIt\Auditing\AuditingTrait;
 class Log extends Model
 {
     use SoftDeletes;
-    use AuditingTrait;
 
     public $table = 'logs';
     

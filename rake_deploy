@@ -1,3 +1,0 @@
-composer update --no-scripts
-php artisan migrate
-php artisan db:seed

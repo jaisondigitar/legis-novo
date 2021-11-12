@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -79,8 +78,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class LawsProject extends Model
 {
     use SoftDeletes;
-
-    use AuditingTrait;
 
     public $table = 'laws_projects';
 

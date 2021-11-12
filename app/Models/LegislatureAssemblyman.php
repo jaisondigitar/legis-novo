@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -27,8 +26,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class LegislatureAssemblyman extends Model
 {
     use SoftDeletes;
-
-    use AuditingTrait;
 
     public $table = 'legislature_assemblymen';
 

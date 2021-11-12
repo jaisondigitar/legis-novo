@@ -12,11 +12,10 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Cmgmyr\Messenger\Traits\Messagable;
 use Illuminate\Support\Facades\Cache;
 use Artesaos\Defender\Traits\HasDefender;
-use OwenIt\Auditing\AuditingTrait;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use SoftDeletes, Authenticatable, CanResetPassword, Messagable,HasDefender, AuditingTrait;
+    use SoftDeletes, Authenticatable, CanResetPassword, Messagable,HasDefender;
 
 	public $table = "users";
     

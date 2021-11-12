@@ -3,15 +3,11 @@
 namespace App\Models;
 
 use Baum\Node;
-use OwenIt\Auditing\AuditingTrait;
 
 /**
 * Structurepautum
 */
 class Structurepautum extends Node {
-
-    use AuditingTrait;
-
     protected $table = 'structurepautas';
 
     protected $parentColumn = 'parent_id';

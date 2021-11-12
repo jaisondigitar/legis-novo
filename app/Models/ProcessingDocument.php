@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
@@ -11,7 +10,6 @@ class ProcessingDocument extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
     protected $dates = ['deleted_at'];
 
     public $table = 'processing_documents';

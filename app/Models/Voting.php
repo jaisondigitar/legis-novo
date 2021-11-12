@@ -5,13 +5,10 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\AuditingTrait;
 
 class Voting extends Model
 {
     use SoftDeletes;
-
-    use AuditingTrait;
 
     public static function boot()
     {

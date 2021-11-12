@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\DocumentNumber;
 use Carbon\Carbon;
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -74,8 +73,6 @@ class Document extends Model
 {
 
     use SoftDeletes;
-
-    use AuditingTrait;
 
     public $table = 'documents';
 

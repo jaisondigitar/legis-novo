@@ -3,13 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\AuditingTrait;
 use Baum\Node as Tree;
 
 class StructureLaws extends Tree
 {
-    use AuditingTrait;
-
     public $table = 'structure_laws';
 
     protected $parentColumn = 'parent_id';
