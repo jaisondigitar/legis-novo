@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateParametersRequest;
 use App\Http\Requests\UpdateParametersRequest;
 use App\Repositories\ParametersRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
+use Laracasts\Flash\Flash;
 
 class ParametersController extends AppBaseController
 {
@@ -27,7 +31,8 @@ class ParametersController extends AppBaseController
      * Display a listing of the Parameters.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
     public function index(Request $request)
     {
@@ -36,8 +41,7 @@ class ParametersController extends AppBaseController
             return redirect("/");
         }
 
-        $this->parametersRepository->pushCriteria(new RequestCriteria($request));
-        $parameters = $this->parametersRepository->all();
+        $parameters = $this->parametersRepository->getAll();
 
         return view('parameters.index')
             ->with('parameters', $parameters);
@@ -46,7 +50,7 @@ class ParametersController extends AppBaseController
     /**
      * Show the form for creating a new Parameters.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -64,7 +68,8 @@ class ParametersController extends AppBaseController
      *
      * @param CreateParametersRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateParametersRequest $request)
     {
@@ -85,7 +90,7 @@ class ParametersController extends AppBaseController
 
         Flash::success('Parâmetro salvo com sucesso.');
 
-        return redirect(route('config.parameters.index'));
+        return redirect(route('parameters.index'));
     }
 
     /**
@@ -93,7 +98,7 @@ class ParametersController extends AppBaseController
      *
      * @param  int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function show($id)
     {
@@ -103,12 +108,12 @@ class ParametersController extends AppBaseController
             return redirect("/");
         }
 
-        $parameters = $this->parametersRepository->findWithoutFail($id);
+        $parameters = $this->parametersRepository->findByID($id);
 
         if (empty($parameters)) {
             Flash::error('Parameters not found');
 
-            return redirect(route('config.parameters.index'));
+            return redirect(route('parameters.index'));
         }
 
         return view('parameters.show')->with('parameters', $parameters);
@@ -117,9 +122,10 @@ class ParametersController extends AppBaseController
     /**
      * Show the form for editing the specified Parameters.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function edit($id)
     {
@@ -128,7 +134,7 @@ class ParametersController extends AppBaseController
             Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
             return redirect("/");
         }
-        $parameters = $this->parametersRepository->findWithoutFail($id);
+        $parameters = $this->parametersRepository->findByID($id);
 
         if (empty($parameters)) {
             Flash::error('Parameters not found');
@@ -142,10 +148,11 @@ class ParametersController extends AppBaseController
     /**
      * Update the specified Parameters in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateParametersRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateParametersRequest $request)
     {
@@ -155,7 +162,7 @@ class ParametersController extends AppBaseController
             return redirect("/");
         }
 
-        $parameters = $this->parametersRepository->findWithoutFail($id);
+        $parameters = $this->parametersRepository->findByID($id);
 
         if (empty($parameters)) {
             Flash::error('Parameters not found');
@@ -163,26 +170,27 @@ class ParametersController extends AppBaseController
             return redirect(route('parameters.index'));
         }
 
-        $request['slug'] = str_slug($request['name']);
+        $request['slug'] = Str::slug($request['name']);
         if($request['type'] == 1){
             $request['value'] = $request['valueSelect'];
         } else {
             $request['value'] = $request['valueText'];
         }
 
-        $parameters = $this->parametersRepository->update($request->all(), $id);
+        $this->parametersRepository->update($parameters, $request->all());
 
         Flash::success('Parâmetro atualizado com sucesso.');
 
-        return redirect(route('config.parameters.index'));
+        return redirect(route('parameters.index'));
     }
 
     /**
      * Remove the specified Parameters from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
     public function destroy($id)
     {
@@ -192,7 +200,7 @@ class ParametersController extends AppBaseController
             return redirect("/");
         }
 
-        $parameters = $this->parametersRepository->findWithoutFail($id);
+        $parameters = $this->parametersRepository->findByID($id);
 
         if (empty($parameters)) {
             Flash::error('Parameters not found');
@@ -204,6 +212,6 @@ class ParametersController extends AppBaseController
 
         Flash::success('Parâmetro excluído com sucesso.');
 
-        return redirect(route('config.parameters.index'));
+        return redirect(route('parameters.index'));
     }
 }

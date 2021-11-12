@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group">
-                        @shield('parameters.create')<a href="{!! route('config.parameters.create') !!}">
+                        @shield('parameters.create')<a href="{!! route('parameters.create') !!}">
                             <button type="button" class="btn btn-default"><i class="fa fa-plus-circle"></i> Novo registro</button>
                         </a>@endshield
                     </div>
