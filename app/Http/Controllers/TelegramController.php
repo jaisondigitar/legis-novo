@@ -6,22 +6,17 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Telegram\Bot\Api as Telegram;
 use Illuminate\Contracts\Validation\Validator;
 
 class TelegramController extends Controller
 {
-    /**
-     * @var Telegram
-     */
+
     protected $telegram;
 
-    /**
-     * @param Telegram $telegram
-     */
-    public function __construct( Telegram $telegram)
+
+    public function __construct(/*$telegram*/)
     {
-        $this->telegram = new $telegram(env('TELEGRAM_BOT_TOKEN'));
+//        $this->telegram = new $telegram(env('TELEGRAM_BOT_TOKEN'));
     }
 
     /**
@@ -30,7 +25,6 @@ class TelegramController extends Controller
     public function getUpdates()
     {
         $updates = $this->telegram->getUpdates();
-        dd($updates);
     }
 
     /**

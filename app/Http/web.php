@@ -170,11 +170,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::get('/report/getTramitacao', 'ReportController@getTramitacao');
     Route::get('/report/tamitacao/pdf', 'ReportController@getTramitacaoPdf');
 
-
-    Route::get('generator_builder', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@builder');
-    Route::get('field_template', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@fieldTemplate');
-    Route::post('generator_builder/generate', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@generate');
-
     Route::resource('logs', 'LogController');
 
     Route::get('importer/protocols', 'ImporterSGLController@importProtocol');
