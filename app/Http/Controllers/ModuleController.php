@@ -71,7 +71,7 @@ class ModuleController extends AppBaseController
 	 */
 	public function show($id)
 	{
-            $module = $this->moduleRepository->find($id);
+            $module = $this->moduleRepository->findByID($id);
 
             if (empty($module)) {
                 Flash::error('Registro não existe.');
@@ -92,7 +92,7 @@ class ModuleController extends AppBaseController
 	 */
 	public function edit($id)
 	{
-            $module = $this->moduleRepository->find($id);
+            $module = $this->moduleRepository->findByID($id);
 
             if (empty($module)) {
                 Flash::error('Registro não existe.');
@@ -114,7 +114,7 @@ class ModuleController extends AppBaseController
 	 */
 	public function update($id, UpdateModuleRequest $request)
 	{
-		$module = $this->moduleRepository->find($id);
+		$module = $this->moduleRepository->findByID($id);
 
 		if(empty($module))
 		{
@@ -139,7 +139,7 @@ class ModuleController extends AppBaseController
 	 */
 	public function destroy($id)
 	{
-            $module = $this->moduleRepository->find($id);
+            $module = $this->moduleRepository->findByID($id);
 
             if (empty($module)) {
                 Flash::error('Registro não existe.');
@@ -163,7 +163,7 @@ class ModuleController extends AppBaseController
 	 * @return Json
 	 */
 	public function toggle($id){
-            $register = $this->moduleRepository->find($id);
+            $register = $this->moduleRepository->findByID($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);
