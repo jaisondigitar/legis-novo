@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 // Authentication routes...
 Auth::routes();
 
-//Route::get('/', 'HomeController@index');
+Route::get('logout', 'Auth\LoginController@logout');
 
 //Route::get('/', 'Auth\AuthController@getLogin');
 //Route::post('login', 'Auth\AuthController@postLogin');
