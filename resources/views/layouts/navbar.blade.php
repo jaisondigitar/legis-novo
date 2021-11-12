@@ -18,7 +18,7 @@
     </li>
     @endis
     <li>
-        <a href="/admin" >
+        <a href="/" >
             <span class="hidden-xs"><i class="fa fa-dashboard"></i></span>
             <span class="visible-xs">Dashboard</span></a>
         </a>
