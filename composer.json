@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5|^8.0",
+        "ext-json": "*",
         "artesaos/defender": "^0.10.0",
         "cmgmyr/messenger": "^2.22",
         "diglactic/laravel-breadcrumbs": "^7.0",
@@ -21,8 +22,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.4",
         "laravelcollective/html": "^6.2",
-        "owen-it/laravel-auditing": "^12.0",
-        "ext-json": "*"
+        "owen-it/laravel-auditing": "^12.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

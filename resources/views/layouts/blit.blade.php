@@ -402,13 +402,14 @@ BEGIN PAGE
     <!-- BEGIN PAGE CONTENT -->
     <div class="page-content no-left-sidebar">
         <div class="container-fluid" >
-            @if (Session::has('flash_notification.message'))
+            @if (Session::has('flash_notification'))
                 <script type="application/javascript">
-                    toastr["{{ Session::get('flash_notification.level') }}"]("{{ Session::get('flash_notification.message') }}");
+                    toastr["{{ Session::get('flash_notification')->first()->level }}"]
+                    ("{{ Session::get('flash_notification')->first()->message }}");
                 </script>
-                <div class="alert alert-{{ Session::get('flash_notification.level') }} alert-bold-border square fade in alert-dismissable">
+                <div class="alert alert-{{ Session::get('flash_notification')->first()->level }} alert-bold-border square fade in alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    {{ Session::get('flash_notification.message') }}
+                    {{ Session::get('flash_notification')->first()->message }}
                 </div>
             @endif
 

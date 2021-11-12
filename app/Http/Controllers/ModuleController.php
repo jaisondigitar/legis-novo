@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 
@@ -62,7 +63,7 @@ class ModuleController extends AppBaseController
 
 		$this->moduleRepository->create($input);
 
-		flash('Registro salvo com sucesso!')->success();
+        flash('Registro salvo com sucesso!')->success();
 
 		return redirect(route('modules.index'));
 	}
