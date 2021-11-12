@@ -45,8 +45,8 @@ class MeetingController extends AppBaseController
     {
         $this->meetingRepository = $meetingRepo;
 
-        view()->share('session_type_list', SessionType::lists('name', 'id')->prepend('Selecione', ''));
-        view()->share('session_place_list', SessionPlace::lists('name', 'id')->prepend('Selecione', ''));
+        view()->share('session_type_list', SessionType::pluck('name', 'id')->prepend('Selecione', ''));
+        view()->share('session_place_list', SessionPlace::pluck('name', 'id')->prepend('Selecione', ''));
 
     }
 
