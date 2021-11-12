@@ -7,7 +7,7 @@
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
-            {!! Form::model($permission, ['route' => ['config.permissions.update', $permission->id], 'method' => 'patch','files' => true]) !!}
+            {!! Form::model($permission, ['route' => ['permissions.update', $permission->id], 'method' => 'patch','files' => true]) !!}
             @include('permissions.fields')
             {!! Form::close() !!}
         </div>

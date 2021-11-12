@@ -7,9 +7,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 
@@ -105,7 +103,7 @@ class ModuleController extends AppBaseController
             if (empty($module)) {
                 Flash::error('Registro não existe.');
 
-                return redirect(route('config.modules.index'));
+                return redirect(route('modules.index'));
             }
 
             return view('modules.edit')->with('module', $module);
@@ -128,7 +126,7 @@ class ModuleController extends AppBaseController
 		if (empty($module)) {
 			Flash::error('Registro não existe.');
 
-			return redirect(route('config.modules.index'));
+			return redirect(route('modules.index'));
 		}
 
 		$this->moduleRepository->update($module, [

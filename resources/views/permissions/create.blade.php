@@ -7,7 +7,7 @@
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
-            {!! Form::open(['route' => 'config.permissions.store','files' => true]) !!}
+            {!! Form::open(['route' => 'permissions.store','files' => true]) !!}
             @include('permissions.fields')
             {!! Form::close() !!}
         </div>
