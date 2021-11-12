@@ -125,18 +125,20 @@ class ModuleController extends AppBaseController
 	{
 		$module = $this->moduleRepository->findByID($id);
 
-		if(empty($module))
-		{
+		if (empty($module)) {
 			Flash::error('Registro não existe.');
 
 			return redirect(route('config.modules.index'));
 		}
 
-		$module = $this->moduleRepository->updateRich($request->all(), $id);
+		$this->moduleRepository->update($module, [
+            'name' => $request->get('name'),
+            'active' => (int) $request->get('active')
+        ]);
 
 		Flash::success('Registro editado com sucesso!');
 
-		return redirect(route('config.modules.index'));
+		return redirect(route('modules.index'));
 	}
 
     /**
@@ -157,11 +159,11 @@ class ModuleController extends AppBaseController
                 return redirect(route('config.modules.index'));
             }
 
-            $this->moduleRepository->delete($id);
+            $this->moduleRepository->delete($module);
 
             Flash::success('Registro deletado com sucesso!');
 
-            return redirect(route('config.modules.index'));
+            return redirect(route('modules.index'));
 
 	}
 

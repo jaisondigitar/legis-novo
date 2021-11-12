@@ -26,7 +26,7 @@ class Module extends Model
     protected $casts = [
         "name" => "string",
 		"token" => "string",
-		"active" => "boolean"
+		"active" => "integer"
     ];
 
 	public static $rules = [
