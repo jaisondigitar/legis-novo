@@ -1,21 +1,12 @@
 <?php namespace App\Libraries\Repositories;
 
 use App\Models\City;
-use Bosnadev\Repositories\Eloquent\Repository;
-use Schema;
+use App\Repositories\Repository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CityRepository extends Repository
 {
-
-    /**
-    * Configure the Model
-    *
-    **/
-    public function model()
-    {
-      return 'App\Models\City';
-    }
+    protected $modelClass = City::class;
 
 	public function search($input)
     {
