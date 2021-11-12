@@ -35,12 +35,14 @@ class AdminController extends AppBaseController
     public function dashboard()
     {
         $gabs       = UserAssemblyman::where('users_id',Auth::user()->id)->get();
+
         $gabIds     = $this->getAssembbyIds($gabs);
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
-        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->lists('assemblyman_id')->toArray();
-        $assemblyman_list = Assemblyman::whereIn('id', $ids)->lists('short_name', 'id')->prepend('Selecione', 0);
+        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')
+            ->toArray();
+        $assemblyman_list = Assemblyman::whereIn('id', $ids)->pluck('short_name', 'id')->prepend('Selecione', 0);
 
         $tmp = null;
         $commissions = null;
@@ -58,7 +60,7 @@ class AdminController extends AppBaseController
             }
         }
 
-        $commissions_situation = ComissionSituation::lists('name', 'id')->prepend('Selecione', 0);
+        $commissions_situation = ComissionSituation::pluck('name', 'id')->prepend('Selecione', 0);
 
         $projLeiAll = count(LawsProject::all());
         $projLeiApr = count(LawsProject::approved()->get());
@@ -86,8 +88,9 @@ class AdminController extends AppBaseController
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
-        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->lists('assemblyman_id')->toArray();
-        $assemblyman_list = Assemblyman::whereIn('id', $ids)->lists('short_name', 'id')->prepend('Selecione', 0);
+        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')
+            ->toArray();
+        $assemblyman_list = Assemblyman::whereIn('id', $ids)->plucK('short_name', 'id')->prepend('Selecione', 0);
 
         $tmp = null;
         $commissions = null;
@@ -105,7 +108,7 @@ class AdminController extends AppBaseController
             }
         }
 
-        $commissions_situation = ComissionSituation::lists('name', 'id')->prepend('Selecione', 0);
+        $commissions_situation = ComissionSituation::pluck('name', 'id')->prepend('Selecione', 0);
 
         return view('admin.commissions', compact(
             'commissions',
@@ -121,10 +124,11 @@ class AdminController extends AppBaseController
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
-        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->lists('assemblyman_id')->toArray();
-        $assemblyman_list = Assemblyman::whereIn('id', $ids)->lists('short_name', 'id')->prepend('Selecione', 0);
+        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')
+            ->toArray();
+        $assemblyman_list = Assemblyman::whereIn('id', $ids)->pluck('short_name', 'id')->prepend('Selecione', 0);
 
-        $commissions_situation = ComissionSituation::lists('name', 'id')->prepend('Selecione', 0);
+        $commissions_situation = ComissionSituation::pluck('name', 'id')->prepend('Selecione', 0);
 
         $commissions = Commission::find($id);
         $commissions->type = 'Projeto de lei';
@@ -151,10 +155,11 @@ class AdminController extends AppBaseController
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
-        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->lists('assemblyman_id')->toArray();
-        $assemblyman_list = Assemblyman::whereIn('id', $ids)->lists('short_name', 'id')->prepend('Selecione', 0);
+        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')
+            ->toArray();
+        $assemblyman_list = Assemblyman::whereIn('id', $ids)->pluck('short_name', 'id')->prepend('Selecione', 0);
 
-        $commissions_situation = ComissionSituation::lists('name', 'id')->prepend('Selecione', 0);
+        $commissions_situation = ComissionSituation::pluck('name', 'id')->prepend('Selecione', 0);
 
         $commissions = Commission::find($id);
         $commissions->type = 'Documentos';
@@ -177,10 +182,11 @@ class AdminController extends AppBaseController
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
-        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->lists('assemblyman_id')->toArray();
-        $assemblyman_list = Assemblyman::whereIn('id', $ids)->lists('short_name', 'id')->prepend('Selecione', 0);
+        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')
+            ->toArray();
+        $assemblyman_list = Assemblyman::whereIn('id', $ids)->pluck('short_name', 'id')->prepend('Selecione', 0);
 
-        $commissions_situation = ComissionSituation::lists('name', 'id')->prepend('Selecione', 0);
+        $commissions_situation = ComissionSituation::pluck('name', 'id')->prepend('Selecione', 0);
 
         $commissions = Commission::find($id);
         $commissions->type = 'Documentos';
@@ -245,7 +251,7 @@ class AdminController extends AppBaseController
 //            }
 //        }
 
-        $commissions_situation = ComissionSituation::lists('name', 'id')->prepend('Selecione', 0);
+        $commissions_situation = ComissionSituation::pluck('name', 'id')->prepend('Selecione', 0);
 
         $projLeiAll = count(LawsProject::all());
         $projLeiApr = count(LawsProject::approved()->get());

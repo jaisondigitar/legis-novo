@@ -135,7 +135,7 @@
 
                             <!-- advice_id Field -->
                             <div class="form-group col-sm-6 hidden">
-                                {!! Form::label('advice_id', 'id:') !!}
+                                {{ Form::label('advice_id', 'id:') }}
                                 <input type="text" id="advice_idP" />
                                 <label id="advice_id"></label>
                             </div>
@@ -181,7 +181,7 @@
                         <div class="modal-dialog  modal-lg">
                                 <!-- Modal content-->
                                 <form action="/admin/saveAdvice" method="POST" enctype="multipart/form-data">
-                                        {!! csrf_field() !!}
+                                        @csrf
                                     <div class="modal-content">
                                             <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>

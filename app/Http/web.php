@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 // Authentication routes...
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
-//Route::get('/', function () { return 'teste'; });
+//Route::get('/', 'HomeController@index');
+
 //Route::get('/', 'Auth\AuthController@getLogin');
 //Route::post('login', 'Auth\AuthController@postLogin');
 //Route::get('logout', 'Auth\AuthController@getLogout');
@@ -144,7 +144,7 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
 
     });
 
-    Route::get('/admin', 'AdminController@dashboard');
+    Route::get('/', 'AdminController@dashboard');
     Route::post('/admin/findAdvice', 'AdminController@findAdvice');
     Route::post('/admin/saveAdvice', 'AdminController@saveAdvice');
     Route::get('/admin/commissions', 'AdminController@commissions');
