@@ -10,7 +10,7 @@
 <div class="form-group col-sm-6 col-lg-4">
     {!! Form::label('token', 'Token:') !!}
 	{!! Form::text('token', null, ['class' => 'form-control']) !!}
-    <a href="#" onclick="createHash('{{ $module->name or time() }}');return false;"><span class="btn btn-info">Criar token</span></a>
+    <a href="#" onclick="createHash('{{ $module->name ?? time() }}');return false;"><span class="btn btn-info">Criar token</span></a>
 </div>
 
 <!--- Active Field --->
