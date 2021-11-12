@@ -21,6 +21,5 @@
             </div>
         </div>
         @include('common.paginate', ['records' => $modules])
-
     </div>
 @endsection
