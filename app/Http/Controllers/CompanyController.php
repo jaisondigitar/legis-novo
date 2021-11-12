@@ -35,7 +35,7 @@ class CompanyController extends AppBaseController
 	public function index()
 	{
 		if(!Defender::hasPermission('companies.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class CompanyController extends AppBaseController
 	public function create()
 	{
         if(!Defender::hasPermission('companies.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -72,7 +72,7 @@ class CompanyController extends AppBaseController
 	{
 
         if(!Defender::hasPermission('companies.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -98,7 +98,7 @@ class CompanyController extends AppBaseController
                 })->save();
         }
 
-		Flash::success('Registro salvo com sucesso!');
+		flash('Registro salvo com sucesso!')->success();
 		return redirect(route('config.companies.index'));
 	}
 
@@ -112,7 +112,7 @@ class CompanyController extends AppBaseController
 	public function show($id)
 	{
         if(!Defender::hasPermission('companies.show')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -122,7 +122,7 @@ class CompanyController extends AppBaseController
 
 		if(empty($company))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('config.companies.index'));
 		}
@@ -140,7 +140,7 @@ class CompanyController extends AppBaseController
 	public function edit($id)
 	{
         if(!Defender::hasPermission('companies.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -150,7 +150,7 @@ class CompanyController extends AppBaseController
         $cities = City::where('state', '=', $state->uf)->lists('name', 'id');
 		if(empty($company))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('config.companies.index'));
 		}
@@ -169,7 +169,7 @@ class CompanyController extends AppBaseController
 	public function update($id, UpdateCompanyRequest $request)
 	{
         if(!Defender::hasPermission('companies.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -177,7 +177,7 @@ class CompanyController extends AppBaseController
 
 		if(empty($company))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('config.companies.index'));
 		}
@@ -206,7 +206,7 @@ class CompanyController extends AppBaseController
         }
 
 
-		Flash::success('Registro editado com sucesso!');
+		flash('Registro editado com sucesso!')->success();
 
 		return redirect(route('config.companies.index'));
 	}
@@ -221,7 +221,7 @@ class CompanyController extends AppBaseController
 	public function destroy($id)
 	{
         if(!Defender::hasPermission('companies.delete')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -229,14 +229,14 @@ class CompanyController extends AppBaseController
 
 		if(empty($company))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('config.companies.index'));
 		}
 
 		$this->companyRepository->delete($id);
 
-		Flash::success('Registro deletado com sucesso!');
+		flash('Registro deletado com sucesso!')->success();
 
 		return redirect(route('config.companies.index'));
 	}

@@ -32,7 +32,7 @@ class StatusProcessingDocumentController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('statusProcessingDocuments.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class StatusProcessingDocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('statusProcessingDocuments.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class StatusProcessingDocumentController extends AppBaseController
     {
        if(!Defender::hasPermission('statusProcessingDocuments.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->create($input);
 
-        Flash::success('StatusProcessingDocument saved successfully.');
+        flash('StatusProcessingDocument saved successfully.')->success();
 
         return redirect(route('statusProcessingDocuments.index'));
     }
@@ -93,14 +93,14 @@ class StatusProcessingDocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('statusProcessingDocuments.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findWithoutFail($id);
 
         if (empty($statusProcessingDocument)) {
-            Flash::error('StatusProcessingDocument not found');
+            flash('StatusProcessingDocument not found')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
@@ -119,13 +119,13 @@ class StatusProcessingDocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('statusProcessingDocuments.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findWithoutFail($id);
 
         if (empty($statusProcessingDocument)) {
-            Flash::error('StatusProcessingDocument not found');
+            flash('StatusProcessingDocument not found')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
@@ -145,21 +145,21 @@ class StatusProcessingDocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('statusProcessingDocuments.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findWithoutFail($id);
 
         if (empty($statusProcessingDocument)) {
-            Flash::error('StatusProcessingDocument not found');
+            flash('StatusProcessingDocument not found')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->update($request->all(), $id);
 
-        Flash::success('StatusProcessingDocument updated successfully.');
+        flash('StatusProcessingDocument updated successfully.')->success();
 
         return redirect(route('statusProcessingDocuments.index'));
     }
@@ -175,21 +175,21 @@ class StatusProcessingDocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('statusProcessingDocuments.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findWithoutFail($id);
 
         if (empty($statusProcessingDocument)) {
-            Flash::error('StatusProcessingDocument not found');
+            flash('StatusProcessingDocument not found')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
 
         $this->statusProcessingDocumentRepository->delete($id);
 
-        Flash::success('StatusProcessingDocument deleted successfully.');
+        flash('StatusProcessingDocument deleted successfully.')->success();
 
         return redirect(route('statusProcessingDocuments.index'));
     }

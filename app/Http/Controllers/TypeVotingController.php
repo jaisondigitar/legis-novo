@@ -23,7 +23,7 @@ class TypeVotingController extends Controller
 
         if(!Defender::hasPermission('typeVotings.index'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -41,7 +41,7 @@ class TypeVotingController extends Controller
     {
         if(!Defender::hasPermission('typeVotings.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -58,7 +58,7 @@ class TypeVotingController extends Controller
     {
         if(!Defender::hasPermission('typeVotings.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $input = $request->all();
@@ -67,7 +67,7 @@ class TypeVotingController extends Controller
 
         TypeVoting::create($input);
 
-        Flash::success('Type saved successfully.');
+        flash('Type saved successfully.')->success();
 
         return redirect(route('typeVotings.index'));
     }
@@ -82,14 +82,14 @@ class TypeVotingController extends Controller
     {
         if(!Defender::hasPermission('typeVotings.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $type_voting = TypeVoting::find($id);
 
         if (empty($type_voting)) {
-            Flash::error('Type voting not found');
+            flash('Type voting not found')->error();
 
             return redirect(route('typeVotings.index'));
         }
@@ -107,13 +107,13 @@ class TypeVotingController extends Controller
     {
         if(!Defender::hasPermission('typeVotings.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $type_voting = TypeVoting::find($id);
 
         if (empty($type_voting)) {
-            Flash::error('Type not found');
+            flash('Type not found')->error();
 
             return redirect(route('typeVotings.index'));
         }
@@ -132,7 +132,7 @@ class TypeVotingController extends Controller
     {
         if(!Defender::hasPermission('typeVotings.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -144,7 +144,7 @@ class TypeVotingController extends Controller
 
 
         if (empty($type_voting)) {
-            Flash::error('Type not found');
+            flash('Type not found')->error();
 
             return redirect(route('typeVotings.index'));
         }
@@ -157,7 +157,7 @@ class TypeVotingController extends Controller
         $type_voting->save();
 
 
-        Flash::success('Type updated successfully.');
+        flash('Type updated successfully.')->success();
 
         return redirect(route('typeVotings.index'));
     }
@@ -172,21 +172,21 @@ class TypeVotingController extends Controller
     {
         if(!Defender::hasPermission('typeVotings.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $type_voting = TypeVoting::find($id);
 
         if (empty($type_voting)) {
-            Flash::error('Type not found');
+            flash('Type not found')->error();
 
             return redirect(route('typeVotings.index'));
         }
 
         $type_voting->delete($id);
 
-        Flash::success('Type deleted successfully.');
+        flash('Type deleted successfully.')->success();
 
         return redirect(route('typeVotings.index'));
     }

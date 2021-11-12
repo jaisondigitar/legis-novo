@@ -45,7 +45,7 @@ class AssemblymanController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('assemblymen.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -99,7 +99,7 @@ class AssemblymanController extends AppBaseController
     {
         if(!Defender::hasPermission('assemblymen.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -133,7 +133,7 @@ class AssemblymanController extends AppBaseController
     {
        if(!Defender::hasPermission('assemblymen.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
@@ -178,7 +178,7 @@ class AssemblymanController extends AppBaseController
             $responsibility_assemblyman->save();
         }
 
-        Flash::success('Assemblyman saved successfully.');
+        flash('Assemblyman saved successfully.')->success();
 
         return redirect(route('assemblymen.index'));
     }
@@ -194,14 +194,14 @@ class AssemblymanController extends AppBaseController
     {
         if(!Defender::hasPermission('assemblymen.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $assemblyman = $this->assemblymanRepository->findWithoutFail($id);
 
         if (empty($assemblyman)) {
-            Flash::error('Assemblyman not found');
+            flash('Assemblyman not found')->error();
 
             return redirect(route('assemblymen.index'));
         }
@@ -220,7 +220,7 @@ class AssemblymanController extends AppBaseController
     {
         if(!Defender::hasPermission('assemblymen.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $assemblyman = $this->assemblymanRepository
@@ -230,7 +230,7 @@ class AssemblymanController extends AppBaseController
             ->load('responsibility_assemblyman');
 
         if (empty($assemblyman)) {
-            Flash::error('Assemblyman not found');
+            flash('Assemblyman not found')->error();
 
             return redirect(route('assemblymen.index'));
         }
@@ -273,14 +273,14 @@ class AssemblymanController extends AppBaseController
     {
         if(!Defender::hasPermission('assemblymen.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $assemblyman = $this->assemblymanRepository->findWithoutFail($id);
 
         if (empty($assemblyman)) {
-            Flash::error('Assemblyman not found');
+            flash('Assemblyman not found')->error();
 
             return redirect(route('assemblymen.index'));
         }
@@ -326,7 +326,7 @@ class AssemblymanController extends AppBaseController
             $responsibility->save();
         }
 
-        Flash::success('Assemblyman updated successfully.');
+        flash('Assemblyman updated successfully.')->success();
 
         return redirect(route('assemblymen.index'));
     }
@@ -342,21 +342,21 @@ class AssemblymanController extends AppBaseController
     {
         if(!Defender::hasPermission('assemblymen.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $assemblyman = $this->assemblymanRepository->findWithoutFail($id);
 
         if (empty($assemblyman)) {
-            Flash::error('Assemblyman not found');
+            flash('Assemblyman not found')->error();
 
             return redirect(route('assemblymen.index'));
         }
 
         $this->assemblymanRepository->delete($id);
 
-        Flash::success('Assemblyman deleted successfully.');
+        flash('Assemblyman deleted successfully.')->success();
 
         return redirect(route('assemblymen.index'));
     }
@@ -421,10 +421,10 @@ class AssemblymanController extends AppBaseController
         $legislature_assemblyman->assemblyman_id = $params['assemblyman_id'];
 
         if($legislature_assemblyman->save()){
-            Flash::success('Legislatura inserida com sucesso.');
+            flash('Legislatura inserida com sucesso.')->success();
             return redirect(route('assemblymen.index'));
         } else {
-            Flash::success('Legislatura não inserida, favor tentar novamente.');
+            flash('Legislatura não inserida, favor tentar novamente.')->success();
             return redirect(route('assemblymen.index'));
         }
     }
@@ -437,10 +437,10 @@ class AssemblymanController extends AppBaseController
         $party_assemblyman->assemblyman_id = $params['assemblyman_id'];
 
         if($party_assemblyman->save()){
-            Flash::success('Partido inserido com sucesso.');
+            flash('Partido inserido com sucesso.')->success();
             return redirect(route('assemblymen.index'));
         }else{
-            Flash::success('Partido não inserido, favor tentar novamente.');
+            flash('Partido não inserido, favor tentar novamente.')->success();
             return redirect(route('assemblymen.index'));
         }
     }
@@ -453,10 +453,10 @@ class AssemblymanController extends AppBaseController
         $responsibility_assemblyman->assemblyman_id = $params['assemblyman_id'];
 
         if($responsibility_assemblyman->save()){
-            Flash::success('Responsabilidade inserida com sucesso.');
+            flash('Responsabilidade inserida com sucesso.')->success();
             return redirect(route('assemblymen.index'));
         }else{
-            Flash::success('Responsabilidade não inserida, favor tentar novamente.');
+            flash('Responsabilidade não inserida, favor tentar novamente.')->success();
             return redirect(route('assemblymen.index'));
         }
     }

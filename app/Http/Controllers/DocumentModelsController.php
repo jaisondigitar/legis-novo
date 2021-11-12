@@ -33,7 +33,7 @@ class DocumentModelsController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('documentModels.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -54,7 +54,7 @@ class DocumentModelsController extends AppBaseController
     {
         if(!Defender::hasPermission('documentModels.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -74,14 +74,14 @@ class DocumentModelsController extends AppBaseController
     {
        if(!Defender::hasPermission('documentModels.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $documentModels = $this->documentModelsRepository->create($input);
 
-        Flash::success('Modelo de documento salvo com sucesso.');
+        flash('Modelo de documento salvo com sucesso.')->success();
 
         return redirect(route('documentModels.index'));
     }
@@ -97,14 +97,14 @@ class DocumentModelsController extends AppBaseController
     {
 //        if(!Defender::hasPermission('documentModels.show'))
 //        {
-//            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+//            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 //            return redirect("/");
 //        }
 
         $documentModels = $this->documentModelsRepository->findWithoutFail($id);
 
         if (empty($documentModels)) {
-            Flash::error('Modelo de documento não encontrado');
+            flash('Modelo de documento não encontrado')->error();
 
             return redirect(route('documentModels.index'));
         }
@@ -123,13 +123,13 @@ class DocumentModelsController extends AppBaseController
     {
         if(!Defender::hasPermission('documentModels.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $documentModels = $this->documentModelsRepository->findWithoutFail($id);
 
         if (empty($documentModels)) {
-            Flash::error('DocumentModels not found');
+            flash('DocumentModels not found')->error();
 
             return redirect(route('documentModels.index'));
         }
@@ -151,21 +151,21 @@ class DocumentModelsController extends AppBaseController
     {
         if(!Defender::hasPermission('documentModels.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $documentModels = $this->documentModelsRepository->findWithoutFail($id);
 
         if (empty($documentModels)) {
-            Flash::error('DocumentModels not found');
+            flash('DocumentModels not found')->error();
 
             return redirect(route('documentModels.index'));
         }
 
         $documentModels = $this->documentModelsRepository->update($request->all(), $id);
 
-        Flash::success('Modelo de documento atualizado com sucesso.');
+        flash('Modelo de documento atualizado com sucesso.')->success();
 
         return redirect(route('documentModels.index'));
     }
@@ -181,21 +181,21 @@ class DocumentModelsController extends AppBaseController
     {
         if(!Defender::hasPermission('documentModels.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $documentModels = $this->documentModelsRepository->findWithoutFail($id);
 
         if (empty($documentModels)) {
-            Flash::error('DocumentModels not found');
+            flash('DocumentModels not found')->error();
 
             return redirect(route('documentModels.index'));
         }
 
         $this->documentModelsRepository->delete($id);
 
-        Flash::success('DocumentModels deleted successfully.');
+        flash('DocumentModels deleted successfully.')->success();
 
         return redirect(route('documentModels.index'));
     }

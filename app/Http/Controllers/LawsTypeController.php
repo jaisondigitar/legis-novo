@@ -32,7 +32,7 @@ class LawsTypeController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('lawsTypes.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class LawsTypeController extends AppBaseController
     {
        if(!Defender::hasPermission('lawsTypes.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $lawsType = $this->lawsTypeRepository->create($input);
 
-        Flash::success('LawsType saved successfully.');
+        flash('LawsType saved successfully.')->success();
 
         return redirect(route('lawsTypes.index'));
     }
@@ -93,7 +93,7 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -101,9 +101,9 @@ class LawsTypeController extends AppBaseController
 
         if (empty($lawsType)) {
 
-            Flash::error('LawsType not found');
+            flash('LawsType not found')->error();
             return redirect(route('lawsTypes.index'));
-            
+
         }
 
         return view('lawsTypes.show')->with('lawsType', $lawsType);
@@ -120,13 +120,13 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
 
         if (empty($lawsType)) {
-            Flash::error('LawsType not found');
+            flash('LawsType not found')->error();
 
             return redirect(route('lawsTypes.index'));
         }
@@ -146,21 +146,21 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
 
         if (empty($lawsType)) {
-            Flash::error('LawsType not found');
+            flash('LawsType not found')->error();
 
             return redirect(route('lawsTypes.index'));
         }
 
         $lawsType = $this->lawsTypeRepository->update($request->all(), $id);
 
-        Flash::success('LawsType updated successfully.');
+        flash('LawsType updated successfully.')->success();
 
         return redirect(route('lawsTypes.index'));
     }
@@ -176,21 +176,21 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
 
         if (empty($lawsType)) {
-            Flash::error('LawsType not found');
+            flash('LawsType not found')->error();
 
             return redirect(route('lawsTypes.index'));
         }
 
         $this->lawsTypeRepository->delete($id);
 
-        Flash::success('LawsType deleted successfully.');
+        flash('LawsType deleted successfully.')->success();
 
         return redirect(route('lawsTypes.index'));
     }

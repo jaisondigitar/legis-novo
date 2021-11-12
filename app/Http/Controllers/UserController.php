@@ -38,7 +38,7 @@ class UserController extends AppBaseController
 	public function index()
 	{
         if(!Defender::hasPermission('users.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -57,7 +57,7 @@ class UserController extends AppBaseController
 	public function create()
 	{
         if(!Defender::hasPermission('users.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -89,7 +89,7 @@ class UserController extends AppBaseController
 	public function store(CreateUserRequest $request)
 	{
         if(!Defender::hasPermission('users.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $input = $request->all();
@@ -118,7 +118,7 @@ class UserController extends AppBaseController
             $input['active']    = "1";
             $this->profileRepository->create($input);
         }
-		Flash::success('Registro salvo com sucesso!');
+		flash('Registro salvo com sucesso!')->success();
 
 		return redirect(route('users.index'));
 	}
@@ -133,14 +133,14 @@ class UserController extends AppBaseController
 	public function show($id)
 	{
         if(!Defender::hasPermission('users.show')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $user = $this->userRepository->find($id);
 
 		if(empty($user))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('users.index'));
 		}
@@ -163,14 +163,14 @@ class UserController extends AppBaseController
 	public function edit($id)
 	{
         if(!Defender::hasPermission('users.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $user = $this->userRepository->find($id);
 
 		if(empty($user))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('users.index'));
 		}
@@ -209,7 +209,7 @@ class UserController extends AppBaseController
 	public function update($id, UpdateUserRequest $request)
 	{
         if(!Defender::hasPermission('users.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $user = $this->userRepository->find($id);
@@ -217,7 +217,7 @@ class UserController extends AppBaseController
 
 		if(empty($user))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('users.index'));
 		}
@@ -248,7 +248,7 @@ class UserController extends AppBaseController
             $user_assemblyman = DB::delete('delete from user_assemblyman where users_id = ' . $user->id);
         }
 
-		Flash::success('Registro editado com sucesso!');
+		flash('Registro editado com sucesso!')->success();
 
 		return redirect(route('users.index'));
 	}
@@ -274,7 +274,7 @@ class UserController extends AppBaseController
 	public function destroy($id)
 	{
         if(!Defender::hasPermission('users.delete')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -282,14 +282,14 @@ class UserController extends AppBaseController
 
 		if(empty($user))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('users.index'));
 		}
 
 		$this->userRepository->delete($id);
 
-		Flash::success('Registro deletado com sucesso!');
+		flash('Registro deletado com sucesso!')->success();
 
 		return redirect(route('users.index'));
 	}

@@ -55,7 +55,7 @@ class PermissionController extends AppBaseController
 
 		$permission = $this->permissionRepository->create($input);
 
-		Flash::success('Registro salvo com sucesso!');
+		flash('Registro salvo com sucesso!')->success();
 
 		return redirect(route('config.permissions.index'));
 	}
@@ -73,7 +73,7 @@ class PermissionController extends AppBaseController
 
 		if(empty($permission))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('config.permissions.index'));
 		}
@@ -94,7 +94,7 @@ class PermissionController extends AppBaseController
 
 		if(empty($permission))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('config.permissions.index'));
 		}
@@ -116,14 +116,14 @@ class PermissionController extends AppBaseController
 
 		if(empty($permission))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('config.permissions.index'));
 		}
 
 		$permission = $this->permissionRepository->updateRich($request->all(), $id);
 
-		Flash::success('Registro editado com sucesso!');
+		flash('Registro editado com sucesso!')->success();
 
 		return redirect(route('config.permissions.index'));
 	}
@@ -141,14 +141,14 @@ class PermissionController extends AppBaseController
 
 		if(empty($permission))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('config.permissions.index'));
 		}
 
 		$this->permissionRepository->delete($id);
 
-		Flash::success('Registro deletado com sucesso!');
+		flash('Registro deletado com sucesso!')->success();
 
 		return redirect(route('config.permissions.index'));
 	}

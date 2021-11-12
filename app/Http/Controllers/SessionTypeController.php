@@ -32,7 +32,7 @@ class SessionTypeController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('sessionTypes.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class SessionTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('sessionTypes.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,7 +70,7 @@ class SessionTypeController extends AppBaseController
     {
        if(!Defender::hasPermission('sessionTypes.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
@@ -79,7 +79,7 @@ class SessionTypeController extends AppBaseController
 
         $sessionType = $this->sessionTypeRepository->create($input);
 
-        Flash::success('SessionType saved successfully.');
+        flash('SessionType saved successfully.')->success();
 
         return redirect(route('sessionTypes.index'));
     }
@@ -95,14 +95,14 @@ class SessionTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('sessionTypes.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
 
         if (empty($sessionType)) {
-            Flash::error('SessionType not found');
+            flash('SessionType not found')->error();
 
             return redirect(route('sessionTypes.index'));
         }
@@ -121,13 +121,13 @@ class SessionTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('sessionTypes.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
 
         if (empty($sessionType)) {
-            Flash::error('SessionType not found');
+            flash('SessionType not found')->error();
 
             return redirect(route('sessionTypes.index'));
         }
@@ -147,14 +147,14 @@ class SessionTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('sessionTypes.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
 
         if (empty($sessionType)) {
-            Flash::error('SessionType not found');
+            flash('SessionType not found')->error();
 
             return redirect(route('sessionTypes.index'));
         }
@@ -163,7 +163,7 @@ class SessionTypeController extends AppBaseController
 
         $sessionType = $this->sessionTypeRepository->update($request->all(), $id);
 
-        Flash::success('SessionType updated successfully.');
+        flash('SessionType updated successfully.')->success();
 
         return redirect(route('sessionTypes.index'));
     }
@@ -179,21 +179,21 @@ class SessionTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('sessionTypes.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
 
         if (empty($sessionType)) {
-            Flash::error('SessionType not found');
+            flash('SessionType not found')->error();
 
             return redirect(route('sessionTypes.index'));
         }
 
         $this->sessionTypeRepository->delete($id);
 
-        Flash::success('SessionType deleted successfully.');
+        flash('SessionType deleted successfully.')->success();
 
         return redirect(route('sessionTypes.index'));
     }

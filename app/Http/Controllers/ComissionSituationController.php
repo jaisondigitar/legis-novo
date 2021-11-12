@@ -32,7 +32,7 @@ class ComissionSituationController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('comissionSituations.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class ComissionSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('comissionSituations.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class ComissionSituationController extends AppBaseController
     {
        if(!Defender::hasPermission('comissionSituations.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $comissionSituation = $this->comissionSituationRepository->create($input);
 
-        Flash::success('ComissionSituation saved successfully.');
+        flash('ComissionSituation saved successfully.')->success();
 
         return redirect(route('comissionSituations.index'));
     }
@@ -93,14 +93,14 @@ class ComissionSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('comissionSituations.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $comissionSituation = $this->comissionSituationRepository->findWithoutFail($id);
 
         if (empty($comissionSituation)) {
-            Flash::error('ComissionSituation not found');
+            flash('ComissionSituation not found')->error();
 
             return redirect(route('comissionSituations.index'));
         }
@@ -119,13 +119,13 @@ class ComissionSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('comissionSituations.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $comissionSituation = $this->comissionSituationRepository->findWithoutFail($id);
 
         if (empty($comissionSituation)) {
-            Flash::error('ComissionSituation not found');
+            flash('ComissionSituation not found')->error();
 
             return redirect(route('comissionSituations.index'));
         }
@@ -145,21 +145,21 @@ class ComissionSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('comissionSituations.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $comissionSituation = $this->comissionSituationRepository->findWithoutFail($id);
 
         if (empty($comissionSituation)) {
-            Flash::error('ComissionSituation not found');
+            flash('ComissionSituation not found')->error();
 
             return redirect(route('comissionSituations.index'));
         }
 
         $comissionSituation = $this->comissionSituationRepository->update($request->all(), $id);
 
-        Flash::success('ComissionSituation updated successfully.');
+        flash('ComissionSituation updated successfully.')->success();
 
         return redirect(route('comissionSituations.index'));
     }
@@ -175,21 +175,21 @@ class ComissionSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('comissionSituations.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $comissionSituation = $this->comissionSituationRepository->findWithoutFail($id);
 
         if (empty($comissionSituation)) {
-            Flash::error('ComissionSituation not found');
+            flash('ComissionSituation not found')->error();
 
             return redirect(route('comissionSituations.index'));
         }
 
         $this->comissionSituationRepository->delete($id);
 
-        Flash::success('ComissionSituation deleted successfully.');
+        flash('ComissionSituation deleted successfully.')->success();
 
         return redirect(route('comissionSituations.index'));
     }

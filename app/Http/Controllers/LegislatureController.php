@@ -35,7 +35,7 @@ class LegislatureController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('legislatures.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -58,7 +58,7 @@ class LegislatureController extends AppBaseController
     {
         if(!Defender::hasPermission('legislatures.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -76,14 +76,14 @@ class LegislatureController extends AppBaseController
     {
        if(!Defender::hasPermission('legislatures.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $legislature = $this->legislatureRepository->create($input);
 
-        Flash::success('Legislature saved successfully.');
+        flash('Legislature saved successfully.')->success();
 
         return redirect(route('legislatures.index'));
     }
@@ -99,14 +99,14 @@ class LegislatureController extends AppBaseController
     {
         if(!Defender::hasPermission('legislatures.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $legislature = $this->legislatureRepository->findWithoutFail($id);
 
         if (empty($legislature)) {
-            Flash::error('Legislature not found');
+            flash('Legislature not found')->error();
 
             return redirect(route('legislatures.index'));
         }
@@ -136,13 +136,13 @@ class LegislatureController extends AppBaseController
     {
         if(!Defender::hasPermission('legislatures.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $legislature = $this->legislatureRepository->findWithoutFail($id);
 
         if (empty($legislature)) {
-            Flash::error('Legislature not found');
+            flash('Legislature not found')->error();
 
             return redirect(route('legislatures.index'));
         }
@@ -162,21 +162,21 @@ class LegislatureController extends AppBaseController
     {
         if(!Defender::hasPermission('legislatures.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $legislature = $this->legislatureRepository->findWithoutFail($id);
 
         if (empty($legislature)) {
-            Flash::error('Legislature not found');
+            flash('Legislature not found')->error();
 
             return redirect(route('legislatures.index'));
         }
 
         $legislature = $this->legislatureRepository->update($request->all(), $id);
 
-        Flash::success('Legislature updated successfully.');
+        flash('Legislature updated successfully.')->success();
 
         return redirect(route('legislatures.index'));
     }
@@ -192,21 +192,21 @@ class LegislatureController extends AppBaseController
     {
         if(!Defender::hasPermission('legislatures.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $legislature = $this->legislatureRepository->findWithoutFail($id);
 
         if (empty($legislature)) {
-            Flash::error('Legislature not found');
+            flash('Legislature not found')->error();
 
             return redirect(route('legislatures.index'));
         }
 
         $this->legislatureRepository->delete($id);
 
-        Flash::success('Legislature deleted successfully.');
+        flash('Legislature deleted successfully.')->success();
 
         return redirect(route('legislatures.index'));
     }
@@ -238,7 +238,7 @@ class LegislatureController extends AppBaseController
             $legislature_assemblyman->assemblyman_id = $assemblyman;
             $legislature_assemblyman->save();
         }
-            Flash::success('Parlamentares inserido com sucesso.');
+            flash('Parlamentares inserido com sucesso.')->success();
             return redirect(route('legislatures.show', $id));
     }
 
@@ -249,7 +249,7 @@ class LegislatureController extends AppBaseController
             ->first();
 
         if($legislature_assemblyman->delete()){
-            Flash::success('Parlamentar deletado com sucesso.');
+            flash('Parlamentar deletado com sucesso.')->success();
             return redirect(route('legislatures.show', $legislature_id));
         }
     }

@@ -50,13 +50,13 @@ class LogController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('logs.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $path = app_path() . "/Models";
         $models = $this->getModels($path);
         $type = ['Selecione', 'created', 'updated', 'deleted'];
-        
+
         if(count($request->all())){
             $model = str_replace(' ', '', 'App\Models\ '.$models[$request->owner_type]);
 
@@ -93,7 +93,7 @@ class LogController extends AppBaseController
     {
         if(!Defender::hasPermission('logs.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -111,14 +111,14 @@ class LogController extends AppBaseController
     {
        if(!Defender::hasPermission('logs.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $log = $this->logRepository->create($input);
 
-        Flash::success('Log saved successfully.');
+        flash('Log saved successfully.')->success();
 
         return redirect(route('logs.index'));
     }
@@ -134,14 +134,14 @@ class LogController extends AppBaseController
     {
         if(!Defender::hasPermission('logs.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $log = $this->logRepository->findWithoutFail($id);
 
         if (empty($log)) {
-            Flash::error('Log not found');
+            flash('Log not found')->error();
 
             return redirect(route('logs.index'));
         }
@@ -160,13 +160,13 @@ class LogController extends AppBaseController
     {
         if(!Defender::hasPermission('logs.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $log = $this->logRepository->findWithoutFail($id);
 
         if (empty($log)) {
-            Flash::error('Log not found');
+            flash('Log not found')->error();
 
             return redirect(route('logs.index'));
         }
@@ -186,21 +186,21 @@ class LogController extends AppBaseController
     {
         if(!Defender::hasPermission('logs.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $log = $this->logRepository->findWithoutFail($id);
 
         if (empty($log)) {
-            Flash::error('Log not found');
+            flash('Log not found')->error();
 
             return redirect(route('logs.index'));
         }
 
         $log = $this->logRepository->update($request->all(), $id);
 
-        Flash::success('Log updated successfully.');
+        flash('Log updated successfully.')->success();
 
         return redirect(route('logs.index'));
     }
@@ -216,21 +216,21 @@ class LogController extends AppBaseController
     {
         if(!Defender::hasPermission('logs.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $log = $this->logRepository->findWithoutFail($id);
 
         if (empty($log)) {
-            Flash::error('Log not found');
+            flash('Log not found')->error();
 
             return redirect(route('logs.index'));
         }
 
         $this->logRepository->delete($id);
 
-        Flash::success('Log deleted successfully.');
+        flash('Log deleted successfully.')->success();
 
         return redirect(route('logs.index'));
     }

@@ -26,7 +26,7 @@ class IsRootMiddleware
     public function handle($request, Closure $next)
     {
         if (!$this->auth->user()->hasRole('root')) {
-            Flash::error('Ops! Sem permissão.');
+            flash('Ops! Sem permissão.')->error();
             return redirect('/');
         }
         return $next($request);

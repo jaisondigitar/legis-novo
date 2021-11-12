@@ -32,7 +32,7 @@ class TypeController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('types.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class TypeController extends AppBaseController
     {
         if(!Defender::hasPermission('types.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class TypeController extends AppBaseController
     {
        if(!Defender::hasPermission('types.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $type = $this->typeRepository->create($input);
 
-        Flash::success('Type saved successfully.');
+        flash('Type saved successfully.')->success();
 
         return redirect(route('types.index'));
     }
@@ -93,14 +93,14 @@ class TypeController extends AppBaseController
     {
         if(!Defender::hasPermission('types.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $type = $this->typeRepository->findWithoutFail($id);
 
         if (empty($type)) {
-            Flash::error('Type not found');
+            flash('Type not found')->error();
 
             return redirect(route('types.index'));
         }
@@ -119,13 +119,13 @@ class TypeController extends AppBaseController
     {
         if(!Defender::hasPermission('types.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $type = $this->typeRepository->findWithoutFail($id);
 
         if (empty($type)) {
-            Flash::error('Type not found');
+            flash('Type not found')->error();
 
             return redirect(route('types.index'));
         }
@@ -145,21 +145,21 @@ class TypeController extends AppBaseController
     {
         if(!Defender::hasPermission('types.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $type = $this->typeRepository->findWithoutFail($id);
 
         if (empty($type)) {
-            Flash::error('Type not found');
+            flash('Type not found')->error();
 
             return redirect(route('types.index'));
         }
 
         $type = $this->typeRepository->update($request->all(), $id);
 
-        Flash::success('Type updated successfully.');
+        flash('Type updated successfully.')->success();
 
         return redirect(route('types.index'));
     }
@@ -175,21 +175,21 @@ class TypeController extends AppBaseController
     {
         if(!Defender::hasPermission('types.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $type = $this->typeRepository->findWithoutFail($id);
 
         if (empty($type)) {
-            Flash::error('Type not found');
+            flash('Type not found')->error();
 
             return redirect(route('types.index'));
         }
 
         $this->typeRepository->delete($id);
 
-        Flash::success('Type deleted successfully.');
+        flash('Type deleted successfully.')->success();
 
         return redirect(route('types.index'));
     }

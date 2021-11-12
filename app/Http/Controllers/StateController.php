@@ -54,7 +54,7 @@ class StateController extends AppBaseController
 
 		$state = $this->stateRepository->create($input);
 
-		Flash::success('Registro salvo com sucesso!');
+		flash('Registro salvo com sucesso!')->success();
 
 		return redirect(route('states.index'));
 	}
@@ -72,7 +72,7 @@ class StateController extends AppBaseController
 
 		if(empty($state))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('states.index'));
 		}
@@ -93,7 +93,7 @@ class StateController extends AppBaseController
 
 		if(empty($state))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('states.index'));
 		}
@@ -115,14 +115,14 @@ class StateController extends AppBaseController
 
 		if(empty($state))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('states.index'));
 		}
 
 		$state = $this->stateRepository->updateRich($request->all(), $id);
 
-		Flash::success('Registro editado com sucesso!');
+		flash('Registro editado com sucesso!')->success();
 
 		return redirect(route('states.index'));
 	}
@@ -140,14 +140,14 @@ class StateController extends AppBaseController
 
 		if(empty($state))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('states.index'));
 		}
 
 		$this->stateRepository->delete($id);
 
-		Flash::success('Registro deletado com sucesso!');
+		flash('Registro deletado com sucesso!')->success();
 
 		return redirect(route('states.index'));
 	}

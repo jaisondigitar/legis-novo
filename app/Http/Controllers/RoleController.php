@@ -56,7 +56,7 @@ class RoleController extends AppBaseController
 
 		$role = $this->roleRepository->create($input);
 
-		Flash::success('Registro salvo com sucesso!');
+		flash('Registro salvo com sucesso!')->success();
 
 		return redirect(route('gerencial.roles.index'));
 	}
@@ -74,7 +74,7 @@ class RoleController extends AppBaseController
 
 		if(empty($role))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('gerencial.roles.index'));
 		}
@@ -95,7 +95,7 @@ class RoleController extends AppBaseController
 
 		if(empty($role))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('gerencial.roles.index'));
 		}
@@ -117,14 +117,14 @@ class RoleController extends AppBaseController
 
 		if(empty($role))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('gerencial.roles.index'));
 		}
 
 		$role = $this->roleRepository->updateRich($request->all(), $id);
 
-		Flash::success('Registro editado com sucesso!');
+		flash('Registro editado com sucesso!')->success();
 
 		return redirect(route('gerencial.roles.index'));
 	}
@@ -142,14 +142,14 @@ class RoleController extends AppBaseController
 
 		if(empty($role))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('gerencial.roles.index'));
 		}
 
 		$this->roleRepository->delete($id);
 
-		Flash::success('Registro deletado com sucesso!');
+		flash('Registro deletado com sucesso!')->success();
 
 		return redirect(route('gerencial.roles.index'));
 	}
@@ -200,7 +200,7 @@ class RoleController extends AppBaseController
 
     public function togglePermission($role,$permission)
     {
-				
+
         $role = Defender::findRole($role);
         $perm = Defender::findPermissionById($permission);
 
