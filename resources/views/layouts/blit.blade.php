@@ -224,7 +224,7 @@ BEGIN PAGE
                             <strong>{{ Auth::user()->name }}</strong>
                         </a>
                         <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
-                            <li><a href="logout"><i class="fa fa-sign-out"></i> Sair do sistema</a></li>
+                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a></li>
                         </ul>
                     </li>
                 </ul>
