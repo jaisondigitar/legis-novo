@@ -118,7 +118,7 @@ class LogController extends AppBaseController
 
         $log = $this->logRepository->create($input);
 
-        flash('Log saved successfully.')->success();
+        flash('Registo salvo com sucesso.')->success();
 
         return redirect(route('logs.index'));
     }
@@ -141,7 +141,7 @@ class LogController extends AppBaseController
         $log = $this->logRepository->findWithoutFail($id);
 
         if (empty($log)) {
-            flash('Log not found')->error();
+            flash('Registo não encontrado')->error();
 
             return redirect(route('logs.index'));
         }
@@ -166,7 +166,7 @@ class LogController extends AppBaseController
         $log = $this->logRepository->findWithoutFail($id);
 
         if (empty($log)) {
-            flash('Log not found')->error();
+            flash('Registo não encontrado')->error();
 
             return redirect(route('logs.index'));
         }
@@ -193,14 +193,14 @@ class LogController extends AppBaseController
         $log = $this->logRepository->findWithoutFail($id);
 
         if (empty($log)) {
-            flash('Log not found')->error();
+            flash('Registo não encontrado')->error();
 
             return redirect(route('logs.index'));
         }
 
         $log = $this->logRepository->update($request->all(), $id);
 
-        flash('Log updated successfully.')->success();
+        flash('Registo atualizado com sucesso.')->success();
 
         return redirect(route('logs.index'));
     }
@@ -223,14 +223,14 @@ class LogController extends AppBaseController
         $log = $this->logRepository->findWithoutFail($id);
 
         if (empty($log)) {
-            flash('Log not found')->error();
+            flash('Registo não encontrado')->error();
 
             return redirect(route('logs.index'));
         }
 
         $this->logRepository->delete($id);
 
-        flash('Log deleted successfully.')->success();
+        flash('Registo removido com sucesso.')->success();
 
         return redirect(route('logs.index'));
     }

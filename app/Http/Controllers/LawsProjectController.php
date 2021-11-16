@@ -244,7 +244,7 @@ class LawsProjectController extends AppBaseController
         $law_number->date            = $lawsProject->updated_at;
         $law_number->save();
 
-        flash('LawsProject saved successfully.')->success();
+        flash('Projeto de Leis salvo com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
 
@@ -256,7 +256,7 @@ class LawsProjectController extends AppBaseController
         $lawsProject = $this->lawsProjectRepository->findWithoutFail($lawProjectId);
 
         if (empty($lawsProject)) {
-            flash('LawsProject not found')->error();
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -309,7 +309,7 @@ class LawsProjectController extends AppBaseController
         $lawsProject = LawsProject::find($id);
 
         if (empty($lawsProject)) {
-            flash('LawsProject not found')->error();
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -707,7 +707,7 @@ class LawsProjectController extends AppBaseController
         $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
 
         if (empty($lawsProject)) {
-            flash('LawsProject not found')->error();
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -755,7 +755,7 @@ class LawsProjectController extends AppBaseController
         $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
 
         if (empty($lawsProject)) {
-            flash('LawsProject not found')->error();
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -801,7 +801,7 @@ class LawsProjectController extends AppBaseController
         $law_number->date            = $lawsProject->updated_at;
         $law_number->save();
 
-        flash('LawsProject updated successfully.')->success();
+        flash('Projeto de Leis atualizado com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
     }
@@ -823,7 +823,7 @@ class LawsProjectController extends AppBaseController
         $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
 
         if (empty($lawsProject)) {
-            flash('LawsProject not found')->error();
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -836,7 +836,7 @@ class LawsProjectController extends AppBaseController
 
         $this->lawsProjectRepository->delete($id);
 
-        flash('LawsProject deleted successfully.')->success();
+        flash('Projeto de Leis removido com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
     }
@@ -1222,7 +1222,7 @@ class LawsProjectController extends AppBaseController
         $laws = LawsProject::all();
 
         if (empty($laws)) {
-            flash('Law Project not found')->error();
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }

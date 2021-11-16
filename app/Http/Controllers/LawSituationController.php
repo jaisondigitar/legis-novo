@@ -77,7 +77,7 @@ class LawSituationController extends AppBaseController
 
         $lawSituation = $this->lawSituationRepository->create($input);
 
-        flash('LawSituation saved successfully.')->success();
+        flash('Situação Jurídica salva com sucesso.')->success();
 
         return redirect(route('lawSituations.index'));
     }
@@ -100,7 +100,7 @@ class LawSituationController extends AppBaseController
         $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
 
         if (empty($lawSituation)) {
-            flash('LawSituation not found')->error();
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
@@ -125,7 +125,7 @@ class LawSituationController extends AppBaseController
         $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
 
         if (empty($lawSituation)) {
-            flash('LawSituation not found')->error();
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
@@ -152,14 +152,14 @@ class LawSituationController extends AppBaseController
         $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
 
         if (empty($lawSituation)) {
-            flash('LawSituation not found')->error();
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
 
         $lawSituation = $this->lawSituationRepository->update($request->all(), $id);
 
-        flash('LawSituation updated successfully.')->success();
+        flash('Situação Jurídica atualizada com sucesso.')->success();
 
         return redirect(route('lawSituations.index'));
     }
@@ -182,14 +182,14 @@ class LawSituationController extends AppBaseController
         $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
 
         if (empty($lawSituation)) {
-            flash('LawSituation not found')->error();
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
 
         $this->lawSituationRepository->delete($id);
 
-        flash('LawSituation deleted successfully.')->success();
+        flash('Situação Jurídica removido com sucesso.')->success();
 
         return redirect(route('lawSituations.index'));
     }

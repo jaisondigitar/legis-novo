@@ -106,7 +106,7 @@ class MeetingController extends AppBaseController
 
         $meeting = $this->meetingRepository->create($input);
 
-        flash('Meeting saved successfully.')->success();
+        flash('Reunião salva com sucesso.')->success();
 
         return redirect(route('meetings.index'));
     }
@@ -131,7 +131,7 @@ class MeetingController extends AppBaseController
 
 
         if (empty($meeting)) {
-            flash('Meeting not found')->error();
+            flash('Reunião não encontrada')->error();
 
             return redirect(route('meetings.index'));
         }
@@ -156,7 +156,7 @@ class MeetingController extends AppBaseController
         $meeting = $this->meetingRepository->findWithoutFail($id);
 
         if (empty($meeting)) {
-            flash('Meeting not found')->error();
+            flash('Reunião não encontrada')->error();
 
             return redirect(route('meetings.index'));
         }
@@ -185,7 +185,7 @@ class MeetingController extends AppBaseController
         $meeting = $this->meetingRepository->findWithoutFail($id);
 
         if (empty($meeting)) {
-            flash('Meeting not found')->error();
+            flash('Reunião não encontrada')->error();
 
             return redirect(route('meetings.index'));
         }
@@ -193,7 +193,7 @@ class MeetingController extends AppBaseController
         $meeting = $this->meetingRepository->update($request->all(), $id);
         $meeting_pauta = MeetingPauta::where('meeting_id', $meeting->id)->get();
 
-        flash('Meeting updated successfully.')->success();
+        flash('Reunião atualizada com sucesso.')->success();
 
         return redirect(route('meetings.index'));
     }
@@ -216,14 +216,14 @@ class MeetingController extends AppBaseController
         $meeting = $this->meetingRepository->findWithoutFail($id);
 
         if (empty($meeting)) {
-            flash('Meeting not found')->error();
+            flash('Reunião não encontrada')->error();
 
             return redirect(route('meetings.index'));
         }
 
         $this->meetingRepository->delete($id);
 
-        flash('Meeting deleted successfully.')->success();
+        flash('Reunião removida com sucesso.')->success();
 
         return redirect(route('meetings.index'));
     }
@@ -311,7 +311,7 @@ class MeetingController extends AppBaseController
         $meeting = $this->meetingRepository->findWithoutFail($meeting_id);
 
         if (empty($meeting)) {
-            flash('Meeting not found')->error();
+            flash('Reunião não encontrada')->error();
             return redirect(route('meetings.index'));
         }
         $assemblyman = Assemblyman::where('active', 1)->orderBy('short_name')->get();
@@ -326,7 +326,7 @@ class MeetingController extends AppBaseController
         $meet = Meeting::find($input['meeting_id']);
 
         if (empty($meet)) {
-            flash('Meeting not found')->error();
+            flash('Reunião não encontrada')->error();
             return redirect(route('meetings.index'));
         }
 
@@ -511,7 +511,7 @@ class MeetingController extends AppBaseController
         $docs = $this->createDocument($documents);
 
         if (empty($structurepautas)) {
-            flash('Meeting not found')->error();
+            flash('Reunião não encontrada')->error();
             return redirect(route('meetings.index'));
         }
 
@@ -711,7 +711,7 @@ class MeetingController extends AppBaseController
 
 
         if (empty($structurepautas)) {
-            flash('Meeting not found')->error();
+            flash('Reunião não encontrada')->error();
             return redirect(route('meetings.index'));
         }
 

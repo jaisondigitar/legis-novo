@@ -101,7 +101,7 @@ class ProtocolTypeController extends AppBaseController
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
         if (empty($protocolType)) {
-            flash('ProtocolType not found')->error();
+            flash('Tipo de protocolo não encontrado')->error();
 
             return redirect(route('protocolTypes.index'));
         }
@@ -126,7 +126,7 @@ class ProtocolTypeController extends AppBaseController
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
         if (empty($protocolType)) {
-            flash('ProtocolType not found')->error();
+            flash('Tipo de protocolo não encontrado')->error();
 
             return redirect(route('protocolTypes.index'));
         }
@@ -153,7 +153,7 @@ class ProtocolTypeController extends AppBaseController
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
         if (empty($protocolType)) {
-            flash('ProtocolType not found')->error();
+            flash('Tipo de protocolo não encontrado')->error();
 
             return redirect(route('protocolTypes.index'));
         }
@@ -185,14 +185,14 @@ class ProtocolTypeController extends AppBaseController
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
         if (empty($protocolType)) {
-            flash('ProtocolType not found')->error();
+            flash('Tipo de protocolo não encontrado')->error();
 
             return redirect(route('protocolTypes.index'));
         }
 
         $this->protocolTypeRepository->delete($id);
 
-        flash('ProtocolType deleted successfully.')->success();
+        flash('Tipo de protocolo removido com sucesso.')->success();
 
         return redirect(route('protocolTypes.index'));
     }

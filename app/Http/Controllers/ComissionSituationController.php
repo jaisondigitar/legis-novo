@@ -77,7 +77,7 @@ class ComissionSituationController extends AppBaseController
 
         $comissionSituation = $this->comissionSituationRepository->create($input);
 
-        flash('ComissionSituation saved successfully.')->success();
+        flash('Situação da Comissão salva com sucesso.')->success();
 
         return redirect(route('comissionSituations.index'));
     }
@@ -100,7 +100,7 @@ class ComissionSituationController extends AppBaseController
         $comissionSituation = $this->comissionSituationRepository->findWithoutFail($id);
 
         if (empty($comissionSituation)) {
-            flash('ComissionSituation not found')->error();
+            flash('Situação da Comissão não encontrada')->error();
 
             return redirect(route('comissionSituations.index'));
         }
@@ -125,7 +125,7 @@ class ComissionSituationController extends AppBaseController
         $comissionSituation = $this->comissionSituationRepository->findWithoutFail($id);
 
         if (empty($comissionSituation)) {
-            flash('ComissionSituation not found')->error();
+            flash('Situação da Comissão não encontrada')->error();
 
             return redirect(route('comissionSituations.index'));
         }
@@ -152,14 +152,14 @@ class ComissionSituationController extends AppBaseController
         $comissionSituation = $this->comissionSituationRepository->findWithoutFail($id);
 
         if (empty($comissionSituation)) {
-            flash('ComissionSituation not found')->error();
+            flash('Situação da Comissão não encontrada')->error();
 
             return redirect(route('comissionSituations.index'));
         }
 
         $comissionSituation = $this->comissionSituationRepository->update($request->all(), $id);
 
-        flash('ComissionSituation updated successfully.')->success();
+        flash('Situação da Comissão atualizado com sucesso.')->success();
 
         return redirect(route('comissionSituations.index'));
     }
@@ -182,14 +182,14 @@ class ComissionSituationController extends AppBaseController
         $comissionSituation = $this->comissionSituationRepository->findWithoutFail($id);
 
         if (empty($comissionSituation)) {
-            flash('ComissionSituation not found')->error();
+            flash('Situação da Comissão não encontrada')->error();
 
             return redirect(route('comissionSituations.index'));
         }
 
         $this->comissionSituationRepository->delete($id);
 
-        flash('ComissionSituation deleted successfully.')->success();
+        flash('Situação da Comissão removida com sucesso.')->success();
 
         return redirect(route('comissionSituations.index'));
     }

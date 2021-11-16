@@ -77,7 +77,7 @@ class AdvicePublicationLawController extends AppBaseController
 
         $advicePublicationLaw = $this->advicePublicationLawRepository->create($input);
 
-        flash('AdvicePublicationLaw saved successfully.')->success();
+        flash('Publicação do Parecer da Lei salvo com sucesso.')->success();
 
         return redirect(route('advicePublicationLaws.index'));
     }
@@ -100,7 +100,7 @@ class AdvicePublicationLawController extends AppBaseController
         $advicePublicationLaw = $this->advicePublicationLawRepository->findWithoutFail($id);
 
         if (empty($advicePublicationLaw)) {
-            flash('AdvicePublicationLaw not found')->error();
+            flash('Publicação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('advicePublicationLaws.index'));
         }
@@ -125,7 +125,7 @@ class AdvicePublicationLawController extends AppBaseController
         $advicePublicationLaw = $this->advicePublicationLawRepository->findWithoutFail($id);
 
         if (empty($advicePublicationLaw)) {
-            flash('AdvicePublicationLaw not found')->error();
+            flash('Publicação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('advicePublicationLaws.index'));
         }
@@ -152,14 +152,14 @@ class AdvicePublicationLawController extends AppBaseController
         $advicePublicationLaw = $this->advicePublicationLawRepository->findWithoutFail($id);
 
         if (empty($advicePublicationLaw)) {
-            flash('AdvicePublicationLaw not found')->error();
+            flash('Publicação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('advicePublicationLaws.index'));
         }
 
         $advicePublicationLaw = $this->advicePublicationLawRepository->update($request->all(), $id);
 
-        flash('AdvicePublicationLaw updated successfully.')->success();
+        flash('Publicação do Parecer da Lei atualizado com sucesso.')->success();
 
         return redirect(route('advicePublicationLaws.index'));
     }
@@ -182,14 +182,14 @@ class AdvicePublicationLawController extends AppBaseController
         $advicePublicationLaw = $this->advicePublicationLawRepository->findWithoutFail($id);
 
         if (empty($advicePublicationLaw)) {
-            flash('AdvicePublicationLaw not found')->error();
+            flash('Publicação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('advicePublicationLaws.index'));
         }
 
         $this->advicePublicationLawRepository->delete($id);
 
-        flash('AdvicePublicationLaw deleted successfully.')->success();
+        flash('Publicação do Parecer da Lei removido com sucesso.')->success();
 
         return redirect(route('advicePublicationLaws.index'));
     }

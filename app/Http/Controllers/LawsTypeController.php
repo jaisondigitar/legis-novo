@@ -77,7 +77,7 @@ class LawsTypeController extends AppBaseController
 
         $lawsType = $this->lawsTypeRepository->create($input);
 
-        flash('LawsType saved successfully.')->success();
+        flash('Tipo de lei salvo com sucesso.')->success();
 
         return redirect(route('lawsTypes.index'));
     }
@@ -101,7 +101,7 @@ class LawsTypeController extends AppBaseController
 
         if (empty($lawsType)) {
 
-            flash('LawsType not found')->error();
+            flash('Tipo de lei não encontrada')->error();
             return redirect(route('lawsTypes.index'));
 
         }
@@ -126,7 +126,7 @@ class LawsTypeController extends AppBaseController
         $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
 
         if (empty($lawsType)) {
-            flash('LawsType not found')->error();
+            flash('Tipo de lei não encontrada')->error();
 
             return redirect(route('lawsTypes.index'));
         }
@@ -153,14 +153,14 @@ class LawsTypeController extends AppBaseController
         $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
 
         if (empty($lawsType)) {
-            flash('LawsType not found')->error();
+            flash('Tipo de lei não encontrada')->error();
 
             return redirect(route('lawsTypes.index'));
         }
 
         $lawsType = $this->lawsTypeRepository->update($request->all(), $id);
 
-        flash('LawsType updated successfully.')->success();
+        flash('Tipo de lei atualizado com sucesso.')->success();
 
         return redirect(route('lawsTypes.index'));
     }
@@ -183,14 +183,14 @@ class LawsTypeController extends AppBaseController
         $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
 
         if (empty($lawsType)) {
-            flash('LawsType not found')->error();
+            flash('Tipo de lei não encontrada')->error();
 
             return redirect(route('lawsTypes.index'));
         }
 
         $this->lawsTypeRepository->delete($id);
 
-        flash('LawsType deleted successfully.')->success();
+        flash('Tipo de lei removido com sucesso.')->success();
 
         return redirect(route('lawsTypes.index'));
     }

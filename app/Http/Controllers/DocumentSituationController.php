@@ -77,7 +77,7 @@ class DocumentSituationController extends AppBaseController
 
         $documentSituation = $this->documentSituationRepository->create($input);
 
-        flash('DocumentSituation saved successfully.')->success();
+        flash('Situção de Documento salva com secesso.')->success();
 
         return redirect(route('documentSituations.index'));
     }
@@ -100,7 +100,7 @@ class DocumentSituationController extends AppBaseController
         $documentSituation = $this->documentSituationRepository->findWithoutFail($id);
 
         if (empty($documentSituation)) {
-            flash('DocumentSituation not found')->error();
+            flash('Situção de Documento não encontrada')->error();
 
             return redirect(route('documentSituations.index'));
         }
@@ -125,7 +125,7 @@ class DocumentSituationController extends AppBaseController
         $documentSituation = $this->documentSituationRepository->findWithoutFail($id);
 
         if (empty($documentSituation)) {
-            flash('DocumentSituation not found')->error();
+            flash('Situção de Documento não encontrada')->error();
 
             return redirect(route('documentSituations.index'));
         }
@@ -152,7 +152,7 @@ class DocumentSituationController extends AppBaseController
         $documentSituation = $this->documentSituationRepository->findWithoutFail($id);
 
         if (empty($documentSituation)) {
-            flash('DocumentSituation not found')->error();
+            flash('Situção de Documento não encontrada')->error();
 
             return redirect(route('documentSituations.index'));
         }
@@ -163,7 +163,7 @@ class DocumentSituationController extends AppBaseController
 
         $documentSituation = $this->documentSituationRepository->update($input, $id);
 
-        flash('DocumentSituation updated successfully.')->success();
+        flash('Situção de Documento atualizado com sucesso.')->success();
 
         return redirect(route('documentSituations.index'));
     }
@@ -186,14 +186,14 @@ class DocumentSituationController extends AppBaseController
         $documentSituation = $this->documentSituationRepository->findWithoutFail($id);
 
         if (empty($documentSituation)) {
-            flash('DocumentSituation not found')->error();
+            flash('Situção de Documento não encontrada')->error();
 
             return redirect(route('documentSituations.index'));
         }
 
         $this->documentSituationRepository->delete($id);
 
-        flash('DocumentSituation deleted successfully.')->success();
+        flash('Situção de Documento removido com sucesso.')->success();
 
         return redirect(route('documentSituations.index'));
     }

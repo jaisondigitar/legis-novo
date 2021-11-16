@@ -77,7 +77,7 @@ class TypeController extends AppBaseController
 
         $type = $this->typeRepository->create($input);
 
-        flash('Type saved successfully.')->success();
+        flash('Tipo salvo com sucesso.')->success();
 
         return redirect(route('types.index'));
     }
@@ -100,7 +100,7 @@ class TypeController extends AppBaseController
         $type = $this->typeRepository->findWithoutFail($id);
 
         if (empty($type)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('types.index'));
         }
@@ -125,7 +125,7 @@ class TypeController extends AppBaseController
         $type = $this->typeRepository->findWithoutFail($id);
 
         if (empty($type)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('types.index'));
         }
@@ -152,14 +152,14 @@ class TypeController extends AppBaseController
         $type = $this->typeRepository->findWithoutFail($id);
 
         if (empty($type)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('types.index'));
         }
 
         $type = $this->typeRepository->update($request->all(), $id);
 
-        flash('Type updated successfully.')->success();
+        flash('Tipo atualizado com sucesso.')->success();
 
         return redirect(route('types.index'));
     }
@@ -182,14 +182,14 @@ class TypeController extends AppBaseController
         $type = $this->typeRepository->findWithoutFail($id);
 
         if (empty($type)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('types.index'));
         }
 
         $this->typeRepository->delete($id);
 
-        flash('Type deleted successfully.')->success();
+        flash('Tipo removido com sucesso.')->success();
 
         return redirect(route('types.index'));
     }

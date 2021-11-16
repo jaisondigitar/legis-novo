@@ -106,7 +106,7 @@ class ParametersController extends AppBaseController
         $parameters = $this->parametersRepository->findWithoutFail($id);
 
         if (empty($parameters)) {
-            flash('Parameters not found')->error();
+            flash('Parâmetro não encontrado')->error();
 
             return redirect(route('config.parameters.index'));
         }
@@ -131,7 +131,7 @@ class ParametersController extends AppBaseController
         $parameters = $this->parametersRepository->findWithoutFail($id);
 
         if (empty($parameters)) {
-            flash('Parameters not found')->error();
+            flash('Parâmetro não encontrado')->error();
 
             return redirect(route('config.parameters.index'));
         }
@@ -158,7 +158,7 @@ class ParametersController extends AppBaseController
         $parameters = $this->parametersRepository->findWithoutFail($id);
 
         if (empty($parameters)) {
-            flash('Parameters not found')->error();
+            flash('Parâmetro não encontrado')->error();
 
             return redirect(route('parameters.index'));
         }
@@ -195,7 +195,7 @@ class ParametersController extends AppBaseController
         $parameters = $this->parametersRepository->findWithoutFail($id);
 
         if (empty($parameters)) {
-            flash('Parameters not found')->error();
+            flash('Parâmetro não encontrado')->error();
 
             return redirect(route('parameters.index'));
         }

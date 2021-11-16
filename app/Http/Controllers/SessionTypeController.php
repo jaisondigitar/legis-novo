@@ -79,7 +79,7 @@ class SessionTypeController extends AppBaseController
 
         $sessionType = $this->sessionTypeRepository->create($input);
 
-        flash('SessionType saved successfully.')->success();
+        flash('Tipo de sessão salva com sucesso.')->success();
 
         return redirect(route('sessionTypes.index'));
     }
@@ -102,7 +102,7 @@ class SessionTypeController extends AppBaseController
         $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
 
         if (empty($sessionType)) {
-            flash('SessionType not found')->error();
+            flash('Tipo de sessão não encontrada')->error();
 
             return redirect(route('sessionTypes.index'));
         }
@@ -127,7 +127,7 @@ class SessionTypeController extends AppBaseController
         $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
 
         if (empty($sessionType)) {
-            flash('SessionType not found')->error();
+            flash('Tipo de sessão não encontrada')->error();
 
             return redirect(route('sessionTypes.index'));
         }
@@ -154,7 +154,7 @@ class SessionTypeController extends AppBaseController
         $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
 
         if (empty($sessionType)) {
-            flash('SessionType not found')->error();
+            flash('Tipo de sessão não encontrada')->error();
 
             return redirect(route('sessionTypes.index'));
         }
@@ -163,7 +163,7 @@ class SessionTypeController extends AppBaseController
 
         $sessionType = $this->sessionTypeRepository->update($request->all(), $id);
 
-        flash('SessionType updated successfully.')->success();
+        flash('Tipo de sessão atualizado com sucesso.')->success();
 
         return redirect(route('sessionTypes.index'));
     }
@@ -186,14 +186,14 @@ class SessionTypeController extends AppBaseController
         $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
 
         if (empty($sessionType)) {
-            flash('SessionType not found')->error();
+            flash('Tipo de sessão não encontrada')->error();
 
             return redirect(route('sessionTypes.index'));
         }
 
         $this->sessionTypeRepository->delete($id);
 
-        flash('SessionType deleted successfully.')->success();
+        flash('Tipo de sessão removida com sucesso.')->success();
 
         return redirect(route('sessionTypes.index'));
     }

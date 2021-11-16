@@ -77,7 +77,7 @@ class AdviceSituationDocumentsController extends AppBaseController
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->create($input);
 
-        flash('AdviceSituationDocuments saved successfully.')->success();
+        flash('Situação de Aconselhamento de Documentos salvo com sucesso.')->success();
 
         return redirect(route('adviceSituationDocuments.index'));
     }
@@ -100,7 +100,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
 
         if (empty($adviceSituationDocuments)) {
-            flash('AdviceSituationDocuments not found')->error();
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
@@ -125,7 +125,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
 
         if (empty($adviceSituationDocuments)) {
-            flash('AdviceSituationDocuments not found')->error();
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
@@ -152,14 +152,14 @@ class AdviceSituationDocumentsController extends AppBaseController
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
 
         if (empty($adviceSituationDocuments)) {
-            flash('AdviceSituationDocuments not found')->error();
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->update($request->all(), $id);
 
-        flash('AdviceSituationDocuments updated successfully.')->success();
+        flash('Situação de Aconselhamento de Documentos atualizado com sucesso.')->success();
 
         return redirect(route('adviceSituationDocuments.index'));
     }
@@ -182,14 +182,14 @@ class AdviceSituationDocumentsController extends AppBaseController
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
 
         if (empty($adviceSituationDocuments)) {
-            flash('AdviceSituationDocuments not found')->error();
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
 
         $this->adviceSituationDocumentsRepository->delete($id);
 
-        flash('AdviceSituationDocuments deleted successfully.')->success();
+        flash('Situação de Aconselhamento de Documentos removido com sucesso.')->success();
 
         return redirect(route('adviceSituationDocuments.index'));
     }

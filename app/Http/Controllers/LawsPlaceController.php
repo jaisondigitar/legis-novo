@@ -77,7 +77,7 @@ class LawsPlaceController extends AppBaseController
 
         $lawsPlace = $this->lawsPlaceRepository->create($input);
 
-        flash('LawsPlace saved successfully.')->success();
+        flash('Lugar da Lei salvo com sucesso.')->success();
 
         return redirect(route('lawsPlaces.index'));
     }
@@ -100,7 +100,7 @@ class LawsPlaceController extends AppBaseController
         $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
 
         if (empty($lawsPlace)) {
-            flash('LawsPlace not found')->error();
+            flash('Lugar da Lei não encontrado')->error();
 
             return redirect(route('lawsPlaces.index'));
         }
@@ -125,7 +125,7 @@ class LawsPlaceController extends AppBaseController
         $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
 
         if (empty($lawsPlace)) {
-            flash('LawsPlace not found')->error();
+            flash('Lugar da Lei não encontrado')->error();
 
             return redirect(route('lawsPlaces.index'));
         }
@@ -152,14 +152,14 @@ class LawsPlaceController extends AppBaseController
         $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
 
         if (empty($lawsPlace)) {
-            flash('LawsPlace not found')->error();
+            flash('Lugar da Lei não encontrado')->error();
 
             return redirect(route('lawsPlaces.index'));
         }
 
         $lawsPlace = $this->lawsPlaceRepository->update($request->all(), $id);
 
-        flash('LawsPlace updated successfully.')->success();
+        flash('Lugar da Lei atualizado com sucesso.')->success();
 
         return redirect(route('lawsPlaces.index'));
     }
@@ -182,14 +182,14 @@ class LawsPlaceController extends AppBaseController
         $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
 
         if (empty($lawsPlace)) {
-            flash('LawsPlace not found')->error();
+            flash('Lugar da Lei não encontrado')->error();
 
             return redirect(route('lawsPlaces.index'));
         }
 
         $this->lawsPlaceRepository->delete($id);
 
-        flash('LawsPlace deleted successfully.')->success();
+        flash('Lugar da Lei removido com sucesso.')->success();
 
         return redirect(route('lawsPlaces.index'));
     }

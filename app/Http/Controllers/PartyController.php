@@ -77,7 +77,7 @@ class PartyController extends AppBaseController
 
         $party = $this->partyRepository->create($input);
 
-        flash('Party saved successfully.')->success();
+        flash('Partido salvo com sucesso.')->success();
 
         return redirect(route('parties.index'));
     }
@@ -100,7 +100,7 @@ class PartyController extends AppBaseController
         $party = $this->partyRepository->findWithoutFail($id);
 
         if (empty($party)) {
-            flash('Party not found')->error();
+            flash('Partido não encontrado')->error();
 
             return redirect(route('parties.index'));
         }
@@ -125,7 +125,7 @@ class PartyController extends AppBaseController
         $party = $this->partyRepository->findWithoutFail($id);
 
         if (empty($party)) {
-            flash('Party not found')->error();
+            flash('Partido não encontrado')->error();
 
             return redirect(route('parties.index'));
         }
@@ -152,14 +152,14 @@ class PartyController extends AppBaseController
         $party = $this->partyRepository->findWithoutFail($id);
 
         if (empty($party)) {
-            flash('Party not found')->error();
+            flash('Partido não encontrado')->error();
 
             return redirect(route('parties.index'));
         }
 
         $party = $this->partyRepository->update($request->all(), $id);
 
-        flash('Party updated successfully.')->success();
+        flash('Partido atualizado com sucesso.')->success();
 
         return redirect(route('parties.index'));
     }
@@ -182,14 +182,14 @@ class PartyController extends AppBaseController
         $party = $this->partyRepository->findWithoutFail($id);
 
         if (empty($party)) {
-            flash('Party not found')->error();
+            flash('Partido não encontrado')->error();
 
             return redirect(route('parties.index'));
         }
 
         $this->partyRepository->delete($id);
 
-        flash('Party deleted successfully.')->success();
+        flash('Partido removido com sucesso.')->success();
 
         return redirect(route('parties.index'));
     }

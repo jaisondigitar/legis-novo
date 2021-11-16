@@ -81,7 +81,7 @@ class SectorController extends AppBaseController
 
         $sector = $this->sectorRepository->create($input);
 
-        flash('Sector saved successfully.')->success();
+        flash('Setor salvo com sucesso.')->success();
 
         return redirect(route('sectors.index'));
     }
@@ -104,7 +104,7 @@ class SectorController extends AppBaseController
         $sector = $this->sectorRepository->findWithoutFail($id);
 
         if (empty($sector)) {
-            flash('Sector not found')->error();
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
@@ -129,7 +129,7 @@ class SectorController extends AppBaseController
         $sector = $this->sectorRepository->findWithoutFail($id);
 
         if (empty($sector)) {
-            flash('Sector not found')->error();
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
@@ -156,7 +156,7 @@ class SectorController extends AppBaseController
         $sector = $this->sectorRepository->findWithoutFail($id);
 
         if (empty($sector)) {
-            flash('Sector not found')->error();
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
@@ -167,7 +167,7 @@ class SectorController extends AppBaseController
 
         $sector = $this->sectorRepository->update($input, $id);
 
-        flash('Sector updated successfully.')->success();
+        flash('Setor atualizado com sucesso.')->success();
 
         return redirect(route('sectors.index'));
     }
@@ -190,14 +190,14 @@ class SectorController extends AppBaseController
         $sector = $this->sectorRepository->findWithoutFail($id);
 
         if (empty($sector)) {
-            flash('Sector not found')->error();
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
 
         $this->sectorRepository->delete($id);
 
-        flash('Sector deleted successfully.')->success();
+        flash('Setor removido com sucesso.')->success();
 
         return redirect(route('sectors.index'));
     }

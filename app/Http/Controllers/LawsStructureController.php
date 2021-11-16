@@ -77,7 +77,7 @@ class LawsStructureController extends AppBaseController
 
         $lawsStructure = $this->lawsStructureRepository->create($input);
 
-        flash('LawsStructure saved successfully.')->success();
+        flash('Estrutura da lei salva com sucesso.')->success();
 
         return redirect(route('lawsStructures.index'));
     }
@@ -100,7 +100,7 @@ class LawsStructureController extends AppBaseController
         $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
 
         if (empty($lawsStructure)) {
-            flash('LawsStructure not found')->error();
+            flash('Estrutura da lei não encontrada')->error();
 
             return redirect(route('lawsStructures.index'));
         }
@@ -125,7 +125,7 @@ class LawsStructureController extends AppBaseController
         $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
 
         if (empty($lawsStructure)) {
-            flash('LawsStructure not found')->error();
+            flash('Estrutura da lei não encontrada')->error();
 
             return redirect(route('lawsStructures.index'));
         }
@@ -152,14 +152,14 @@ class LawsStructureController extends AppBaseController
         $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
 
         if (empty($lawsStructure)) {
-            flash('LawsStructure not found')->error();
+            flash('Estrutura da lei não encontrada')->error();
 
             return redirect(route('lawsStructures.index'));
         }
 
         $lawsStructure = $this->lawsStructureRepository->update($request->all(), $id);
 
-        flash('LawsStructure updated successfully.')->success();
+        flash('Estrutura da lei atualizada com sucesso.')->success();
 
         return redirect(route('lawsStructures.index'));
     }
@@ -182,14 +182,14 @@ class LawsStructureController extends AppBaseController
         $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
 
         if (empty($lawsStructure)) {
-            flash('LawsStructure not found')->error();
+            flash('Estrutura da lei não encontrada')->error();
 
             return redirect(route('lawsStructures.index'));
         }
 
         $this->lawsStructureRepository->delete($id);
 
-        flash('LawsStructure deleted successfully.')->success();
+        flash('Estrutura da lei removido com sucesso.')->success();
 
         return redirect(route('lawsStructures.index'));
     }

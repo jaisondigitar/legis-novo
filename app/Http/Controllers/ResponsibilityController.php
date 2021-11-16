@@ -77,7 +77,7 @@ class ResponsibilityController extends AppBaseController
 
         $responsibility = $this->responsibilityRepository->create($input);
 
-        flash('Responsibility saved successfully.')->success();
+        flash('Responsabilidade salva com sucesso.')->success();
 
         return redirect(route('responsibilities.index'));
     }
@@ -100,7 +100,7 @@ class ResponsibilityController extends AppBaseController
         $responsibility = $this->responsibilityRepository->findWithoutFail($id);
 
         if (empty($responsibility)) {
-            flash('Responsibility not found')->error();
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
@@ -125,7 +125,7 @@ class ResponsibilityController extends AppBaseController
         $responsibility = $this->responsibilityRepository->findWithoutFail($id);
 
         if (empty($responsibility)) {
-            flash('Responsibility not found')->error();
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
@@ -152,7 +152,7 @@ class ResponsibilityController extends AppBaseController
         $responsibility = $this->responsibilityRepository->findWithoutFail($id);
 
         if (empty($responsibility)) {
-            flash('Responsibility not found')->error();
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
@@ -161,7 +161,7 @@ class ResponsibilityController extends AppBaseController
         $input['skip_board'] = isset($input['skip_board']) ? 1 : 0;
         $responsibility = $this->responsibilityRepository->update($input, $id);
 
-        flash('Responsibility updated successfully.')->success();
+        flash('Responsabilidade atualizada com sucesso.')->success();
 
         return redirect(route('responsibilities.index'));
     }
@@ -184,14 +184,14 @@ class ResponsibilityController extends AppBaseController
         $responsibility = $this->responsibilityRepository->findWithoutFail($id);
 
         if (empty($responsibility)) {
-            flash('Responsibility not found')->error();
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
 
         $this->responsibilityRepository->delete($id);
 
-        flash('Responsibility deleted successfully.')->success();
+        flash('Responsabilidade removida com sucesso.')->success();
 
         return redirect(route('responsibilities.index'));
     }

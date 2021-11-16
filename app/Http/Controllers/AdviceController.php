@@ -230,7 +230,7 @@ class AdviceController extends AppBaseController
 //        dd($advice);
 //
 //        if (empty($advice)) {
-////            flash('Advice not found')->error(;
+////            flash('Aconselhamento não encontrado')->error(;
 ////
 ////            return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
 //            return json_encode(false);
@@ -241,7 +241,7 @@ class AdviceController extends AppBaseController
 //        }
 //
 //        return json_encode(false);
-//        flash('Advice deleted successfully.')->success(;
+//        flash('Aconselhamento removido com sucesso.')->success();
 
 //        return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
     }

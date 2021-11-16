@@ -83,7 +83,7 @@ class LegislatureController extends AppBaseController
 
         $legislature = $this->legislatureRepository->create($input);
 
-        flash('Legislature saved successfully.')->success();
+        flash('Legislatura salva com sucesso.')->success();
 
         return redirect(route('legislatures.index'));
     }
@@ -106,7 +106,7 @@ class LegislatureController extends AppBaseController
         $legislature = $this->legislatureRepository->findWithoutFail($id);
 
         if (empty($legislature)) {
-            flash('Legislature not found')->error();
+            flash('Legislatura não encontrada')->error();
 
             return redirect(route('legislatures.index'));
         }
@@ -142,7 +142,7 @@ class LegislatureController extends AppBaseController
         $legislature = $this->legislatureRepository->findWithoutFail($id);
 
         if (empty($legislature)) {
-            flash('Legislature not found')->error();
+            flash('Legislatura não encontrada')->error();
 
             return redirect(route('legislatures.index'));
         }
@@ -169,7 +169,7 @@ class LegislatureController extends AppBaseController
         $legislature = $this->legislatureRepository->findWithoutFail($id);
 
         if (empty($legislature)) {
-            flash('Legislature not found')->error();
+            flash('Legislatura não encontrada')->error();
 
             return redirect(route('legislatures.index'));
         }
@@ -199,14 +199,14 @@ class LegislatureController extends AppBaseController
         $legislature = $this->legislatureRepository->findWithoutFail($id);
 
         if (empty($legislature)) {
-            flash('Legislature not found')->error();
+            flash('Legislatura não encontrada')->error();
 
             return redirect(route('legislatures.index'));
         }
 
         $this->legislatureRepository->delete($id);
 
-        flash('Legislature deleted successfully.')->success();
+        flash('Legislatura removido com sucesso.')->success();
 
         return redirect(route('legislatures.index'));
     }

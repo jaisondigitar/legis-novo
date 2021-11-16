@@ -77,7 +77,7 @@ class LawsTagController extends AppBaseController
 
         $lawsTag = $this->lawsTagRepository->create($input);
 
-        flash('LawsTag saved successfully.')->success();
+        flash('Tag de Lei salva com sucesso.')->success();
 
         return redirect(route('lawsTags.index'));
     }
@@ -100,7 +100,7 @@ class LawsTagController extends AppBaseController
         $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
 
         if (empty($lawsTag)) {
-            flash('LawsTag not found')->error();
+            flash('Tag de Lei não encontrada')->error();
 
             return redirect(route('lawsTags.index'));
         }
@@ -125,7 +125,7 @@ class LawsTagController extends AppBaseController
         $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
 
         if (empty($lawsTag)) {
-            flash('LawsTag not found')->error();
+            flash('Tag de Lei não encontrada')->error();
 
             return redirect(route('lawsTags.index'));
         }
@@ -152,14 +152,14 @@ class LawsTagController extends AppBaseController
         $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
 
         if (empty($lawsTag)) {
-            flash('LawsTag not found')->error();
+            flash('Tag de Lei não encontrada')->error();
 
             return redirect(route('lawsTags.index'));
         }
 
         $lawsTag = $this->lawsTagRepository->update($request->all(), $id);
 
-        flash('LawsTag updated successfully.')->success();
+        flash('Tag de Lei atualizada com sucesso.')->success();
 
         return redirect(route('lawsTags.index'));
     }
@@ -182,14 +182,14 @@ class LawsTagController extends AppBaseController
         $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
 
         if (empty($lawsTag)) {
-            flash('LawsTag not found')->error();
+            flash('Tag de Lei não encontrada')->error();
 
             return redirect(route('lawsTags.index'));
         }
 
         $this->lawsTagRepository->delete($id);
 
-        flash('LawsTag deleted successfully.')->success();
+        flash('Tag de Lei removida com sucesso.')->success();
 
         return redirect(route('lawsTags.index'));
     }
