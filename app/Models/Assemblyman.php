@@ -117,7 +117,7 @@ class Assemblyman extends Model
     use SoftDeletes;
 
     public $table = 'assemblymen';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -176,8 +176,14 @@ class Assemblyman extends Model
         'short_name' => 'required',
         'email' => 'required',
         'phone1' => 'required',
+        'zipcode' => 'required',
         'state_id' => 'required',
-        'city_id' => 'required'
+        'city_id' => 'required',
+        'full_name' => 'required',
+        'official_document' => 'required',
+        'general_register' => 'required',
+        'number' => 'required',
+        'complement' => 'required',
     ];
 
     public function company(){

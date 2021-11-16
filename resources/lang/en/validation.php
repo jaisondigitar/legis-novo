@@ -96,7 +96,7 @@ return [
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
-    'required' => 'The :attribute field is required.',
+    'required' => ':attribute é necessário.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_with' => 'The :attribute field is required when :values is present.',
@@ -133,7 +133,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
     ],
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -146,6 +149,32 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'Nome',
+        'token' => 'Token',
 
+        'readable_name' => 'Descrição',
+
+        'date' => 'Data',
+        'content' => 'Conteúdo',
+        'document_type_id' => 'Tipo de documento',
+        'owner_id' => 'Parlamentar responsável',
+
+        'short_name' => 'Nome Parlamentar',
+        'email' => 'Email',
+        'phone1' => 'Celular',
+        'zipcode' => 'Código Postal',
+        'state_id' => 'Estado',
+        'city_id' => 'Cidade',
+        'full_name' => 'Nome Completo',
+        'official_document' => 'CPF',
+        'general_register' => 'RG',
+        'number' => 'Número',
+        'complement' => 'Complemento',
+
+        'from' => 'Inicio',
+        'to' => 'Fim',
+
+        'prefix' => 'Sigla',
+    ],
 ];

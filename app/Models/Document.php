@@ -115,9 +115,9 @@ class Document extends Model
      * @var array
      */
     public static $rules = [
+      "date" => "required",
       "document_type_id" => "required",
-		  "date" => "required",
-		  "owner_id" => "required",
+      "owner_id" => "required",
       "content" => "required",
     ];
 

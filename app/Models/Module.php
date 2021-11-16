@@ -8,7 +8,7 @@ class Module extends Model
     use SoftDeletes;
 
 	public $table = "modules";
-    
+
 	protected $dates = ['deleted_at'];
 
 
@@ -30,7 +30,8 @@ class Module extends Model
     ];
 
 	public static $rules = [
-	    "name" => "required"
+	    "name" => "required",
+	    "token" => "required"
 	];
 
     public function isActive($module){
