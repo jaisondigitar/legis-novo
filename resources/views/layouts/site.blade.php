@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="/front/assets/img/favicon.ico">
 
     <title>MakerLegis - Consulta</title>
+    <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
 
     <!-- Bootstrap core CSS -->
     <link href="/front/assets/css/bootstrap.css" rel="stylesheet">

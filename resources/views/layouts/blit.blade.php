@@ -9,9 +9,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MakerLegis</title>
-
-    <link rel="shortcut icon" href="{!! asset('/assets/images/genesis.ico') !!}" >
-
+    <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
 
     <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
