@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateLawsPlaceRequest;
 use App\Http\Requests\UpdateLawsPlaceRequest;
 use App\Repositories\LawsPlaceRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class LawsPlaceController extends AppBaseController
 {
@@ -27,7 +29,7 @@ class LawsPlaceController extends AppBaseController
      * Display a listing of the LawsPlace.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
     {
@@ -45,7 +47,7 @@ class LawsPlaceController extends AppBaseController
     /**
      * Show the form for creating a new LawsPlace.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -63,7 +65,8 @@ class LawsPlaceController extends AppBaseController
      *
      * @param CreateLawsPlaceRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateLawsPlaceRequest $request)
     {
@@ -74,7 +77,7 @@ class LawsPlaceController extends AppBaseController
        }
         $input = $request->all();
 
-        $lawsPlace = $this->lawsPlaceRepository->create($input);
+        $this->lawsPlaceRepository->create($input);
 
         flash('Lugar da Lei salvo com sucesso.')->success();
 
@@ -84,9 +87,10 @@ class LawsPlaceController extends AppBaseController
     /**
      * Display the specified LawsPlace.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function show($id)
     {
@@ -96,7 +100,7 @@ class LawsPlaceController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
+        $lawsPlace = $this->lawsPlaceRepository->findByID($id);
 
         if (empty($lawsPlace)) {
             flash('Lugar da Lei não encontrado')->error();
@@ -110,9 +114,10 @@ class LawsPlaceController extends AppBaseController
     /**
      * Show the form for editing the specified LawsPlace.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function edit($id)
     {
@@ -121,7 +126,7 @@ class LawsPlaceController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
+        $lawsPlace = $this->lawsPlaceRepository->findByID($id);
 
         if (empty($lawsPlace)) {
             flash('Lugar da Lei não encontrado')->error();
@@ -135,10 +140,11 @@ class LawsPlaceController extends AppBaseController
     /**
      * Update the specified LawsPlace in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateLawsPlaceRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateLawsPlaceRequest $request)
     {
@@ -148,7 +154,7 @@ class LawsPlaceController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
+        $lawsPlace = $this->lawsPlaceRepository->findByID($id);
 
         if (empty($lawsPlace)) {
             flash('Lugar da Lei não encontrado')->error();
@@ -156,7 +162,7 @@ class LawsPlaceController extends AppBaseController
             return redirect(route('lawsPlaces.index'));
         }
 
-        $lawsPlace = $this->lawsPlaceRepository->update($request->all(), $id);
+        $this->lawsPlaceRepository->update($lawsPlace, $request->all());
 
         flash('Lugar da Lei atualizado com sucesso.')->success();
 
@@ -166,9 +172,10 @@ class LawsPlaceController extends AppBaseController
     /**
      * Remove the specified LawsPlace from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
     public function destroy($id)
     {
@@ -178,7 +185,7 @@ class LawsPlaceController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
+        $lawsPlace = $this->lawsPlaceRepository->findByID($id);
 
         if (empty($lawsPlace)) {
             flash('Lugar da Lei não encontrado')->error();
@@ -186,28 +193,28 @@ class LawsPlaceController extends AppBaseController
             return redirect(route('lawsPlaces.index'));
         }
 
-        $this->lawsPlaceRepository->delete($id);
+        $this->lawsPlaceRepository->delete($lawsPlace);
 
         flash('Lugar da Lei removido com sucesso.')->success();
 
         return redirect(route('lawsPlaces.index'));
     }
 
+
     /**
-    	 * Update status of specified LawsPlace from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('lawsPlaces.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->lawsPlaceRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified LawsPlace from storage.
+     *
+     * @param int $id
+     * @throws BindingResolutionException
+     */
+    public function toggle($id){
+        if(!Defender::hasPermission('lawsPlaces.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->lawsPlaceRepository->findByID($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 }

@@ -6,12 +6,5 @@ use App\Models\LawSituation;
 
 class LawSituationRepository extends Repository
 {
-    /**
-     * @var array
-     */
-    protected $fieldSearchable = [
-        'name'
-    ];
-
-    protected $modelClass = LawSituation::class;
+   protected $modelClass = LawSituation::class;
 }

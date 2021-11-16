@@ -26,11 +26,18 @@ use App\Models\ProtocolType;
 use App\Models\StatusProcessingDocument;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
+use Illuminate\View\View;
 
 
 class DocumentController extends AppBaseController
@@ -79,7 +86,7 @@ class DocumentController extends AppBaseController
      * Display a listing of the Document.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function index(Request $request)
     {
@@ -144,7 +151,7 @@ class DocumentController extends AppBaseController
     /**
      * Show the form for creating a new Document.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -190,7 +197,8 @@ class DocumentController extends AppBaseController
      *
      * @param CreateDocumentRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateDocumentRequest $request)
     {
@@ -595,9 +603,10 @@ class DocumentController extends AppBaseController
     /**
      * Show the form for editing the specified Document.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
     public function edit($id)
     {
@@ -606,7 +615,7 @@ class DocumentController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $document = $this->documentRepository->findWithoutFail($id);
+        $document = $this->documentRepository->findByID($id);
 
 
 
@@ -616,7 +625,7 @@ class DocumentController extends AppBaseController
             return redirect(route('documents.index'));
         }
 
-        $documentType = DocumentType::where('parent_id',0)->lists('name', 'id')->prepend('Selecione...', 0);
+        $documentType = DocumentType::where('parent_id',0)->pluck('name', 'id')->prepend('Selecione...', 0);
 
         $novo = [];
         foreach($documentType as $key => $doc)
@@ -635,9 +644,9 @@ class DocumentController extends AppBaseController
         $documentType = $novo;
 
         $assemblymensList    = $this->getAssemblymenList();
-        $documentAssemblyman = DocumentAssemblyman::where('document_id', $id)->lists('assemblyman_id');
-        $document_situation = DocumentSituation::lists('name', 'id')->prepend('Selecione... ', 0);
-        $status_processing_document = StatusProcessingDocument::lists('name', 'id')->prepend('Selecione... ', 0);
+        $documentAssemblyman = DocumentAssemblyman::where('document_id', $id)->pluck('assemblyman_id');
+        $document_situation = DocumentSituation::pluck('name', 'id')->prepend('Selecione... ', 0);
+        $status_processing_document = StatusProcessingDocument::pluck('name', 'id')->prepend('Selecione... ', 0);
 
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
@@ -655,10 +664,11 @@ class DocumentController extends AppBaseController
     /**
      * Update the specified Document in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateDocumentRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateDocumentRequest $request)
     {
@@ -668,7 +678,7 @@ class DocumentController extends AppBaseController
             return redirect("/");
         }
 
-        $document = $this->documentRepository->findWithoutFail($id);
+        $document = $this->documentRepository->findByID($id);
 
         if (empty($document)) {
             flash('Document not found')->error();
@@ -678,7 +688,7 @@ class DocumentController extends AppBaseController
 
         $request['users_id'] = Auth::user()->id;
 
-        $document = $this->documentRepository->update($request->all(), $id);
+        $document = $this->documentRepository->update($document, $request->all());
 
         $document_asseblyman_delete = DocumentAssemblyman::where('document_id', $id)->delete();
 
@@ -704,9 +714,10 @@ class DocumentController extends AppBaseController
     /**
      * Remove the specified Document from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
     public function destroy($id)
     {
@@ -716,7 +727,7 @@ class DocumentController extends AppBaseController
             return redirect("/");
         }
 
-        $document = $this->documentRepository->findWithoutFail($id);
+        $document = $this->documentRepository->findByID($id);
 
         if (empty($document)) {
             flash('Document not found')->error();
@@ -730,7 +741,7 @@ class DocumentController extends AppBaseController
             return redirect(route('documents.index'));
         }
 
-        $this->documentRepository->delete($id);
+        $this->documentRepository->delete($document);
 
         flash('Documento deletado com sucesso.')->success();
 
@@ -741,8 +752,6 @@ class DocumentController extends AppBaseController
     	 * Update status of specified Document from storage.
     	 *
     	 * @param  int $id
-    	 *
-    	 * @return Json
     	 */
     public function toggleRead($id)
     {
@@ -750,7 +759,7 @@ class DocumentController extends AppBaseController
         {
             return json_encode(false);
         }
-        $register = $this->documentRepository->findWithoutFail($id);
+        $register = $this->documentRepository->findByID($id);
         $register->read = $register->read > 0 ? 0 : 1;
         $register->save();
         return json_encode(true);
@@ -762,7 +771,7 @@ class DocumentController extends AppBaseController
         {
             return json_encode(false);
         }
-        $register = $this->documentRepository->findWithoutFail($id);
+        $register = $this->documentRepository->findByID($id);
         $register->approved = $register->approved > 0 ? 0 : 1;
         $register->save();
         return json_encode(true);
@@ -778,7 +787,8 @@ class DocumentController extends AppBaseController
 
         $document = Document::find($id);
         $document_files = DocumentFiles::where('document_id', $document->id)->get();
-        $doc_ids = DocumentFiles::withTrashed()->where('document_id', $document->id)->lists('id')->toArray();
+        $doc_ids = DocumentFiles::withTrashed()->where('document_id', $document->id)->pluck('id')
+            ->toArray();
 
         $logs = Log::whereIn('owner_id', $doc_ids)->where('owner_type', DocumentFiles::class)->orderBy('created_at', 'desc')->get();
         return view('documents.attachament')->with(compact('document', 'document_files', 'logs'));
@@ -846,7 +856,7 @@ class DocumentController extends AppBaseController
 
     public function documentProtocolSave()
     {
-        $input = Input::all();
+        $input = \Illuminate\Support\Facades\Request::all();
 
         $document = Document::find($input['document_id']);
 
@@ -977,7 +987,7 @@ class DocumentController extends AppBaseController
 
     public function alteraNumero(Request $request){
 
-        $input = Input::all();
+        $input = \Illuminate\Support\Facades\Request::all();
 
         $document = Document::find($input['document_id']);
 
@@ -1028,7 +1038,7 @@ class DocumentController extends AppBaseController
     public function advices($documentId)
     {
         setlocale(LC_ALL, 'pt_BR');
-        $document = $this->documentRepository->findWithoutFail($documentId);
+        $document = $this->documentRepository->findByID($documentId);
 
         if (empty($document)) {
             flash('Document not found')->error();
@@ -1036,13 +1046,13 @@ class DocumentController extends AppBaseController
             return redirect(route('documents.index'));
         }
 
-        $comission = Commission::active()->lists('name', 'id');
+        $comission = Commission::active()->pluck('name', 'id');
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
-        $document_situation = DocumentSituation::lists('name', 'id')->prepend('Selecione... ', 0);
-        $advice_situation_document = AdviceSituationDocuments::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_publication_document = AdvicePublicationDocuments::lists('name', 'id')->prepend('Selecione...', '');
-        $status_processing_document = StatusProcessingDocument::lists('name', 'id')->prepend('Selecione...', '');
+        $document_situation = DocumentSituation::pluck('name', 'id')->prepend('Selecione... ', 0);
+        $advice_situation_document = AdviceSituationDocuments::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_publication_document = AdvicePublicationDocuments::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_document = StatusProcessingDocument::pluck('name', 'id')->prepend('Selecione...', '');
 
         return view('documents.advices', compact('document_situation', 'comission', 'tramitacao', 'advice_situation_document', 'advice_publication_document', 'status_processing_document'))->with(compact('document'));
 

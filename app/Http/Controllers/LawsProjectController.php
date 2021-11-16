@@ -28,12 +28,15 @@ use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
-use Flash;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
-use Response;
+use Illuminate\View\View;
 
 class LawsProjectController extends AppBaseController
 {
@@ -78,7 +81,7 @@ class LawsProjectController extends AppBaseController
      * Display a listing of the LawsProject.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
     {
@@ -160,7 +163,7 @@ class LawsProjectController extends AppBaseController
     /**
      * Show the form for creating a new LawsProject.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -186,7 +189,7 @@ class LawsProjectController extends AppBaseController
         }
 
         $lawsProject = new LawsProject();
-        return view('lawsProjects.create')->with(compact('status_processing_law', 'comission', 'lawsProject', 'law_types', 'situation', 'law_places', 'law_structure', 'advice_situation_law', 'advice_publication_law'))
+        return view('lawsProjects.create')->with(compact('status_processing_law', 'comission', 'lawsProject', 'law_types', 'situation', 'advice_situation_law', 'advice_publication_law'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('references_project', $references_project)
             ->with('assemblymensList', $assemblymensList[1]);
@@ -197,7 +200,8 @@ class LawsProjectController extends AppBaseController
      *
      * @param CreateLawsProjectRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateLawsProjectRequest $request)
     {
@@ -253,7 +257,7 @@ class LawsProjectController extends AppBaseController
     public function advices($lawProjectId)
     {
         setlocale(LC_ALL, 'pt_BR');
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($lawProjectId);
+        $lawsProject = $this->lawsProjectRepository->findByID($lawProjectId);
 
         if (empty($lawsProject)) {
             flash('Projeto de Leis não encontrado')->error();
@@ -264,6 +268,10 @@ class LawsProjectController extends AppBaseController
         $comission  = Commission::active()->pluck('name', 'id');
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-projetos')->first()->value;
 
+        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...',
+            '');
+        $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
         $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
         $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
         $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
@@ -295,7 +303,7 @@ class LawsProjectController extends AppBaseController
      *
      * @param  int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse|void
      */
     public function show($id)
     {
@@ -616,7 +624,7 @@ class LawsProjectController extends AppBaseController
     public function loadAdvices($pdf, $lawsProjectId)
     {
 
-        $advices = \App\Models\Advice::where('laws_projects_id', $lawsProjectId)->get();
+        $advices = Advice::where('laws_projects_id', $lawsProjectId)->get();
 
         if (!$advices) {
             $pdf->AddPage();
@@ -631,8 +639,6 @@ class LawsProjectController extends AppBaseController
 
     protected function printAdvices($advices, $pdf)
     {
-        $return = "";
-
         foreach ($advices as $advice) {
 
             $pdf->AddPage();
@@ -696,7 +702,7 @@ class LawsProjectController extends AppBaseController
      *
      * @param  int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function edit($id)
     {
@@ -704,7 +710,7 @@ class LawsProjectController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
 
         if (empty($lawsProject)) {
             flash('Projeto de Leis não encontrado')->error();
@@ -740,10 +746,11 @@ class LawsProjectController extends AppBaseController
     /**
      * Update the specified LawsProject in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateLawsProjectRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateLawsProjectRequest $request)
     {
@@ -752,7 +759,7 @@ class LawsProjectController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
 
         if (empty($lawsProject)) {
             flash('Projeto de Leis não encontrado')->error();
@@ -764,8 +771,8 @@ class LawsProjectController extends AppBaseController
 
         $input['town_hall'] = isset($input['town_hall']) ? 1 : 0;
 
-        $lawsProject = $this->lawsProjectRepository->update($input, $id);
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
+        $this->lawsProjectRepository->update($lawsProject, $input);
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
 
         LawsProjectAssemblyman::where('law_project_id', $id)->delete();
 
@@ -809,9 +816,11 @@ class LawsProjectController extends AppBaseController
     /**
      * Remove the specified LawsProject from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     *
+     * @throws Exception
      */
     public function destroy($id)
     {
@@ -820,7 +829,7 @@ class LawsProjectController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
 
         if (empty($lawsProject)) {
             flash('Projeto de Leis não encontrado')->error();
@@ -834,7 +843,7 @@ class LawsProjectController extends AppBaseController
             return redirect(route('lawsProjects.index'));
         }
 
-        $this->lawsProjectRepository->delete($id);
+        $this->lawsProjectRepository->delete($lawsProject);
 
         flash('Projeto de Leis removido com sucesso.')->success();
 
@@ -844,16 +853,15 @@ class LawsProjectController extends AppBaseController
     /**
      * Update status of specified LawsProject from storage.
      *
-     * @param  int $id
-     *
-     * @return Json
+     * @param int $id
+     * @throws BindingResolutionException
      */
     public function toggle($id)
     {
         if (!Defender::hasPermission('lawsProjects.edit')) {
             return json_encode(false);
         }
-        $register         = $this->lawsProjectRepository->findWithoutFail($id);
+        $register         = $this->lawsProjectRepository->findByID($id);
         $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
         return json_encode(true);
@@ -862,13 +870,14 @@ class LawsProjectController extends AppBaseController
     /**
      * @param $id
      * @return string
+     * @throws BindingResolutionException
      */
     public function toggleRead($id)
     {
         if (!Defender::hasPermission('lawsProject.read')) {
             return json_encode(false);
         }
-        $register          = $this->lawsProjectRepository->findWithoutFail($id);
+        $register          = $this->lawsProjectRepository->findByID($id);
         $register->is_read = $register->is_read == 0 ? 1 : 0;
         $register->save();
         return json_encode(true);
@@ -877,17 +886,18 @@ class LawsProjectController extends AppBaseController
     /**
      * @param $id
      * @return string
+     * @throws BindingResolutionException
      */
     public function toggleApproved($id)
     {
         if (!Defender::hasPermission('lawsProject.approved')) {
             return json_encode(false);
         }
-        $register = $this->lawsProjectRepository->findWithoutFail($id);
+        $register = $this->lawsProjectRepository->findByID($id);
 
         $register->is_ready = $register->is_ready == 0 ? 1 : 0;
         $register->save();
-        dd($register);
+
         return json_encode(true);
     }
 
@@ -930,7 +940,7 @@ class LawsProjectController extends AppBaseController
 
     public function lawsProjectApprovedSave()
     {
-        $input = Input::all();
+        $input = \Illuminate\Support\Facades\Request::all();
 
         $lawProject = LawsProject::find($input['law_project_id']);
 
@@ -1004,7 +1014,7 @@ class LawsProjectController extends AppBaseController
 
     public function lawsProjectProtocolSave()
     {
-        $params = Input::all();
+        $params = \Illuminate\Support\Facades\Request::all();
 
         $law_project = LawsProject::find($params['law_project_id']);
 
@@ -1054,11 +1064,6 @@ class LawsProjectController extends AppBaseController
                 'year'           => $year,
             ];
         }
-
-    }
-
-    public function addStructure($id)
-    {
 
     }
 
@@ -1296,7 +1301,6 @@ class LawsProjectController extends AppBaseController
 
     public function addFilesSave($id, Request $request)
     {
-        $input       = $request->all();
         $lawsProject = LawsProject::find($id);
 
         if ($request->file('file')) {

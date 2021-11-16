@@ -7,11 +7,7 @@ use App\Models\LawsPlace;
 class LawsPlaceRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        'name'
-    ];
-
     protected $modelClass = LawsPlace::class;
 }
