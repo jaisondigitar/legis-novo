@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Party;
 
-class PartyRepository
+class PartyRepository extends Repository
 {
     /**
      * @var array
@@ -15,11 +15,5 @@ class PartyRepository
         'name'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Party::class;
-    }
+    protected $modelClass = Party::class;
 }

@@ -11,7 +11,8 @@
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('owner_id', 'Tipo:') !!}
-                {!! Form::select('type', App\Models\DocumentType::lists('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                {!! Form::select('type', App\Models\DocumentType::pluck('name', 'id')->prepend
+                ('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Número:') !!}
