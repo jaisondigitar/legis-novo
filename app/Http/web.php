@@ -70,8 +70,6 @@ Route::get('download-meeting/{filename}', 'SiteController@downloadMeeting');
  *  -------------------------------------------------*/
 Route::group(['prefix' => 'config', ['middleware' => 'needsRole', 'is' => 'root']], function () {
 
-//    Route::get('/',function(){ return ('teste'); });
-
     Route::resource('/companies', 'CompanyController');
     Route::get('/companies/{id}/toggle', 'CompanyController@toggle');
     Route::get('/companies/{id}/delete', [

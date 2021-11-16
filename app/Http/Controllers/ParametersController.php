@@ -41,7 +41,7 @@ class ParametersController extends AppBaseController
             return redirect("/");
         }
 
-        $parameters = $this->parametersRepository->getAll();
+        $parameters = $this->parametersRepository->getAll(0);
 
         return view('parameters.index')
             ->with('parameters', $parameters);
@@ -79,7 +79,7 @@ class ParametersController extends AppBaseController
            return redirect("/");
        }
         $input = $request->all();
-        $input['slug'] = str_slug($input['name']);
+        $input['slug'] = Str::slug($input['name']);
         if($input['type'] == 1){
             $input['value'] = $input['valueSelect'];
         } else {
@@ -208,7 +208,7 @@ class ParametersController extends AppBaseController
             return redirect(route('parameters.index'));
         }
 
-        $this->parametersRepository->delete($id);
+        $this->parametersRepository->delete($parameters);
 
         Flash::success('Parâmetro excluído com sucesso.');
 

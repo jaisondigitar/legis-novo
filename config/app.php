@@ -179,6 +179,7 @@ return [
         Cmgmyr\Messenger\MessengerServiceProvider::class,
         Artesaos\Defender\Providers\DefenderServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
+
     ],
 
     /*
