@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Responsibility;
 
-class ResponsibilityRepository
+class ResponsibilityRepository extends Repository
 {
     /**
      * @var array
@@ -14,11 +14,5 @@ class ResponsibilityRepository
         'name'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Responsibility::class;
-    }
+    protected $modelClass = Responsibility::class;
 }

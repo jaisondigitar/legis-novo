@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateResponsibilityRequest;
 use App\Http\Requests\UpdateResponsibilityRequest;
 use App\Repositories\ResponsibilityRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class ResponsibilityController extends AppBaseController
 {
@@ -27,7 +29,7 @@ class ResponsibilityController extends AppBaseController
      * Display a listing of the Responsibility.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
     {
@@ -36,8 +38,7 @@ class ResponsibilityController extends AppBaseController
             return redirect("/");
         }
 
-        $this->responsibilityRepository->pushCriteria(new RequestCriteria($request));
-        $responsibilities = $this->responsibilityRepository->all();
+        $responsibilities = $this->responsibilityRepository->getAll(0);
 
         return view('responsibilities.index')
             ->with('responsibilities', $responsibilities);
@@ -46,7 +47,7 @@ class ResponsibilityController extends AppBaseController
     /**
      * Show the form for creating a new Responsibility.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -64,7 +65,8 @@ class ResponsibilityController extends AppBaseController
      *
      * @param CreateResponsibilityRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateResponsibilityRequest $request)
     {
@@ -75,7 +77,7 @@ class ResponsibilityController extends AppBaseController
        }
         $input = $request->all();
 
-        $responsibility = $this->responsibilityRepository->create($input);
+        $this->responsibilityRepository->create($input);
 
         flash('Responsabilidade salva com sucesso.')->success();
 
@@ -85,9 +87,10 @@ class ResponsibilityController extends AppBaseController
     /**
      * Display the specified Responsibility.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function show($id)
     {
@@ -97,7 +100,7 @@ class ResponsibilityController extends AppBaseController
             return redirect("/");
         }
 
-        $responsibility = $this->responsibilityRepository->findWithoutFail($id);
+        $responsibility = $this->responsibilityRepository->findByID($id);
 
         if (empty($responsibility)) {
             flash('Responsabilidade não encontrada')->error();
@@ -111,9 +114,10 @@ class ResponsibilityController extends AppBaseController
     /**
      * Show the form for editing the specified Responsibility.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function edit($id)
     {
@@ -122,7 +126,8 @@ class ResponsibilityController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $responsibility = $this->responsibilityRepository->findWithoutFail($id);
+
+        $responsibility = $this->responsibilityRepository->findByID($id);
 
         if (empty($responsibility)) {
             flash('Responsabilidade não encontrada')->error();
@@ -139,7 +144,7 @@ class ResponsibilityController extends AppBaseController
      * @param  int              $id
      * @param UpdateResponsibilityRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
      */
     public function update($id, UpdateResponsibilityRequest $request)
     {
@@ -149,7 +154,7 @@ class ResponsibilityController extends AppBaseController
             return redirect("/");
         }
 
-        $responsibility = $this->responsibilityRepository->findWithoutFail($id);
+        $responsibility = $this->responsibilityRepository->findByID($id);
 
         if (empty($responsibility)) {
             flash('Responsabilidade não encontrada')->error();
@@ -159,7 +164,7 @@ class ResponsibilityController extends AppBaseController
 
         $input = $request->all();
         $input['skip_board'] = isset($input['skip_board']) ? 1 : 0;
-        $responsibility = $this->responsibilityRepository->update($input, $id);
+        $this->responsibilityRepository->update($responsibility, $input);
 
         flash('Responsabilidade atualizada com sucesso.')->success();
 
@@ -169,9 +174,10 @@ class ResponsibilityController extends AppBaseController
     /**
      * Remove the specified Responsibility from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
     public function destroy($id)
     {
@@ -181,7 +187,7 @@ class ResponsibilityController extends AppBaseController
             return redirect("/");
         }
 
-        $responsibility = $this->responsibilityRepository->findWithoutFail($id);
+        $responsibility = $this->responsibilityRepository->findByID($id);
 
         if (empty($responsibility)) {
             flash('Responsabilidade não encontrada')->error();
@@ -189,7 +195,7 @@ class ResponsibilityController extends AppBaseController
             return redirect(route('responsibilities.index'));
         }
 
-        $this->responsibilityRepository->delete($id);
+        $this->responsibilityRepository->delete($responsibility);
 
         flash('Responsabilidade removida com sucesso.')->success();
 
@@ -197,20 +203,19 @@ class ResponsibilityController extends AppBaseController
     }
 
     /**
-    	 * Update status of specified Responsibility from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('responsibilities.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->responsibilityRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified Responsibility from storage.
+     *
+     * @param int $id
+     * @throws BindingResolutionException
+     */
+    public function toggle($id){
+        if(!Defender::hasPermission('responsibilities.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->responsibilityRepository->findByID($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 }
