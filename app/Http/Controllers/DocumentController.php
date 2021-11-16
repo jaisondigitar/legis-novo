@@ -3,11 +3,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
 use App\Models\AdvicePublicationDocuments;
-use App\Models\AdviceSituation;
 use App\Models\AdviceSituationDocuments;
 use App\Models\Assemblyman;
 use App\Models\Commission;
@@ -24,26 +22,15 @@ use App\Models\Log;
 use App\Models\MeetingPauta;
 use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
-use App\Models\Party;
 use App\Models\ProtocolType;
-use App\Models\ResponsibilityAssemblyman;
 use App\Models\StatusProcessingDocument;
 use App\Models\UserAssemblyman;
-use App\Models\Voting;
 use App\Repositories\DocumentRepository;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Flash;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-use Milon\Barcode\DNS1D;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
 use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
-
 
 
 class DocumentController extends AppBaseController
@@ -144,7 +131,7 @@ class DocumentController extends AppBaseController
 
         }
 
-        $protocol_types = ProtocolType::lists('name', 'id');
+        $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();
 
         return view('documents.index')
@@ -167,7 +154,7 @@ class DocumentController extends AppBaseController
             return redirect("/");
         }
 
-        $documentType = DocumentType::where('parent_id',0)->lists('name', 'id')->prepend('Selecione...', 0);
+        $documentType = DocumentType::where('parent_id',0)->pluck('name', 'id')->prepend('Selecione...', 0);
 
         $novo = [];
         foreach($documentType as $key => $doc)

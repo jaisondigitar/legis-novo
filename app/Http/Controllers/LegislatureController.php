@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateLegislatureRequest;
 use App\Http\Requests\UpdateLegislatureRequest;
 use App\Models\Assemblyman;
 use App\Models\LegislatureAssemblyman;
 use App\Repositories\LegislatureRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Illuminate\Support\Facades\Input;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class LegislatureController extends AppBaseController
 {
@@ -30,7 +31,8 @@ class LegislatureController extends AppBaseController
      * Display a listing of the Legislature.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
     public function index(Request $request)
     {
@@ -39,8 +41,7 @@ class LegislatureController extends AppBaseController
             return redirect("/");
         }
 
-        $this->legislatureRepository->pushCriteria(new RequestCriteria($request));
-        $legislatures = $this->legislatureRepository->all();
+        $legislatures = $this->legislatureRepository->getAll(0);
 
         $assemblymen = Assemblyman::all()->load('legislature_assemblyman');
 
@@ -91,9 +92,10 @@ class LegislatureController extends AppBaseController
     /**
      * Display the specified Legislature.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function show($id)
     {
@@ -103,7 +105,7 @@ class LegislatureController extends AppBaseController
             return redirect("/");
         }
 
-        $legislature = $this->legislatureRepository->findWithoutFail($id);
+        $legislature = $this->legislatureRepository->findByID($id);
 
         if (empty($legislature)) {
             flash('Legislatura não encontrada')->error();
@@ -128,9 +130,10 @@ class LegislatureController extends AppBaseController
     /**
      * Show the form for editing the specified Legislature.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function edit($id)
     {
@@ -139,7 +142,7 @@ class LegislatureController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $legislature = $this->legislatureRepository->findWithoutFail($id);
+        $legislature = $this->legislatureRepository->findByID($id);
 
         if (empty($legislature)) {
             flash('Legislatura não encontrada')->error();
@@ -153,10 +156,11 @@ class LegislatureController extends AppBaseController
     /**
      * Update the specified Legislature in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateLegislatureRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateLegislatureRequest $request)
     {
@@ -166,7 +170,7 @@ class LegislatureController extends AppBaseController
             return redirect("/");
         }
 
-        $legislature = $this->legislatureRepository->findWithoutFail($id);
+        $legislature = $this->legislatureRepository->findByID($id);
 
         if (empty($legislature)) {
             flash('Legislatura não encontrada')->error();
@@ -174,7 +178,7 @@ class LegislatureController extends AppBaseController
             return redirect(route('legislatures.index'));
         }
 
-        $legislature = $this->legislatureRepository->update($request->all(), $id);
+        $this->legislatureRepository->update($legislature, $request->all());
 
         flash('Legislature updated successfully.')->success();
 
@@ -184,9 +188,10 @@ class LegislatureController extends AppBaseController
     /**
      * Remove the specified Legislature from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
     public function destroy($id)
     {
@@ -196,7 +201,7 @@ class LegislatureController extends AppBaseController
             return redirect("/");
         }
 
-        $legislature = $this->legislatureRepository->findWithoutFail($id);
+        $legislature = $this->legislatureRepository->findByID($id);
 
         if (empty($legislature)) {
             flash('Legislatura não encontrada')->error();
@@ -204,7 +209,7 @@ class LegislatureController extends AppBaseController
             return redirect(route('legislatures.index'));
         }
 
-        $this->legislatureRepository->delete($id);
+        $this->legislatureRepository->delete($legislature);
 
         flash('Legislatura removido com sucesso.')->success();
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateAssemblymanRequest;
 use App\Http\Requests\UpdateAssemblymanRequest;
 use App\Models\Assemblyman;
@@ -15,15 +14,16 @@ use App\Models\Responsibility;
 use App\Models\ResponsibilityAssemblyman;
 use App\Models\State;
 use App\Repositories\AssemblymanRepository;
-use Carbon\Carbon;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Illuminate\Support\Facades\Input;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use DB;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Intervention\Image\Facades\Image;
 
 class AssemblymanController extends AppBaseController
@@ -40,7 +40,8 @@ class AssemblymanController extends AppBaseController
      * Display a listing of the Assemblyman.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
     public function index(Request $request)
     {
@@ -49,9 +50,7 @@ class AssemblymanController extends AppBaseController
             return redirect("/");
         }
 
-        $this->assemblymanRepository->pushCriteria(new RequestCriteria($request));
-
-        $assemblymen = $this->assemblymanRepository->orderBy('short_name', 'ASC')->all()
+        $assemblymen = $this->assemblymanRepository->newQuery()->orderBy('short_name', 'ASC')->get()
             ->load('legislature_assemblyman')
             ->load('party_assemblyman')
             ->load('responsibility_assemblyman');
@@ -73,8 +72,8 @@ class AssemblymanController extends AppBaseController
                 ->first();
         }
 
-        $parties = Party::lists('name', 'id')->prepend('Selecione..','');
-        $responsibilities = Responsibility::lists('name', 'id')->prepend('Selecione..','');
+        $parties = Party::pluck('name', 'id')->prepend('Selecione..','');
+        $responsibilities = Responsibility::pluck('name', 'id')->prepend('Selecione..','');
 
         $legislatures = Legislature::all();
         $selectLegislature = ['' => 'Selecione...'];
@@ -93,7 +92,7 @@ class AssemblymanController extends AppBaseController
     /**
      * Show the form for creating a new Assemblyman.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -104,7 +103,7 @@ class AssemblymanController extends AppBaseController
         }
 
         $states = $this->statesList();
-        $cities = City::where('state', '=', $states[1])->lists('name', 'id');
+        $cities = City::where('state', '=', $states[1])->pluck('name', 'id');
 
         $legislatures = Legislature::all();
         $selectLegislature = ['' => 'Selecione...'];
@@ -113,9 +112,9 @@ class AssemblymanController extends AppBaseController
             $selectLegislature[$legislature->id] = $legislature->from .' - '. $legislature->to;
         }
 
-        $parties = Party::lists('prefix', 'id')->prepend('Selecione..','');
+        $parties = Party::pluck('prefix', 'id')->prepend('Selecione..','');
 
-        $responsibility = Responsibility::lists('name', 'id')->prepend('Selecione..','');
+        $responsibility = Responsibility::pluck('name', 'id')->prepend('Selecione..','');
 
         return view('assemblymen.create',
             compact('states','cities','selectLegislature','parties','responsibility')
@@ -127,7 +126,8 @@ class AssemblymanController extends AppBaseController
      *
      * @param CreateAssemblymanRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateAssemblymanRequest $request)
     {
@@ -139,6 +139,7 @@ class AssemblymanController extends AppBaseController
         $input = $request->all();
 
         $assemblyman = $this->assemblymanRepository->create($input);
+
         if(is_file($request->file('image'))){
             $path       = '/uploads/assemblyman/';
             $pathFull   = base_path()."/public".$path;
@@ -186,9 +187,10 @@ class AssemblymanController extends AppBaseController
     /**
      * Display the specified Assemblyman.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function show($id)
     {
@@ -198,7 +200,7 @@ class AssemblymanController extends AppBaseController
             return redirect("/");
         }
 
-        $assemblyman = $this->assemblymanRepository->findWithoutFail($id);
+        $assemblyman = $this->assemblymanRepository->findByID($id);
 
         if (empty($assemblyman)) {
             flash('Assemblyman not found')->error();
@@ -212,9 +214,10 @@ class AssemblymanController extends AppBaseController
     /**
      * Show the form for editing the specified Assemblyman.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function edit($id)
     {
@@ -224,7 +227,7 @@ class AssemblymanController extends AppBaseController
             return redirect("/");
         }
         $assemblyman = $this->assemblymanRepository
-            ->findWithoutFail($id)
+            ->findByID($id)
             ->load('legislature_assemblyman')
             ->load('party_assemblyman')
             ->load('responsibility_assemblyman');
@@ -243,7 +246,7 @@ class AssemblymanController extends AppBaseController
 
         $states = $this->statesList();
         $state = State::find($assemblyman->state_id);
-        $cities = City::where('state', '=', $state->uf)->lists('name', 'id');
+        $cities = City::where('state', '=', $state->uf)->pluck('name', 'id');
 
         $legislatures = Legislature::all();
         $selectLegislature = ['' => 'Selecione...'];
@@ -252,9 +255,9 @@ class AssemblymanController extends AppBaseController
             $selectLegislature[$legislature->id] = $legislature->from .' - '. $legislature->to;
         }
 
-        $parties = Party::lists('prefix', 'id')->prepend('Selecione..','');
+        $parties = Party::pluck('prefix', 'id')->prepend('Selecione..','');
 
-        $responsibility = Responsibility::lists('name', 'id')->prepend('Selecione..','');
+        $responsibility = Responsibility::pluck('name', 'id')->prepend('Selecione..','');
 
         return view('assemblymen.edit',
             compact('states','cities','selectLegislature','parties','responsibility'))
@@ -264,10 +267,11 @@ class AssemblymanController extends AppBaseController
     /**
      * Update the specified Assemblyman in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateAssemblymanRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateAssemblymanRequest $request)
     {
@@ -277,7 +281,7 @@ class AssemblymanController extends AppBaseController
             return redirect("/");
         }
 
-        $assemblyman = $this->assemblymanRepository->findWithoutFail($id);
+        $assemblyman = $this->assemblymanRepository->findByID($id);
 
         if (empty($assemblyman)) {
             flash('Assemblyman not found')->error();
@@ -285,10 +289,12 @@ class AssemblymanController extends AppBaseController
             return redirect(route('assemblymen.index'));
         }
 
-        $assemblyman = $this->assemblymanRepository->update($request->all(), $id);
-        $assemblyman = $this->assemblymanRepository->findWithoutFail($id);
+        $this->assemblymanRepository->update($assemblyman, $request->all());
 
-        $params = Input::all();
+        $assemblyman = $this->assemblymanRepository->findByID($id);
+
+        $params = \Illuminate\Support\Facades\Request::all();
+
         if(is_file($request->file('image'))){
             $path       = '/uploads/assemblyman/';
             $pathFull   = base_path()."/public".$path;
@@ -334,9 +340,10 @@ class AssemblymanController extends AppBaseController
     /**
      * Remove the specified Assemblyman from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
     public function destroy($id)
     {
@@ -346,7 +353,7 @@ class AssemblymanController extends AppBaseController
             return redirect("/");
         }
 
-        $assemblyman = $this->assemblymanRepository->findWithoutFail($id);
+        $assemblyman = $this->assemblymanRepository->findByID($id);
 
         if (empty($assemblyman)) {
             flash('Assemblyman not found')->error();
@@ -354,7 +361,7 @@ class AssemblymanController extends AppBaseController
             return redirect(route('assemblymen.index'));
         }
 
-        $this->assemblymanRepository->delete($id);
+        $this->assemblymanRepository->delete($assemblyman);
 
         flash('Assemblyman deleted successfully.')->success();
 
@@ -364,16 +371,15 @@ class AssemblymanController extends AppBaseController
     /**
      * Update status of specified Assemblyman from storage.
      *
-     * @param  int $id
-     *
-     * @return Json
+     * @param int $id
+     * @throws BindingResolutionException
      */
     public function toggle($id){
         if(!Defender::hasPermission('assemblymen.edit'))
         {
             return json_encode(false);
         }
-        $register = $this->assemblymanRepository->findWithoutFail($id);
+        $register = $this->assemblymanRepository->findByID($id);
         $register->active = $register->active>0 ? 0 : 1;
         $register->save();
         return json_encode(true);
@@ -415,7 +421,7 @@ class AssemblymanController extends AppBaseController
     }
 
     public function addLegislatures(){
-        $params = Input::all();
+        $params = \Illuminate\Support\Facades\Request::all();
         $legislature_assemblyman = new LegislatureAssemblyman();
         $legislature_assemblyman->legislature_id = $params['legislature_id'];
         $legislature_assemblyman->assemblyman_id = $params['assemblyman_id'];
@@ -430,7 +436,7 @@ class AssemblymanController extends AppBaseController
     }
 
     public function addParties(){
-        $params = Input::all();
+        $params = \Illuminate\Support\Facades\Request::all();
         $party_assemblyman = new PartiesAssemblyman();
         $party_assemblyman->party_id = $params['party_id'];
         $party_assemblyman->date = $params['party_date'];
@@ -446,7 +452,7 @@ class AssemblymanController extends AppBaseController
     }
 
     public function addResponsibilities(){
-        $params = Input::all();
+        $params = \Illuminate\Support\Facades\Request::all();
         $responsibility_assemblyman = new ResponsibilityAssemblyman();
         $responsibility_assemblyman->responsibility_id = $params['responsibility_id'];
         $responsibility_assemblyman->date = $params['responsibility_date'];
@@ -463,21 +469,21 @@ class AssemblymanController extends AppBaseController
 
     public function removeParties($party_id, $assemblyman_id){
 
-        $party_assemblyman = DB::delete('delete from parties_assemblymen where assemblyman_id = '. $assemblyman_id .' AND party_id = '. $party_id);
+        DB::delete('delete from parties_assemblymen where assemblyman_id = '. $assemblyman_id .' AND party_id = '. $party_id);
 
         return ['data' => 'success'];
     }
 
     public function removeResponsibilities($responsibility_id, $assemblyman_id){
 
-        $responsibility_assemblyman = DB::delete('delete from responsibility_assemblymen where assemblyman_id = '. $assemblyman_id .' AND responsibility_id = '. $responsibility_id);
+        DB::delete('delete from responsibility_assemblymen where assemblyman_id = '. $assemblyman_id .' AND responsibility_id = '. $responsibility_id);
 
         return ['data' => 'success'];
     }
 
     public function removeLegislatures($legislature_id, $assemblyman_id){
 
-        $legislature_assemblyman = DB::delete('delete from legislature_assemblymen where assemblyman_id = '. $assemblyman_id .' AND legislature_id = '. $legislature_id);
+        DB::delete('delete from legislature_assemblymen where assemblyman_id = '. $assemblyman_id .' AND legislature_id = '. $legislature_id);
 
         return ['data' => 'success'];
     }
