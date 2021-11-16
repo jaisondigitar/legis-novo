@@ -36,8 +36,7 @@ class SessionTypeController extends AppBaseController
             return redirect("/");
         }
 
-        $this->sessionTypeRepository->pushCriteria(new RequestCriteria($request));
-        $sessionTypes = $this->sessionTypeRepository->all();
+        $sessionTypes = $this->sessionTypeRepository->getAll(0);
 
         return view('sessionTypes.index')
             ->with('sessionTypes', $sessionTypes);

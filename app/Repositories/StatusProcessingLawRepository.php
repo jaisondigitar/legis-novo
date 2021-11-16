@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\StatusProcessingLaw;
 
-class StatusProcessingLawRepository
+class StatusProcessingLawRepository extends Repository
 {
     /**
      * @var array
@@ -13,11 +13,5 @@ class StatusProcessingLawRepository
         
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return StatusProcessingLaw::class;
-    }
+    protected $modelClass = StatusProcessingLaw::class;
 }

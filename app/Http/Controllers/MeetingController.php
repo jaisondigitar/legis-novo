@@ -62,8 +62,7 @@ class MeetingController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $assemblyman_list = Assemblyman::whereIn('id', UserAssemblyman::where('users_id', Auth::user()->id)->lists('assemblyman_id')->toArray())->lists('short_name', 'id')->prepend('Selecione', 0);
-        $this->meetingRepository->pushCriteria(new RequestCriteria($request));
+        $assemblyman_list = Assemblyman::whereIn('id', UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')->toArray())->pluck('short_name', 'id')->prepend('Selecione', 0);
         $meetings = Meeting::orderBy('date_start','desc')->paginate(20);
 
         return view('meetings.index', compact('assemblyman_list'))
@@ -83,7 +82,7 @@ class MeetingController extends AppBaseController
             return redirect("/");
         }
 
-        $version_pautas = VersionPauta::lists('name', 'id');
+        $version_pautas = VersionPauta::pluck('name', 'id');
 
         return view('meetings.create', compact('version_pautas'));
     }
@@ -161,7 +160,7 @@ class MeetingController extends AppBaseController
             return redirect(route('meetings.index'));
         }
 
-        $version_pautas = VersionPauta::lists('name', 'id');
+        $version_pautas = VersionPauta::pluck('name', 'id');
 
         return view('meetings.edit', compact('version_pautas'))->with('meeting', $meeting);
     }
@@ -934,7 +933,7 @@ class MeetingController extends AppBaseController
 
         $meeting = Meeting::find($id);
         $assemblyman = Assemblyman::where('active', 1)->orderBy('short_name')->get();
-        $ids = $meeting->assemblyman->lists('id')->toArray();
+        $ids = $meeting->assemblyman->pluck('id')->toArray();
         $presence  = Assemblyman::whereNotIn('id', $ids)->where('active', 1)->orderBy('short_name')->get();
 
         require_once(public_path() . '/tcpdf/mypdf.php');
@@ -1035,11 +1034,11 @@ class MeetingController extends AppBaseController
     {
         $meeting = Meeting::find($meeting);
 
-        $struct = Structurepautum::where('version_pauta_id', $meeting->version_pauta_id)->lists('id')->toArray();
+        $struct = Structurepautum::where('version_pauta_id', $meeting->version_pauta_id)->pluck('id')->toArray();
 
-        $doc_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $struct)->whereNotNull('document_id')->lists('document_id')->toArray();
-        $law_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $struct)->whereNotNull('law_id')->lists('law_id')->toArray();
-        $advice_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $struct)->whereNotNull('advice_id')->lists('advice_id')->toArray();
+        $doc_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $struct)->whereNotNull('document_id')->pluck('document_id')->toArray();
+        $law_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $struct)->whereNotNull('law_id')->pluck('law_id')->toArray();
+        $advice_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $struct)->whereNotNull('advice_id')->pluck('advice_id')->toArray();
 
         $docs = Document::whereIn('id', $doc_ids)->get();
         $laws = LawsProject::whereIn('id', $law_ids)->get();
@@ -1050,7 +1049,7 @@ class MeetingController extends AppBaseController
         $ata_voting = Parameters::where('slug', 'realiza-votacao-de-ata')->first()->value;
         $advice_voting = Parameters::where('slug', 'realiza-votacao-de-parecer')->first()->value;
 
-        $type_voting = TypeVoting::lists('name', 'id')->prepend('Selecione', 0);
+        $type_voting = TypeVoting::pluck('name', 'id')->prepend('Selecione', 0);
         $last_voting = Meeting::where('id', '<', $meeting->id)->get()->last();
         if($meeting->voting()->count() > 0){
             foreach ($meeting->voting()->where('meeting_id', $meeting->id)->get() as $voting){
@@ -1077,7 +1076,7 @@ class MeetingController extends AppBaseController
         $ata_voting = Parameters::where('slug', 'realiza-votacao-de-ata')->first()->value;
         $advice_voting = Parameters::where('slug', 'realiza-votacao-de-parecer')->first()->value;
 
-        $type_voting = TypeVoting::lists('name', 'id')->prepend('Selecione', 0);
+        $type_voting = TypeVoting::pluck('name', 'id')->prepend('Selecione', 0);
 
         if(Voting::whereNotNull('open_at')->whereNull('closed_at')->first())
         {
@@ -1341,8 +1340,8 @@ class MeetingController extends AppBaseController
             return redirect(url('/admin'));
         }
 
-        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->lists('assemblyman_id')->toArray();
-        $assemblyman_list = Assemblyman::whereIn('id', $ids)->lists('short_name', 'id')->prepend('Selecione', 0);
+        $ids = UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')->toArray();
+        $assemblyman_list = Assemblyman::whereIn('id', $ids)->pluck('short_name', 'id')->prepend('Selecione', 0);
 
         if($voting->get()->count() > 0) {
             $meeting = Meeting::find($voting->meeting_id);

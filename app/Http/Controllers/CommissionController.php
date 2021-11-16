@@ -39,8 +39,7 @@ class CommissionController extends AppBaseController
             return redirect("/");
         }
 
-        $this->commissionRepository->pushCriteria(new RequestCriteria($request));
-        $commissions = $this->commissionRepository->all();
+        $commissions = $this->commissionRepository->getAll(0);
 
         return view('commissions.index')
             ->with('commissions', $commissions);

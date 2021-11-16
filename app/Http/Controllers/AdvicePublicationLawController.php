@@ -36,8 +36,8 @@ class AdvicePublicationLawController extends AppBaseController
             return redirect("/");
         }
 
-        $this->advicePublicationLawRepository->pushCriteria(new RequestCriteria($request));
-        $advicePublicationLaws = $this->advicePublicationLawRepository->all();
+        // $this->advicePublicationLawRepository->pushCriteria(new RequestCriteria($request));
+        $advicePublicationLaws = $this->advicePublicationLawRepository->getAll(0);
 
         return view('advicePublicationLaws.index')
             ->with('advicePublicationLaws', $advicePublicationLaws);

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Commission;
 
-class CommissionRepository
+class CommissionRepository extends Repository
 {
     /**
      * @var array
@@ -15,11 +15,5 @@ class CommissionRepository
         'name'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Commission::class;
-    }
+    protected $modelClass = Commission::class;
 }

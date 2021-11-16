@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\OfficeCommission;
 
-class OfficeCommissionRepository
+class OfficeCommissionRepository extends Repository
 {
     /**
      * @var array
@@ -14,11 +14,5 @@ class OfficeCommissionRepository
         'slug'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return OfficeCommission::class;
-    }
+    protected $modelClass = OfficeCommission::class;
 }

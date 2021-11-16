@@ -11,8 +11,7 @@
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('owner_id', 'Tipo:') !!}
-                {!! Form::select('type', App\Models\LawsType::where('is_active', true)->pluck
-                ('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                {!! Form::select('type', App\Models\LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Número:') !!}
