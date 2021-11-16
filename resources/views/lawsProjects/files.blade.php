@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="the-box rounded">
-    @extends('common.errors')
+    @include('common.errors')
 <h4 class="text-uppercase">
     Anexos - @if(!$lawsProject->law_type) {{ $lawsProject->law_type_id }} @else {!! mb_strtoupper($lawsProject->law_type->name, 'UTF-8') !!} @endif
     <span id="tdLawProjectNumber{{$lawsProject->id}}">
