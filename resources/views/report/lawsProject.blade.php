@@ -33,7 +33,7 @@
 
             <div class="form-group col-md-2">
                 {!! Form::label('type', 'Tipo:') !!}
-                {!! Form::select('type', App\Models\LawsType::lists('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                {!! Form::select('type', App\Models\LawsType::pluck('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
             </div>
             <div class="form-group col-md-3">
                 {!! Form::label('owner_id', 'Responsável') !!}

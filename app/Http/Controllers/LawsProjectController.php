@@ -137,7 +137,7 @@ class LawsProjectController extends AppBaseController
 
         }
 
-        $law_places       = LawsPlace::lists('name', 'id')->prepend('Selecione...', '');
+        $law_places       = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
         $assemblymensList = $this->getAssemblymenList();
 
         $references         = LawsProject::all();
@@ -171,13 +171,13 @@ class LawsProjectController extends AppBaseController
 
         $assemblymensList = $this->getAssemblymenList();
 
-        $law_types              = LawsType::where('is_active', true)->lists('name', 'id')->prepend('Selecione...', '');
-        $situation              = LawSituation::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_situation_law   = AdviceSituationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_publication_law = AdvicePublicationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::lists('name', 'id')->prepend('Selecione...', '');
+        $law_types              = LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '');
+        $situation              = LawSituation::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
 
-        $comission = Commission::lists('name', 'id')->prepend('Selecione', 0);
+        $comission = Commission::pluck('name', 'id')->prepend('Selecione', 0);
 
         $references         = LawsProject::all();
         $references_project = [0 => 'Selecione'];
@@ -261,12 +261,12 @@ class LawsProjectController extends AppBaseController
             return redirect(route('lawsProjects.index'));
         }
 
-        $comission  = Commission::active()->lists('name', 'id');
+        $comission  = Commission::active()->pluck('name', 'id');
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-projetos')->first()->value;
 
-        $advice_situation_law   = AdviceSituationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_publication_law = AdvicePublicationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::lists('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
 
         return view('lawsProjects.advices', compact('comission', 'tramitacao', 'advice_situation_law', 'advice_publication_law', 'status_processing_law'))->with(compact('lawsProject'));
 
@@ -714,16 +714,16 @@ class LawsProjectController extends AppBaseController
 
         $assemblymensList = $this->getAssemblymenList();
 
-        $lawsAssemblyman = LawsProjectAssemblyman::where('law_project_id', $id)->lists('assemblyman_id');
+        $lawsAssemblyman = LawsProjectAssemblyman::where('law_project_id', $id)->pluck('assemblyman_id');
 
-        $law_types              = LawsType::where('is_active', true)->lists('name', 'id')->prepend('Selecione...', '');
-        $law_places             = LawsPlace::lists('name', 'id')->prepend('Selecione...', '');
-        $law_structure          = LawsStructure::lists('name', 'id')->prepend('Selecione...', '');
-        $situation              = LawSituation::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_situation_law   = AdviceSituationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_publication_law = AdvicePublicationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $comission              = Commission::lists('name', 'id')->prepend('Selecione', 0);
+        $law_types              = LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '');
+        $law_places             = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
+        $law_structure          = LawsStructure::pluck('name', 'id')->prepend('Selecione...', '');
+        $situation              = LawSituation::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $comission              = Commission::pluck('name', 'id')->prepend('Selecione', 0);
 
         $references         = LawsProject::all();
         $references_project = [0 => 'Selecione'];
@@ -1065,7 +1065,7 @@ class LawsProjectController extends AppBaseController
     public function lawsProjectStructure($id)
     {
         $law_project          = LawsProject::find($id);
-        $laws_structure_types = LawsStructure::lists('name', 'id');
+        $laws_structure_types = LawsStructure::pluck('name', 'id');
         $structure_laws       = StructureLaws::where('law_id', $id)->isRoot()->get();
 
         if (count($structure_laws) == 0) {

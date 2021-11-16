@@ -36,8 +36,7 @@ class LawsPlaceController extends AppBaseController
             return redirect("/");
         }
 
-        $this->lawsPlaceRepository->pushCriteria(new RequestCriteria($request));
-        $lawsPlaces = $this->lawsPlaceRepository->all();
+        $lawsPlaces = $this->lawsPlaceRepository->getAll(0);
 
         return view('lawsPlaces.index')
             ->with('lawsPlaces', $lawsPlaces);
