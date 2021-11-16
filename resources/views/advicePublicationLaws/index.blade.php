@@ -1,6 +1,6 @@
 @extends('layouts.blit')
 @section('Breadcrumbs')
-    {!! Breadcrumbs::render('home') !!}
+    {!! Breadcrumbs::render('advicePublicationLaws.list') !!}
 @endsection
 @section('content')
     <div class="the-box rounded">
@@ -20,9 +20,9 @@
             <div class="col-md-12">
                 @include('flash::message')
                 @include('advicePublicationLaws.table')
-                
+
             </div>
         </div>
-        
+
     </div>
 @endsection

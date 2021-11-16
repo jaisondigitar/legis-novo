@@ -16,14 +16,14 @@
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Número:') !!}
-                {!! Form::text('number', $form->input('number'), ['class' => 'form-control']) !!}
+                {!! Form::input('number', 'number', $form->input('number'), ['class' => 'form-control', 'min' => 0]) !!}
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Ano:') !!}
-                {!! Form::text('year', $form->input('year'), ['class' => 'form-control']) !!}
+                {!! Form::input('number', 'year', $form->input('year'), ['class' => 'form-control', 'min' => 1000, 'max' => 9999]) !!}
             </div>
             <div class="form-group col-md-3">
-                {!! Form::label('owner_id', 'Responsável') !!}
+                {!! Form::label('owner_id', 'Responsável:') !!}
                 {!! Form::select('owner', $assemblymensList ,$form->input('owner'), ['class' => 'form-control']) !!}
             </div>
             <div class="form-group col-md-3">

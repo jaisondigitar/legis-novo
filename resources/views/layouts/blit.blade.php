@@ -116,6 +116,11 @@
             -moz-border-radius: 6px 0 6px 6px;
             border-radius: 6px 0 6px 6px;
         }
+        .required:before {
+            content: '*';
+            color: red;
+            padding-right: 3px;
+        }
     </style>
     <script type="application/javascript">
 
