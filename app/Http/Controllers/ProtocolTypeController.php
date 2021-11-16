@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateProtocolTypeRequest;
 use App\Http\Requests\UpdateProtocolTypeRequest;
 use App\Repositories\ProtocolTypeRepository;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
 
 class ProtocolTypeController extends AppBaseController
@@ -36,8 +31,8 @@ class ProtocolTypeController extends AppBaseController
             return redirect("/");
         }
 
-        $this->protocolTypeRepository->pushCriteria(new RequestCriteria($request));
-        $protocolTypes = $this->protocolTypeRepository->all();
+        // $this->protocolTypeRepository->pushCriteria(new RequestCriteria($request));
+        $protocolTypes = $this->protocolTypeRepository->getAll(0);
 
         return view('protocolTypes.index')
             ->with('protocolTypes', $protocolTypes);

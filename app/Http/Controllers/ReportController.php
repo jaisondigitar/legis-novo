@@ -136,7 +136,7 @@ class ReportController extends AppBaseController {
         }
 
         $assemblymensList = $this->getAssemblymenList();
-        $protocol_types = ProtocolType::lists('name', 'id');
+        $protocol_types = ProtocolType::pluck('name', 'id');
 
         $doc = $documents;
 

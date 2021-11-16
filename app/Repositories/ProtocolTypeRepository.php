@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ProtocolType;
 
-class ProtocolTypeRepository
+class ProtocolTypeRepository extends Repository
 {
     /**
      * @var array
@@ -14,11 +14,5 @@ class ProtocolTypeRepository
         'slug'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return ProtocolType::class;
-    }
+    protected $modelClass = ProtocolType::class;
 }
