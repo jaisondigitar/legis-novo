@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\LawsType;
 
-class LawsTypeRepository
+class LawsTypeRepository extends Repository
 {
     /**
      * @var array
@@ -13,11 +13,5 @@ class LawsTypeRepository
         'name'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return LawsType::class;
-    }
+    protected $modelClass = LawsType::class;
 }

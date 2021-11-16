@@ -36,8 +36,7 @@ class LawsTagController extends AppBaseController
             return redirect("/");
         }
 
-        $this->lawsTagRepository->pushCriteria(new RequestCriteria($request));
-        $lawsTags = $this->lawsTagRepository->all();
+        $lawsTags = $this->lawsTagRepository->getAll(0);
 
         return view('lawsTags.index')
             ->with('lawsTags', $lawsTags);

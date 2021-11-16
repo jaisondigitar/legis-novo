@@ -49,7 +49,7 @@ class LawSituation extends Model
     ];
 
     /**
-     * The attributes that should be casted to native types.
+     * The attributes that should be casted to native tProtocolTypeypes.
      *
      * @var array
      */

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\LawsTag;
 
-class LawsTagRepository
+class LawsTagRepository extends Repository
 {
     /**
      * @var array
@@ -13,11 +13,5 @@ class LawsTagRepository
         'name'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return LawsTag::class;
-    }
+    protected $modelClass = LawsTag::class;
 }

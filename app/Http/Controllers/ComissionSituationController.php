@@ -36,8 +36,7 @@ class ComissionSituationController extends AppBaseController
             return redirect("/");
         }
 
-        $this->comissionSituationRepository->pushCriteria(new RequestCriteria($request));
-        $comissionSituations = $this->comissionSituationRepository->all();
+        $comissionSituations = $this->comissionSituationRepository->getAll(0);
 
         return view('comissionSituations.index')
             ->with('comissionSituations', $comissionSituations);

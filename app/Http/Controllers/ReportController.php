@@ -398,7 +398,7 @@ class ReportController extends AppBaseController {
 
         }
 
-        $law_places = LawsPlace::lists('name', 'id')->prepend('Selecione...', '');
+        $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
         $assemblymensList = $this->getAssemblymenList();
 
         $references = LawsProject::all();
@@ -486,7 +486,7 @@ class ReportController extends AppBaseController {
         }
 
         $assemblymensList = $this->getAssemblymenList();
-        $protocol_types = ProtocolType::lists('name', 'id');
+        $protocol_types = ProtocolType::pluck('name', 'id');
 
         return $documents;
 
@@ -737,7 +737,7 @@ $content  .="</table>";
 
         }
 
-        $law_places = LawsPlace::lists('name', 'id')->prepend('Selecione...', '');
+        $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
         $assemblymensList = $this->getAssemblymenList();
 
         $references = LawsProject::all();

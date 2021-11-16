@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\AdvicePublicationLaw;
 
-class AdvicePublicationLawRepository
+class AdvicePublicationLawRepository extends Repository
 {
     /**
      * @var array
@@ -13,11 +13,5 @@ class AdvicePublicationLawRepository
         
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return AdvicePublicationLaw::class;
-    }
+    protected $modelClass = AdvicePublicationLaw::class;
 }

@@ -36,8 +36,8 @@ class StatusProcessingLawController extends AppBaseController
             return redirect("/");
         }
 
-        $this->statusProcessingLawRepository->pushCriteria(new RequestCriteria($request));
-        $statusProcessingLaws = $this->statusProcessingLawRepository->all();
+        // $this->statusProcessingLawRepository->pushCriteria(new RequestCriteria($request));
+        $statusProcessingLaws = $this->statusProcessingLawRepository->getAll(0);
 
         return view('statusProcessingLaws.index')
             ->with('statusProcessingLaws', $statusProcessingLaws);

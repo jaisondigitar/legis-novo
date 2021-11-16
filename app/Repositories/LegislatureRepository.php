@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Legislature;
 
-class LegislatureRepository
+class LegislatureRepository extends Repository
 {
     /**
      * @var array
@@ -15,11 +15,5 @@ class LegislatureRepository
         'to'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Legislature::class;
-    }
+    protected $modelClass = Legislature::class;
 }

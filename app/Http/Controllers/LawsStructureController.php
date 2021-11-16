@@ -36,8 +36,7 @@ class LawsStructureController extends AppBaseController
             return redirect("/");
         }
 
-        $this->lawsStructureRepository->pushCriteria(new RequestCriteria($request));
-        $lawsStructures = $this->lawsStructureRepository->all();
+        $lawsStructures = $this->lawsStructureRepository->getAll(0);
 
         return view('lawsStructures.index')
             ->with('lawsStructures', $lawsStructures);

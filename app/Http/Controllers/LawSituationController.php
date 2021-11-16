@@ -36,8 +36,8 @@ class LawSituationController extends AppBaseController
             return redirect("/");
         }
 
-        $this->lawSituationRepository->pushCriteria(new RequestCriteria($request));
-        $lawSituations = $this->lawSituationRepository->all();
+        // $this->lawSituationRepository->pushCriteria(new RequestCriteria($request));
+        $lawSituations = $this->lawSituationRepository->getAll(0);
 
         return view('lawSituations.index')
             ->with('lawSituations', $lawSituations);

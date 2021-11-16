@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Assemblyman;
 
-class AssemblymanRepository
+class AssemblymanRepository extends Repository
 {
     /**
      * @var array
@@ -28,11 +28,5 @@ class AssemblymanRepository
         'zipcode'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Assemblyman::class;
-    }
+    protected $modelClass = Assemblyman::class;
 }

@@ -36,8 +36,8 @@ class LawsTypeController extends AppBaseController
             return redirect("/");
         }
 
-        $this->lawsTypeRepository->pushCriteria(new RequestCriteria($request));
-        $lawsTypes = $this->lawsTypeRepository->all();
+        // $this->lawsTypeRepository->pushCriteria(new RequestCriteria($request));
+        $lawsTypes = $this->lawsTypeRepository->getAll(0);
 
         return view('lawsTypes.index')
             ->with('lawsTypes', $lawsTypes);

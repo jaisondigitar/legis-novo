@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="the-box rounded">
-    @include('core-templates::common.errors')
+    @extends('common.errors')
     <div class="row">
         <div class="col-md-12">
             {!! Form::model($assemblyman, ['route' => ['assemblymen.update', $assemblyman->id], 'method' => 'patch','files' => true]) !!}
