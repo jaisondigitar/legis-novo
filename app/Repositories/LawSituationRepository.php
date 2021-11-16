@@ -4,20 +4,7 @@ namespace App\Repositories;
 
 use App\Models\LawSituation;
 
-class LawSituationRepository
+class LawSituationRepository extends Repository
 {
-    /**
-     * @var array
-     */
-    protected $fieldSearchable = [
-        'name'
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return LawSituation::class;
-    }
+   protected $modelClass = LawSituation::class;
 }

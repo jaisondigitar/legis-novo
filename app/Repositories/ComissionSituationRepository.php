@@ -4,20 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ComissionSituation;
 
-class ComissionSituationRepository
+class ComissionSituationRepository extends Repository
 {
-    /**
-     * @var array
-     */
-    protected $fieldSearchable = [
-        'name'
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return ComissionSituation::class;
-    }
+    protected $modelClass = ComissionSituation::class;
 }

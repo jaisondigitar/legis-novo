@@ -13,7 +13,7 @@
     {!! Form::select('reference_id', $references_project, null, ['class' => 'form-control chosen']) !!}
 </div>
 
-<div class="form-group col-sm-2 hidden">
+<div class="form-group col-sm-2">
     {!! Form::label('situation_id', 'Situação Atual:') !!}
     {!! Form::select('situation_id', $situation, null, ['class' => 'form-control']) !!}
 </div>
