@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\SessionType;
 
-class SessionTypeRepository
+class SessionTypeRepository extends Repository
 {
     /**
      * @var array
@@ -13,11 +13,5 @@ class SessionTypeRepository
         'name'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return SessionType::class;
-    }
+    protected $modelClass = SessionType::class;
 }

@@ -36,8 +36,7 @@ class OfficeCommissionController extends AppBaseController
             return redirect("/");
         }
 
-        $this->officeCommissionRepository->pushCriteria(new RequestCriteria($request));
-        $officeCommissions = $this->officeCommissionRepository->all();
+        $officeCommissions = $this->officeCommissionRepository->getAll(0);
 
         return view('officeCommissions.index')
             ->with('officeCommissions', $officeCommissions);
