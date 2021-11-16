@@ -97,7 +97,7 @@ class DocumentController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('documents.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -163,7 +163,7 @@ class DocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('documents.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -209,7 +209,7 @@ class DocumentController extends AppBaseController
     {
        if(!Defender::hasPermission('documents.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $request['users_id'] = Auth::user()->id;
@@ -232,7 +232,7 @@ class DocumentController extends AppBaseController
         $doc_number->date = $document->updated_at;
         $doc_number->save();
 
-        Flash::success('Documento salvo com sucesso.');
+        flash('Documento salvo com sucesso.')->success();
 
         return redirect(route('documents.index'));
     }
@@ -279,7 +279,7 @@ class DocumentController extends AppBaseController
 
 //        if(!Defender::hasPermission('documents.show'))
 //        {
-//            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+//            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
 //            return redirect("/");
 //        }
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
@@ -377,7 +377,7 @@ class DocumentController extends AppBaseController
         }
 
         if (empty($document)) {
-            Flash::error('Document not found');
+            flash('Document not found')->error();
 
             return redirect(route('documents.index'));
         }
@@ -616,7 +616,7 @@ class DocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('documents.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $document = $this->documentRepository->findWithoutFail($id);
@@ -624,7 +624,7 @@ class DocumentController extends AppBaseController
 
 
         if (empty($document)) {
-            Flash::error('Document not found');
+            flash('Document not found')->error();
 
             return redirect(route('documents.index'));
         }
@@ -677,14 +677,14 @@ class DocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('documents.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $document = $this->documentRepository->findWithoutFail($id);
 
         if (empty($document)) {
-            Flash::error('Document not found');
+            flash('Document not found')->error();
 
             return redirect(route('documents.index'));
         }
@@ -709,7 +709,7 @@ class DocumentController extends AppBaseController
         $doc_number->date = $document->updated_at;
         $doc_number->save();
 
-        Flash::success('Documento editado com sucesso');
+        flash('Documento editado com sucesso')->success();
 
         return redirect(route('documents.index'));
     }
@@ -725,27 +725,27 @@ class DocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('documents.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $document = $this->documentRepository->findWithoutFail($id);
 
         if (empty($document)) {
-            Flash::error('Document not found');
+            flash('Document not found')->error();
 
             return redirect(route('documents.index'));
         }
 
         if(MeetingPauta::where('document_id', $document->id)->get()->count() > 0  ){
-            Flash::error('Registro em uso, não pode ser removido!');
+            flash('Registro em uso, não pode ser removido!')->error();
 
             return redirect(route('documents.index'));
         }
 
         $this->documentRepository->delete($id);
 
-        Flash::success('Documento deletado com sucesso.');
+        flash('Documento deletado com sucesso.')->success();
 
         return redirect(route('documents.index'));
     }
@@ -785,7 +785,7 @@ class DocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('documents.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/documents");
         }
 
@@ -801,7 +801,7 @@ class DocumentController extends AppBaseController
     {
         if(!Defender::hasPermission('documents.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/documents");
         }
 
@@ -1044,7 +1044,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->findWithoutFail($documentId);
 
         if (empty($document)) {
-            Flash::error('Document not found');
+            flash('Document not found')->error();
 
             return redirect(route('documents.index'));
         }
@@ -1066,7 +1066,7 @@ class DocumentController extends AppBaseController
         $documents = Document::all();
 
         if (empty($documents)) {
-            Flash::error('Document not found');
+            flash('Document not found')->error();
             return redirect(route('documents.index'));
         }
 
@@ -1080,7 +1080,7 @@ class DocumentController extends AppBaseController
 
         DocumentNumber::insert($data);
 
-        Flash::success('Documentos migrados com sucesso!');
+        flash('Documentos migrados com sucesso!')->success();
         return redirect(route('documents.index'));
     }
 

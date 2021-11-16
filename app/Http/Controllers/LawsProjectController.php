@@ -83,7 +83,7 @@ class LawsProjectController extends AppBaseController
     public function index(Request $request)
     {
         if (!Defender::hasPermission('lawsProjects.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -165,7 +165,7 @@ class LawsProjectController extends AppBaseController
     public function create()
     {
         if (!Defender::hasPermission('lawsProjects.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -202,7 +202,7 @@ class LawsProjectController extends AppBaseController
     public function store(CreateLawsProjectRequest $request)
     {
         if (!Defender::hasPermission('lawsProjects.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -244,7 +244,7 @@ class LawsProjectController extends AppBaseController
         $law_number->date            = $lawsProject->updated_at;
         $law_number->save();
 
-        Flash::success('LawsProject saved successfully.');
+        flash('Projeto de Leis salvo com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
 
@@ -256,7 +256,7 @@ class LawsProjectController extends AppBaseController
         $lawsProject = $this->lawsProjectRepository->findWithoutFail($lawProjectId);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -302,14 +302,14 @@ class LawsProjectController extends AppBaseController
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 
 //        if (!Defender::hasPermission('lawsProjects.show')) {
-        //            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+        //            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
         //            return redirect("/");
         //        }
 
         $lawsProject = LawsProject::find($id);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -701,13 +701,13 @@ class LawsProjectController extends AppBaseController
     public function edit($id)
     {
         if (!Defender::hasPermission('lawsProjects.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -748,14 +748,14 @@ class LawsProjectController extends AppBaseController
     public function update($id, UpdateLawsProjectRequest $request)
     {
         if (!Defender::hasPermission('lawsProjects.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -801,7 +801,7 @@ class LawsProjectController extends AppBaseController
         $law_number->date            = $lawsProject->updated_at;
         $law_number->save();
 
-        Flash::success('LawsProject updated successfully.');
+        flash('Projeto de Leis atualizado com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
     }
@@ -816,27 +816,27 @@ class LawsProjectController extends AppBaseController
     public function destroy($id)
     {
         if (!Defender::hasPermission('lawsProjects.delete')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
 
         if (MeetingPauta::where('law_id', $lawsProject->id)->get()->count() > 0) {
-            Flash::error('Registro em uso, não pode ser removido!');
+            flash('Registro em uso, não pode ser removido!')->error();
 
             return redirect(route('lawsProjects.index'));
         }
 
         $this->lawsProjectRepository->delete($id);
 
-        Flash::success('LawsProject deleted successfully.');
+        flash('Projeto de Leis removido com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
     }
@@ -1222,7 +1222,7 @@ class LawsProjectController extends AppBaseController
         $laws = LawsProject::all();
 
         if (empty($laws)) {
-            Flash::error('Law Project not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -1238,7 +1238,7 @@ class LawsProjectController extends AppBaseController
 
         LawProjectsNumber::insert($data);
 
-        Flash::success('Leis migradas com sucesso!');
+        flash('Leis migradas com sucesso!')->success();
         return redirect(route('lawsProjects.index'));
     }
 
@@ -1258,7 +1258,7 @@ class LawsProjectController extends AppBaseController
     public function attachamentUpload($id, Request $request)
     {
         if (!Defender::hasPermission('documents.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/documents");
         }
 
@@ -1317,7 +1317,7 @@ class LawsProjectController extends AppBaseController
                 $lawsProject->save();
             }
         }
-        Flash::success('Arquivos salvos com sucesso!');
+        flash('Arquivos salvos com sucesso!')->success();
         return redirect(route('lawsProjects.index'));
     }
 }

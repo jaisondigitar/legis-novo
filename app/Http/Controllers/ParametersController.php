@@ -37,7 +37,7 @@ class ParametersController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('parameters.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -56,7 +56,7 @@ class ParametersController extends AppBaseController
     {
         if(!Defender::hasPermission('parameters.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -75,7 +75,7 @@ class ParametersController extends AppBaseController
     {
        if(!Defender::hasPermission('parameters.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
@@ -88,7 +88,7 @@ class ParametersController extends AppBaseController
 
         $parameters = $this->parametersRepository->create($input);
 
-        Flash::success('Parâmetro salvo com sucesso.');
+        flash('Parâmetro salvo com sucesso.')->success();
 
         return redirect(route('parameters.index'));
     }
@@ -104,14 +104,14 @@ class ParametersController extends AppBaseController
     {
         if(!Defender::hasPermission('parameters.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $parameters = $this->parametersRepository->findByID($id);
 
         if (empty($parameters)) {
-            Flash::error('Parameters not found');
+            flash('Parâmetro não encontrado')->error();
 
             return redirect(route('parameters.index'));
         }
@@ -131,13 +131,13 @@ class ParametersController extends AppBaseController
     {
         if(!Defender::hasPermission('parameters.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $parameters = $this->parametersRepository->findByID($id);
 
         if (empty($parameters)) {
-            Flash::error('Parameters not found');
+            flash('Parâmetro não encontrado')->error();
 
             return redirect(route('config.parameters.index'));
         }
@@ -158,14 +158,14 @@ class ParametersController extends AppBaseController
     {
         if(!Defender::hasPermission('parameters.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $parameters = $this->parametersRepository->findByID($id);
 
         if (empty($parameters)) {
-            Flash::error('Parameters not found');
+            flash('Parâmetro não encontrado')->error();
 
             return redirect(route('parameters.index'));
         }
@@ -179,7 +179,7 @@ class ParametersController extends AppBaseController
 
         $this->parametersRepository->update($parameters, $request->all());
 
-        Flash::success('Parâmetro atualizado com sucesso.');
+        flash('Parâmetro atualizado com sucesso.')->success();
 
         return redirect(route('parameters.index'));
     }
@@ -196,21 +196,21 @@ class ParametersController extends AppBaseController
     {
         if(!Defender::hasPermission('parameters.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $parameters = $this->parametersRepository->findByID($id);
 
         if (empty($parameters)) {
-            Flash::error('Parameters not found');
+            flash('Parâmetro não encontrado')->error();
 
             return redirect(route('parameters.index'));
         }
 
         $this->parametersRepository->delete($parameters);
 
-        Flash::success('Parâmetro excluído com sucesso.');
+        flash('Parâmetro excluído com sucesso.')->success();
 
         return redirect(route('parameters.index'));
     }

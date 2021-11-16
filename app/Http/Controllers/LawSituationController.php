@@ -32,7 +32,7 @@ class LawSituationController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('lawSituations.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class LawSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('lawSituations.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class LawSituationController extends AppBaseController
     {
        if(!Defender::hasPermission('lawSituations.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $lawSituation = $this->lawSituationRepository->create($input);
 
-        Flash::success('LawSituation saved successfully.');
+        flash('Situação Jurídica salva com sucesso.')->success();
 
         return redirect(route('lawSituations.index'));
     }
@@ -93,14 +93,14 @@ class LawSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('lawSituations.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
 
         if (empty($lawSituation)) {
-            Flash::error('LawSituation not found');
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
@@ -119,13 +119,13 @@ class LawSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('lawSituations.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
 
         if (empty($lawSituation)) {
-            Flash::error('LawSituation not found');
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
@@ -145,21 +145,21 @@ class LawSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('lawSituations.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
 
         if (empty($lawSituation)) {
-            Flash::error('LawSituation not found');
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
 
         $lawSituation = $this->lawSituationRepository->update($request->all(), $id);
 
-        Flash::success('LawSituation updated successfully.');
+        flash('Situação Jurídica atualizada com sucesso.')->success();
 
         return redirect(route('lawSituations.index'));
     }
@@ -175,21 +175,21 @@ class LawSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('lawSituations.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
 
         if (empty($lawSituation)) {
-            Flash::error('LawSituation not found');
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
 
         $this->lawSituationRepository->delete($id);
 
-        Flash::success('LawSituation deleted successfully.');
+        flash('Situação Jurídica removido com sucesso.')->success();
 
         return redirect(route('lawSituations.index'));
     }

@@ -32,7 +32,7 @@ class ResponsibilityController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('responsibilities.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class ResponsibilityController extends AppBaseController
     {
         if(!Defender::hasPermission('responsibilities.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class ResponsibilityController extends AppBaseController
     {
        if(!Defender::hasPermission('responsibilities.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $responsibility = $this->responsibilityRepository->create($input);
 
-        Flash::success('Responsibility saved successfully.');
+        flash('Responsabilidade salva com sucesso.')->success();
 
         return redirect(route('responsibilities.index'));
     }
@@ -93,14 +93,14 @@ class ResponsibilityController extends AppBaseController
     {
         if(!Defender::hasPermission('responsibilities.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $responsibility = $this->responsibilityRepository->findWithoutFail($id);
 
         if (empty($responsibility)) {
-            Flash::error('Responsibility not found');
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
@@ -119,13 +119,13 @@ class ResponsibilityController extends AppBaseController
     {
         if(!Defender::hasPermission('responsibilities.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $responsibility = $this->responsibilityRepository->findWithoutFail($id);
 
         if (empty($responsibility)) {
-            Flash::error('Responsibility not found');
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
@@ -145,14 +145,14 @@ class ResponsibilityController extends AppBaseController
     {
         if(!Defender::hasPermission('responsibilities.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $responsibility = $this->responsibilityRepository->findWithoutFail($id);
 
         if (empty($responsibility)) {
-            Flash::error('Responsibility not found');
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
@@ -161,7 +161,7 @@ class ResponsibilityController extends AppBaseController
         $input['skip_board'] = isset($input['skip_board']) ? 1 : 0;
         $responsibility = $this->responsibilityRepository->update($input, $id);
 
-        Flash::success('Responsibility updated successfully.');
+        flash('Responsabilidade atualizada com sucesso.')->success();
 
         return redirect(route('responsibilities.index'));
     }
@@ -177,21 +177,21 @@ class ResponsibilityController extends AppBaseController
     {
         if(!Defender::hasPermission('responsibilities.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $responsibility = $this->responsibilityRepository->findWithoutFail($id);
 
         if (empty($responsibility)) {
-            Flash::error('Responsibility not found');
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
 
         $this->responsibilityRepository->delete($id);
 
-        Flash::success('Responsibility deleted successfully.');
+        flash('Responsabilidade removida com sucesso.')->success();
 
         return redirect(route('responsibilities.index'));
     }

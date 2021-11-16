@@ -33,7 +33,7 @@ class SectorController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('sectors.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -53,7 +53,7 @@ class SectorController extends AppBaseController
     {
         if(!Defender::hasPermission('sectors.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -71,7 +71,7 @@ class SectorController extends AppBaseController
     {
        if(!Defender::hasPermission('sectors.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
 
@@ -81,7 +81,7 @@ class SectorController extends AppBaseController
 
         $sector = $this->sectorRepository->create($input);
 
-        Flash::success('Sector saved successfully.');
+        flash('Setor salvo com sucesso.')->success();
 
         return redirect(route('sectors.index'));
     }
@@ -97,14 +97,14 @@ class SectorController extends AppBaseController
     {
         if(!Defender::hasPermission('sectors.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $sector = $this->sectorRepository->findWithoutFail($id);
 
         if (empty($sector)) {
-            Flash::error('Sector not found');
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
@@ -123,13 +123,13 @@ class SectorController extends AppBaseController
     {
         if(!Defender::hasPermission('sectors.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $sector = $this->sectorRepository->findWithoutFail($id);
 
         if (empty($sector)) {
-            Flash::error('Sector not found');
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
@@ -149,14 +149,14 @@ class SectorController extends AppBaseController
     {
         if(!Defender::hasPermission('sectors.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $sector = $this->sectorRepository->findWithoutFail($id);
 
         if (empty($sector)) {
-            Flash::error('Sector not found');
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
@@ -167,7 +167,7 @@ class SectorController extends AppBaseController
 
         $sector = $this->sectorRepository->update($input, $id);
 
-        Flash::success('Sector updated successfully.');
+        flash('Setor atualizado com sucesso.')->success();
 
         return redirect(route('sectors.index'));
     }
@@ -183,21 +183,21 @@ class SectorController extends AppBaseController
     {
         if(!Defender::hasPermission('sectors.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $sector = $this->sectorRepository->findWithoutFail($id);
 
         if (empty($sector)) {
-            Flash::error('Sector not found');
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
 
         $this->sectorRepository->delete($id);
 
-        Flash::success('Sector deleted successfully.');
+        flash('Setor removido com sucesso.')->success();
 
         return redirect(route('sectors.index'));
     }

@@ -150,7 +150,7 @@
 
         </ul>
     </li>
-    <li><a href="http://digitarsuporte.jelasticlw.com.br/sacsistema/chatInterno.php" target="_blank"> Ajuda </a></li>
+    <li><a href="https://www.genesis.tec.br/" target="_blank"> Ajuda </a></li>
 </ul>
 
 

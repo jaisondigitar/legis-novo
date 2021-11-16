@@ -178,12 +178,12 @@ class ImporterSGLController extends Controller
             return $this->importDocuments($input,$request->file('file'));
 
           }else{
-            Flash::error('Ops! O Arquivo nao é no formato excel (xls,xlsx).');
+            flash('Ops! O Arquivo nao é no formato excel (xls,xlsx).')->error();
             return redirect()->back();
           }
 
         }else{
-          Flash::error('Ops! Arquivo corrompido ou inválido.');
+          flash('Ops! Arquivo corrompido ou inválido.')->error();
           return redirect()->back();
         }
     }
@@ -239,7 +239,7 @@ class ImporterSGLController extends Controller
         }
       }
 
-      Flash::success($count . ' registros importados com sucesso.');
+      flash($count . ' registros importados com sucesso.')->success();
       return redirect()->back();
 
     }
@@ -309,7 +309,7 @@ class ImporterSGLController extends Controller
           }
         }
 
-        Flash::success($count . ' registros importados com sucesso.');
+        flash($count . ' registros importados com sucesso.')->success();
         return redirect()->back();
     }
 
@@ -378,7 +378,7 @@ class ImporterSGLController extends Controller
 
               }
 
-              Flash::success(count($insert) . ' registros importados com sucesso.');
+              flash(count($insert) . ' registros importados com sucesso.')->success();
               return redirect()->back();
 
     				}
@@ -387,7 +387,7 @@ class ImporterSGLController extends Controller
 
       }else{
 
-        Flash::error('Ops! Arquivo corrompido ou inválido.');
+        flash('Ops! Arquivo corrompido ou inválido.')->error();
         return redirect()->back();
 
       }

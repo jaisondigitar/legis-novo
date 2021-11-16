@@ -32,7 +32,7 @@ class LawsStructureController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('lawsStructures.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class LawsStructureController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsStructures.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class LawsStructureController extends AppBaseController
     {
        if(!Defender::hasPermission('lawsStructures.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $lawsStructure = $this->lawsStructureRepository->create($input);
 
-        Flash::success('LawsStructure saved successfully.');
+        flash('Estrutura da lei salva com sucesso.')->success();
 
         return redirect(route('lawsStructures.index'));
     }
@@ -93,14 +93,14 @@ class LawsStructureController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsStructures.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
 
         if (empty($lawsStructure)) {
-            Flash::error('LawsStructure not found');
+            flash('Estrutura da lei não encontrada')->error();
 
             return redirect(route('lawsStructures.index'));
         }
@@ -119,13 +119,13 @@ class LawsStructureController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsStructures.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
 
         if (empty($lawsStructure)) {
-            Flash::error('LawsStructure not found');
+            flash('Estrutura da lei não encontrada')->error();
 
             return redirect(route('lawsStructures.index'));
         }
@@ -145,21 +145,21 @@ class LawsStructureController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsStructures.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
 
         if (empty($lawsStructure)) {
-            Flash::error('LawsStructure not found');
+            flash('Estrutura da lei não encontrada')->error();
 
             return redirect(route('lawsStructures.index'));
         }
 
         $lawsStructure = $this->lawsStructureRepository->update($request->all(), $id);
 
-        Flash::success('LawsStructure updated successfully.');
+        flash('Estrutura da lei atualizada com sucesso.')->success();
 
         return redirect(route('lawsStructures.index'));
     }
@@ -175,21 +175,21 @@ class LawsStructureController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsStructures.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
 
         if (empty($lawsStructure)) {
-            Flash::error('LawsStructure not found');
+            flash('Estrutura da lei não encontrada')->error();
 
             return redirect(route('lawsStructures.index'));
         }
 
         $this->lawsStructureRepository->delete($id);
 
-        Flash::success('LawsStructure deleted successfully.');
+        flash('Estrutura da lei removido com sucesso.')->success();
 
         return redirect(route('lawsStructures.index'));
     }

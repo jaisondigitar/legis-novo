@@ -32,7 +32,7 @@ class OfficeCommissionController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('officeCommissions.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class OfficeCommissionController extends AppBaseController
     {
         if(!Defender::hasPermission('officeCommissions.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,7 +70,7 @@ class OfficeCommissionController extends AppBaseController
     {
        if(!Defender::hasPermission('officeCommissions.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
@@ -79,7 +79,7 @@ class OfficeCommissionController extends AppBaseController
 
         $officeCommission = $this->officeCommissionRepository->create($input);
 
-        Flash::success('Cargo de comissão salvo com sucesso.');
+        flash('Cargo de comissão salvo com sucesso.')->success();
 
         return redirect(route('officeCommissions.index'));
     }
@@ -95,14 +95,14 @@ class OfficeCommissionController extends AppBaseController
     {
         if(!Defender::hasPermission('officeCommissions.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
 
         if (empty($officeCommission)) {
-            Flash::error('OfficeCommission not found');
+            flash('OfficeCommission not found')->error();
 
             return redirect(route('officeCommissions.index'));
         }
@@ -121,13 +121,13 @@ class OfficeCommissionController extends AppBaseController
     {
         if(!Defender::hasPermission('officeCommissions.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
 
         if (empty($officeCommission)) {
-            Flash::error('OfficeCommission not found');
+            flash('OfficeCommission not found')->error();
 
             return redirect(route('officeCommissions.index'));
         }
@@ -147,14 +147,14 @@ class OfficeCommissionController extends AppBaseController
     {
         if(!Defender::hasPermission('officeCommissions.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
 
         if (empty($officeCommission)) {
-            Flash::error('OfficeCommission not found');
+            flash('OfficeCommission not found')->error();
 
             return redirect(route('officeCommissions.index'));
         }
@@ -163,7 +163,7 @@ class OfficeCommissionController extends AppBaseController
 
         $officeCommission = $this->officeCommissionRepository->update($request->all(), $id);
 
-        Flash::success('Cargo de comissão editado com sucesso.');
+        flash('Cargo de comissão editado com sucesso.')->success();
 
         return redirect(route('officeCommissions.index'));
     }
@@ -179,21 +179,21 @@ class OfficeCommissionController extends AppBaseController
     {
         if(!Defender::hasPermission('officeCommissions.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
 
         if (empty($officeCommission)) {
-            Flash::error('OfficeCommission not found');
+            flash('OfficeCommission not found')->error();
 
             return redirect(route('officeCommissions.index'));
         }
 
         $this->officeCommissionRepository->delete($id);
 
-        Flash::success('Cargo de comissão excluído com sucesso');
+        flash('Cargo de comissão excluído com sucesso')->success();
 
         return redirect(route('officeCommissions.index'));
     }

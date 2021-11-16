@@ -32,7 +32,7 @@ class TestController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('tests.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class TestController extends AppBaseController
     {
         if(!Defender::hasPermission('tests.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class TestController extends AppBaseController
     {
        if(!Defender::hasPermission('tests.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $test = $this->testRepository->create($input);
 
-        Flash::success('Test saved successfully.');
+        flash('Test saved successfully.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
     }
@@ -93,14 +93,14 @@ class TestController extends AppBaseController
     {
         if(!Defender::hasPermission('tests.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            Flash::error('Test not found');
+            flash('Test not found')->error();
 
             return redirect(route('tests.index'));
         }
@@ -119,13 +119,13 @@ class TestController extends AppBaseController
     {
         if(!Defender::hasPermission('tests.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            Flash::error('Test not found');
+            flash('Test not found')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
         }
@@ -145,21 +145,21 @@ class TestController extends AppBaseController
     {
         if(!Defender::hasPermission('tests.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            Flash::error('Test not found');
+            flash('Test not found')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
         }
 
         $test = $this->testRepository->update($request->all(), $id);
 
-        Flash::success('Test updated successfully.');
+        flash('Test updated successfully.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
     }
@@ -175,21 +175,21 @@ class TestController extends AppBaseController
     {
         if(!Defender::hasPermission('tests.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            Flash::error('Test not found');
+            flash('Test not found')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
         }
 
         $this->testRepository->delete($id);
 
-        Flash::success('Test deleted successfully.');
+        flash('Test deleted successfully.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
     }

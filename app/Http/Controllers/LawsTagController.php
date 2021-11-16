@@ -32,7 +32,7 @@ class LawsTagController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('lawsTags.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class LawsTagController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTags.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class LawsTagController extends AppBaseController
     {
        if(!Defender::hasPermission('lawsTags.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $lawsTag = $this->lawsTagRepository->create($input);
 
-        Flash::success('LawsTag saved successfully.');
+        flash('Tag de Lei salva com sucesso.')->success();
 
         return redirect(route('lawsTags.index'));
     }
@@ -93,14 +93,14 @@ class LawsTagController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTags.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
 
         if (empty($lawsTag)) {
-            Flash::error('LawsTag not found');
+            flash('Tag de Lei não encontrada')->error();
 
             return redirect(route('lawsTags.index'));
         }
@@ -119,13 +119,13 @@ class LawsTagController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTags.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
 
         if (empty($lawsTag)) {
-            Flash::error('LawsTag not found');
+            flash('Tag de Lei não encontrada')->error();
 
             return redirect(route('lawsTags.index'));
         }
@@ -145,21 +145,21 @@ class LawsTagController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTags.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
 
         if (empty($lawsTag)) {
-            Flash::error('LawsTag not found');
+            flash('Tag de Lei não encontrada')->error();
 
             return redirect(route('lawsTags.index'));
         }
 
         $lawsTag = $this->lawsTagRepository->update($request->all(), $id);
 
-        Flash::success('LawsTag updated successfully.');
+        flash('Tag de Lei atualizada com sucesso.')->success();
 
         return redirect(route('lawsTags.index'));
     }
@@ -175,21 +175,21 @@ class LawsTagController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTags.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
 
         if (empty($lawsTag)) {
-            Flash::error('LawsTag not found');
+            flash('Tag de Lei não encontrada')->error();
 
             return redirect(route('lawsTags.index'));
         }
 
         $this->lawsTagRepository->delete($id);
 
-        Flash::success('LawsTag deleted successfully.');
+        flash('Tag de Lei removida com sucesso.')->success();
 
         return redirect(route('lawsTags.index'));
     }

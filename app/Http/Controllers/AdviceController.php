@@ -38,7 +38,7 @@ class AdviceController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('advices.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -58,7 +58,7 @@ class AdviceController extends AppBaseController
     {
         if(!Defender::hasPermission('advices.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -121,14 +121,14 @@ class AdviceController extends AppBaseController
     {
         if(!Defender::hasPermission('advices.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $advice = $this->adviceRepository->findWithoutFail($id);
 
         if (empty($advice)) {
-            Flash::error('Advice not found');
+            flash('Aconselhamento não encontrado')->error();
 
             return redirect(route('advices.index'));
         }
@@ -147,13 +147,13 @@ class AdviceController extends AppBaseController
     {
         if(!Defender::hasPermission('advices.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $advice = $this->adviceRepository->findWithoutFail($id);
 
         if (empty($advice)) {
-            Flash::error('Advice not found');
+            flash('Aconselhamento não encontrado')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
         }
@@ -173,21 +173,21 @@ class AdviceController extends AppBaseController
     {
         if(!Defender::hasPermission('advices.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $advice = $this->adviceRepository->findWithoutFail($id);
 
         if (empty($advice)) {
-            Flash::error('Advice not found');
+            flash('Aconselhamento não encontrado')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
         }
 
         $advice = $this->adviceRepository->update($request->all(), $id);
 
-        Flash::success('Advice updated successfully.');
+        flash('Aconselhamento atualizado com sucesso.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
     }
@@ -221,7 +221,7 @@ class AdviceController extends AppBaseController
 
 //        if(!Defender::hasPermission('advices.delete'))
 //        {
-//            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+//            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
 //            return redirect("/");
 //        }
 
@@ -230,7 +230,7 @@ class AdviceController extends AppBaseController
 //        dd($advice);
 //
 //        if (empty($advice)) {
-////            Flash::error('Advice not found');
+////            flash('Aconselhamento não encontrado')->error(;
 ////
 ////            return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
 //            return json_encode(false);
@@ -241,7 +241,7 @@ class AdviceController extends AppBaseController
 //        }
 //
 //        return json_encode(false);
-//        Flash::success('Advice deleted successfully.');
+//        flash('Aconselhamento removido com sucesso.')->success();
 
 //        return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
     }
@@ -329,7 +329,7 @@ class AdviceController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsProject.advicesEdit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -352,14 +352,14 @@ class AdviceController extends AppBaseController
                        $awnser->save();
                    }
                }
-               Flash::success('Advice updated successfully.');
+               flash('Aconselhamento atualizado com sucesso.')->success();
                return redirect(route('advices.find', $awnser->advice_id));
            }else{
-               Flash::error('Advice not save.');
+               flash('Aconselhamento não salvo.')->error();
                return redirect(route('advices.find', $awnser->advice_id));
            }
        }else{
-           Flash::error('Advice not found.');
+           flash('Aconselhamento não encontrado.')->error();
            return redirect(route('advices.find', $awnser->advice_id));
        }
 

@@ -32,7 +32,7 @@ class DocumentSituationController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('documentSituations.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class DocumentSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('documentSituations.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class DocumentSituationController extends AppBaseController
     {
        if(!Defender::hasPermission('documentSituations.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $documentSituation = $this->documentSituationRepository->create($input);
 
-        Flash::success('DocumentSituation saved successfully.');
+        flash('Situção de Documento salva com secesso.')->success();
 
         return redirect(route('documentSituations.index'));
     }
@@ -93,14 +93,14 @@ class DocumentSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('documentSituations.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $documentSituation = $this->documentSituationRepository->findWithoutFail($id);
 
         if (empty($documentSituation)) {
-            Flash::error('DocumentSituation not found');
+            flash('Situção de Documento não encontrada')->error();
 
             return redirect(route('documentSituations.index'));
         }
@@ -119,13 +119,13 @@ class DocumentSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('documentSituations.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $documentSituation = $this->documentSituationRepository->findWithoutFail($id);
 
         if (empty($documentSituation)) {
-            Flash::error('DocumentSituation not found');
+            flash('Situção de Documento não encontrada')->error();
 
             return redirect(route('documentSituations.index'));
         }
@@ -145,14 +145,14 @@ class DocumentSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('documentSituations.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $documentSituation = $this->documentSituationRepository->findWithoutFail($id);
 
         if (empty($documentSituation)) {
-            Flash::error('DocumentSituation not found');
+            flash('Situção de Documento não encontrada')->error();
 
             return redirect(route('documentSituations.index'));
         }
@@ -163,7 +163,7 @@ class DocumentSituationController extends AppBaseController
 
         $documentSituation = $this->documentSituationRepository->update($input, $id);
 
-        Flash::success('DocumentSituation updated successfully.');
+        flash('Situção de Documento atualizado com sucesso.')->success();
 
         return redirect(route('documentSituations.index'));
     }
@@ -179,21 +179,21 @@ class DocumentSituationController extends AppBaseController
     {
         if(!Defender::hasPermission('documentSituations.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $documentSituation = $this->documentSituationRepository->findWithoutFail($id);
 
         if (empty($documentSituation)) {
-            Flash::error('DocumentSituation not found');
+            flash('Situção de Documento não encontrada')->error();
 
             return redirect(route('documentSituations.index'));
         }
 
         $this->documentSituationRepository->delete($id);
 
-        Flash::success('DocumentSituation deleted successfully.');
+        flash('Situção de Documento removido com sucesso.')->success();
 
         return redirect(route('documentSituations.index'));
     }

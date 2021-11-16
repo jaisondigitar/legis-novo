@@ -32,7 +32,7 @@ class AdviceSituationDocumentsController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('adviceSituationDocuments.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class AdviceSituationDocumentsController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceSituationDocuments.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class AdviceSituationDocumentsController extends AppBaseController
     {
        if(!Defender::hasPermission('adviceSituationDocuments.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->create($input);
 
-        Flash::success('AdviceSituationDocuments saved successfully.');
+        flash('Situação de Aconselhamento de Documentos salvo com sucesso.')->success();
 
         return redirect(route('adviceSituationDocuments.index'));
     }
@@ -93,14 +93,14 @@ class AdviceSituationDocumentsController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceSituationDocuments.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
 
         if (empty($adviceSituationDocuments)) {
-            Flash::error('AdviceSituationDocuments not found');
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
@@ -119,13 +119,13 @@ class AdviceSituationDocumentsController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceSituationDocuments.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
 
         if (empty($adviceSituationDocuments)) {
-            Flash::error('AdviceSituationDocuments not found');
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
@@ -145,21 +145,21 @@ class AdviceSituationDocumentsController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceSituationDocuments.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
 
         if (empty($adviceSituationDocuments)) {
-            Flash::error('AdviceSituationDocuments not found');
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->update($request->all(), $id);
 
-        Flash::success('AdviceSituationDocuments updated successfully.');
+        flash('Situação de Aconselhamento de Documentos atualizado com sucesso.')->success();
 
         return redirect(route('adviceSituationDocuments.index'));
     }
@@ -175,21 +175,21 @@ class AdviceSituationDocumentsController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceSituationDocuments.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
 
         if (empty($adviceSituationDocuments)) {
-            Flash::error('AdviceSituationDocuments not found');
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
 
         $this->adviceSituationDocumentsRepository->delete($id);
 
-        Flash::success('AdviceSituationDocuments deleted successfully.');
+        flash('Situação de Aconselhamento de Documentos removido com sucesso.')->success();
 
         return redirect(route('adviceSituationDocuments.index'));
     }

@@ -59,7 +59,7 @@ class MeetingController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('meetings.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $assemblyman_list = Assemblyman::whereIn('id', UserAssemblyman::where('users_id', Auth::user()->id)->lists('assemblyman_id')->toArray())->lists('short_name', 'id')->prepend('Selecione', 0);
@@ -79,7 +79,7 @@ class MeetingController extends AppBaseController
     {
         if(!Defender::hasPermission('meetings.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -99,14 +99,14 @@ class MeetingController extends AppBaseController
     {
        if(!Defender::hasPermission('meetings.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $meeting = $this->meetingRepository->create($input);
 
-        Flash::success('Meeting saved successfully.');
+        flash('Reunião salva com sucesso.')->success();
 
         return redirect(route('meetings.index'));
     }
@@ -122,7 +122,7 @@ class MeetingController extends AppBaseController
     {
         if(!Defender::hasPermission('meetings.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -131,7 +131,7 @@ class MeetingController extends AppBaseController
 
 
         if (empty($meeting)) {
-            Flash::error('Meeting not found');
+            flash('Reunião não encontrada')->error();
 
             return redirect(route('meetings.index'));
         }
@@ -150,13 +150,13 @@ class MeetingController extends AppBaseController
     {
         if(!Defender::hasPermission('meetings.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $meeting = $this->meetingRepository->findWithoutFail($id);
 
         if (empty($meeting)) {
-            Flash::error('Meeting not found');
+            flash('Reunião não encontrada')->error();
 
             return redirect(route('meetings.index'));
         }
@@ -178,14 +178,14 @@ class MeetingController extends AppBaseController
     {
         if(!Defender::hasPermission('meetings.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $meeting = $this->meetingRepository->findWithoutFail($id);
 
         if (empty($meeting)) {
-            Flash::error('Meeting not found');
+            flash('Reunião não encontrada')->error();
 
             return redirect(route('meetings.index'));
         }
@@ -193,7 +193,7 @@ class MeetingController extends AppBaseController
         $meeting = $this->meetingRepository->update($request->all(), $id);
         $meeting_pauta = MeetingPauta::where('meeting_id', $meeting->id)->get();
 
-        Flash::success('Meeting updated successfully.');
+        flash('Reunião atualizada com sucesso.')->success();
 
         return redirect(route('meetings.index'));
     }
@@ -209,21 +209,21 @@ class MeetingController extends AppBaseController
     {
         if(!Defender::hasPermission('meetings.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $meeting = $this->meetingRepository->findWithoutFail($id);
 
         if (empty($meeting)) {
-            Flash::error('Meeting not found');
+            flash('Reunião não encontrada')->error();
 
             return redirect(route('meetings.index'));
         }
 
         $this->meetingRepository->delete($id);
 
-        Flash::success('Meeting deleted successfully.');
+        flash('Reunião removida com sucesso.')->success();
 
         return redirect(route('meetings.index'));
     }
@@ -305,13 +305,13 @@ class MeetingController extends AppBaseController
     {
         if(!Defender::hasPermission('meetings.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $meeting = $this->meetingRepository->findWithoutFail($meeting_id);
 
         if (empty($meeting)) {
-            Flash::error('Meeting not found');
+            flash('Reunião não encontrada')->error();
             return redirect(route('meetings.index'));
         }
         $assemblyman = Assemblyman::where('active', 1)->orderBy('short_name')->get();
@@ -326,14 +326,14 @@ class MeetingController extends AppBaseController
         $meet = Meeting::find($input['meeting_id']);
 
         if (empty($meet)) {
-            Flash::error('Meeting not found');
+            flash('Reunião não encontrada')->error();
             return redirect(route('meetings.index'));
         }
 
         $meet->ata =  $input['ata'];
         $meet->save();
 
-        Flash::success('Ata salva com sucesso!');
+        flash('Ata salva com sucesso!')->success();
 
         return redirect("/meetings/{$meet->id}/ata");
 
@@ -344,7 +344,7 @@ class MeetingController extends AppBaseController
 
 //        if(!Defender::hasPermission('meetings.show'))
 //        {
-//            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+//            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
 //            return redirect("/");
 //        }
 
@@ -390,7 +390,7 @@ class MeetingController extends AppBaseController
         $pdf->AddPage();
 
         $html = "<h2>" . $meeting->number . "º " . $meeting->session_type->name . "</h2><br>
-                <h3 style=\" color: #aaa;\">Informações Básicas</h3>    
+                <h3 style=\" color: #aaa;\">Informações Básicas</h3>
                 <span><strong>  Tipo da sessão:</strong> " . $meeting->session_type->name . "</span><br>
                 <span><strong>Abertura: </strong> " . $meeting->date_start . "</span><br>
                 <span><strong>Encerramento: </strong>" . $meeting->date_end . "</span>";
@@ -494,7 +494,7 @@ class MeetingController extends AppBaseController
 
 //        if(!Defender::hasPermission('meetings.show'))
 //        {
-//            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+//            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
 //            return redirect("/");
 //        }
 
@@ -511,7 +511,7 @@ class MeetingController extends AppBaseController
         $docs = $this->createDocument($documents);
 
         if (empty($structurepautas)) {
-            Flash::error('Meeting not found');
+            flash('Reunião não encontrada')->error();
             return redirect(route('meetings.index'));
         }
 
@@ -551,7 +551,7 @@ class MeetingController extends AppBaseController
         // $pdf->setHtmlVSpace(array(
         //     'li' => array(
         //         'h' => 5, // margin in mm
-        //     ) 
+        //     )
         // ));
         $pdf->AddPage();
 
@@ -694,7 +694,7 @@ class MeetingController extends AppBaseController
     {
         if(!Defender::hasPermission('meetings.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -711,7 +711,7 @@ class MeetingController extends AppBaseController
 
 
         if (empty($structurepautas)) {
-            Flash::error('Meeting not found');
+            flash('Reunião não encontrada')->error();
             return redirect(route('meetings.index'));
         }
 
@@ -726,7 +726,7 @@ class MeetingController extends AppBaseController
             } catch (Exception $e) {
                 dd($document);
             }
-            
+
         }
 
         return $data;
@@ -861,7 +861,7 @@ class MeetingController extends AppBaseController
     {
         if(!Defender::hasPermission('meetings.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/meetings");
         }
 
@@ -875,7 +875,7 @@ class MeetingController extends AppBaseController
     {
         if(!Defender::hasPermission('meetings.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/meetings");
         }
 
@@ -1081,7 +1081,7 @@ class MeetingController extends AppBaseController
 
         if(Voting::whereNotNull('open_at')->whereNull('closed_at')->first())
         {
-            Flash::warning('Existe votação em aberto!');
+            flash('Existe votação em aberto!')->warning();
 
             return redirect(route('meetings.voting', $meeting->id));
 //            return view('meetings.voting',
@@ -1180,7 +1180,7 @@ class MeetingController extends AppBaseController
 
         if($voting->where('meeting_id', $meeting->id)->whereNull('closed_at')->first()->votes->count() < $meeting->assemblyman()->count() )
         {
-            Flash::warning('Existe voto em aberto!');
+            flash('Existe voto em aberto!')->warning();
             return view('meetings.start_voting', compact('voting', 'meeting', 'assemblyman'));
         }else{
             $voting->closed_at = Carbon::now();
@@ -1202,7 +1202,7 @@ class MeetingController extends AppBaseController
 
         if($votes->delete()){
             $voting->delete();
-            Flash::warning('Votação cancelada!');
+            flash('Votação cancelada!')->warning();
         }
 
         $assemblyman = Assemblyman::where('active', 1)->orderBy('short_name')->get();
@@ -1337,7 +1337,7 @@ class MeetingController extends AppBaseController
         $assemblyman = UserAssemblyman::where('users_id', Auth::user()->id)->where('assemblyman_id', $id)->first();
 
         if($assemblyman == null){
-            Flash::warning('Paralamentar inválido!');
+            flash('Paralamentar inválido!')->warning();
             return redirect(url('/admin'));
         }
 
@@ -1426,7 +1426,7 @@ class MeetingController extends AppBaseController
         if($assemblyman && $meeting)
         {
             $meeting->load('session_type');
-            
+
             $data['status']             = true;
             $data['meeting']            = $meeting;
             $data['assemblyman_name']   = $assemblyman->short_name . ' - ' . $assemblyman->party_assemblyman()->get()->last()->party->prefix ;

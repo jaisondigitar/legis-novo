@@ -32,7 +32,7 @@ class ProtocolTypeController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('protocolTypes.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class ProtocolTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('protocolTypes.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,7 +70,7 @@ class ProtocolTypeController extends AppBaseController
     {
        if(!Defender::hasPermission('protocolTypes.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
@@ -78,7 +78,7 @@ class ProtocolTypeController extends AppBaseController
 
         $protocolType = $this->protocolTypeRepository->create($input);
 
-        Flash::success('Tipo de protocolo salvo com sucesso');
+        flash('Tipo de protocolo salvo com sucesso')->success();
 
         return redirect(route('protocolTypes.index'));
     }
@@ -94,14 +94,14 @@ class ProtocolTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('protocolTypes.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
         if (empty($protocolType)) {
-            Flash::error('ProtocolType not found');
+            flash('Tipo de protocolo não encontrado')->error();
 
             return redirect(route('protocolTypes.index'));
         }
@@ -120,13 +120,13 @@ class ProtocolTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('protocolTypes.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
         if (empty($protocolType)) {
-            Flash::error('ProtocolType not found');
+            flash('Tipo de protocolo não encontrado')->error();
 
             return redirect(route('protocolTypes.index'));
         }
@@ -146,14 +146,14 @@ class ProtocolTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('protocolTypes.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
         if (empty($protocolType)) {
-            Flash::error('ProtocolType not found');
+            flash('Tipo de protocolo não encontrado')->error();
 
             return redirect(route('protocolTypes.index'));
         }
@@ -162,7 +162,7 @@ class ProtocolTypeController extends AppBaseController
 
         $protocolType = $this->protocolTypeRepository->update($request->all(), $id);
 
-        Flash::success('Tipo de protocolo editado com sucesso.');
+        flash('Tipo de protocolo editado com sucesso.')->success();
 
         return redirect(route('protocolTypes.index'));
     }
@@ -178,21 +178,21 @@ class ProtocolTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('protocolTypes.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
         if (empty($protocolType)) {
-            Flash::error('ProtocolType not found');
+            flash('Tipo de protocolo não encontrado')->error();
 
             return redirect(route('protocolTypes.index'));
         }
 
         $this->protocolTypeRepository->delete($id);
 
-        Flash::success('ProtocolType deleted successfully.');
+        flash('Tipo de protocolo removido com sucesso.')->success();
 
         return redirect(route('protocolTypes.index'));
     }

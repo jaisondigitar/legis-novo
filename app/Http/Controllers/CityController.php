@@ -56,7 +56,7 @@ class CityController extends AppBaseController
 
 		$city = $this->cityRepository->create($input);
 
-		Flash::success('Registro salvo com sucesso!');
+		flash('Registro salvo com sucesso!')->success();
 
 		return redirect(route('cities.index'));
 	}
@@ -74,7 +74,7 @@ class CityController extends AppBaseController
 
 		if(empty($city))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('cities.index'));
 		}
@@ -95,7 +95,7 @@ class CityController extends AppBaseController
 
 		if(empty($city))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('cities.index'));
 		}
@@ -117,14 +117,14 @@ class CityController extends AppBaseController
 
 		if(empty($city))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('cities.index'));
 		}
 
 		$city = $this->cityRepository->updateRich($request->all(), $id);
 
-		Flash::success('Registro editado com sucesso!');
+		flash('Registro editado com sucesso!')->success();
 
 		return redirect(route('cities.index'));
 	}
@@ -142,14 +142,14 @@ class CityController extends AppBaseController
 
 		if(empty($city))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('cities.index'));
 		}
 
 		$this->cityRepository->delete($id);
 
-		Flash::success('Registro deletado com sucesso!');
+		flash('Registro deletado com sucesso!')->success();
 
 		return redirect(route('cities.index'));
 	}

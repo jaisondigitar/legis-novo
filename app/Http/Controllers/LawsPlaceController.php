@@ -32,7 +32,7 @@ class LawsPlaceController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('lawsPlaces.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class LawsPlaceController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsPlaces.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class LawsPlaceController extends AppBaseController
     {
        if(!Defender::hasPermission('lawsPlaces.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $lawsPlace = $this->lawsPlaceRepository->create($input);
 
-        Flash::success('LawsPlace saved successfully.');
+        flash('Lugar da Lei salvo com sucesso.')->success();
 
         return redirect(route('lawsPlaces.index'));
     }
@@ -93,14 +93,14 @@ class LawsPlaceController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsPlaces.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
 
         if (empty($lawsPlace)) {
-            Flash::error('LawsPlace not found');
+            flash('Lugar da Lei não encontrado')->error();
 
             return redirect(route('lawsPlaces.index'));
         }
@@ -119,13 +119,13 @@ class LawsPlaceController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsPlaces.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
 
         if (empty($lawsPlace)) {
-            Flash::error('LawsPlace not found');
+            flash('Lugar da Lei não encontrado')->error();
 
             return redirect(route('lawsPlaces.index'));
         }
@@ -145,21 +145,21 @@ class LawsPlaceController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsPlaces.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
 
         if (empty($lawsPlace)) {
-            Flash::error('LawsPlace not found');
+            flash('Lugar da Lei não encontrado')->error();
 
             return redirect(route('lawsPlaces.index'));
         }
 
         $lawsPlace = $this->lawsPlaceRepository->update($request->all(), $id);
 
-        Flash::success('LawsPlace updated successfully.');
+        flash('Lugar da Lei atualizado com sucesso.')->success();
 
         return redirect(route('lawsPlaces.index'));
     }
@@ -175,21 +175,21 @@ class LawsPlaceController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsPlaces.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $lawsPlace = $this->lawsPlaceRepository->findWithoutFail($id);
 
         if (empty($lawsPlace)) {
-            Flash::error('LawsPlace not found');
+            flash('Lugar da Lei não encontrado')->error();
 
             return redirect(route('lawsPlaces.index'));
         }
 
         $this->lawsPlaceRepository->delete($id);
 
-        Flash::success('LawsPlace deleted successfully.');
+        flash('Lugar da Lei removido com sucesso.')->success();
 
         return redirect(route('lawsPlaces.index'));
     }

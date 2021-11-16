@@ -56,7 +56,7 @@ class ProfileController extends AppBaseController
 
 		$profile = $this->profileRepository->create($input);
 
-		Flash::success('Registro salvo com sucesso!');
+		flash('Registro salvo com sucesso!')->success();
 
 		return redirect(route('profiles.index'));
 	}
@@ -116,7 +116,7 @@ class ProfileController extends AppBaseController
 
 		if(empty($profile))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('profiles.index'));
 		}
@@ -138,7 +138,7 @@ class ProfileController extends AppBaseController
 
             }
         }
-		Flash::success('Registro editado com sucesso!');
+		flash('Registro editado com sucesso!')->success();
 
 		return redirect(route('profiles.index'));
 	}
@@ -156,14 +156,14 @@ class ProfileController extends AppBaseController
 
 		if(empty($profile))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
 			return redirect(route('profiles.index'));
 		}
 
 		$this->profileRepository->delete($id);
 
-		Flash::success('Registro deletado com sucesso!');
+		flash('Registro deletado com sucesso!')->success();
 
 		return redirect(route('profiles.index'));
 	}

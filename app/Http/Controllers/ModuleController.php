@@ -79,7 +79,7 @@ class ModuleController extends AppBaseController
             $module = $this->moduleRepository->findByID($id);
 
             if (empty($module)) {
-                Flash::error('Registro não existe.');
+                flash('Registro não existe.')->error();
 
                 return redirect(route('modules.index'));
             }
@@ -101,7 +101,7 @@ class ModuleController extends AppBaseController
             $module = $this->moduleRepository->findByID($id);
 
             if (empty($module)) {
-                Flash::error('Registro não existe.');
+                flash('Registro não existe.')->error();
 
                 return redirect(route('modules.index'));
             }
@@ -123,8 +123,9 @@ class ModuleController extends AppBaseController
 	{
 		$module = $this->moduleRepository->findByID($id);
 
-		if (empty($module)) {
-			Flash::error('Registro não existe.');
+		if(empty($module))
+		{
+			flash('Registro não existe.')->error();
 
 			return redirect(route('modules.index'));
 		}
@@ -134,7 +135,7 @@ class ModuleController extends AppBaseController
             'active' => (int) $request->get('active')
         ]);
 
-		Flash::success('Registro editado com sucesso!');
+		flash('Registro editado com sucesso!')->success();
 
 		return redirect(route('modules.index'));
 	}
@@ -152,14 +153,14 @@ class ModuleController extends AppBaseController
             $module = $this->moduleRepository->findByID($id);
 
             if (empty($module)) {
-                Flash::error('Registro não existe.');
+                flash('Registro não existe.')->error();
 
                 return redirect(route('config.modules.index'));
             }
 
             $this->moduleRepository->delete($module);
 
-            Flash::success('Registro deletado com sucesso!');
+            flash('Registro deletado com sucesso!')->success();
 
             return redirect(route('modules.index'));
 
