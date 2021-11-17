@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Models\DocumentType;
 use App\Models\Document;
-use App\Models\DocumentProtocol;
-use Flash;
-use Carbon\Carbon;
+use App\Models\DocumentAssemblyman;
+use App\Models\LawsProject;
+use App\Models\LawsProjectAssemblyman;
+use App\Models\LawsType;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use App\Models\DocumentType;
+use Illuminate\Support\Facades\App;
 use League\Csv\Reader;
+use Illuminate\View\View;
 
 class ImporterSGLController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
-
-      $documentType = DocumentType::where('parent_id',0)->lists('name', 'id');
+      $documentType = DocumentType::where('parent_id',0)->pluck('name', 'id');
 
       $novo = [];
       foreach($documentType as $key => $doc)
@@ -49,7 +51,7 @@ class ImporterSGLController extends Controller
     public function projects()
     {
 
-      $documentType = \App\Models\LawsType::lists('name', 'id');
+      $documentType = LawsType::pluck('name', 'id');
 
       return view('importer.sgl.projects',compact('documentType'));
 
@@ -58,15 +60,14 @@ class ImporterSGLController extends Controller
     public function importProtocol()
     {
       return "<h1>Uau! Você encontrou uma rota secreta! Parabéns! Fomos notificados, mas nao se preocupe, nada aconteceu, este recurso está desativado.</h1>";
-      die();
 
-          $path = public_path() . "/protocols/";
+          /*$path = public_path() . "/protocols/";
           $docTypes = [
-            /*
-              COLOCAR AQUIVOS EM PUBLIC/PROTOCOLS
-            */
 
-            /*
+              COLOCAR AQUIVOS EM PUBLIC/PROTOCOLS
+
+
+
             1 => [
               'slug' =>  'indicacao',
               'file' => 'indicacoes.csv'
@@ -79,7 +80,7 @@ class ImporterSGLController extends Controller
               'slug' => 'mocao-de-pesar',
               'file' => 'mocao_pesar.csv'
             ]
-            */
+
           ];
 
           foreach ($docTypes as $key => $value) {
@@ -146,7 +147,7 @@ class ImporterSGLController extends Controller
 
           }
 
-          return "<h1>Protocolos importados com sucesso</h1>";
+          return "<h1>Protocolos importados com sucesso</h1>";*/
 
     }
 
@@ -160,8 +161,8 @@ class ImporterSGLController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -215,7 +216,7 @@ class ImporterSGLController extends Controller
             'content' => utf8_encode($row[3]),
           ];
 
-          $doc = \App\Models\Document::firstOrCreate($insert);
+          $doc = Document::firstOrCreate($insert);
 
           if($doc){
             $count = $count+1;
@@ -229,7 +230,7 @@ class ImporterSGLController extends Controller
                   'document_id' => $doc->id,
                   'assemblyman_id' => intval($assemblyman),
                 ];
-                \App\Models\DocumentAssemblyman::firstOrCreate($data);
+                DocumentAssemblyman::firstOrCreate($data);
               }
             }
           }
@@ -281,11 +282,7 @@ class ImporterSGLController extends Controller
               'justify' => utf8_encode(empty($row[8]) ? '' : $row[8]),
             ];
 
-            //dd($row,$insert);
-
-            $doc = \App\Models\LawsProject::firstOrCreate($insert);
-
-
+            $doc = LawsProject::firstOrCreate($insert);
 
             if($doc){
               $count = $count+1;
@@ -299,7 +296,7 @@ class ImporterSGLController extends Controller
                     'law_project_id' => $doc->id,
                     'assemblyman_id' => intval($assemblyman),
                   ];
-                  \App\Models\LawsProjectAssemblyman::firstOrCreate($data);
+                  LawsProjectAssemblyman::firstOrCreate($data);
                 }
               }
             }
@@ -317,9 +314,7 @@ class ImporterSGLController extends Controller
     {
       if(is_file(public_path('importador/'.$file)))
       {
-
-        $data = [];
-        $excel = \App::make('excel');
+        $excel = App::make('excel');
         $data = $excel->load(public_path('importador/'.$file),function($reader) {})->get();
 
         if(!empty($data) && $data->count())
@@ -329,8 +324,6 @@ class ImporterSGLController extends Controller
 
               $owner_id = explode(',',$value->owners);
               $number   = explode('/',$value->numberproject);
-
-              //dd($value->date);
 
               if(count($owner_id) && count($number)){
 
@@ -348,7 +341,6 @@ class ImporterSGLController extends Controller
                 ];
 
               }else{
-                //erro de campos
               }
 
     				}
@@ -358,7 +350,7 @@ class ImporterSGLController extends Controller
 
               foreach ($insert as $value) {
 
-      					$doc = \App\Models\LawsProject::create($value);
+      					$doc = LawsProject::create($value);
 
                 if(count($value['owners']) > 1){
 
@@ -366,7 +358,7 @@ class ImporterSGLController extends Controller
 
                       if($key > 0)
                       {
-                        $document_asseblyman = new \App\Models\LawsProjectAssemblyman();
+                        $document_asseblyman = new LawsProjectAssemblyman();
                         $document_asseblyman->law_project_id = $doc->id;
                         $document_asseblyman->assemblyman_id = intval($assemblyman);
                         $document_asseblyman->save();
