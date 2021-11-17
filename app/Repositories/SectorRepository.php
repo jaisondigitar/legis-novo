@@ -4,20 +4,10 @@ namespace App\Repositories;
 
 use App\Models\Sector;
 
-class SectorRepository
+class SectorRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        'name'
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Sector::class;
-    }
+    protected $modelClass = Sector::class;
 }
