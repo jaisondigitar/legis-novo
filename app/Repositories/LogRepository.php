@@ -4,20 +4,10 @@ namespace App\Repositories;
 
 use App\Models\Log;
 
-class LogRepository
+class LogRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Log::class;
-    }
+    protected $modelClass = Log::class;
 }

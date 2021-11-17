@@ -10,7 +10,9 @@
 
                     <div class="form-group col-md-2">
                         {!! Form::label('user_id', 'Usuário:') !!}
-                        {!! Form::select('user_id', App\Models\User::where('company_id', \Illuminate\Support\Facades\Auth::user()->company_id)->lists('name', 'id')->prepend('Selecione...', '') ,$form->input('user_id'), ['class' => 'form-control']) !!}
+                        {!! Form::select('user_id', App\Models\User::where('company_id',
+                        \Illuminate\Support\Facades\Auth::user()->company_id)->pluck('name', 'id')
+                        ->prepend('Selecione...', '') ,$form->input('user_id'), ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group col-md-1">
                         {!! Form::label('owner_type', 'Tabela:') !!}
