@@ -4,22 +4,10 @@ namespace App\Repositories;
 
 use App\Models\DocumentModels;
 
-class DocumentModelsRepository
+class DocumentModelsRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        'document_type_id',
-        'name',
-        'content'
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return DocumentModels::class;
-    }
+    protected $modelClass = DocumentModels::class;
 }
