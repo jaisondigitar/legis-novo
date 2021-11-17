@@ -4,20 +4,10 @@ namespace App\Repositories;
 
 use App\Models\StatusProcessingDocument;
 
-class StatusProcessingDocumentRepository
+class StatusProcessingDocumentRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return StatusProcessingDocument::class;
-    }
+    protected $modelClass = StatusProcessingDocument::class;
 }
