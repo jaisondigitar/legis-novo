@@ -176,6 +176,7 @@ class Assemblyman extends Model
         'short_name' => 'required',
         'email' => 'required',
         'phone1' => 'required',
+        'phone2' => 'required',
         'zipcode' => 'required',
         'state_id' => 'required',
         'city_id' => 'required',

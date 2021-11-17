@@ -46,13 +46,15 @@
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group">
                         @shield('documents.delete')
-                        <a href="javascript:void(0)" onclick="deletaBash()" style="display: none;" class="deleteAll">
-                            <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> DELETAR SELECIONADOS</button>
-                        </a>
+                            <a href="javascript:void(0)" onclick="deletaBash()" style="display: none;" class="deleteAll">
+                                <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> DELETAR SELECIONADOS</button>
+                            </a>
                         @endshield
-                        @shield('lawsProjects.create')<a href="{!! route('lawsProjects.create') !!}">
-                            <button type="button" class="btn btn-info"><i class="fa fa-plus-circle"></i> Novo registro</button>
-                        </a>@endshield
+                        @shield('lawsProjects.create')
+                            <a href="{!! route('lawsProjects.create') !!}">
+                                <button type="button" class="btn btn-info"><i class="fa fa-plus-circle"></i> Novo registro</button>
+                            </a>
+                        @endshield
                     </div>
                 </div>
             </div>
@@ -64,6 +66,5 @@
                 @include('lawsProjects.table')
             </div>
         </div>
-
     </div>
 @endsection

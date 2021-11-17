@@ -31,7 +31,7 @@
 
 <!-- Phone2 Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('phone2', 'Telefone 2:') !!}
+    {!! Form::label('phone2', 'Telefone 2:', ['class' => 'required']) !!}
     {!! Form::text('phone2', null, ['class' => 'form-control phone']) !!}
 </div>
 
@@ -44,7 +44,7 @@
 <!-- General Register Field -->
 <div class="form-group col-sm-2">
     {!! Form::label('general_register', 'RG:', ['class' => 'required']) !!}
-    {!! Form::number('general_register', null, ['class' => 'form-control']) !!}
+    {!! Form::number('general_register', null, ['class' => 'form-control', 'min' => 1000000, 'max' => 999999999]) !!}
 </div>
 <div class="form-group col-sm-12">
     <div class="form-group col-sm-4">

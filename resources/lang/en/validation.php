@@ -163,6 +163,7 @@ return [
         'short_name' => 'Nome Parlamentar',
         'email' => 'Email',
         'phone1' => 'Celular',
+        'phone2' => 'Telefone 2',
         'zipcode' => 'Código Postal',
         'state_id' => 'Estado',
         'city_id' => 'Cidade',
@@ -176,5 +177,12 @@ return [
         'to' => 'Fim',
 
         'prefix' => 'Sigla',
+
+        'law_type_id' => 'Tipo de lei',
+        'law_date' => 'Data do projeto',
+        'title' => 'Ementa',
+        'sub_title' => 'Prefixo',
+        'assemblyman_id' => 'Responsável',
+        'situation_id' => 'Situação atual',
     ],
 ];
