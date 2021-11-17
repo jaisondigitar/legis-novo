@@ -65,6 +65,18 @@
 </style>
     <style>
 
+        body {
+            height: 100vh;
+        }
+
+        .wrapper {
+            height: 90%;
+        }
+
+        footer {
+            margin-top: 0;
+        }
+
         .dropdown-submenu {
             position: relative;
         }
@@ -419,24 +431,24 @@ BEGIN PAGE
             @yield('content')
         </div><!-- /.container-fluid -->
 
-        <!-- BEGIN FOOTER -->
-        <footer>
-            &copy; {{Date('Y')}} <a href="https://www.genesis.tec.br/" target="_blank">
-                Gênesis Tecnologia e Inovação
-            </a>. Todos os Direitos Reservados
-        </footer>
-        <!-- END FOOTER -->
+
     </div><!-- /.page-content -->
 </div><!-- /.wrapper -->
 <!-- END PAGE CONTENT -->
 
+<!-- BEGIN FOOTER -->
+<footer>
+    &copy; {{Date('Y')}} <a href="https://www.genesis.tec.br/" target="_blank">
+        Gênesis Tecnologia e Inovação
+    </a>. Todos os Direitos Reservados
+</footer>
+<!-- END FOOTER -->
 
-
-<!-- BEGIN BACK TO TOP BUTTON -->
+{{--<!-- BEGIN BACK TO TOP BUTTON -->
 <div id="back-top">
     <a href="#top"><i class="fa fa-chevron-up"></i></a>
 </div>
-<!-- END BACK TO TOP -->
+<!-- END BACK TO TOP -->--}}
 
 
 
