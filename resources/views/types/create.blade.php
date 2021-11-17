@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="the-box rounded">
-    @include('core-templates::common.errors')
+    @include('common.errors')
     <div class="row">
         <div class="col-md-12">
             {!! Form::open(['route' => 'types.store','files'=>true]) !!}
