@@ -97,7 +97,7 @@ class LawsTypeController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
+        $lawsType = $this->lawsTypeRepository->findById($id);
 
         if (empty($lawsType)) {
 
@@ -123,7 +123,7 @@ class LawsTypeController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
+        $lawsType = $this->lawsTypeRepository->findById($id);
 
         if (empty($lawsType)) {
             flash('Tipo de lei não encontrada')->error();
@@ -150,7 +150,7 @@ class LawsTypeController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
+        $lawsType = $this->lawsTypeRepository->findById($id);
 
         if (empty($lawsType)) {
             flash('Tipo de lei não encontrada')->error();
@@ -158,7 +158,7 @@ class LawsTypeController extends AppBaseController
             return redirect(route('lawsTypes.index'));
         }
 
-        $lawsType = $this->lawsTypeRepository->update($request->all(), $id);
+        $lawsType = $this->lawsTypeRepository->update($lawsType, $request->all());
 
         flash('Tipo de lei atualizado com sucesso.')->success();
 
@@ -180,7 +180,7 @@ class LawsTypeController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
+        $lawsType = $this->lawsTypeRepository->findById($id);
 
         if (empty($lawsType)) {
             flash('Tipo de lei não encontrada')->error();
@@ -188,7 +188,7 @@ class LawsTypeController extends AppBaseController
             return redirect(route('lawsTypes.index'));
         }
 
-        $this->lawsTypeRepository->delete($id);
+        $this->lawsTypeRepository->delete($lawsType);
 
         flash('Tipo de lei removido com sucesso.')->success();
 
@@ -207,7 +207,7 @@ class LawsTypeController extends AppBaseController
             {
                 return json_encode(false);
             }
-            $register = $this->lawsTypeRepository->findWithoutFail($id);
+            $register = $this->lawsTypeRepository->findById($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);
@@ -215,7 +215,7 @@ class LawsTypeController extends AppBaseController
 
     public function toggleActive($id)
     {
-        $register = $this->lawsTypeRepository->findWithoutFail($id);
+        $register = $this->lawsTypeRepository->findById($id);
         $register->is_active = $register->is_active == 0 ? 1 : 0;
         $register->save();
         return json_encode(true);

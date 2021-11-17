@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="the-box rounded">
-    @extends('common.errors')
+    @include('common.errors')
     <div class="row">
         <div class="col-md-12">
             {!! Form::model($comissionSituation, ['route' => ['comissionSituations.update', $comissionSituation->id], 'method' => 'patch','files' => true]) !!}

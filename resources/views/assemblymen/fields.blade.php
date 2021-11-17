@@ -105,10 +105,9 @@
                 {!! Form::label('district', 'Bairro:') !!}
                 {!! Form::text('district', null, ['class' => 'form-control']) !!}
             </div>
-
             <!-- State Id Field -->
             <div class="form-group col-sm-2">
-                {!! Form::label('state_id', 'Estado'), ['class' => 'required'] !!}
+                {!! Form::label('state_id', 'Estado', ['class' => 'required']) !!}
                 {!! Form::select('state_id', $states, null, ['class' => 'form-control states', 'onChange'=>'getCities(\'state_id\')']) !!}
             </div>
 
@@ -135,8 +134,6 @@
         </div>
     </div>
 </div>
-
-
 
 <!-- Submit Field -->
 <div class="form-group col-sm-3">

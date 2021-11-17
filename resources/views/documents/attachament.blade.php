@@ -40,7 +40,7 @@
     @is(['admin','root'])
 
     <div class="the-box rounded" style="font-size: 12px">
-        @extends('common.errors')
+        @include('common.errors')
         <div class="row">
             <div class="col-md-12">
                 <h1> Log de registro </h1>

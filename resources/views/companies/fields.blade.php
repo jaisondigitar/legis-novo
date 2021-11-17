@@ -106,7 +106,7 @@
 
 <script>
     function removeImage() {
-        var id = '{{$company->id}}';
+        var id = '{{ $company ?? '' }}';
         var r = confirm("Deseja remover a imagem?");
         if (r == true) {
             $.ajax({

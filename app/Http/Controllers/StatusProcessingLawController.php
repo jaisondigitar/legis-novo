@@ -97,7 +97,7 @@ class StatusProcessingLawController extends AppBaseController
             return redirect("/");
         }
 
-        $statusProcessingLaw = $this->statusProcessingLawRepository->findWithoutFail($id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
             flash('StatusProcessingLaw not found')->error();
@@ -122,7 +122,7 @@ class StatusProcessingLawController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $statusProcessingLaw = $this->statusProcessingLawRepository->findWithoutFail($id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
             flash('StatusProcessingLaw not found')->error();
@@ -149,7 +149,7 @@ class StatusProcessingLawController extends AppBaseController
             return redirect("/");
         }
 
-        $statusProcessingLaw = $this->statusProcessingLawRepository->findWithoutFail($id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
             flash('StatusProcessingLaw not found')->error();
@@ -157,7 +157,7 @@ class StatusProcessingLawController extends AppBaseController
             return redirect(route('statusProcessingLaws.index'));
         }
 
-        $statusProcessingLaw = $this->statusProcessingLawRepository->update($request->all(), $id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->update($statusProcessingLaw, $request->all());
 
         flash('StatusProcessingLaw updated successfully.')->success();
 
@@ -179,7 +179,7 @@ class StatusProcessingLawController extends AppBaseController
             return redirect("/");
         }
 
-        $statusProcessingLaw = $this->statusProcessingLawRepository->findWithoutFail($id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
             flash('StatusProcessingLaw not found')->error();
@@ -187,7 +187,7 @@ class StatusProcessingLawController extends AppBaseController
             return redirect(route('statusProcessingLaws.index'));
         }
 
-        $this->statusProcessingLawRepository->delete($id);
+        $this->statusProcessingLawRepository->delete($statusProcessingLaw);
 
         flash('StatusProcessingLaw deleted successfully.')->success();
 
@@ -206,7 +206,7 @@ class StatusProcessingLawController extends AppBaseController
             {
                 return json_encode(false);
             }
-            $register = $this->statusProcessingLawRepository->findWithoutFail($id);
+            $register = $this->statusProcessingLawRepository->findById($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);
