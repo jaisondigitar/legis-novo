@@ -12,6 +12,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Support\Str;
 
 class OfficeCommissionController extends AppBaseController
 {
@@ -74,7 +75,7 @@ class OfficeCommissionController extends AppBaseController
        }
         $input = $request->all();
 
-        $input['slug'] = str_slug($input['name']);
+        $input['slug'] = Str::slug($input['name']);
 
         $officeCommission = $this->officeCommissionRepository->create($input);
 
@@ -98,7 +99,7 @@ class OfficeCommissionController extends AppBaseController
             return redirect("/");
         }
 
-        $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
+        $officeCommission = $this->officeCommissionRepository->findById($id);
 
         if (empty($officeCommission)) {
             flash('OfficeCommission not found')->error();
@@ -123,7 +124,7 @@ class OfficeCommissionController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
+        $officeCommission = $this->officeCommissionRepository->findById($id);
 
         if (empty($officeCommission)) {
             flash('OfficeCommission not found')->error();
@@ -150,7 +151,7 @@ class OfficeCommissionController extends AppBaseController
             return redirect("/");
         }
 
-        $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
+        $officeCommission = $this->officeCommissionRepository->findById($id);
 
         if (empty($officeCommission)) {
             flash('OfficeCommission not found')->error();
@@ -158,9 +159,9 @@ class OfficeCommissionController extends AppBaseController
             return redirect(route('officeCommissions.index'));
         }
 
-        $request['slug'] = str_slug($request['name']);
+        $request['slug'] = Str::slug($request['name']);
 
-        $officeCommission = $this->officeCommissionRepository->update($request->all(), $id);
+        $officeCommission = $this->officeCommissionRepository->update($officeCommission, $request->all());
 
         flash('Cargo de comissão editado com sucesso.')->success();
 
@@ -182,7 +183,7 @@ class OfficeCommissionController extends AppBaseController
             return redirect("/");
         }
 
-        $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
+        $officeCommission = $this->officeCommissionRepository->findById($id);
 
         if (empty($officeCommission)) {
             flash('OfficeCommission not found')->error();
@@ -190,7 +191,7 @@ class OfficeCommissionController extends AppBaseController
             return redirect(route('officeCommissions.index'));
         }
 
-        $this->officeCommissionRepository->delete($id);
+        $this->officeCommissionRepository->delete($officeCommission);
 
         flash('Cargo de comissão excluído com sucesso')->success();
 
@@ -209,7 +210,7 @@ class OfficeCommissionController extends AppBaseController
 //            {
 //                return json_encode(false);
 //            }
-//            $register = $this->officeCommissionRepository->findWithoutFail($id);
+//            $register = $this->officeCommissionRepository->findById($id);
 //            $register->active = $register->active>0 ? 0 : 1;
 //            $register->save();
 //            return json_encode(true);

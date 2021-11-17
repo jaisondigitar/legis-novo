@@ -98,7 +98,7 @@ class SessionTypeController extends AppBaseController
             return redirect("/");
         }
 
-        $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
+        $sessionType = $this->sessionTypeRepository->findById($id);
 
         if (empty($sessionType)) {
             flash('Tipo de sessão não encontrada')->error();
@@ -123,7 +123,7 @@ class SessionTypeController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
+        $sessionType = $this->sessionTypeRepository->findById($id);
 
         if (empty($sessionType)) {
             flash('Tipo de sessão não encontrada')->error();
@@ -150,7 +150,7 @@ class SessionTypeController extends AppBaseController
             return redirect("/");
         }
 
-        $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
+        $sessionType = $this->sessionTypeRepository->findById($id);
 
         if (empty($sessionType)) {
             flash('Tipo de sessão não encontrada')->error();
@@ -182,7 +182,7 @@ class SessionTypeController extends AppBaseController
             return redirect("/");
         }
 
-        $sessionType = $this->sessionTypeRepository->findWithoutFail($id);
+        $sessionType = $this->sessionTypeRepository->findById($id);
 
         if (empty($sessionType)) {
             flash('Tipo de sessão não encontrada')->error();
@@ -209,7 +209,7 @@ class SessionTypeController extends AppBaseController
             {
                 return json_encode(false);
             }
-            $register = $this->sessionTypeRepository->findWithoutFail($id);
+            $register = $this->sessionTypeRepository->findById($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);
