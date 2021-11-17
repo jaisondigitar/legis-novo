@@ -186,7 +186,7 @@ class LawsProjectController extends AppBaseController
         }
 
         $lawsProject = new LawsProject();
-        return view('lawsProjects.create')->with(compact('status_processing_law', 'comission', 'lawsProject', 'law_types', 'situation', 'law_places', 'law_structure', 'advice_situation_law', 'advice_publication_law'))
+        return view('lawsProjects.create')->with(compact('status_processing_law', 'comission', 'lawsProject', 'law_types', 'situation', 'advice_situation_law', 'advice_publication_law'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('references_project', $references_project)
             ->with('assemblymensList', $assemblymensList[1]);
