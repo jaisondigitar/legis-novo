@@ -20,9 +20,9 @@
             <div class="col-md-12">
                 @include('flash::message')
                 @include('lawsTags.table')
-                
+
             </div>
         </div>
-        
+
     </div>
 @endsection

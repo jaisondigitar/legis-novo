@@ -1,10 +1,10 @@
 
 <div class="form-group col-sm-6">
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', 'Name:', ['class' => 'required']) !!}
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 <div class="form-group col-sm-3">
-    {!! Form::label('name', 'Prefix:') !!}
+    {!! Form::label('prefix', 'Prefix:') !!}
     {!! Form::text('prefix', null, ['class' => 'form-control']) !!}
 </div>
 

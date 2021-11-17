@@ -77,7 +77,7 @@ class StatusProcessingLawController extends AppBaseController
 
         $statusProcessingLaw = $this->statusProcessingLawRepository->create($input);
 
-        flash('StatusProcessingLaw saved successfully.')->success();
+        flash('Status do Tramite salvo com sucesso.')->success();
 
         return redirect(route('statusProcessingLaws.index'));
     }
@@ -100,7 +100,7 @@ class StatusProcessingLawController extends AppBaseController
         $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
-            flash('StatusProcessingLaw not found')->error();
+            flash('Status do Tramite não encontrado')->error();
 
             return redirect(route('statusProcessingLaws.index'));
         }
@@ -125,7 +125,7 @@ class StatusProcessingLawController extends AppBaseController
         $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
-            flash('StatusProcessingLaw not found')->error();
+            flash('Status do Tramite não encontrado')->error();
 
             return redirect(route('statusProcessingLaws.index'));
         }
@@ -152,14 +152,14 @@ class StatusProcessingLawController extends AppBaseController
         $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
-            flash('StatusProcessingLaw not found')->error();
+            flash('Status do Tramite não encontrado')->error();
 
             return redirect(route('statusProcessingLaws.index'));
         }
 
         $statusProcessingLaw = $this->statusProcessingLawRepository->update($statusProcessingLaw, $request->all());
 
-        flash('StatusProcessingLaw updated successfully.')->success();
+        flash('Status do Tramite atualizado com sucesso.')->success();
 
         return redirect(route('statusProcessingLaws.index'));
     }
@@ -182,14 +182,14 @@ class StatusProcessingLawController extends AppBaseController
         $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
-            flash('StatusProcessingLaw not found')->error();
+            flash('Status do Tramite não encontrado')->error();
 
             return redirect(route('statusProcessingLaws.index'));
         }
 
         $this->statusProcessingLawRepository->delete($statusProcessingLaw);
 
-        flash('StatusProcessingLaw deleted successfully.')->success();
+        flash('Status do Tramite removido com sucesso.')->success();
 
         return redirect(route('statusProcessingLaws.index'));
     }
