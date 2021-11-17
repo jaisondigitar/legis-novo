@@ -10,8 +10,7 @@ use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use Artesaos\Defender\Facades\Defender;
 use Illuminate\Validation\Rule;
-
-
+use Illuminate\Support\Str;
 
 class VersionPautaController extends Controller
 {
@@ -66,7 +65,7 @@ class VersionPautaController extends Controller
 
         $input = $request->all();
 
-        $version = VersionPauta::where('slug', str_slug($input['name']))->get();
+        $version = VersionPauta::where('slug', Str::slug($input['name']))->get();
 
         if($version->count() == 0){
             $version_pauta = VersionPauta::create($input);
@@ -137,7 +136,7 @@ class VersionPautaController extends Controller
             return redirect(route('version_pauta.index'));
         }
 
-        $version->update($input, $id);
+        $version->update($input, $version);
 
         return redirect(route('version_pauta.index'));
     }

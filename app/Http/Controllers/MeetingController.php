@@ -125,7 +125,7 @@ class MeetingController extends AppBaseController
             return redirect("/");
         }
 
-        $meeting = $this->meetingRepository->findWithoutFail($id);
+        $meeting = $this->meetingRepository->findById($id);
         $assemblyman = Assemblyman::where('active', 1)->orderBy('short_name')->get();
 
 
@@ -152,7 +152,7 @@ class MeetingController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $meeting = $this->meetingRepository->findWithoutFail($id);
+        $meeting = $this->meetingRepository->findById($id);
 
         if (empty($meeting)) {
             flash('Reunião não encontrada')->error();
@@ -181,7 +181,7 @@ class MeetingController extends AppBaseController
             return redirect("/");
         }
 
-        $meeting = $this->meetingRepository->findWithoutFail($id);
+        $meeting = $this->meetingRepository->findById($id);
 
         if (empty($meeting)) {
             flash('Reunião não encontrada')->error();
@@ -189,7 +189,7 @@ class MeetingController extends AppBaseController
             return redirect(route('meetings.index'));
         }
 
-        $meeting = $this->meetingRepository->update($request->all(), $id);
+        $meeting = $this->meetingRepository->update($meeting, $request->all());
         $meeting_pauta = MeetingPauta::where('meeting_id', $meeting->id)->get();
 
         flash('Reunião atualizada com sucesso.')->success();
@@ -212,7 +212,7 @@ class MeetingController extends AppBaseController
             return redirect("/");
         }
 
-        $meeting = $this->meetingRepository->findWithoutFail($id);
+        $meeting = $this->meetingRepository->findById($id);
 
         if (empty($meeting)) {
             flash('Reunião não encontrada')->error();
@@ -220,7 +220,7 @@ class MeetingController extends AppBaseController
             return redirect(route('meetings.index'));
         }
 
-        $this->meetingRepository->delete($id);
+        $this->meetingRepository->delete($meeting);
 
         flash('Reunião removida com sucesso.')->success();
 
@@ -241,7 +241,7 @@ class MeetingController extends AppBaseController
             {
                 return json_encode(false);
             }
-            $register = $this->meetingRepository->findWithoutFail($id);
+            $register = $this->meetingRepository->findById($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);
@@ -307,7 +307,7 @@ class MeetingController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $meeting = $this->meetingRepository->findWithoutFail($meeting_id);
+        $meeting = $this->meetingRepository->findById($meeting_id);
 
         if (empty($meeting)) {
             flash('Reunião não encontrada')->error();
@@ -704,7 +704,7 @@ class MeetingController extends AppBaseController
         $advices = $this->createAdvice(Advice::where('closed', 0)->get());
         $lawscreate = $this->createLaw($laws);
         $docs = $this->createDocument($documents);
-        $meeting = $this->meetingRepository->findWithoutFail($meeting_id);
+        $meeting = $this->meetingRepository->findById($meeting_id);
         $assemblyman = Assemblyman::where('active', 1)->orderBy('short_name')->get();
         $structurepautas = Structurepautum::whereNull('parent_id')->where('version_pauta_id', $meeting->version_pauta_id)->get();
 
