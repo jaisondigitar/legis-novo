@@ -1,13 +1,17 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Libraries\Repositories\RoleRepository;
 use App\Models\Permission;
 use Artesaos\Defender\Facades\Defender;
-use Flash;
-use Response;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class RoleController extends AppBaseController
 {
@@ -20,14 +24,15 @@ class RoleController extends AppBaseController
 		$this->roleRepository = $roleRepo;
 	}
 
-	/**
-	 * Display a listing of the Role.
-	 *
-	 * @return Response
-	 */
+    /**
+     * Display a listing of the Role.
+     *
+     * @return Application|Factory|View
+     * @throws BindingResolutionException
+     */
 	public function index()
 	{
-		$roles = $this->roleRepository->paginate(10);
+		$roles = $this->roleRepository->newQuery()->paginate(10);
 
 		return view('roles.index')
 			->with('roles', $roles);
@@ -36,133 +41,138 @@ class RoleController extends AppBaseController
 	/**
 	 * Show the form for creating a new Role.
 	 *
-	 * @return Response
-	 */
+	 * @return Application|Factory|View
+     */
 	public function create()
 	{
 		return view('roles.create');
 	}
 
-	/**
-	 * Store a newly created Role in storage.
-	 *
-	 * @param CreateRoleRequest $request
-	 *
-	 * @return Response
-	 */
+    /**
+     * Store a newly created Role in storage.
+     *
+     * @param CreateRoleRequest $request
+     *
+     * @return Application|RedirectResponse|Redirector
+     * @throws BindingResolutionException
+     */
 	public function store(CreateRoleRequest $request)
 	{
 		$input = $request->all();
 
-		$role = $this->roleRepository->create($input);
+		$this->roleRepository->create($input);
 
 		flash('Registro salvo com sucesso!')->success();
 
-		return redirect(route('gerencial.roles.index'));
+		return redirect(route('roles.index'));
 	}
 
-	/**
-	 * Display the specified Role.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
+    /**
+     * Display the specified Role.
+     *
+     * @param int $id
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
+     */
 	public function show($id)
 	{
-		$role = $this->roleRepository->find($id);
+		$role = $this->roleRepository->findByID($id);
 
 		if(empty($role))
 		{
 			flash('Registro não existe.')->error();
 
-			return redirect(route('gerencial.roles.index'));
+			return redirect(route('roles.index'));
 		}
 
 		return view('roles.show')->with('role', $role);
 	}
 
-	/**
-	 * Show the form for editing the specified Role.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
+    /**
+     * Show the form for editing the specified Role.
+     *
+     * @param int $id
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
+     */
 	public function edit($id)
 	{
-		$role = $this->roleRepository->find($id);
+		$role = $this->roleRepository->findByID($id);
 
 		if(empty($role))
 		{
 			flash('Registro não existe.')->error();
 
-			return redirect(route('gerencial.roles.index'));
+			return redirect(route('roles.index'));
 		}
 
 		return view('roles.edit')->with('role', $role);
 	}
 
-	/**
-	 * Update the specified Role in storage.
-	 *
-	 * @param  int              $id
-	 * @param UpdateRoleRequest $request
-	 *
-	 * @return Response
-	 */
-	public function update($id, UpdateRoleRequest $request)
+    /**
+     * Update the specified Role in storage.
+     *
+     * @param int $id
+     * @param UpdateRoleRequest $request
+     *
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
+     */
+	public function update(int $id, UpdateRoleRequest $request)
 	{
-		$role = $this->roleRepository->find($id);
+		$role = $this->roleRepository->findByID($id);
 
 		if(empty($role))
 		{
 			flash('Registro não existe.')->error();
 
-			return redirect(route('gerencial.roles.index'));
+			return redirect(route('roles.index'));
 		}
 
-		$role = $this->roleRepository->updateRich($request->all(), $id);
+		$this->roleRepository->update($role, $request->all());
 
 		flash('Registro editado com sucesso!')->success();
 
-		return redirect(route('gerencial.roles.index'));
+		return redirect(route('roles.index'));
 	}
 
-	/**
-	 * Remove the specified Role from storage.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function destroy($id)
+    /**
+     * Remove the specified Role from storage.
+     *
+     * @param int $id
+     *
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
+     */
+	public function destroy(int $id)
 	{
-		$role = $this->roleRepository->find($id);
+		$role = $this->roleRepository->findByID($id);
 
 		if(empty($role))
 		{
 			flash('Registro não existe.')->error();
 
-			return redirect(route('gerencial.roles.index'));
+			return redirect(route('roles.index'));
 		}
 
-		$this->roleRepository->delete($id);
+		$this->roleRepository->delete($role);
 
 		flash('Registro deletado com sucesso!')->success();
 
-		return redirect(route('gerencial.roles.index'));
+		return redirect(route('roles.index'));
 	}
 
     /**
-	 * Update status of specified Role from storage.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Json
-	 */
-	public function toggle($id){
-            $register = $this->roleRepository->find($id);
+     * Update status of specified Role from storage.
+     *
+     * @param int $id
+     * @return false|string
+     * @throws BindingResolutionException
+     */
+	public function toggle(int $id){
+            $register = $this->roleRepository->findByID($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);
@@ -171,7 +181,7 @@ class RoleController extends AppBaseController
 
     /**
      * @param $id
-     * @return $this
+     * @return Application|Factory|View
      */
     public function permission($id){
         $roles  = Defender::findRoleById($id);

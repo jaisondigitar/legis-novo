@@ -7,7 +7,7 @@
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
-            {!! Form::model($role, ['route' => ['gerencial.roles.update', $role->id], 'method' => 'patch','files' => true]) !!}
+            {!! Form::model($role, ['route' => ['roles.update', $role->id], 'method' => 'patch','files' => true]) !!}
             @include('roles.fields')
             {!! Form::close() !!}
         </div>
