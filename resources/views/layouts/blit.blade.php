@@ -64,17 +64,24 @@
     }
 </style>
     <style>
-
         body {
-            height: 100vh;
+            position: relative;
+            min-height: 100vh;
+            background: #E8E9EE;
         }
 
         .wrapper {
-            height: 90%;
+            height: 100%;
+            padding-bottom: 5rem;
         }
 
         footer {
+            position: absolute;
+            height: 5rem;
+            bottom: 0;
+            width: 100%;
             margin-top: 0;
+            border-top: 0;
         }
 
         .dropdown-submenu {
@@ -82,7 +89,7 @@
         }
 
         .logo-brand img {
-            margin-top: 0px;
+            margin-top: 0;
         }
 
         .dropdown-submenu>.dropdown-menu {
