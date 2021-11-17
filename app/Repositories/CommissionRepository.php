@@ -7,13 +7,7 @@ use App\Models\Commission;
 class CommissionRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        'date_start',
-        'date_end',
-        'name'
-    ];
-
     protected $modelClass = Commission::class;
 }

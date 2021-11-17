@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateCommissionRequest;
 use App\Http\Requests\UpdateCommissionRequest;
 use App\Models\Assemblyman;
 use App\Models\CommissionAssemblyman;
 use App\Models\OfficeCommission;
 use App\Repositories\CommissionRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class CommissionController extends AppBaseController
 {
@@ -29,10 +31,10 @@ class CommissionController extends AppBaseController
     /**
      * Display a listing of the Commission.
      *
-     * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
-    public function index(Request $request)
+    public function index()
     {
         if(!Defender::hasPermission('commissions.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -48,7 +50,7 @@ class CommissionController extends AppBaseController
     /**
      * Show the form for creating a new Commission.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -58,9 +60,9 @@ class CommissionController extends AppBaseController
             return redirect("/");
         }
 
-        $assemblymen = Assemblyman::lists('full_name', 'id')->prepend('Selecione', '');
+        $assemblymen = Assemblyman::pluck('full_name', 'id')->prepend('Selecione', '');
 
-        $office_commission = OfficeCommission::lists('name', 'id')->prepend('Selecione', '');
+        $office_commission = OfficeCommission::pluck('name', 'id')->prepend('Selecione', '');
 
         return view('commissions.create')->with('assemblymen', $assemblymen)->with('office_commission', $office_commission);
     }
@@ -70,7 +72,8 @@ class CommissionController extends AppBaseController
      *
      * @param CreateCommissionRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateCommissionRequest $request)
     {
@@ -104,11 +107,12 @@ class CommissionController extends AppBaseController
     /**
      * Display the specified Commission.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function show($id)
+    public function show(int $id)
     {
         if(!Defender::hasPermission('commissions.show'))
         {
@@ -116,7 +120,7 @@ class CommissionController extends AppBaseController
             return redirect("/");
         }
 
-        $commission = $this->commissionRepository->findWithoutFail($id);
+        $commission = $this->commissionRepository->findByID($id);
 
         if (empty($commission)) {
             flash('Comissão não encontrada.')->error();
@@ -130,18 +134,19 @@ class CommissionController extends AppBaseController
     /**
      * Show the form for editing the specified Commission.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if(!Defender::hasPermission('commissions.edit'))
         {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $commission = $this->commissionRepository->findWithoutFail($id);
+        $commission = $this->commissionRepository->findByID($id);
 
         if (empty($commission)) {
             flash('Comissão não encontrada.')->error();
@@ -149,8 +154,8 @@ class CommissionController extends AppBaseController
             return redirect(route('commissions.index'));
         }
 
-        $assemblymen = Assemblyman::lists('full_name', 'id')->prepend('Selecione', '');
-        $office_commission = OfficeCommission::lists('name', 'id')->prepend('Selecione', '');
+        $assemblymen = Assemblyman::pluck('full_name', 'id')->prepend('Selecione', '');
+        $office_commission = OfficeCommission::pluck('name', 'id')->prepend('Selecione', '');
 
         return view('commissions.edit')
             ->with('commission', $commission)
@@ -161,12 +166,13 @@ class CommissionController extends AppBaseController
     /**
      * Update the specified Commission in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateCommissionRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
-    public function update($id, UpdateCommissionRequest $request)
+    public function update(int $id, UpdateCommissionRequest $request)
     {
         if(!Defender::hasPermission('commissions.edit'))
         {
@@ -174,7 +180,7 @@ class CommissionController extends AppBaseController
             return redirect("/");
         }
 
-        $commission = $this->commissionRepository->findWithoutFail($id);
+        $commission = $this->commissionRepository->findByID($id);
 
         if (empty($commission)) {
             flash('Comissão não encontrada.')->error();
@@ -182,9 +188,9 @@ class CommissionController extends AppBaseController
             return redirect(route('commissions.index'));
         }
 
-        $commission = $this->commissionRepository->update($request->all(), $id);
+        $commission = $this->commissionRepository->update($commission, $request->all());
 
-        $delete_all_assemblyman = CommissionAssemblyman::where('commission_id', $commission->id)->delete();
+        CommissionAssemblyman::where('commission_id', $commission->id)->delete();
 
         if($request->assemblyman_comission){
             foreach ($request->assemblyman_comission as $item){
@@ -206,11 +212,12 @@ class CommissionController extends AppBaseController
     /**
      * Remove the specified Commission from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if(!Defender::hasPermission('commissions.delete'))
         {
@@ -218,7 +225,7 @@ class CommissionController extends AppBaseController
             return redirect("/");
         }
 
-        $commission = $this->commissionRepository->findWithoutFail($id);
+        $commission = $this->commissionRepository->findByID($id);
 
         if (empty($commission)) {
             flash('Comissão não encontrada.')->error();
@@ -226,9 +233,9 @@ class CommissionController extends AppBaseController
             return redirect(route('commissions.index'));
         }
 
-        $commission_assemblyman = CommissionAssemblyman::where('commission_id', $commission->id)->delete();
+        CommissionAssemblyman::where('commission_id', $commission->id)->delete();
 
-        $this->commissionRepository->delete($id);
+        $this->commissionRepository->delete($commission);
 
         flash('Comissão excluída com sucesso')->success();
 
