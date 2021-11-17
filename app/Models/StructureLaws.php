@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Baum\Node as Tree;
+use Baum\Node;
 
-class StructureLaws extends Tree
+class StructureLaws extends Node
 {
     public $table = 'structure_laws';
 
-    protected $parentColumn = 'parent_id';
-    protected $leftColumn   = 'lft';
-    protected $rightColumn  = 'rgt';
-    protected $depthColumn  = 'depth';
-    protected $nameColumn   = 'content';
+    protected $parentColumnName = 'parent_id';
+    protected $leftColumnName   = 'lft';
+    protected $rightColumnName  = 'rgt';
+    protected $depthColumnName  = 'depth';
+    protected $orderColumnName   = 'content';
 
     protected $guarded = array('id', 'parent_id', 'lft', 'rgt', 'depth');
 

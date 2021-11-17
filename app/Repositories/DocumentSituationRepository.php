@@ -4,20 +4,10 @@ namespace App\Repositories;
 
 use App\Models\DocumentSituation;
 
-class DocumentSituationRepository
+class DocumentSituationRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return DocumentSituation::class;
-    }
+    protected $modelClass = DocumentSituation::class;
 }
