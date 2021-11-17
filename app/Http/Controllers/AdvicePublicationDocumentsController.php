@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateAdvicePublicationDocumentsRequest;
 use App\Http\Requests\UpdateAdvicePublicationDocumentsRequest;
 use App\Repositories\AdvicePublicationDocumentsRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class AdvicePublicationDocumentsController extends AppBaseController
 {
@@ -26,18 +28,17 @@ class AdvicePublicationDocumentsController extends AppBaseController
     /**
      * Display a listing of the AdvicePublicationDocuments.
      *
-     * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
-    public function index(Request $request)
+    public function index()
     {
         if(!Defender::hasPermission('advicePublicationDocuments.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $this->advicePublicationDocumentsRepository->pushCriteria(new RequestCriteria($request));
-        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->all();
+        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->getAll(0);
 
         return view('advicePublicationDocuments.index')
             ->with('advicePublicationDocuments', $advicePublicationDocuments);
@@ -46,7 +47,7 @@ class AdvicePublicationDocumentsController extends AppBaseController
     /**
      * Show the form for creating a new AdvicePublicationDocuments.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -64,7 +65,8 @@ class AdvicePublicationDocumentsController extends AppBaseController
      *
      * @param CreateAdvicePublicationDocumentsRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateAdvicePublicationDocumentsRequest $request)
     {
@@ -73,9 +75,8 @@ class AdvicePublicationDocumentsController extends AppBaseController
            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
-        $input = $request->all();
 
-        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->create($input);
+        $this->advicePublicationDocumentsRepository->create($request->all());
 
         flash('Aconselhamento de Documentos de Publicação salvos com sucesso.')->success();
 
@@ -85,11 +86,12 @@ class AdvicePublicationDocumentsController extends AppBaseController
     /**
      * Display the specified AdvicePublicationDocuments.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function show($id)
+    public function show(int $id)
     {
         if(!Defender::hasPermission('advicePublicationDocuments.show'))
         {
@@ -97,7 +99,7 @@ class AdvicePublicationDocumentsController extends AppBaseController
             return redirect("/");
         }
 
-        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findWithoutFail($id);
+        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findByID($id);
 
         if (empty($advicePublicationDocuments)) {
             flash('Aconselhamento de Documentos de Publicação não encontrados')->error();
@@ -111,18 +113,19 @@ class AdvicePublicationDocumentsController extends AppBaseController
     /**
      * Show the form for editing the specified AdvicePublicationDocuments.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if(!Defender::hasPermission('advicePublicationDocuments.edit'))
         {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findWithoutFail($id);
+        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findByID($id);
 
         if (empty($advicePublicationDocuments)) {
             flash('Aconselhamento de Documentos de Publicação não encontrados')->error();
@@ -136,12 +139,13 @@ class AdvicePublicationDocumentsController extends AppBaseController
     /**
      * Update the specified AdvicePublicationDocuments in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateAdvicePublicationDocumentsRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
-    public function update($id, UpdateAdvicePublicationDocumentsRequest $request)
+    public function update(int $id, UpdateAdvicePublicationDocumentsRequest $request)
     {
         if(!Defender::hasPermission('advicePublicationDocuments.edit'))
         {
@@ -149,7 +153,7 @@ class AdvicePublicationDocumentsController extends AppBaseController
             return redirect("/");
         }
 
-        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findWithoutFail($id);
+        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findByID($id);
 
         if (empty($advicePublicationDocuments)) {
             flash('Aconselhamento de Documentos de Publicação não encontrados')->error();
@@ -157,7 +161,7 @@ class AdvicePublicationDocumentsController extends AppBaseController
             return redirect(route('advicePublicationDocuments.index'));
         }
 
-        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->update($request->all(), $id);
+        $this->advicePublicationDocumentsRepository->update($advicePublicationDocuments, $request->all());
 
         flash('Aconselhamento de Documentos de Publicação atualizado com sucesso.')->success();
 
@@ -167,11 +171,13 @@ class AdvicePublicationDocumentsController extends AppBaseController
     /**
      * Remove the specified AdvicePublicationDocuments from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if(!Defender::hasPermission('advicePublicationDocuments.delete'))
         {
@@ -179,7 +185,7 @@ class AdvicePublicationDocumentsController extends AppBaseController
             return redirect("/");
         }
 
-        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findWithoutFail($id);
+        $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findByID($id);
 
         if (empty($advicePublicationDocuments)) {
             flash('Aconselhamento de Documentos de Publicação não encontrados')->error();
@@ -187,7 +193,7 @@ class AdvicePublicationDocumentsController extends AppBaseController
             return redirect(route('advicePublicationDocuments.index'));
         }
 
-        $this->advicePublicationDocumentsRepository->delete($id);
+        $this->advicePublicationDocumentsRepository->delete($advicePublicationDocuments);
 
         flash('Aconselhamento de Documentos de Publicação removido com sucesso.')->success();
 
@@ -195,20 +201,20 @@ class AdvicePublicationDocumentsController extends AppBaseController
     }
 
     /**
-    	 * Update status of specified AdvicePublicationDocuments from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('advicePublicationDocuments.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->advicePublicationDocumentsRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified AdvicePublicationDocuments from storage.
+     *
+     * @param int $id
+     * @return false|string
+     * @throws BindingResolutionException
+     */
+    public function toggle(int $id){
+        if(!Defender::hasPermission('advicePublicationDocuments.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->advicePublicationDocumentsRepository->findByID($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 }
