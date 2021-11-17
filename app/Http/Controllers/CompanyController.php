@@ -166,13 +166,14 @@ class CompanyController extends AppBaseController
 		return view('companies.edit',compact('states','cities'))->with('company', $company);
 	}
 
-	/**
-	 * Update the specified Company in storage.
-	 *
-	 * @param int $id
-	 * @param UpdateCompanyRequest $request
-	 *
-	 * @return Application|Redirector|RedirectResponse
+    /**
+     * Update the specified Company in storage.
+     *
+     * @param int $id
+     * @param UpdateCompanyRequest $request
+     *
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
 	public function update(int $id, UpdateCompanyRequest $request)
 	{
@@ -216,7 +217,7 @@ class CompanyController extends AppBaseController
 
 		flash('Registro editado com sucesso!')->success();
 
-		return redirect(route('config.companies.index'));
+		return redirect(route('companies.index'));
 	}
 
     /**
