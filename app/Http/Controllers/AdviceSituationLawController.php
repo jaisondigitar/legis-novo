@@ -98,7 +98,7 @@ class AdviceSituationLawController extends AppBaseController
             return redirect("/");
         }
 
-        $adviceSituationLaw = $this->adviceSituationLawRepository->findWithoutFail($id);
+        $adviceSituationLaw = $this->adviceSituationLawRepository->findById($id);
 
         if (empty($adviceSituationLaw)) {
             flash('AdviceSituationLaw not found')->error();
@@ -123,7 +123,7 @@ class AdviceSituationLawController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $adviceSituationLaw = $this->adviceSituationLawRepository->findWithoutFail($id);
+        $adviceSituationLaw = $this->adviceSituationLawRepository->findById($id);
 
         if (empty($adviceSituationLaw)) {
             flash('AdviceSituationLaw not found')->error();
@@ -150,7 +150,7 @@ class AdviceSituationLawController extends AppBaseController
             return redirect("/");
         }
 
-        $adviceSituationLaw = $this->adviceSituationLawRepository->findWithoutFail($id);
+        $adviceSituationLaw = $this->adviceSituationLawRepository->findById($id);
 
         if (empty($adviceSituationLaw)) {
             flash('AdviceSituationLaw not found')->error();
@@ -158,7 +158,7 @@ class AdviceSituationLawController extends AppBaseController
             return redirect(route('adviceSituationLaws.index'));
         }
 
-        $adviceSituationLaw = $this->adviceSituationLawRepository->update($request->all(), $id);
+        $adviceSituationLaw = $this->adviceSituationLawRepository->update($adviceSituationLaw, $request->all());
 
         flash('AdviceSituationLaw updated successfully.')->success();
 
@@ -180,7 +180,7 @@ class AdviceSituationLawController extends AppBaseController
             return redirect("/");
         }
 
-        $adviceSituationLaw = $this->adviceSituationLawRepository->findWithoutFail($id);
+        $adviceSituationLaw = $this->adviceSituationLawRepository->findById($id);
 
         if (empty($adviceSituationLaw)) {
             flash('AdviceSituationLaw not found')->error();
@@ -188,7 +188,7 @@ class AdviceSituationLawController extends AppBaseController
             return redirect(route('adviceSituationLaws.index'));
         }
 
-        $this->adviceSituationLawRepository->delete($id);
+        $this->adviceSituationLawRepository->delete($adviceSituationLaw);
 
         flash('AdviceSituationLaw deleted successfully.')->success();
 
@@ -207,7 +207,7 @@ class AdviceSituationLawController extends AppBaseController
             {
                 return json_encode(false);
             }
-            $register = $this->adviceSituationLawRepository->findWithoutFail($id);
+            $register = $this->adviceSituationLawRepository->findById($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);

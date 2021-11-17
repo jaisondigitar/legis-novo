@@ -96,7 +96,7 @@ class LawsTagController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
+        $lawsTag = $this->lawsTagRepository->findById($id);
 
         if (empty($lawsTag)) {
             flash('Tag de Lei não encontrada')->error();
@@ -121,7 +121,7 @@ class LawsTagController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
+        $lawsTag = $this->lawsTagRepository->findById($id);
 
         if (empty($lawsTag)) {
             flash('Tag de Lei não encontrada')->error();
@@ -148,7 +148,7 @@ class LawsTagController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
+        $lawsTag = $this->lawsTagRepository->findById($id);
 
         if (empty($lawsTag)) {
             flash('Tag de Lei não encontrada')->error();
@@ -156,7 +156,7 @@ class LawsTagController extends AppBaseController
             return redirect(route('lawsTags.index'));
         }
 
-        $lawsTag = $this->lawsTagRepository->update($request->all(), $id);
+        $lawsTag = $this->lawsTagRepository->update($lawsTag, $request->all());
 
         flash('Tag de Lei atualizada com sucesso.')->success();
 
@@ -178,7 +178,7 @@ class LawsTagController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsTag = $this->lawsTagRepository->findWithoutFail($id);
+        $lawsTag = $this->lawsTagRepository->findById($id);
 
         if (empty($lawsTag)) {
             flash('Tag de Lei não encontrada')->error();
@@ -186,7 +186,7 @@ class LawsTagController extends AppBaseController
             return redirect(route('lawsTags.index'));
         }
 
-        $this->lawsTagRepository->delete($id);
+        $this->lawsTagRepository->delete($lawsTag);
 
         flash('Tag de Lei removida com sucesso.')->success();
 
@@ -205,7 +205,7 @@ class LawsTagController extends AppBaseController
             {
                 return json_encode(false);
             }
-            $register = $this->lawsTagRepository->findWithoutFail($id);
+            $register = $this->lawsTagRepository->findById($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);

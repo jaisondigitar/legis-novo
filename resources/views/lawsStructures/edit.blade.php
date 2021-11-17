@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="the-box rounded">
-    @include('core-templates::common.errors')
+    @include('core-::common.errors')
     <div class="row">
         <div class="col-md-12">
             {!! Form::model($lawsStructure, ['route' => ['lawsStructures.update', $lawsStructure->id], 'method' => 'patch','files' => true]) !!}
