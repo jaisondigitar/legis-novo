@@ -10,12 +10,12 @@ use Baum\Node;
 class Structurepautum extends Node {
     protected $table = 'structurepautas';
 
-    protected $parentColumn = 'parent_id';
-    protected $leftColumn   = 'lft';
-    protected $rightColumn  = 'rgt';
-    protected $depthColumn  = 'depth';
+    protected $parentColumnName = 'parent_id';
+    protected $leftColumnName   = 'lft';
+    protected $rightColumnName  = 'rgt';
+    protected $depthColumnName  = 'depth';
     protected $nameColumn   = 'name';
-    protected $orderColumn  = 'order';
+    protected $orderColumnName  = 'order';
 
     protected $guarded = array('id', 'parent_id', 'lft', 'rgt', 'depth');
 

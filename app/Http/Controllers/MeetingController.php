@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateMeetingRequest;
 use App\Http\Requests\UpdateMeetingRequest;
 use App\Models\Advice;
@@ -26,15 +25,17 @@ use App\Models\Votes;
 use App\Repositories\MeetingRepository;
 use App\Models\Voting;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
-use PhpParser\Comment\Doc;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
 use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\View\View;
 
 class MeetingController extends AppBaseController
 {
@@ -53,10 +54,9 @@ class MeetingController extends AppBaseController
     /**
      * Display a listing of the Meeting.
      *
-     * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
      */
-    public function index(Request $request)
+    public function index()
     {
         if(!Defender::hasPermission('meetings.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -72,7 +72,7 @@ class MeetingController extends AppBaseController
     /**
      * Show the form for creating a new Meeting.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -92,7 +92,8 @@ class MeetingController extends AppBaseController
      *
      * @param CreateMeetingRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateMeetingRequest $request)
     {
@@ -103,7 +104,7 @@ class MeetingController extends AppBaseController
        }
         $input = $request->all();
 
-        $meeting = $this->meetingRepository->create($input);
+        $this->meetingRepository->create($input);
 
         flash('Reunião salva com sucesso.')->success();
 
@@ -113,11 +114,12 @@ class MeetingController extends AppBaseController
     /**
      * Display the specified Meeting.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function show($id)
+    public function show(int $id)
     {
         if(!Defender::hasPermission('meetings.show'))
         {
@@ -141,11 +143,12 @@ class MeetingController extends AppBaseController
     /**
      * Show the form for editing the specified Meeting.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if(!Defender::hasPermission('meetings.edit'))
         {
@@ -168,12 +171,13 @@ class MeetingController extends AppBaseController
     /**
      * Update the specified Meeting in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateMeetingRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
-    public function update($id, UpdateMeetingRequest $request)
+    public function update(int $id, UpdateMeetingRequest $request)
     {
         if(!Defender::hasPermission('meetings.edit'))
         {
@@ -190,7 +194,7 @@ class MeetingController extends AppBaseController
         }
 
         $meeting = $this->meetingRepository->update($meeting, $request->all());
-        $meeting_pauta = MeetingPauta::where('meeting_id', $meeting->id)->get();
+        MeetingPauta::where('meeting_id', $meeting->id)->get();
 
         flash('Reunião atualizada com sucesso.')->success();
 
@@ -200,9 +204,11 @@ class MeetingController extends AppBaseController
     /**
      * Remove the specified Meeting from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
+     * @throws Exception
      */
     public function destroy($id)
     {
@@ -228,24 +234,22 @@ class MeetingController extends AppBaseController
     }
 
 
-
     /**
-    	 * Update status of specified Meeting from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('meetings.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->meetingRepository->findById($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified Meeting from storage.
+     *
+     * @param int $id
+     * @throws BindingResolutionException
+     */
+    public function toggle($id){
+        if(!Defender::hasPermission('meetings.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->meetingRepository->findById($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 
     public function meetingsNextNumber($session_type_id)
     {
@@ -570,7 +574,11 @@ class MeetingController extends AppBaseController
         $vicePresidente = Parameters::where('slug', 'vice-presidente-assina-pauta-e-ata')->first();
         $secretario = Parameters::where('slug', '1-secretario-assina-pauta-e-ata')->first();
 
-        if($presidente->value == 1 || $vicePresidente->value == 1 || $secretario->value == 1) {
+        if(
+            ($presidente && $presidente->value == 1) ||
+            ($vicePresidente && $vicePresidente->value == 1) ||
+            $secretario && $secretario->value == 1
+        ) {
 
             $html .= '<br> <br> <br>';
             $html .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 400px; margin-left: 8%;">';
@@ -788,8 +796,6 @@ class MeetingController extends AppBaseController
             return \GuzzleHttp\json_encode($obj);
         }
 
-        return \GuzzleHttp\json_encode(false);
-
     }
 
     public function removeDocument($id){
@@ -953,7 +959,7 @@ class MeetingController extends AppBaseController
         $pdf->SetAuthor('MakerLegis');
 
         $pdf->SetPrintHeader($showHeader);
-        $subHeader = $company->phone1 . " - " .$company->email . "\n";
+
         $pdf->setFooterData($meeting->id.'-'.date_timestamp_get($meeting->created_at),array(0,64,0), array(0,64,128));
         $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -1071,10 +1077,10 @@ class MeetingController extends AppBaseController
 
         $input['meeting_id']= $meeting->id;
 
-        $doc_voting = Parameters::where('slug', 'realiza-votacao-de-documentos')->first()->value;
-        $law_voting = Parameters::where('slug', 'realiza-votacao-em-projeto-de-lei')->first()->value;
+        Parameters::where('slug', 'realiza-votacao-de-documentos')->first()->value;
+        Parameters::where('slug', 'realiza-votacao-em-projeto-de-lei')->first()->value;
         $ata_voting = Parameters::where('slug', 'realiza-votacao-de-ata')->first()->value;
-        $advice_voting = Parameters::where('slug', 'realiza-votacao-de-parecer')->first()->value;
+        Parameters::where('slug', 'realiza-votacao-de-parecer')->first()->value;
 
         $type_voting = TypeVoting::pluck('name', 'id')->prepend('Selecione', 0);
 
@@ -1204,7 +1210,7 @@ class MeetingController extends AppBaseController
             flash('Votação cancelada!')->warning();
         }
 
-        $assemblyman = Assemblyman::where('active', 1)->orderBy('short_name')->get();
+        Assemblyman::where('active', 1)->orderBy('short_name')->get();
 
         return redirect(route('meetings.voting', $meeting->id));
 //        return view('meetings.show', compact('meeting', 'assemblyman'));
@@ -1306,7 +1312,7 @@ class MeetingController extends AppBaseController
 
 //            $data['name'] = ($voting->law_id ? $voting->getName() : $voting->getName());
             $data['status'] = true;
-            $vote = $voting->votes()->where('voting_id', $voting->id)->first();
+            $voting->votes()->where('voting_id', $voting->id)->first();
 
             $meeting = Meeting::find($voting->meeting_id);
             if($meeting)
@@ -1324,7 +1330,7 @@ class MeetingController extends AppBaseController
             }
         }
 
-        $data['active'] = $meeting_assemblyman = Meeting::find($voting->meeting_id)->assemblyman()->find($id) == null ? false : true;
+        $data['active'] = !(Meeting::find($voting->meeting_id)->assemblyman()->find($id) == null);
 
         return json_encode($data);
 
