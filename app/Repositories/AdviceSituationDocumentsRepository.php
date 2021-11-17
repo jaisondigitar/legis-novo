@@ -4,20 +4,10 @@ namespace App\Repositories;
 
 use App\Models\AdviceSituationDocuments;
 
-class AdviceSituationDocumentsRepository
+class AdviceSituationDocumentsRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return AdviceSituationDocuments::class;
-    }
+    protected $modelClass = AdviceSituationDocuments::class;
 }
