@@ -96,7 +96,7 @@ class LawsStructureController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
+        $lawsStructure = $this->lawsStructureRepository->findById($id);
 
         if (empty($lawsStructure)) {
             flash('Estrutura da lei não encontrada')->error();
@@ -121,7 +121,7 @@ class LawsStructureController extends AppBaseController
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
+        $lawsStructure = $this->lawsStructureRepository->findById($id);
 
         if (empty($lawsStructure)) {
             flash('Estrutura da lei não encontrada')->error();
@@ -148,7 +148,7 @@ class LawsStructureController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
+        $lawsStructure = $this->lawsStructureRepository->findById($id);
 
         if (empty($lawsStructure)) {
             flash('Estrutura da lei não encontrada')->error();
@@ -156,7 +156,7 @@ class LawsStructureController extends AppBaseController
             return redirect(route('lawsStructures.index'));
         }
 
-        $lawsStructure = $this->lawsStructureRepository->update($request->all(), $id);
+        $lawsStructure = $this->lawsStructureRepository->update($lawsStructure, $request->all());
 
         flash('Estrutura da lei atualizada com sucesso.')->success();
 
@@ -178,7 +178,7 @@ class LawsStructureController extends AppBaseController
             return redirect("/");
         }
 
-        $lawsStructure = $this->lawsStructureRepository->findWithoutFail($id);
+        $lawsStructure = $this->lawsStructureRepository->findById($id);
 
         if (empty($lawsStructure)) {
             flash('Estrutura da lei não encontrada')->error();
@@ -186,7 +186,7 @@ class LawsStructureController extends AppBaseController
             return redirect(route('lawsStructures.index'));
         }
 
-        $this->lawsStructureRepository->delete($id);
+        $this->lawsStructureRepository->delete($lawsStructure);
 
         flash('Estrutura da lei removido com sucesso.')->success();
 
@@ -205,7 +205,7 @@ class LawsStructureController extends AppBaseController
             {
                 return json_encode(false);
             }
-            $register = $this->lawsStructureRepository->findWithoutFail($id);
+            $register = $this->lawsStructureRepository->findById($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);
