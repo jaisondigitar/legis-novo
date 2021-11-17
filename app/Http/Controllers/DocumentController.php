@@ -501,33 +501,38 @@ class DocumentController extends AppBaseController
 
         $conteudo = $document->content;
 
-        $content = str_replace(
-            array('[numero]', '[data_curta]','[data_longa]', '[autores]','[autores_vereador]', '[nome_vereadores]','[responsavel]', '[assunto]', '[conteudo]',
-            '[protocolo_numero]',
-            '[protocolo_data]',
-            '[protocolo_hora]',
-            '[numero_interno]',
+        if ($document_model) {
+            $content = str_replace(
+                array('[numero]', '[data_curta]', '[data_longa]', '[autores]', '[autores_vereador]', '[nome_vereadores]', '[responsavel]', '[assunto]', '[conteudo]',
+                    '[protocolo_numero]',
+                    '[protocolo_data]',
+                    '[protocolo_hora]',
+                    '[numero_interno]',
                     '[numero_documento]', '[ano_documento]', '[tipo_documento]'),
-            array(
-                "<b>" . $tipo . "</b>: " . $docNum . ' / ' . $document->getYear($document->date),
-                ucfirst(strftime('%d/%m/%Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date)))),
-                $data_ptbr,
+                array(
+                    "<b>" . $tipo . "</b>: " . $docNum . ' / ' . $document->getYear($document->date),
+                    ucfirst(strftime('%d/%m/%Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date)))),
+                    $data_ptbr,
 //                ucfirst(iconv('ISO-8859-1', 'UTF-8',strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date))))),
-                $html,
-                $html2,
-                $html3,
-                $document->owner->short_name,
-                $document->content,
-                $conteudo,
-                $document_protocol_number,
-                $document_protocol_date,
-                $document_protocol_hours,
-                $document_internal_number,
-                $docNum,
-                $document->getYear($document->date),
-                $tipo),
-            $document_model->content);
+                    $html,
+                    $html2,
+                    $html3,
+                    $document->owner->short_name,
+                    $document->content,
+                    $conteudo,
+                    $document_protocol_number,
+                    $document_protocol_date,
+                    $document_protocol_hours,
+                    $document_internal_number,
+                    $docNum,
+                    $document->getYear($document->date),
+                    $tipo),
+                $document_model->content);
 
+            $pdf->writeHTML($content);
+        } else {
+            $pdf->writeHTML($conteudo);
+        }
 
 
         //return $content;
@@ -536,7 +541,6 @@ class DocumentController extends AppBaseController
 
 
 
-        $pdf->writeHTML($content);
 
         if($tramitacao){
 
