@@ -16,7 +16,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
-      - 3308:3306
+      - 3307:3306
     environment:
       - MYSQL_ROOT_PASSWORD=legisblit
       - MYSQL_DATABASE=legis
