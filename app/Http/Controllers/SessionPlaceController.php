@@ -13,7 +13,7 @@ use Response;
 use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
 
-class SessionPlaceController extends AppBaseController
+class SessionPlaceController extends AppBaseControfller
 {
     /** @var  SessionPlaceRepository */
     private $sessionPlaceRepository;
