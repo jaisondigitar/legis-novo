@@ -184,5 +184,15 @@ return [
         'sub_title' => 'Prefixo',
         'assemblyman_id' => 'Responsável',
         'situation_id' => 'Situação atual',
+
+        'cnpjCpf' => 'CNPJ/CPF',
+        'mayor' => 'Responsável',
+        'shortName' => 'Nome Fantasia',
+        'fullName' => 'Rasão Social',
+        'ieRg' => 'Insc. Estadual',
+        'im' => 'Insc. Municipal',
+
+        "sector_id" => "Setor",
+        "password" => "Senha",
     ],
 ];

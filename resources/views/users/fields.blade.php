@@ -13,25 +13,25 @@
 </div>
 
 <div class="form-group col-sm-6 col-lg-6">
-    {!! Form::label('sector_id', 'Setor:') !!}
+    {!! Form::label('sector_id', 'Setor:', ['class' => 'required']) !!}
     {!! Form::select('sector_id', $sectors, null, ['class' => 'form-control', 'required']) !!}
 </div>
 
 <!--- Name Field --->
 <div class="form-group col-sm-6 col-lg-6">
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', 'Name:', ['class' => 'required']) !!}
 	{!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 
 <!--- Email Field --->
 <div class="form-group col-sm-6 col-lg-6">
-    {!! Form::label('email', 'Email:') !!}
+    {!! Form::label('email', 'Email:', ['class' => 'required']) !!}
 	{!! Form::email('email', null, ['class' => 'form-control']) !!}
 </div>
 
 <!--- Password Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('password', 'Password:') !!}
+    {!! Form::label('password', 'Senha:', ['class' => 'required']) !!}
 	{!! Form::password('password', ['class' => 'form-control']) !!}
 </div>
 
