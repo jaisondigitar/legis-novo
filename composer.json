@@ -11,6 +11,7 @@
         "php": "^7.2.5|^8.0",
         "ext-json": "*",
         "artesaos/defender": "^0.10.0",
+        "baum/baum": "v2.x-dev",
         "cmgmyr/messenger": "^2.22",
         "diglactic/laravel-breadcrumbs": "^7.0",
         "doctrine/dbal": "^2.12.1",

@@ -43,9 +43,9 @@
  */
 
 // include the TCPDF class
-require_once(dirname(__FILE__).'/tcpdf.php');
+require_once(dirname(__FILE__) . '/tcpdf.php');
 // include PDF parser class
-require_once(dirname(__FILE__).'/tcpdf_parser.php');
+require_once(dirname(__FILE__) . '/tcpdf_parser.php');
 
 /**
  * @class TCPDF_IMPORT
@@ -60,7 +60,7 @@ class TCPDF_IMPORT extends TCPDF {
 
 	/**
 	 * Import an existing PDF document
-	 * @param $filename (string) Filename of the PDF document to import.
+	 * @param string $filename Filename of the PDF document to import.
 	 * @return true in case of success, false otherwise
 	 * @public
 	 * @since 1.0.000 (2011-05-24)
