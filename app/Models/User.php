@@ -47,10 +47,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     ];
 
 	public static $rules = [
-        "sector_id" => "request",
-        "name" => "request",
-        "email" => "request",
-        "password" => "request",
+        "sector_id" => "required",
+        "name" => "required",
+        "email" => "required",
+        "password" => "required",
 	];
 
     protected $hidden = ['password', 'remember_token','created_at','updated_at','deleted_at'];
