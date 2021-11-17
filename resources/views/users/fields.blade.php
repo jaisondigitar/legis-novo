@@ -38,18 +38,20 @@
 <!--- Active Field --->
 <div class="form-group col-sm-6 col-lg-2">
     <span>Ativo</span><br>
-    <input name="active" id="active" class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox"
-           @if(isset($user))
-           {!! $user->active>0?'checked':'' !!}
-           @else
-           checked
+    <label for="active">
+        <input name="active" id="active" class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal" type="checkbox"
+            @if(isset($user))
+                {!! $user->active>0?'checked':'' !!}
+            @else
+                checked
             @endif
-    >
+        >
+    </label>
 </div>
 
 <div class="form-group col-sm-12">
     <div class="the-box bg-success no-border">
-        <h4 class="small-title">GRUPO DE PERMISSÕES:</h4>
+        <h4 class="small-title required">GRUPO DE PERMISSÕES:</h4>
         @foreach($levels as $value)
             <?php
                 $teste = false;
@@ -58,7 +60,7 @@
                 }
             ?>
             <div class="col-sm-2">
-                {!! Form::checkbox('roles[]',$value->id,$teste) !!}
+                {!! Form::checkbox('roles[]', $value->id, $teste, ['class' => 'required']) !!}
                 {{ $value->name }}
             </div>
         @endforeach

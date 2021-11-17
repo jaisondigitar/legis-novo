@@ -49,7 +49,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public static $rules = [
         "sector_id" => "required",
         "name" => "required",
-        "email" => "required",
+        "email" => "required|unique:users,email",
         "password" => "required",
 	];
 
