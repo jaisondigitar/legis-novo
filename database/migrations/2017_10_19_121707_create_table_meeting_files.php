@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateTableMeetingFiles extends Migration
 {
@@ -12,7 +12,7 @@ class CreateTableMeetingFiles extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('meeting_files')) {
+        if (! Schema::hasTable('meeting_files')) {
             Schema::create('meeting_files', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('meeting_id')->unsigned();
@@ -34,4 +34,3 @@ class CreateTableMeetingFiles extends Migration
         Schema::drop('meeting_files');
     }
 }
-

@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreatecommissionsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreatecommissionsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('commissions')) {
+        if (! Schema::hasTable('commissions')) {
             Schema::create('commissions', function (Blueprint $table) {
                 $table->increments('id');
                 $table->date('date_start');

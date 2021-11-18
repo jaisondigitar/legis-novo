@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateModuleRequest;
 use App\Http\Requests\UpdateModuleRequest;
@@ -13,14 +15,13 @@ use Laracasts\Flash\Flash;
 
 class ModuleController extends AppBaseController
 {
+    /** @var ModuleRepository */
+    private $moduleRepository;
 
-	/** @var  ModuleRepository */
-	private $moduleRepository;
-
-	function __construct(ModuleRepository $moduleRepo)
-	{
-		$this->moduleRepository = $moduleRepo;
-	}
+    public function __construct(ModuleRepository $moduleRepo)
+    {
+        $this->moduleRepository = $moduleRepo;
+    }
 
     /**
      * Display a listing of the Module.
@@ -28,24 +29,23 @@ class ModuleController extends AppBaseController
      * @return Application|Factory|View
      * @throws BindingResolutionException
      */
-	public function index()
-	{
-            $modules = $this->moduleRepository->newQuery()->paginate(30);
-            return view('modules.index')
+    public function index()
+    {
+        $modules = $this->moduleRepository->newQuery()->paginate(30);
+
+        return view('modules.index')
                 ->with('modules', $modules);
+    }
 
-	}
-
-	/**
-	 * Show the form for creating a new Module.
-	 *
-	 * @return Application|Factory|View
-	 */
-	public function create()
-	{
-            return view('modules.create');
-
-	}
+    /**
+     * Show the form for creating a new Module.
+     *
+     * @return Application|Factory|View
+     */
+    public function create()
+    {
+        return view('modules.create');
+    }
 
     /**
      * Store a newly created Module in storage.
@@ -55,16 +55,16 @@ class ModuleController extends AppBaseController
      * @return Application|RedirectResponse|Redirector
      * @throws BindingResolutionException
      */
-	public function store(CreateModuleRequest $request)
-	{
-		$input = $request->all();
+    public function store(CreateModuleRequest $request)
+    {
+        $input = $request->all();
 
-		$this->moduleRepository->create($input);
+        $this->moduleRepository->create($input);
 
         flash('Registro salvo com sucesso!')->success();
 
-		return redirect(route('modules.index'));
-	}
+        return redirect(route('modules.index'));
+    }
 
     /**
      * Display the specified Module.
@@ -74,19 +74,18 @@ class ModuleController extends AppBaseController
      * @return Application|Factory|Redirector|RedirectResponse|View
      * @throws BindingResolutionException
      */
-	public function show($id)
-	{
-            $module = $this->moduleRepository->findByID($id);
+    public function show($id)
+    {
+        $module = $this->moduleRepository->findByID($id);
 
-            if (empty($module)) {
-                flash('Registro não existe.')->error();
+        if (empty($module)) {
+            flash('Registro não existe.')->error();
 
-                return redirect(route('modules.index'));
-            }
+            return redirect(route('modules.index'));
+        }
 
-            return view('modules.show')->with('module', $module);
-
-	}
+        return view('modules.show')->with('module', $module);
+    }
 
     /**
      * Show the form for editing the specified Module.
@@ -96,19 +95,18 @@ class ModuleController extends AppBaseController
      * @return Application|Factory|Redirector|RedirectResponse|View
      * @throws BindingResolutionException
      */
-	public function edit($id)
-	{
-            $module = $this->moduleRepository->findByID($id);
+    public function edit($id)
+    {
+        $module = $this->moduleRepository->findByID($id);
 
-            if (empty($module)) {
-                flash('Registro não existe.')->error();
+        if (empty($module)) {
+            flash('Registro não existe.')->error();
 
-                return redirect(route('modules.index'));
-            }
+            return redirect(route('modules.index'));
+        }
 
-            return view('modules.edit')->with('module', $module);
-
-	}
+        return view('modules.edit')->with('module', $module);
+    }
 
     /**
      * Update the specified Module in storage.
@@ -119,26 +117,25 @@ class ModuleController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws BindingResolutionException
      */
-	public function update($id, UpdateModuleRequest $request)
-	{
-		$module = $this->moduleRepository->findByID($id);
+    public function update($id, UpdateModuleRequest $request)
+    {
+        $module = $this->moduleRepository->findByID($id);
 
-		if(empty($module))
-		{
-			flash('Registro não existe.')->error();
+        if (empty($module)) {
+            flash('Registro não existe.')->error();
 
-			return redirect(route('modules.index'));
-		}
+            return redirect(route('modules.index'));
+        }
 
-		$this->moduleRepository->update($module, [
+        $this->moduleRepository->update($module, [
             'name' => $request->get('name'),
-            'active' => (int) $request->get('active')
+            'active' => (int) $request->get('active'),
         ]);
 
-		flash('Registro editado com sucesso!')->success();
+        flash('Registro editado com sucesso!')->success();
 
-		return redirect(route('modules.index'));
-	}
+        return redirect(route('modules.index'));
+    }
 
     /**
      * Remove the specified Module from storage.
@@ -148,23 +145,22 @@ class ModuleController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws BindingResolutionException
      */
-	public function destroy($id)
-	{
-            $module = $this->moduleRepository->findByID($id);
+    public function destroy($id)
+    {
+        $module = $this->moduleRepository->findByID($id);
 
-            if (empty($module)) {
-                flash('Registro não existe.')->error();
+        if (empty($module)) {
+            flash('Registro não existe.')->error();
 
-                return redirect(route('config.modules.index'));
-            }
+            return redirect(route('config.modules.index'));
+        }
 
-            $this->moduleRepository->delete($module);
+        $this->moduleRepository->delete($module);
 
-            flash('Registro deletado com sucesso!')->success();
+        flash('Registro deletado com sucesso!')->success();
 
-            return redirect(route('modules.index'));
-
-	}
+        return redirect(route('modules.index'));
+    }
 
     /**
      * Update status of specified Module from storage.
@@ -173,10 +169,12 @@ class ModuleController extends AppBaseController
      *
      * @throws BindingResolutionException
      */
-	public function toggle($id){
-            $register = $this->moduleRepository->findByID($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
-        }
+    public function toggle($id)
+    {
+        $register = $this->moduleRepository->findByID($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 }

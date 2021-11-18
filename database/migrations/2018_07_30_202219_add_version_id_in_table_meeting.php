@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddVersionIdInTableMeeting extends Migration
 {
@@ -26,7 +26,6 @@ class AddVersionIdInTableMeeting extends Migration
     {
         Schema::table('meetings', function (Blueprint $table) {
             $table->dropColumn('version_pauta_id');
-
         });
     }
 }

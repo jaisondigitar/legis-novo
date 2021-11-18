@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateConfigAPIRequest;
 use App\Http\Requests\API\UpdateConfigAPIRequest;
 use App\Models\Config;
 use App\Repositories\ConfigRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class ConfigController
- * @package App\Http\Controllers\API
+ * Class ConfigController.
  */
-
 class ConfigAPIController extends AppBaseController
 {
-    /** @var  ConfigRepository */
+    /** @var ConfigRepository */
     private $configRepository;
 
     public function __construct(ConfigRepository $configRepo)

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddColumnToRotines2 extends Migration
 {
@@ -13,7 +13,7 @@ class AddColumnToRotines2 extends Migration
     public function up()
     {
         Schema::table('rotines', function ($table) {
-            $table->decimal('price',6,2);
+            $table->decimal('price', 6, 2);
         });
     }
 

@@ -6,16 +6,16 @@ use App\Http\Requests;
 use App\Http\Requests\CreateLawsStructureRequest;
 use App\Http\Requests\UpdateLawsStructureRequest;
 use App\Repositories\LawsStructureRepository;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class LawsStructureController extends AppBaseController
 {
-    /** @var  LawsStructureRepository */
+    /** @var LawsStructureRepository */
     private $lawsStructureRepository;
 
     public function __construct(LawsStructureRepository $lawsStructureRepo)
@@ -31,9 +31,10 @@ class LawsStructureController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('lawsStructures.index')) {
+        if (! Defender::hasPermission('lawsStructures.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawsStructures = $this->lawsStructureRepository->getAll(0);
@@ -49,10 +50,10 @@ class LawsStructureController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('lawsStructures.create'))
-        {
+        if (! Defender::hasPermission('lawsStructures.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('lawsStructures.create');
@@ -67,11 +68,11 @@ class LawsStructureController extends AppBaseController
      */
     public function store(CreateLawsStructureRequest $request)
     {
-       if(!Defender::hasPermission('lawsStructures.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('lawsStructures.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $lawsStructure = $this->lawsStructureRepository->create($input);
@@ -90,10 +91,10 @@ class LawsStructureController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('lawsStructures.show'))
-        {
+        if (! Defender::hasPermission('lawsStructures.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawsStructure = $this->lawsStructureRepository->findById($id);
@@ -116,10 +117,10 @@ class LawsStructureController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('lawsStructures.edit'))
-        {
+        if (! Defender::hasPermission('lawsStructures.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $lawsStructure = $this->lawsStructureRepository->findById($id);
 
@@ -142,10 +143,10 @@ class LawsStructureController extends AppBaseController
      */
     public function update($id, UpdateLawsStructureRequest $request)
     {
-        if(!Defender::hasPermission('lawsStructures.edit'))
-        {
+        if (! Defender::hasPermission('lawsStructures.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawsStructure = $this->lawsStructureRepository->findById($id);
@@ -172,10 +173,10 @@ class LawsStructureController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('lawsStructures.delete'))
-        {
+        if (! Defender::hasPermission('lawsStructures.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawsStructure = $this->lawsStructureRepository->findById($id);
@@ -194,20 +195,21 @@ class LawsStructureController extends AppBaseController
     }
 
     /**
-    	 * Update status of specified LawsStructure from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('lawsStructures.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->lawsStructureRepository->findById($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified LawsStructure from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('lawsStructures.edit')) {
+            return json_encode(false);
         }
+        $register = $this->lawsStructureRepository->findById($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 }

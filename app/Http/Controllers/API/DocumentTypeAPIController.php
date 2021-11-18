@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateDocumentTypeAPIRequest;
 use App\Http\Requests\API\UpdateDocumentTypeAPIRequest;
 use App\Models\DocumentType;
 use App\Repositories\DocumentTypeRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class DocumentTypeController
- * @package App\Http\Controllers\API
+ * Class DocumentTypeController.
  */
-
 class DocumentTypeAPIController extends AppBaseController
 {
-    /** @var  DocumentTypeRepository */
+    /** @var DocumentTypeRepository */
     private $documentTypeRepository;
 
     public function __construct(DocumentTypeRepository $documentTypeRepo)

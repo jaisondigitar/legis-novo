@@ -9,17 +9,14 @@ use Illuminate\Queue\InteractsWithQueue;
 class DocumentJob extends Job implements ShouldQueue
 {
     use InteractsWithQueue;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-
-
-
     public function __construct()
     {
-
     }
 
     /**
@@ -31,7 +28,7 @@ class DocumentJob extends Job implements ShouldQueue
     {
         $types = DocumentType::all();
 
-        foreach ($types as $key => $type){
+        foreach ($types as $key => $type) {
             $job = (new exportDocumentJob($type))->onQueue('exportType');
             dispatch($job);
         }

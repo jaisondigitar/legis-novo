@@ -7,7 +7,6 @@ use App\Models\LawsProject;
 
 class CreateLawsProjectRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddFieldActiveMesaDiretoraInResponsibility extends Migration
 {
@@ -13,9 +13,7 @@ class AddFieldActiveMesaDiretoraInResponsibility extends Migration
     public function up()
     {
         Schema::table('responsibilities', function (Blueprint $table) {
-
             $table->boolean('skip_board')->default(false);
-
         });
     }
 
@@ -28,7 +26,6 @@ class AddFieldActiveMesaDiretoraInResponsibility extends Migration
     {
         Schema::table('responsibilities', function (Blueprint $table) {
             $table->dropColumn('skip_board');
-
         });
     }
 }

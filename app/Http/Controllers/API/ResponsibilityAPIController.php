@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateResponsibilityAPIRequest;
 use App\Http\Requests\API\UpdateResponsibilityAPIRequest;
 use App\Models\Responsibility;
 use App\Repositories\ResponsibilityRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class ResponsibilityController
- * @package App\Http\Controllers\API
+ * Class ResponsibilityController.
  */
-
 class ResponsibilityAPIController extends AppBaseController
 {
-    /** @var  ResponsibilityRepository */
+    /** @var ResponsibilityRepository */
     private $responsibilityRepository;
 
     public function __construct(ResponsibilityRepository $responsibilityRepo)

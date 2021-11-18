@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateSectorAPIRequest;
 use App\Http\Requests\API\UpdateSectorAPIRequest;
 use App\Models\Sector;
 use App\Repositories\SectorRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class SectorController
- * @package App\Http\Controllers\API
+ * Class SectorController.
  */
-
 class SectorAPIController extends AppBaseController
 {
-    /** @var  SectorRepository */
+    /** @var SectorRepository */
     private $sectorRepository;
 
     public function __construct(SectorRepository $sectorRepo)

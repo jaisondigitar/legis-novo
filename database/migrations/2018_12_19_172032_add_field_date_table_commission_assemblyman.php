@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddFieldDateTableCommissionAssemblyman extends Migration
 {
@@ -10,7 +10,6 @@ class AddFieldDateTableCommissionAssemblyman extends Migration
      *
      * @return void
      */
-
     public function up()
     {
         Schema::table('commission_assemblyman', function (Blueprint $table) {
@@ -29,7 +28,6 @@ class AddFieldDateTableCommissionAssemblyman extends Migration
         Schema::table('commission_assemblyman', function (Blueprint $table) {
             $table->dropColumn('start_date');
             $table->dropColumn('end_date');
-
         });
     }
 }

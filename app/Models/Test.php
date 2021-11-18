@@ -39,13 +39,11 @@ class Test extends Model
     use SoftDeletes;
 
     public $table = 'tests';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
-        'name'
+        'name',
     ];
 
     /**
@@ -54,15 +52,15 @@ class Test extends Model
      * @var array
      */
     protected $casts = [
-        'name' => 'string'
+        'name' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        'name' => 'required'
+        'name' => 'required',
     ];
 }

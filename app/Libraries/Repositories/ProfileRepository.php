@@ -1,4 +1,6 @@
-<?php namespace App\Libraries\Repositories;
+<?php
+
+namespace App\Libraries\Repositories;
 
 use App\Models\Profile;
 use App\Repositories\Repository;
@@ -9,24 +11,20 @@ class ProfileRepository extends Repository
 {
     protected $modelClass = Profile::class;
 
-	public function search($input)
+    public function search($input)
     {
         $query = Profile::query();
 
         $columns = Schema::getColumnListing('profiles');
 
-        $attributes = array();
+        $attributes = [];
 
-        foreach($columns as $attribute)
-        {
-            if(isset($input[$attribute]) and !empty($input[$attribute]))
-            {
+        foreach ($columns as $attribute) {
+            if (isset($input[$attribute]) and ! empty($input[$attribute])) {
                 $query->where($attribute, $input[$attribute]);
                 $attributes[$attribute] = $input[$attribute];
-            }
-            else
-            {
-                $attributes[$attribute] =  null;
+            } else {
+                $attributes[$attribute] = null;
             }
         }
 
@@ -37,9 +35,8 @@ class ProfileRepository extends Repository
     {
         $model = $this->findByID($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "Profile not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'Profile not found');
         }
 
         return $model;
@@ -49,9 +46,8 @@ class ProfileRepository extends Repository
     {
         $model = $this->findByID($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "Profile not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'Profile not found');
         }
 
         return $model->delete();

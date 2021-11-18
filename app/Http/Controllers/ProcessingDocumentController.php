@@ -36,20 +36,19 @@ class ProcessingDocumentController extends Controller
      */
     public function store(Request $request)
     {
-
         $input = $request->all();
 
         $processing = ProcessingDocument::create($request->all());
         $processing->observation = $request->observation;
         $processing->save();
 
-        if($processing){
+        if ($processing) {
             $processing = ProcessingDocument::where('document_id', $input['document_id'])->orderBy('processing_document_date', 'desc')->with('DocumentSituation')->with('StatusProcessingDocument')->get();
+
             return json_encode($processing);
         }
 
         return json_encode(false);
-
     }
 
     /**
@@ -71,8 +70,6 @@ class ProcessingDocumentController extends Controller
      */
     public function edit($id)
     {
-
-
     }
 
     /**
@@ -97,8 +94,9 @@ class ProcessingDocumentController extends Controller
     {
         $processing = ProcessingDocument::find($id);
 
-        if($processing){
+        if ($processing) {
             $processing->delete();
+
             return json_encode($id);
         }
 

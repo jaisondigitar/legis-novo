@@ -8,7 +8,7 @@ class LawFile extends Model
 {
     protected $fillable = [
         'laws_project_id',
-        'filename'
+        'filename',
     ];
 
     public function law_project()

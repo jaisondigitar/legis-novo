@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateDocumentFilesTable extends Migration
 {
@@ -12,7 +12,7 @@ class CreateDocumentFilesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('document_files')) {
+        if (! Schema::hasTable('document_files')) {
             Schema::create('document_files', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('document_id')->unsigned();

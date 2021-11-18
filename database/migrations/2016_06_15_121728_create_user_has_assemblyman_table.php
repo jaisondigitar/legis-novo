@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateUserHasAssemblymanTable extends Migration
 {
@@ -12,7 +12,7 @@ class CreateUserHasAssemblymanTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('user_assemblyman')) {
+        if (! Schema::hasTable('user_assemblyman')) {
             Schema::create('user_assemblyman', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('users_id');

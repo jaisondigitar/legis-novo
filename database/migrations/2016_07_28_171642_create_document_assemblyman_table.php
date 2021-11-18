@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateDocumentAssemblymanTable extends Migration
 {
@@ -12,7 +12,7 @@ class CreateDocumentAssemblymanTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('document_assemblyman')) {
+        if (! Schema::hasTable('document_assemblyman')) {
             Schema::create('document_assemblyman', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('document_id')->unsigned();
@@ -21,7 +21,7 @@ class CreateDocumentAssemblymanTable extends Migration
             });
         }
 
-        Schema::table('document_assemblyman', function($table) {
+        Schema::table('document_assemblyman', function ($table) {
             $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
             $table->foreign('assemblyman_id')->references('id')->on('assemblymen')->onDelete('cascade');
         });

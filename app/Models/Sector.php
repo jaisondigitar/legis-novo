@@ -44,14 +44,12 @@ class Sector extends Model
     use SoftDeletes;
 
     public $table = 'sectors';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'name',
-        'slug'
+        'slug',
     ];
 
     /**
@@ -61,19 +59,20 @@ class Sector extends Model
      */
     protected $casts = [
         'name' => 'string',
-        'slug' => 'string'
+        'slug' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->hasMany('App\Models\User');
     }
 }

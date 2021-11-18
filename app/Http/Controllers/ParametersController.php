@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateParametersRequest;
 use App\Http\Requests\UpdateParametersRequest;
 use App\Repositories\ParametersRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -19,7 +19,7 @@ use Laracasts\Flash\Flash;
 
 class ParametersController extends AppBaseController
 {
-    /** @var  ParametersRepository */
+    /** @var ParametersRepository */
     private $parametersRepository;
 
     public function __construct(ParametersRepository $parametersRepo)
@@ -36,9 +36,10 @@ class ParametersController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('parameters.index')) {
+        if (! Defender::hasPermission('parameters.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $parameters = $this->parametersRepository->getAll(0);
@@ -54,10 +55,10 @@ class ParametersController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('parameters.create'))
-        {
+        if (! Defender::hasPermission('parameters.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('parameters.create');
@@ -73,14 +74,14 @@ class ParametersController extends AppBaseController
      */
     public function store(CreateParametersRequest $request)
     {
-       if(!Defender::hasPermission('parameters.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('parameters.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
         $input['slug'] = Str::slug($input['name']);
-        if($input['type'] == 1){
+        if ($input['type'] == 1) {
             $input['value'] = $input['valueSelect'];
         } else {
             $input['value'] = $input['valueText'];
@@ -102,10 +103,10 @@ class ParametersController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('parameters.show'))
-        {
+        if (! Defender::hasPermission('parameters.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $parameters = $this->parametersRepository->findByID($id);
@@ -129,10 +130,10 @@ class ParametersController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('parameters.edit'))
-        {
+        if (! Defender::hasPermission('parameters.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $parameters = $this->parametersRepository->findByID($id);
 
@@ -156,10 +157,10 @@ class ParametersController extends AppBaseController
      */
     public function update($id, UpdateParametersRequest $request)
     {
-        if(!Defender::hasPermission('parameters.edit'))
-        {
+        if (! Defender::hasPermission('parameters.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $parameters = $this->parametersRepository->findByID($id);
@@ -171,7 +172,7 @@ class ParametersController extends AppBaseController
         }
 
         $request['slug'] = Str::slug($request['name']);
-        if($request['type'] == 1){
+        if ($request['type'] == 1) {
             $request['value'] = $request['valueSelect'];
         } else {
             $request['value'] = $request['valueText'];
@@ -194,10 +195,10 @@ class ParametersController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('parameters.delete'))
-        {
+        if (! Defender::hasPermission('parameters.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $parameters = $this->parametersRepository->findByID($id);

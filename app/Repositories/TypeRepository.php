@@ -11,11 +11,11 @@ class TypeRepository
      */
     protected $fieldSearchable = [
         'prefix',
-        'name'
+        'name',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

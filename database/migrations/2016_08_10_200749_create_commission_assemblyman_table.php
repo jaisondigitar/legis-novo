@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateCommissionAssemblymanTable extends Migration
 {
@@ -12,7 +12,7 @@ class CreateCommissionAssemblymanTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('commission_assemblyman')) {
+        if (! Schema::hasTable('commission_assemblyman')) {
             Schema::create('commission_assemblyman', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('commission_id')->unsigned();

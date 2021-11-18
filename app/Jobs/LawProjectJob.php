@@ -8,7 +8,6 @@ use Illuminate\Queue\InteractsWithQueue;
 
 class LawProjectJob extends Job implements ShouldQueue
 {
-
     use InteractsWithQueue;
 
     /**
@@ -30,13 +29,12 @@ class LawProjectJob extends Job implements ShouldQueue
     {
         $types = LawsType::all();
 
-        foreach ($types as $key => $type){
+        foreach ($types as $key => $type) {
             $job = (new LawProjectExportJob($type))->onQueue('exportLawType');
             dispatch($job);
         }
 
         $zip = (new LawProjectZipJob())->onQueue('exportLawZip');
         dispatch($zip);
-
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateTypeVotingsTable extends Migration
 {
@@ -19,7 +19,6 @@ class CreateTypeVotingsTable extends Migration
             $table->boolean('active')->default(1);
             $table->timestamps();
             $table->softDeletes();
-
         });
     }
 

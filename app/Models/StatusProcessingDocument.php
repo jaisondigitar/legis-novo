@@ -39,13 +39,11 @@ class StatusProcessingDocument extends Model
     use SoftDeletes;
 
     public $table = 'status_processing_documents';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
-        'name'
+        'name',
     ];
 
     /**
@@ -54,15 +52,15 @@ class StatusProcessingDocument extends Model
      * @var array
      */
     protected $casts = [
-        'name' => 'string'
+        'name' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        'name' => 'required'
+        'name' => 'required',
     ];
 }

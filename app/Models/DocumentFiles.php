@@ -72,16 +72,13 @@ class DocumentFiles extends Model
 {
     use SoftDeletes;
 
-
     public $table = 'document_files';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'document_id',
-        'filename'
+        'filename',
     ];
 
     /**
@@ -91,20 +88,20 @@ class DocumentFiles extends Model
      */
     protected $casts = [
         'document_id' => 'integer',
-        'filename' => 'varchar'
+        'filename' => 'varchar',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    public function document(){
+    public function document()
+    {
         return $this->belongsTo('App\Models\Document', 'document_id');
     }
-
 }

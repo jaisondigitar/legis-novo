@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddSoftToLogs extends Migration
 {
@@ -24,6 +24,5 @@ class AddSoftToLogs extends Migration
      */
     public function down()
     {
-
     }
 }

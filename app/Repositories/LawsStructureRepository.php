@@ -10,7 +10,7 @@ class LawsStructureRepository extends Repository
      * @var array
      */
     protected $fieldSearchable = [
-        'name'
+        'name',
     ];
 
     protected $modelClass = LawsStructure::class;

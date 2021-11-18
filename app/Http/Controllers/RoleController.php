@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
@@ -15,14 +17,13 @@ use Illuminate\View\View;
 
 class RoleController extends AppBaseController
 {
+    /** @var RoleRepository */
+    private $roleRepository;
 
-	/** @var  RoleRepository */
-	private $roleRepository;
-
-	function __construct(RoleRepository $roleRepo)
-	{
-		$this->roleRepository = $roleRepo;
-	}
+    public function __construct(RoleRepository $roleRepo)
+    {
+        $this->roleRepository = $roleRepo;
+    }
 
     /**
      * Display a listing of the Role.
@@ -30,23 +31,23 @@ class RoleController extends AppBaseController
      * @return Application|Factory|View
      * @throws BindingResolutionException
      */
-	public function index()
-	{
-		$roles = $this->roleRepository->newQuery()->paginate(10);
+    public function index()
+    {
+        $roles = $this->roleRepository->newQuery()->paginate(10);
 
-		return view('roles.index')
-			->with('roles', $roles);
-	}
+        return view('roles.index')
+            ->with('roles', $roles);
+    }
 
-	/**
-	 * Show the form for creating a new Role.
-	 *
-	 * @return Application|Factory|View
+    /**
+     * Show the form for creating a new Role.
+     *
+     * @return Application|Factory|View
      */
-	public function create()
-	{
-		return view('roles.create');
-	}
+    public function create()
+    {
+        return view('roles.create');
+    }
 
     /**
      * Store a newly created Role in storage.
@@ -56,16 +57,16 @@ class RoleController extends AppBaseController
      * @return Application|RedirectResponse|Redirector
      * @throws BindingResolutionException
      */
-	public function store(CreateRoleRequest $request)
-	{
-		$input = $request->all();
+    public function store(CreateRoleRequest $request)
+    {
+        $input = $request->all();
 
-		$this->roleRepository->create($input);
+        $this->roleRepository->create($input);
 
-		flash('Registro salvo com sucesso!')->success();
+        flash('Registro salvo com sucesso!')->success();
 
-		return redirect(route('roles.index'));
-	}
+        return redirect(route('roles.index'));
+    }
 
     /**
      * Display the specified Role.
@@ -75,19 +76,18 @@ class RoleController extends AppBaseController
      * @return Application|Factory|Redirector|RedirectResponse|View
      * @throws BindingResolutionException
      */
-	public function show($id)
-	{
-		$role = $this->roleRepository->findByID($id);
+    public function show($id)
+    {
+        $role = $this->roleRepository->findByID($id);
 
-		if(empty($role))
-		{
-			flash('Registro não existe.')->error();
+        if (empty($role)) {
+            flash('Registro não existe.')->error();
 
-			return redirect(route('roles.index'));
-		}
+            return redirect(route('roles.index'));
+        }
 
-		return view('roles.show')->with('role', $role);
-	}
+        return view('roles.show')->with('role', $role);
+    }
 
     /**
      * Show the form for editing the specified Role.
@@ -97,19 +97,18 @@ class RoleController extends AppBaseController
      * @return Application|Factory|Redirector|RedirectResponse|View
      * @throws BindingResolutionException
      */
-	public function edit($id)
-	{
-		$role = $this->roleRepository->findByID($id);
+    public function edit($id)
+    {
+        $role = $this->roleRepository->findByID($id);
 
-		if(empty($role))
-		{
-			flash('Registro não existe.')->error();
+        if (empty($role)) {
+            flash('Registro não existe.')->error();
 
-			return redirect(route('roles.index'));
-		}
+            return redirect(route('roles.index'));
+        }
 
-		return view('roles.edit')->with('role', $role);
-	}
+        return view('roles.edit')->with('role', $role);
+    }
 
     /**
      * Update the specified Role in storage.
@@ -120,23 +119,22 @@ class RoleController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws BindingResolutionException
      */
-	public function update(int $id, UpdateRoleRequest $request)
-	{
-		$role = $this->roleRepository->findByID($id);
+    public function update(int $id, UpdateRoleRequest $request)
+    {
+        $role = $this->roleRepository->findByID($id);
 
-		if(empty($role))
-		{
-			flash('Registro não existe.')->error();
+        if (empty($role)) {
+            flash('Registro não existe.')->error();
 
-			return redirect(route('roles.index'));
-		}
+            return redirect(route('roles.index'));
+        }
 
-		$this->roleRepository->update($role, $request->all());
+        $this->roleRepository->update($role, $request->all());
 
-		flash('Registro editado com sucesso!')->success();
+        flash('Registro editado com sucesso!')->success();
 
-		return redirect(route('roles.index'));
-	}
+        return redirect(route('roles.index'));
+    }
 
     /**
      * Remove the specified Role from storage.
@@ -146,23 +144,22 @@ class RoleController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-	public function destroy(int $id)
-	{
-		$role = $this->roleRepository->findByID($id);
+    public function destroy(int $id)
+    {
+        $role = $this->roleRepository->findByID($id);
 
-		if(empty($role))
-		{
-			flash('Registro não existe.')->error();
+        if (empty($role)) {
+            flash('Registro não existe.')->error();
 
-			return redirect(route('roles.index'));
-		}
+            return redirect(route('roles.index'));
+        }
 
-		$this->roleRepository->delete($role);
+        $this->roleRepository->delete($role);
 
-		flash('Registro deletado com sucesso!')->success();
+        flash('Registro deletado com sucesso!')->success();
 
-		return redirect(route('roles.index'));
-	}
+        return redirect(route('roles.index'));
+    }
 
     /**
      * Update status of specified Role from storage.
@@ -171,61 +168,66 @@ class RoleController extends AppBaseController
      * @return false|string
      * @throws BindingResolutionException
      */
-	public function toggle(int $id){
-            $register = $this->roleRepository->findByID($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
-        }
+    public function toggle(int $id)
+    {
+        $register = $this->roleRepository->findByID($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
 
+        return json_encode(true);
+    }
 
     /**
      * @param $id
      * @return Application|Factory|View
      */
-    public function permission($id){
-        $roles  = Defender::findRoleById($id);
-        $perms  = Permission::all();
-        $list   = $this->getNameOfPermissions();
-        return view('roles.permission',compact('roles','perms','list'));
+    public function permission($id)
+    {
+        $roles = Defender::findRoleById($id);
+        $perms = Permission::all();
+        $list = $this->getNameOfPermissions();
+
+        return view('roles.permission', compact('roles', 'perms', 'list'));
     }
 
     /**
      * @return array
      */
-
-    public function getNameOfPermissions(){
-        $arr = array();
+    public function getNameOfPermissions()
+    {
+        $arr = [];
         $tmp = '';
-        $perms  = Permission::all();
-        foreach($perms as $value){
-            $tmp2 = explode(".",$value->name);
-            if($tmp != $tmp2[0]){
+        $perms = Permission::all();
+        foreach ($perms as $value) {
+            $tmp2 = explode('.', $value->name);
+            if ($tmp != $tmp2[0]) {
                 $tmp = $tmp2[0];
                 $arr[] = $tmp;
             }
         }
+
         return $arr;
     }
 
-    public function togglePermission($role,$permission)
+    public function togglePermission($role, $permission)
     {
-
         $role = Defender::findRole($role);
         $perm = Defender::findPermissionById($permission);
 
-
-        $has = $this->checkPermission($role,$perm);
+        $has = $this->checkPermission($role, $perm);
         $has ? $role->detachPermission($perm) : $role->attachPermission($perm);
 
         return json_encode(true);
     }
 
-    public function checkPermission($role,$perm){
-        foreach($role->permissions as $value2){
-            if($value2->name==$perm->name)
+    public function checkPermission($role, $perm)
+    {
+        foreach ($role->permissions as $value2) {
+            if ($value2->name == $perm->name) {
                 return true;
+            }
         }
+
         return false;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\Company;
+use Illuminate\Database\Seeder;
 
 class CompanyTableSeeder extends Seeder
 {
@@ -13,8 +13,7 @@ class CompanyTableSeeder extends Seeder
     public function run()
     {
         $obj = Company::find(2);
-        if(is_null($obj))
-        {
+        if (is_null($obj)) {
             Company::create([
                 'shortName'=>'Gênesis',
                 'fullName'=>'Gênesis Tecnologia e Inovação',
@@ -25,9 +24,8 @@ class CompanyTableSeeder extends Seeder
                 'ieRG'=>'00000-0 SSP/MT',
                 'city'=>'5120',
                 'state'=>'12',
-                'active'=>'1'
+                'active'=>'1',
             ]);
         }
-
     }
 }

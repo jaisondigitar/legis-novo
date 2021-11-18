@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AlterTypeColumnObservationInLawProject extends Migration
 {
@@ -13,7 +13,7 @@ class AlterTypeColumnObservationInLawProject extends Migration
     public function up()
     {
         Schema::table('laws_projects', function (Blueprint $table) {
-            $table->longText('observation')->default("")->change();
+            $table->longText('observation')->default('')->change();
         });
     }
 
@@ -25,7 +25,7 @@ class AlterTypeColumnObservationInLawProject extends Migration
     public function down()
     {
         Schema::table('laws_projects', function (Blueprint $table) {
-            $table->string('observation')->default("")->change();
+            $table->string('observation')->default('')->change();
         });
     }
 }

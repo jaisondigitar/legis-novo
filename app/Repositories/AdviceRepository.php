@@ -12,11 +12,11 @@ class AdviceRepository
     protected $fieldSearchable = [
         'date',
         'type',
-        'to_id'
+        'to_id',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

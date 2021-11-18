@@ -7,7 +7,6 @@ use App\Models\SessionType;
 
 class CreateSessionTypeRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

@@ -39,13 +39,11 @@ class LawsType extends Model
     use SoftDeletes;
 
     public $table = 'laws_types';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
-        'name'
+        'name',
     ];
 
     /**
@@ -54,16 +52,16 @@ class LawsType extends Model
      * @var array
      */
     protected $casts = [
-        'name' => 'string'
+        'name' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        'name' => 'required'
+        'name' => 'required',
     ];
 
     public function laws()

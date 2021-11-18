@@ -9,11 +9,12 @@ class LawProjectsNumber extends Model
     protected $fillable = [
 
         'laws_project_id',
-        'date'
+        'date',
 
     ];
 
-    public function lawProject(){
+    public function lawProject()
+    {
         return $this->belongsTo(LawsProject::class);
     }
 }

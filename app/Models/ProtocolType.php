@@ -44,14 +44,12 @@ class ProtocolType extends Model
     use SoftDeletes;
 
     public $table = 'protocol_types';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'name',
-        'slug'
+        'slug',
     ];
 
     /**
@@ -61,15 +59,15 @@ class ProtocolType extends Model
      */
     protected $casts = [
         'name' => 'string',
-        'slug' => 'string'
+        'slug' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 }

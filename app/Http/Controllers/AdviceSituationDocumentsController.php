@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateAdviceSituationDocumentsRequest;
 use App\Http\Requests\UpdateAdviceSituationDocumentsRequest;
 use App\Repositories\AdviceSituationDocumentsRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class AdviceSituationDocumentsController extends AppBaseController
 {
-    /** @var  AdviceSituationDocumentsRepository */
+    /** @var AdviceSituationDocumentsRepository */
     private $adviceSituationDocumentsRepository;
 
     public function __construct(AdviceSituationDocumentsRepository $adviceSituationDocumentsRepo)
@@ -34,9 +34,10 @@ class AdviceSituationDocumentsController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('adviceSituationDocuments.index')) {
+        if (! Defender::hasPermission('adviceSituationDocuments.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->getAll(0);
@@ -52,10 +53,10 @@ class AdviceSituationDocumentsController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('adviceSituationDocuments.create'))
-        {
+        if (! Defender::hasPermission('adviceSituationDocuments.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('adviceSituationDocuments.create');
@@ -71,11 +72,11 @@ class AdviceSituationDocumentsController extends AppBaseController
      */
     public function store(CreateAdviceSituationDocumentsRequest $request)
     {
-       if(!Defender::hasPermission('adviceSituationDocuments.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('adviceSituationDocuments.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $this->adviceSituationDocumentsRepository->create($input);
@@ -95,10 +96,10 @@ class AdviceSituationDocumentsController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('adviceSituationDocuments.show'))
-        {
+        if (! Defender::hasPermission('adviceSituationDocuments.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
@@ -122,10 +123,10 @@ class AdviceSituationDocumentsController extends AppBaseController
      */
     public function edit(int $id)
     {
-        if(!Defender::hasPermission('adviceSituationDocuments.edit'))
-        {
+        if (! Defender::hasPermission('adviceSituationDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
 
@@ -149,10 +150,10 @@ class AdviceSituationDocumentsController extends AppBaseController
      */
     public function update($id, UpdateAdviceSituationDocumentsRequest $request)
     {
-        if(!Defender::hasPermission('adviceSituationDocuments.edit'))
-        {
+        if (! Defender::hasPermission('adviceSituationDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
@@ -163,8 +164,10 @@ class AdviceSituationDocumentsController extends AppBaseController
             return redirect(route('adviceSituationDocuments.index'));
         }
 
-        $this->adviceSituationDocumentsRepository->update($adviceSituationDocuments,
-            $request->all());
+        $this->adviceSituationDocumentsRepository->update(
+            $adviceSituationDocuments,
+            $request->all()
+        );
 
         flash('Situação de Aconselhamento de Documentos atualizado com sucesso.')->success();
 
@@ -181,10 +184,10 @@ class AdviceSituationDocumentsController extends AppBaseController
      */
     public function destroy(int $id)
     {
-        if(!Defender::hasPermission('adviceSituationDocuments.delete'))
-        {
+        if (! Defender::hasPermission('adviceSituationDocuments.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
@@ -209,14 +212,15 @@ class AdviceSituationDocumentsController extends AppBaseController
      * @return false|string
      * @throws BindingResolutionException
      */
-    public function toggle(int $id){
-        if(!Defender::hasPermission('adviceSituationDocuments.edit'))
-        {
+    public function toggle(int $id)
+    {
+        if (! Defender::hasPermission('adviceSituationDocuments.edit')) {
             return json_encode(false);
         }
         $register = $this->adviceSituationDocumentsRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 }

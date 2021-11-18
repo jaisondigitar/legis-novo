@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateProtocolTypeAPIRequest;
 use App\Http\Requests\API\UpdateProtocolTypeAPIRequest;
 use App\Models\ProtocolType;
 use App\Repositories\ProtocolTypeRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class ProtocolTypeController
- * @package App\Http\Controllers\API
+ * Class ProtocolTypeController.
  */
-
 class ProtocolTypeAPIController extends AppBaseController
 {
-    /** @var  ProtocolTypeRepository */
+    /** @var ProtocolTypeRepository */
     private $protocolTypeRepository;
 
     public function __construct(ProtocolTypeRepository $protocolTypeRepo)

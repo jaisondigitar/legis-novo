@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreatedocumentsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreatedocumentsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('documents')) {
+        if (! Schema::hasTable('documents')) {
             Schema::create('documents', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('document_type_id')->unsigned();

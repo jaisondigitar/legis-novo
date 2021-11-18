@@ -11,7 +11,7 @@ class OfficeCommissionRepository extends Repository
      */
     protected $fieldSearchable = [
         'name',
-        'slug'
+        'slug',
     ];
 
     protected $modelClass = OfficeCommission::class;

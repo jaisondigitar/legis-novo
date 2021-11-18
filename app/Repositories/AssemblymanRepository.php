@@ -25,7 +25,7 @@ class AssemblymanRepository extends Repository
         'district',
         'state_id',
         'city_id',
-        'zipcode'
+        'zipcode',
     ];
 
     protected $modelClass = Assemblyman::class;

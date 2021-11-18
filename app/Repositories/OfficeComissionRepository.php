@@ -9,11 +9,11 @@ class OfficeComissionRepository
      */
     protected $fieldSearchable = [
         'name',
-        'slug'
+        'slug',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

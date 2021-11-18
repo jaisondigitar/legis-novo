@@ -10,11 +10,11 @@ class PartiesAssemblymanRepository
      * @var array
      */
     protected $fieldSearchable = [
-        
+
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

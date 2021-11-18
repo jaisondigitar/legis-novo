@@ -19,6 +19,6 @@ class DocumentRepository extends Repository
         'content',
         'session_date',
         'read',
-        'approved'
+        'approved',
     ];
 }

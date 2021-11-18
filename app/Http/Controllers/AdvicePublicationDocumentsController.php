@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateAdvicePublicationDocumentsRequest;
 use App\Http\Requests\UpdateAdvicePublicationDocumentsRequest;
 use App\Repositories\AdvicePublicationDocumentsRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class AdvicePublicationDocumentsController extends AppBaseController
 {
-    /** @var  AdvicePublicationDocumentsRepository */
+    /** @var AdvicePublicationDocumentsRepository */
     private $advicePublicationDocumentsRepository;
 
     public function __construct(AdvicePublicationDocumentsRepository $advicePublicationDocumentsRepo)
@@ -33,9 +33,10 @@ class AdvicePublicationDocumentsController extends AppBaseController
      */
     public function index()
     {
-        if(!Defender::hasPermission('advicePublicationDocuments.index')) {
+        if (! Defender::hasPermission('advicePublicationDocuments.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->getAll(0);
@@ -51,10 +52,10 @@ class AdvicePublicationDocumentsController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('advicePublicationDocuments.create'))
-        {
+        if (! Defender::hasPermission('advicePublicationDocuments.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('advicePublicationDocuments.create');
@@ -70,11 +71,11 @@ class AdvicePublicationDocumentsController extends AppBaseController
      */
     public function store(CreateAdvicePublicationDocumentsRequest $request)
     {
-       if(!Defender::hasPermission('advicePublicationDocuments.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('advicePublicationDocuments.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
 
         $this->advicePublicationDocumentsRepository->create($request->all());
 
@@ -93,10 +94,10 @@ class AdvicePublicationDocumentsController extends AppBaseController
      */
     public function show(int $id)
     {
-        if(!Defender::hasPermission('advicePublicationDocuments.show'))
-        {
+        if (! Defender::hasPermission('advicePublicationDocuments.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findByID($id);
@@ -120,10 +121,10 @@ class AdvicePublicationDocumentsController extends AppBaseController
      */
     public function edit(int $id)
     {
-        if(!Defender::hasPermission('advicePublicationDocuments.edit'))
-        {
+        if (! Defender::hasPermission('advicePublicationDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findByID($id);
 
@@ -147,10 +148,10 @@ class AdvicePublicationDocumentsController extends AppBaseController
      */
     public function update(int $id, UpdateAdvicePublicationDocumentsRequest $request)
     {
-        if(!Defender::hasPermission('advicePublicationDocuments.edit'))
-        {
+        if (! Defender::hasPermission('advicePublicationDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findByID($id);
@@ -179,10 +180,10 @@ class AdvicePublicationDocumentsController extends AppBaseController
      */
     public function destroy(int $id)
     {
-        if(!Defender::hasPermission('advicePublicationDocuments.delete'))
-        {
+        if (! Defender::hasPermission('advicePublicationDocuments.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $advicePublicationDocuments = $this->advicePublicationDocumentsRepository->findByID($id);
@@ -207,14 +208,15 @@ class AdvicePublicationDocumentsController extends AppBaseController
      * @return false|string
      * @throws BindingResolutionException
      */
-    public function toggle(int $id){
-        if(!Defender::hasPermission('advicePublicationDocuments.edit'))
-        {
+    public function toggle(int $id)
+    {
+        if (! Defender::hasPermission('advicePublicationDocuments.edit')) {
             return json_encode(false);
         }
         $register = $this->advicePublicationDocumentsRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 }

@@ -10,7 +10,7 @@ class LawsTagRepository extends Repository
      * @var array
      */
     protected $fieldSearchable = [
-        'name'
+        'name',
     ];
 
     protected $modelClass = LawsTag::class;

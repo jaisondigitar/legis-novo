@@ -9,7 +9,7 @@ use Madnest\Madzipper\Madzipper;
 
 class DocumentZipJob extends Job implements ShouldQueue
 {
-    /**
+    /*
      * Create a new job instance.
      *
      * @return void

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddAtaMeetingTable extends Migration
 {
@@ -12,19 +12,19 @@ class AddAtaMeetingTable extends Migration
      */
     public function up()
     {
-        Schema::table("meetings", function(Blueprint $table){
+        Schema::table('meetings', function (Blueprint $table) {
             $table->longText('ata')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *php ar
+     *php ar.
      * @return void
      */
     public function down()
     {
-        Schema::table("meetings", function(Blueprint $table){
+        Schema::table('meetings', function (Blueprint $table) {
             $table->dropColumn('ata');
         });
     }

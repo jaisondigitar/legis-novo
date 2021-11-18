@@ -7,7 +7,6 @@ use App\Models\Type;
 
 class UpdateTypeRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

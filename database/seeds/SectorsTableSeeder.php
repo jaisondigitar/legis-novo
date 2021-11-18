@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\Sector;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class SectorsTableSeeder extends Seeder
@@ -18,6 +18,5 @@ class SectorsTableSeeder extends Seeder
         foreach ($sectors as $sector) {
             Sector::firstOrCreate(['name' => $sector, 'slug' => Str::slug($sector)]);
         }
-
     }
 }

@@ -6,16 +6,16 @@ use App\Http\Requests;
 use App\Http\Requests\CreateTypeRequest;
 use App\Http\Requests\UpdateTypeRequest;
 use App\Repositories\TypeRepository;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class TypeController extends AppBaseController
 {
-    /** @var  TypeRepository */
+    /** @var TypeRepository */
     private $typeRepository;
 
     public function __construct(TypeRepository $typeRepo)
@@ -31,9 +31,10 @@ class TypeController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('types.index')) {
+        if (! Defender::hasPermission('types.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $this->typeRepository->pushCriteria(new RequestCriteria($request));
@@ -50,10 +51,10 @@ class TypeController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('types.create'))
-        {
+        if (! Defender::hasPermission('types.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('types.create');
@@ -68,11 +69,11 @@ class TypeController extends AppBaseController
      */
     public function store(CreateTypeRequest $request)
     {
-       if(!Defender::hasPermission('types.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('types.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $type = $this->typeRepository->create($input);
@@ -91,10 +92,10 @@ class TypeController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('types.show'))
-        {
+        if (! Defender::hasPermission('types.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $type = $this->typeRepository->findWithoutFail($id);
@@ -117,10 +118,10 @@ class TypeController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('types.edit'))
-        {
+        if (! Defender::hasPermission('types.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $type = $this->typeRepository->findWithoutFail($id);
 
@@ -143,10 +144,10 @@ class TypeController extends AppBaseController
      */
     public function update($id, UpdateTypeRequest $request)
     {
-        if(!Defender::hasPermission('types.edit'))
-        {
+        if (! Defender::hasPermission('types.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $type = $this->typeRepository->findWithoutFail($id);
@@ -173,10 +174,10 @@ class TypeController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('types.delete'))
-        {
+        if (! Defender::hasPermission('types.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $type = $this->typeRepository->findWithoutFail($id);
@@ -195,20 +196,21 @@ class TypeController extends AppBaseController
     }
 
     /**
-    	 * Update status of specified Type from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('types.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->typeRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified Type from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('types.edit')) {
+            return json_encode(false);
         }
+        $register = $this->typeRepository->findWithoutFail($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 }

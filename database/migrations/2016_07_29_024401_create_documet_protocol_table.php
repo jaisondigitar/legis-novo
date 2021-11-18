@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateDocumetProtocolTable extends Migration
 {
@@ -12,7 +12,7 @@ class CreateDocumetProtocolTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('document_protocol')) {
+        if (! Schema::hasTable('document_protocol')) {
             Schema::create('document_protocol', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('document_id')->unsigned();
@@ -23,7 +23,7 @@ class CreateDocumetProtocolTable extends Migration
             });
         }
 
-        Schema::table('document_protocol', function($table) {
+        Schema::table('document_protocol', function ($table) {
             $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
             $table->foreign('protocol_type_id')->references('id')->on('protocol_types')->onDelete('cascade');
         });

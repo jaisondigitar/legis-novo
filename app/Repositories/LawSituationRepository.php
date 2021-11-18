@@ -6,5 +6,5 @@ use App\Models\LawSituation;
 
 class LawSituationRepository extends Repository
 {
-   protected $modelClass = LawSituation::class;
+    protected $modelClass = LawSituation::class;
 }

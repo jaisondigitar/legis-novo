@@ -13,7 +13,7 @@ class ParametersRepository extends Repository
         'name',
         'type',
         'slug',
-        'value'
+        'value',
     ];
 
     protected $modelClass = Parameters::class;

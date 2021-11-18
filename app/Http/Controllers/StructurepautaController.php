@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Models\Structurepautum;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class StructurepautaController extends AppBaseController
 {
-    /** @var  StructurepautaRepository */
-
+    /** @var StructurepautaRepository */
 
     /**
      * Display a listing of the Structurepauta.
@@ -24,9 +23,10 @@ class StructurepautaController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('structurepautas.index')) {
+        if (! Defender::hasPermission('structurepautas.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $structurepautas = Structurepautum::whereNull('parent_id')->get();
@@ -42,10 +42,10 @@ class StructurepautaController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('structurepautas.create'))
-        {
+        if (! Defender::hasPermission('structurepautas.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('$ROUTES_AS_PREFIX$structurepautas.create');
@@ -60,20 +60,20 @@ class StructurepautaController extends AppBaseController
      */
     public function store(Request $request)
     {
-       if(!Defender::hasPermission('structurepautas.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('structurepautas.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-        $input      = $request->all();
-        $input['parent_id'] = $input['parent_id']==0 ? null : $input['parent_id'];
-        $structure  = Structurepautum::create($input);
+            return redirect('/');
+        }
 
-        if($structure)
-        {
+        $input = $request->all();
+        $input['parent_id'] = $input['parent_id'] == 0 ? null : $input['parent_id'];
+        $structure = Structurepautum::create($input);
+
+        if ($structure) {
             return json_encode(true);
         }
+
         return json_encode(false);
     }
 
@@ -86,13 +86,11 @@ class StructurepautaController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('structurepautas.show'))
-        {
+        if (! Defender::hasPermission('structurepautas.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
-
-
     }
 
     /**
@@ -104,12 +102,11 @@ class StructurepautaController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('structurepautas.edit'))
-        {
+        if (! Defender::hasPermission('structurepautas.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
-        }
 
+            return redirect('/');
+        }
     }
 
     /**
@@ -124,22 +121,19 @@ class StructurepautaController extends AppBaseController
     {
         $structure = Structurepautum::find($id);
 
-        if(!$structure)
-        {
+        if (! $structure) {
             return \GuzzleHttp\json_encode(false);
         }
         $input = $request->all();
 
-
         $data = [
             'order' => $input['order'],
-            'name' => $input['name']
+            'name' => $input['name'],
         ];
 
         $structure->update($data);
 
         return \GuzzleHttp\json_encode(true);
-
     }
 
     /**
@@ -151,18 +145,15 @@ class StructurepautaController extends AppBaseController
      */
     public function destroy($id)
     {
-
         $structure = Structurepautum::find($id);
 
-        if(!$structure)
-        {
+        if (! $structure) {
             return \GuzzleHttp\json_encode(false);
         }
 
         $structure->delete();
 
         return json_encode(true);
-
     }
 
     /**
@@ -172,25 +163,23 @@ class StructurepautaController extends AppBaseController
      *
      * @return Json
      */
-    public function toggle($id){
-
+    public function toggle($id)
+    {
         return json_encode(true);
     }
 
-
     /**
-     * Update status of specified Structurepaut
+     * Update status of specified Structurepaut.
      *
      * @param $field
      * @param $id
      * @return string
      */
-    public function toggleField($field,$id){
-
+    public function toggleField($field, $id)
+    {
         $structure = Structurepautum::find($id);
 
-        if(!$structure)
-        {
+        if (! $structure) {
             return \GuzzleHttp\json_encode(false);
         }
 

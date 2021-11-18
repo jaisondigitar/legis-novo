@@ -6,19 +6,19 @@ use App\Http\Requests\CreateLogRequest;
 use App\Http\Requests\UpdateLogRequest;
 use App\Models\Log;
 use App\Repositories\LogRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class LogController extends AppBaseController
 {
-    /** @var  LogRepository */
+    /** @var LogRepository */
     private $logRepository;
 
     public function __construct(LogRepository $logRepo)
@@ -32,48 +32,52 @@ class LogController extends AppBaseController
      * @param $path
      * @return array|string[]
      */
-    function getModels($path){
+    public function getModels($path)
+    {
         $out = [0 => 'Selecione'];
         $results = scandir($path);
 
         foreach ($results as $result) {
-            if ($result === '.' or $result === '..') continue;
-            $filename =  $result;
+            if ($result === '.' or $result === '..') {
+                continue;
+            }
+            $filename = $result;
 
             if (is_dir($filename)) {
                 $out = array_merge($out, getModels($filename));
-            }else{
-                $out[] = substr($filename,0,-4);
+            } else {
+                $out[] = substr($filename, 0, -4);
             }
         }
+
         return $out;
     }
 
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('logs.index')) {
+        if (! Defender::hasPermission('logs.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
-        $path = app_path() . "/Models";
+        $path = app_path().'/Models';
         $models = $this->getModels($path);
         $type = ['Selecione', 'created', 'updated', 'deleted'];
 
         $logs = Log::orderBy('created_at');
 
-        if(count($request->all())){
+        if (count($request->all())) {
             $model = str_replace(' ', '', 'App\Models\ '.$models[$request->owner_type]);
 
-            !empty($request->user_id)    ?  $logs->where('user_id', $request->user_id) : null;
-            !empty($request->owner_type)  ?  $logs->where('owner_type', $model ) : null;
-            !empty($request->type)        ?  $logs->where('type', $type[$request->type] ) : null;
-            !empty($request->year)        ?  $logs->where('created_at','like',$request->year."%") : null;
+            ! empty($request->user_id) ? $logs->where('user_id', $request->user_id) : null;
+            ! empty($request->owner_type) ? $logs->where('owner_type', $model) : null;
+            ! empty($request->type) ? $logs->where('type', $type[$request->type]) : null;
+            ! empty($request->year) ? $logs->where('created_at', 'like', $request->year.'%') : null;
         }
 
         $logs = $logs->paginate(20);
-        $path = app_path() . "/Models";
+        $path = app_path().'/Models';
         $models = $this->getModels($path);
-
 
         return view('logs.index', compact('models', 'type'))
             ->with('form', $request)
@@ -87,10 +91,10 @@ class LogController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('logs.create'))
-        {
+        if (! Defender::hasPermission('logs.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('logs.create');
@@ -106,11 +110,11 @@ class LogController extends AppBaseController
      */
     public function store(CreateLogRequest $request)
     {
-       if(!Defender::hasPermission('logs.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('logs.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $this->logRepository->create($input);
@@ -130,10 +134,10 @@ class LogController extends AppBaseController
      */
     public function show(int $id)
     {
-        if(!Defender::hasPermission('logs.show'))
-        {
+        if (! Defender::hasPermission('logs.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $log = $this->logRepository->findByID($id);
@@ -157,10 +161,10 @@ class LogController extends AppBaseController
      */
     public function edit(int $id)
     {
-        if(!Defender::hasPermission('logs.edit'))
-        {
+        if (! Defender::hasPermission('logs.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $log = $this->logRepository->findByID($id);
 
@@ -184,10 +188,10 @@ class LogController extends AppBaseController
      */
     public function update(int $id, UpdateLogRequest $request)
     {
-        if(!Defender::hasPermission('logs.edit'))
-        {
+        if (! Defender::hasPermission('logs.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $log = $this->logRepository->findByID($id);
@@ -215,10 +219,10 @@ class LogController extends AppBaseController
      */
     public function destroy(int $id)
     {
-        if(!Defender::hasPermission('logs.delete'))
-        {
+        if (! Defender::hasPermission('logs.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $log = $this->logRepository->findByID($id);
@@ -242,14 +246,15 @@ class LogController extends AppBaseController
      * @param int $id
      * @throws BindingResolutionException
      */
-    public function toggle(int $id){
-        if(!Defender::hasPermission('logs.edit'))
-        {
+    public function toggle(int $id)
+    {
+        if (! Defender::hasPermission('logs.edit')) {
             return json_encode(false);
         }
         $register = $this->logRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 }

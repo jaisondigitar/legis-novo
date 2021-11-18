@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateOfficeComissionAPIRequest;
 use App\Http\Requests\API\UpdateOfficeComissionAPIRequest;
 use App\Models\OfficeComission;
 use App\Repositories\OfficeComissionRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class OfficeComissionController
- * @package App\Http\Controllers\API
+ * Class OfficeComissionController.
  */
-
 class OfficeComissionAPIController extends AppBaseController
 {
-    /** @var  OfficeComissionRepository */
+    /** @var OfficeComissionRepository */
     private $officeComissionRepository;
 
     public function __construct(OfficeComissionRepository $officeComissionRepo)

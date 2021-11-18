@@ -45,16 +45,14 @@ class Responsibility extends Model
     use SoftDeletes;
 
     public $table = 'responsibilities';
-    
 
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'companies_id',
         'name',
         'order',
-        'skip_board'
+        'skip_board',
     ];
 
     /**
@@ -64,28 +62,31 @@ class Responsibility extends Model
      */
     protected $casts = [
         'companies_id' => 'integer',
-        'name' => 'string'
+        'name' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
         'companies_id' => 'required',
-        'name' => 'required'
+        'name' => 'required',
     ];
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo('App\Models\Company', 'companies_id');
     }
 
-    public function Responsibilities(){
+    public function Responsibilities()
+    {
         return $this->hasMany(ResponsibilityAssemblyman::class);
     }
 
-    public function assemblyman(){
+    public function assemblyman()
+    {
         return $this->belongsToMany(Assemblyman::class, 'responsibility_assemblymen');
     }
 }

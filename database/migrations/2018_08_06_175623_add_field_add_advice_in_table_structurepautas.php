@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddFieldAddAdviceInTableStructurepautas extends Migration
 {
@@ -26,7 +26,6 @@ class AddFieldAddAdviceInTableStructurepautas extends Migration
     {
         Schema::table('structurepautas', function (Blueprint $table) {
             $table->dropColumn('add_advice');
-
         });
     }
 }

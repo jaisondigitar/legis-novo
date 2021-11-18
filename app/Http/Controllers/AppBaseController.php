@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Response;
 
-
 /**
  * @SWG\Swagger(
  *   basePath="api/v1",
@@ -22,7 +21,6 @@ use Response;
  */
 class AppBaseController extends Controller
 {
-
     public function sendResponse($result, $message)
     {
         return Response::json(ResponseUtil::makeResponse($message, $result));
@@ -30,7 +28,7 @@ class AppBaseController extends Controller
 
     public function checkPath($path)
     {
-        if(!file_exists($path)) {
+        if (! file_exists($path)) {
             mkdir($path, 0777, true);
         }
     }
@@ -38,10 +36,10 @@ class AppBaseController extends Controller
     public function getAssembbyIds($gabs)
     {
         $ret = [];
-        foreach($gabs as $gab)
-        {
+        foreach ($gabs as $gab) {
             $ret[] = $gab->assemblyman_id;
         }
+
         return $ret;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddFieldAdviceIdInTableVoting extends Migration
 {
@@ -26,7 +26,6 @@ class AddFieldAdviceIdInTableVoting extends Migration
     {
         Schema::table('votings', function (Blueprint $table) {
             $table->dropColumn('advice_id');
-
         });
     }
 }

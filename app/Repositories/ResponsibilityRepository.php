@@ -11,7 +11,7 @@ class ResponsibilityRepository extends Repository
      */
     protected $fieldSearchable = [
         'companies_id',
-        'name'
+        'name',
     ];
 
     protected $modelClass = Responsibility::class;

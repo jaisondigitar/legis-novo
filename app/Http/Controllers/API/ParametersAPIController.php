@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateParametersAPIRequest;
 use App\Http\Requests\API\UpdateParametersAPIRequest;
 use App\Models\Parameters;
 use App\Repositories\ParametersRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class ParametersController
- * @package App\Http\Controllers\API
+ * Class ParametersController.
  */
-
 class ParametersAPIController extends AppBaseController
 {
-    /** @var  ParametersRepository */
+    /** @var ParametersRepository */
     private $parametersRepository;
 
     public function __construct(ParametersRepository $parametersRepo)

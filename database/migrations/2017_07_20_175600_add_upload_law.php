@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddUploadLaw extends Migration
 {
@@ -10,22 +10,22 @@ class AddUploadLaw extends Migration
      *
      * @return void
      */
-     public function up()
-     {
-         Schema::table('laws_projects', function (Blueprint $table) {
-             $table->string('law_file')->nullable()->default(null);
-         });
-     }
+    public function up()
+    {
+        Schema::table('laws_projects', function (Blueprint $table) {
+            $table->string('law_file')->nullable()->default(null);
+        });
+    }
 
-     /**
-      * Reverse the migrations.
-      *
-      * @return void
-      */
-     public function down()
-     {
-         Schema::table('laws_projects', function (Blueprint $table) {
-             $table->dropColumn('law_file');
-         });
-     }
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('laws_projects', function (Blueprint $table) {
+            $table->dropColumn('law_file');
+        });
+    }
 }

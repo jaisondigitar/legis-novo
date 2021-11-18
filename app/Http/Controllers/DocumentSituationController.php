@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateDocumentSituationRequest;
 use App\Http\Requests\UpdateDocumentSituationRequest;
 use App\Repositories\DocumentSituationRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class DocumentSituationController extends AppBaseController
 {
-    /** @var  DocumentSituationRepository */
+    /** @var DocumentSituationRepository */
     private $documentSituationRepository;
 
     public function __construct(DocumentSituationRepository $documentSituationRepo)
@@ -34,9 +34,10 @@ class DocumentSituationController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('documentSituations.index')) {
+        if (! Defender::hasPermission('documentSituations.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $documentSituations = $this->documentSituationRepository->getAll(0);
@@ -52,10 +53,10 @@ class DocumentSituationController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('documentSituations.create'))
-        {
+        if (! Defender::hasPermission('documentSituations.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('documentSituations.create');
@@ -71,11 +72,11 @@ class DocumentSituationController extends AppBaseController
      */
     public function store(CreateDocumentSituationRequest $request)
     {
-       if(!Defender::hasPermission('documentSituations.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('documentSituations.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $this->documentSituationRepository->create($input);
@@ -95,10 +96,10 @@ class DocumentSituationController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('documentSituations.show'))
-        {
+        if (! Defender::hasPermission('documentSituations.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $documentSituation = $this->documentSituationRepository->findByID($id);
@@ -122,10 +123,10 @@ class DocumentSituationController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('documentSituations.edit'))
-        {
+        if (! Defender::hasPermission('documentSituations.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $documentSituation = $this->documentSituationRepository->findByID($id);
 
@@ -149,10 +150,10 @@ class DocumentSituationController extends AppBaseController
      */
     public function update($id, UpdateDocumentSituationRequest $request)
     {
-        if(!Defender::hasPermission('documentSituations.edit'))
-        {
+        if (! Defender::hasPermission('documentSituations.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $documentSituation = $this->documentSituationRepository->findByID($id);
@@ -184,10 +185,10 @@ class DocumentSituationController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('documentSituations.delete'))
-        {
+        if (! Defender::hasPermission('documentSituations.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $documentSituation = $this->documentSituationRepository->findByID($id);
@@ -211,14 +212,15 @@ class DocumentSituationController extends AppBaseController
      * @param int $id
      * @throws BindingResolutionException
      */
-    public function toggle($id){
-        if(!Defender::hasPermission('documentSituations.edit'))
-        {
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('documentSituations.edit')) {
             return json_encode(false);
         }
         $register = $this->documentSituationRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 }

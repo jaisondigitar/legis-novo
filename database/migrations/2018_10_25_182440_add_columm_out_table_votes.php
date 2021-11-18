@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddColummOutTableVotes extends Migration
 {
@@ -13,9 +13,7 @@ class AddColummOutTableVotes extends Migration
     public function up()
     {
         Schema::table('votes', function (Blueprint $table) {
-
             $table->boolean('out')->default(false);
-
         });
     }
 
@@ -28,7 +26,6 @@ class AddColummOutTableVotes extends Migration
     {
         Schema::table('votes', function (Blueprint $table) {
             $table->dropColumn('out');
-
         });
     }
 }

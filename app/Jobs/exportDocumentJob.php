@@ -27,7 +27,7 @@ class exportDocumentJob extends Job implements ShouldQueue
      */
     public function handle()
     {
-       foreach ($this->type->documents as $key => $doc){
+        foreach ($this->type->documents as $key => $doc) {
             $job = (new DocumentExportPDF($doc))->onQueue('exportFile');
             dispatch($job);
         }

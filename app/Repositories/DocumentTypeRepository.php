@@ -12,11 +12,11 @@ class DocumentTypeRepository
     protected $fieldSearchable = [
         'name',
         'prefix',
-        'slug'
+        'slug',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

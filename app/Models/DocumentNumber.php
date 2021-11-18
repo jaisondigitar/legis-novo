@@ -10,16 +10,17 @@ class DocumentNumber extends Model
 
         'user_id',
         'document_id',
-        'date'
+        'date',
 
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function document(){
+    public function document()
+    {
         return $this->belongsTo(Document::class);
     }
-
 }

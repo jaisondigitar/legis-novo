@@ -12,7 +12,7 @@ class LegislatureRepository extends Repository
     protected $fieldSearchable = [
         'companies_id',
         'from',
-        'to'
+        'to',
     ];
 
     protected $modelClass = Legislature::class;

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class ChangeSubtitleToText extends Migration
 {
@@ -13,7 +13,7 @@ class ChangeSubtitleToText extends Migration
     public function up()
     {
         Schema::table('laws_projects', function (Blueprint $table) {
-            $table->longText('sub_title')->default("")->change();
+            $table->longText('sub_title')->default('')->change();
         });
     }
 
@@ -25,7 +25,7 @@ class ChangeSubtitleToText extends Migration
     public function down()
     {
         Schema::table('laws_projects', function (Blueprint $table) {
-            $table->string('number')->default("")->change();
+            $table->string('number')->default('')->change();
         });
     }
 }

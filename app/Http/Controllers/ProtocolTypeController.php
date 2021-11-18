@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProtocolTypeRequest;
 use App\Http\Requests\UpdateProtocolTypeRequest;
 use App\Repositories\ProtocolTypeRepository;
-use Illuminate\Http\Request;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Http\Request;
 
 class ProtocolTypeController extends AppBaseController
 {
-    /** @var  ProtocolTypeRepository */
+    /** @var ProtocolTypeRepository */
     private $protocolTypeRepository;
 
     public function __construct(ProtocolTypeRepository $protocolTypeRepo)
@@ -26,9 +26,10 @@ class ProtocolTypeController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('protocolTypes.index')) {
+        if (! Defender::hasPermission('protocolTypes.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         // $this->protocolTypeRepository->pushCriteria(new RequestCriteria($request));
@@ -45,10 +46,10 @@ class ProtocolTypeController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('protocolTypes.create'))
-        {
+        if (! Defender::hasPermission('protocolTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('protocolTypes.create');
@@ -63,11 +64,11 @@ class ProtocolTypeController extends AppBaseController
      */
     public function store(CreateProtocolTypeRequest $request)
     {
-       if(!Defender::hasPermission('protocolTypes.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('protocolTypes.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
         $input['slug'] = str_slug($input['name']);
 
@@ -87,10 +88,10 @@ class ProtocolTypeController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('protocolTypes.show'))
-        {
+        if (! Defender::hasPermission('protocolTypes.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
@@ -113,10 +114,10 @@ class ProtocolTypeController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('protocolTypes.edit'))
-        {
+        if (! Defender::hasPermission('protocolTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
@@ -139,10 +140,10 @@ class ProtocolTypeController extends AppBaseController
      */
     public function update($id, UpdateProtocolTypeRequest $request)
     {
-        if(!Defender::hasPermission('protocolTypes.edit'))
-        {
+        if (! Defender::hasPermission('protocolTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
@@ -171,10 +172,10 @@ class ProtocolTypeController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('protocolTypes.delete'))
-        {
+        if (! Defender::hasPermission('protocolTypes.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
@@ -193,20 +194,21 @@ class ProtocolTypeController extends AppBaseController
     }
 
     /**
-    	 * Update status of specified ProtocolType from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('protocolTypes.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->protocolTypeRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified ProtocolType from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('protocolTypes.edit')) {
+            return json_encode(false);
         }
+        $register = $this->protocolTypeRepository->findWithoutFail($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 }
