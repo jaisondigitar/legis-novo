@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateSessionTypeRequest;
 use App\Http\Requests\UpdateSessionTypeRequest;
 use App\Repositories\SessionTypeRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class SessionTypeController extends AppBaseController
 {
@@ -27,7 +30,8 @@ class SessionTypeController extends AppBaseController
      * Display a listing of the SessionType.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
     public function index(Request $request)
     {
@@ -45,7 +49,7 @@ class SessionTypeController extends AppBaseController
     /**
      * Show the form for creating a new SessionType.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -63,7 +67,8 @@ class SessionTypeController extends AppBaseController
      *
      * @param CreateSessionTypeRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateSessionTypeRequest $request)
     {
@@ -74,9 +79,9 @@ class SessionTypeController extends AppBaseController
        }
         $input = $request->all();
 
-        $input['slug'] = str_slug($input['name']);
+        $input['slug'] = Str::slug($input['name']);
 
-        $sessionType = $this->sessionTypeRepository->create($input);
+        $this->sessionTypeRepository->create($input);
 
         flash('Tipo de sessão salva com sucesso.')->success();
 
@@ -86,11 +91,12 @@ class SessionTypeController extends AppBaseController
     /**
      * Display the specified SessionType.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function show($id)
+    public function show(int $id)
     {
         if(!Defender::hasPermission('sessionTypes.show'))
         {
@@ -112,11 +118,12 @@ class SessionTypeController extends AppBaseController
     /**
      * Show the form for editing the specified SessionType.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if(!Defender::hasPermission('sessionTypes.edit'))
         {
@@ -137,12 +144,13 @@ class SessionTypeController extends AppBaseController
     /**
      * Update the specified SessionType in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateSessionTypeRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
-    public function update($id, UpdateSessionTypeRequest $request)
+    public function update(int $id, UpdateSessionTypeRequest $request)
     {
         if(!Defender::hasPermission('sessionTypes.edit'))
         {
@@ -158,9 +166,9 @@ class SessionTypeController extends AppBaseController
             return redirect(route('sessionTypes.index'));
         }
 
-        $request['slug'] = str_slug($request['name']);
+        $request['slug'] = Str::slug($request['name']);
 
-        $sessionType = $this->sessionTypeRepository->update($request->all(), $id);
+        $this->sessionTypeRepository->update($sessionType, $request->all());
 
         flash('Tipo de sessão atualizado com sucesso.')->success();
 
@@ -170,11 +178,13 @@ class SessionTypeController extends AppBaseController
     /**
      * Remove the specified SessionType from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if(!Defender::hasPermission('sessionTypes.delete'))
         {
@@ -190,7 +200,7 @@ class SessionTypeController extends AppBaseController
             return redirect(route('sessionTypes.index'));
         }
 
-        $this->sessionTypeRepository->delete($id);
+        $this->sessionTypeRepository->delete($sessionType);
 
         flash('Tipo de sessão removida com sucesso.')->success();
 
@@ -198,20 +208,20 @@ class SessionTypeController extends AppBaseController
     }
 
     /**
-    	 * Update status of specified SessionType from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('sessionTypes.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->sessionTypeRepository->findById($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified SessionType from storage.
+     *
+     * @param int $id
+     * @return false|string
+     * @throws BindingResolutionException
+     */
+    public function toggle(int $id){
+        if(!Defender::hasPermission('sessionTypes.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->sessionTypeRepository->findById($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 }
