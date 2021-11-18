@@ -8,7 +8,7 @@ class Company extends Model
 {
 
 	public $table = "companies";
-    
+
 	protected $dates = ['deleted_at'];
 
 
@@ -57,8 +57,11 @@ class Company extends Model
 	    "shortName" => "required",
 		"email" => "required",
 		"phone1" => "required",
+		"phone2" => "required",
 		"mayor" => "required",
 		"cnpjCpf" => "required",
+        "ieRg" => "required",
+        "im" => "required",
 		"city" => "required",
 		"state" => "required"
 	];

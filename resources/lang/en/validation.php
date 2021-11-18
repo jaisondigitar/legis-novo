@@ -113,7 +113,7 @@ return [
     'starts_with' => 'The :attribute must start with one of the following: :values.',
     'string' => 'The :attribute must be a string.',
     'timezone' => 'The :attribute must be a valid zone.',
-    'unique' => 'The :attribute has already been taken.',
+    'unique' => ':attribute está em uso ou já foi usado.',
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
@@ -163,6 +163,7 @@ return [
         'short_name' => 'Nome Parlamentar',
         'email' => 'Email',
         'phone1' => 'Celular',
+        'phone2' => 'Telefone 2',
         'zipcode' => 'Código Postal',
         'state_id' => 'Estado',
         'city_id' => 'Cidade',
@@ -176,5 +177,22 @@ return [
         'to' => 'Fim',
 
         'prefix' => 'Sigla',
+
+        'law_type_id' => 'Tipo de lei',
+        'law_date' => 'Data do projeto',
+        'title' => 'Ementa',
+        'sub_title' => 'Prefixo',
+        'assemblyman_id' => 'Responsável',
+        'situation_id' => 'Situação atual',
+
+        'cnpjCpf' => 'CNPJ/CPF',
+        'mayor' => 'Responsável',
+        'shortName' => 'Nome Fantasia',
+        'fullName' => 'Rasão Social',
+        'ieRg' => 'Insc. Estadual',
+        'im' => 'Insc. Municipal',
+
+        "sector_id" => "Setor",
+        "password" => "Senha",
     ],
 ];

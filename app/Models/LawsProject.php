@@ -153,8 +153,9 @@ class LawsProject extends Model
         'law_type_id' => 'required',
         'law_date' => 'required',
         'title' => 'required',
+        'sub_title' => 'required',
         'assemblyman_id' => 'required',
-//        'situation_id' => 'required',
+        'situation_id' => 'required',
     ];
 
 

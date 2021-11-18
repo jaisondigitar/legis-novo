@@ -78,7 +78,7 @@ class AdviceSituationLawController extends AppBaseController
         $adviceSituationLaw = $this->adviceSituationLawRepository->create($input);
 
 
-        flash('AdviceSituationLaw saved successfully.')->success();
+        flash('Situação do Parecer da Lei salvo com sucesso.')->success();
 
         return redirect(route('adviceSituationLaws.index'));
     }
@@ -101,7 +101,7 @@ class AdviceSituationLawController extends AppBaseController
         $adviceSituationLaw = $this->adviceSituationLawRepository->findById($id);
 
         if (empty($adviceSituationLaw)) {
-            flash('AdviceSituationLaw not found')->error();
+            flash('Situação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('adviceSituationLaws.index'));
         }
@@ -126,7 +126,7 @@ class AdviceSituationLawController extends AppBaseController
         $adviceSituationLaw = $this->adviceSituationLawRepository->findById($id);
 
         if (empty($adviceSituationLaw)) {
-            flash('AdviceSituationLaw not found')->error();
+            flash('Situação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('adviceSituationLaws.index'));
         }
@@ -153,14 +153,14 @@ class AdviceSituationLawController extends AppBaseController
         $adviceSituationLaw = $this->adviceSituationLawRepository->findById($id);
 
         if (empty($adviceSituationLaw)) {
-            flash('AdviceSituationLaw not found')->error();
+            flash('Situação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('adviceSituationLaws.index'));
         }
 
         $adviceSituationLaw = $this->adviceSituationLawRepository->update($adviceSituationLaw, $request->all());
 
-        flash('AdviceSituationLaw updated successfully.')->success();
+        flash('Situação do Parecer da Lei atualizado com sucesso.')->success();
 
         return redirect(route('adviceSituationLaws.index'));
     }
@@ -183,14 +183,14 @@ class AdviceSituationLawController extends AppBaseController
         $adviceSituationLaw = $this->adviceSituationLawRepository->findById($id);
 
         if (empty($adviceSituationLaw)) {
-            flash('AdviceSituationLaw not found')->error();
+            flash('Situação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('adviceSituationLaws.index'));
         }
 
         $this->adviceSituationLawRepository->delete($adviceSituationLaw);
 
-        flash('AdviceSituationLaw deleted successfully.')->success();
+        flash('Situação do Parecer da Lei removido com sucesso.')->success();
 
         return redirect(route('adviceSituationLaws.index'));
     }

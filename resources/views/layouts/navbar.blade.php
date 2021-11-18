@@ -7,11 +7,21 @@
             </a>
             <ul class="dropdown-menu square margin-list-rounded with-triangle">
                 @is('root')
-                    @shield('modules.index')<li><a href="{{url('/config/modules', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Módulos</a></li>@endshield
-                    @shield('permissions.index')<li><a href="{{url('/config/permissions', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Permissões</a></li>@endshield
-                    @shield('parameters.index')<li><a href="{{url('/config/parameters', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Parâmetros</a></li>@endshield
-                    @shield('documents.importNumber')<li><a href="{{url('/config/importNumber', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Migrar número de documento</a></li>@endshield
-                    @shield('lawsProjects.importNumberLaw')<li><a href="{{url('/config/importNumberLaw', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Migrar número da lei</a></li>@endshield
+                    @shield('modules.index')
+                        <li><a href="{{url('/config/modules', $parameters = [], $secure = null)}}"><i class="fa fa-cubes"></i>Módulos</a></li>
+                    @endshield
+                    @shield('permissions.index')
+                        <li><a href="{{url('/config/permissions', $parameters = [], $secure = null)}}"><i class="fa fa-key"></i>Permissões</a></li>
+                    @endshield
+                    @shield('parameters.index')
+                        <li><a href="{{url('/config/parameters', $parameters = [], $secure = null)}}"><i class="fa fa-sliders"></i>Parâmetros</a></li>
+                    @endshield
+                    @shield('documents.importNumber')
+                        <li><a href="{{url('/config/importNumber', $parameters = [], $secure = null)}}"><i class="fa fa-file"></i>Migrar número de documento</a></li>
+                    @endshield
+                    @shield('lawsProjects.importNumberLaw')
+                        <li><a href="{{url('/config/importNumberLaw', $parameters = [], $secure = null)}}"><i class="fa fa-gavel"></i>Migrar número da lei</a></li>
+                    @endshield
                 @endis
             </ul>
         </li>

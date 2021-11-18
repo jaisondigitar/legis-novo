@@ -1,10 +1,10 @@
-<div class="form-group col-sm-2">
-    {!! Form::label('law_date', 'Data projeto:') !!}
+<div class="form-group col-sm-3">
+    {!! Form::label('law_date', 'Data projeto:', ['class' => 'required']) !!}
     {!! Form::text('law_date', null, ['class' => 'form-control datepicker', 'required']) !!}
 </div>
 
 <div class="form-group col-sm-3">
-    {!! Form::label('law_type_id', 'Tipo de lei:') !!}
+    {!! Form::label('law_type_id', 'Tipo de lei:', ['class' => 'required']) !!}
     {!! Form::select('law_type_id', $law_types, null, ['class' => 'form-control']) !!}
 </div>
 
@@ -13,8 +13,8 @@
     {!! Form::select('reference_id', $references_project, null, ['class' => 'form-control chosen']) !!}
 </div>
 
-<div class="form-group col-sm-2">
-    {!! Form::label('situation_id', 'Situação Atual:') !!}
+<div class="form-group col-sm-3">
+    {!! Form::label('situation_id', 'Situação Atual:', ['class' => 'required']) !!}
     {!! Form::select('situation_id', $situation, null, ['class' => 'form-control']) !!}
 </div>
 
@@ -33,8 +33,7 @@
     {{--<input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal" type="checkbox" {!! $town_hall > 0 ? 'checked':'' !!}>--}}
 {{--</div>--}}
 
-<div class="clearfix"></div>
-<div class="form-group col-sm-3" style="padding-left: 0px">
+<div class="form-group col-sm-3" style="padding: 0">
     <div class="form-group col-sm-12 hidden">
         {!! Form::label('date_presentation', 'Data ao plenário:') !!}
         {!! Form::text('date_presentation', null, ['class' => 'form-control datepicker']) !!}
@@ -44,21 +43,20 @@
         {!! Form::select('comission_id', $comission, null, ['class' => 'form-control']) !!}
     </div>
     <div class="form-group col-sm-12">
-        {!! Form::label('assemblyman_id', 'Responsável') !!}
+        {!! Form::label('assemblyman_id', 'Responsável', ['class' => 'required']) !!}
         {!! Form::select('assemblyman_id', $assemblymensList ,null, ['class' => 'form-control', 'id' => 'owner_id']) !!}
     </div>
-
 </div>
 
 <div class="form-group col-sm-9">
-    {!! Form::label('title', 'Ementa:') !!}
+    {!! Form::label('title', 'Ementa:', ['class' => 'required']) !!}
     {!! Form::textarea('title', null, ['class' => 'form-control', 'rows'=>5]) !!}
 </div>
 
 <div class="clearfix"></div>
 
 <div class="form-group col-sm-6">
-    {!! Form::label('sub_title', 'Texto PREFIXO:') !!}
+    {!! Form::label('sub_title', 'Texto PREFIXO:', ['class' => 'required']) !!}
     {!! Form::textarea('sub_title', null, ['class' => 'form-control ckeditor']) !!}
 </div>
 
