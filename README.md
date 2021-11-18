@@ -7,15 +7,19 @@
 - Composer
 
 #### Passo a passo
-1. Atualize as dependências do *PHP* com o comando:
+1. Copiar o arquivo **.env.example** para o mesmo local com o nome **.env**
+
+2. Copiar o arquivo **docker-compose.yml.example** para o mesmo local com o nome **docker-compose.yml**
+
+3. Atualize as dependências do *PHP* com o comando:
 > composer install
 
-2. Para baixar as bibliotecas que seram usadas pelas Views:
+4. Para baixar as bibliotecas que seram usadas pelas Views:
 > npm install
 
 > yarn install
 
-3. Em caso de sucesso, execute o build das imagens do *Docker* executando o comando:
+5. Em caso de sucesso, execute o build das imagens do *Docker* executando o comando:
 > docker-compose up
 
 **caso queira executar o *container* em segundo plano acrescente o atributo *-d***
@@ -24,10 +28,6 @@
 **qualquer erro no banco de dados basta removê-lo, após isso volte 1 passo:**
 
 > docker-compose down -v
-
-4. Copiar o arquivo *.env.example* para o mesmo local com o nome *.env*
-
-5. Copiar o arquivo *docker-compose.yml.example* para o mesmo local com o nome *docker-compose.yml*
 
 6. Executar para migrar o banco Legis:
 > ./dartisan migrate
