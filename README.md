@@ -1,16 +1,16 @@
-## Educar backend
+## Legis
 
-#### Requirements
+#### Requisitos
 - Docker
 - Docker-compose
 - PHP 7.4+
 - Composer
 
-#### Step by step
+#### Passo a passo
 1. Atualize as dependências do *PHP* com o comando:
 > composer install
 
-2. Para baixar as bibliotecas que seram usadas pelo Blade:
+2. Para baixar as bibliotecas que seram usadas pelas Views:
 > npm install
 
 > yarn install
@@ -21,7 +21,7 @@
 **caso queira executar o *container* em segundo plano acrescente o atributo *-d***
 > docker-compose up -d
 
-**qualquer erro no banco de dados basta removê-lo com para criar novamente executando o comando:**
+**qualquer erro no banco de dados basta removê-lo, após isso volte 1 passo:**
 
 > docker-compose down -v
 
@@ -50,4 +50,4 @@
 > .dartisan tenants:seed
 
 **Para rodar em um tenent especifico**
-> .dartisan tenants:seed --tenants= "nome tenant" 
+> .dartisan tenants:seed --tenants= < nome tenant >
