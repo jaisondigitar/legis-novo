@@ -192,7 +192,11 @@ return [
         'ieRg' => 'Insc. Estadual',
         'im' => 'Insc. Municipal',
 
-        "sector_id" => "Setor",
-        "password" => "Senha",
+        'order' => 'Ordem',
+        'text_initial' => 'Texto Inicial',
+        'description' => 'Descrição',
+
+        'sector_id' => 'Setor',
+        'password' => 'Senha',
     ],
 ];

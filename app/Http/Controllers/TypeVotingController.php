@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests;
-use App\Models\Meeting;
 use App\Models\TypeVoting;
 use Artesaos\Defender\Facades\Defender;
-use Flash;
 use Illuminate\Http\Request;
 
-class TypeVotingController extends Controller
+class TypeVotingController extends AppBaseController
 {
     /**
      * Display a listing of the resource.
