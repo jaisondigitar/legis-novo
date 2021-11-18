@@ -14,3 +14,5 @@ yarn-error.log
 .idea/
 
 docker-compose.yml
+
+.php-cs-fixer.cache
