@@ -113,7 +113,7 @@
                 @shield('version_pauta.index')<li class=""><a href="{{url('/version_pauta', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Estrutura de Pauta</a></li>@endshield
                 @shield('sessionTypes.index')<li class=""><a href="{{url('/sessionTypes', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipo de Sessões</a></li>@endshield
                 {{--@shield('structurepautas.index')<li class=""><a href="{{url('/structurepautas', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Estrutura de Pauta</a></li>@endshield--}}
-                @shield('structurepautas.index')<li class=""><a href="{{url('/typeVotings', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipo de vontação</a></li>@endshield
+                @shield('structurepautas.index')<li class=""><a href="{{url('/typeVotings', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipo de votação</a></li>@endshield
 
             </ul>
         </li>
