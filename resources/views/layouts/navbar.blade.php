@@ -69,8 +69,10 @@
         <ul class="dropdown-menu square margin-list-rounded with-triangle">
             @shield('documents.index')<li class=""><a href="{{url('/documents', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Documentos</a></li>@endshield
             <li class="divider"></li>
-            @shield('adviceSituationDocuments.index')<li class=""><a href="{{url('/adviceSituationDocuments', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do paracer do documento</a></li>@endshield
-            @shield('advicePublicationDocuments.index')<li class=""><a href="{{url('/advicePublicationDocuments', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Publicação do paracer do documento</a></li>@endshield
+            @shield('adviceSituationDocuments.index')<li class=""><a href="{{url
+            ('/adviceSituationDocuments', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do parecer do documento</a></li>@endshield
+            @shield('advicePublicationDocuments.index')<li class=""><a href="{{url
+            ('/advicePublicationDocuments', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Publicação do parecer do documento</a></li>@endshield
             @shield('documentModels.index')<li class=""><a href="{{url('/documentModels', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Modelos de documentos</a></li>@endshield
             @shield('documentTypes.index')<li class=""><a href="{{url('/documentTypes', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipos de documentos</a></li>@endshield
             @shield('documentSituations.index')<li class=""><a href="{{url('/documentSituations', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do documentos</a></li>@endshield
@@ -126,8 +128,10 @@
                 @shield('lawsProjects.index')<li class=""><a href="{{url('/lawsProjects', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Projeto de lei</a></li>@endshield
                 <li class="divider"></li>
                 @shield('lawSituations.index')<li class=""><a href="{{url('/lawSituations', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação de lei</a></li>@endshield
-                @shield('adviceSituationLaws.index')<li class=""><a href="{{url('/adviceSituationLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do paracer da lei</a></li>@endshield
-                @shield('advicePublicationLaws.index')<li class=""><a href="{{url('/advicePublicationLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Publicação do paracer da lei</a></li>@endshield
+                @shield('adviceSituationLaws.index')<li class=""><a href="{{url
+                ('/adviceSituationLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do parecer da lei</a></li>@endshield
+                @shield('advicePublicationLaws.index')<li class=""><a href="{{url
+                ('/advicePublicationLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Publicação do parecer da lei</a></li>@endshield
                 @shield('statusProcessingLaws.index')<li class=""><a href="{{url('/statusProcessingLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Status do Tramite</a></li>@endshield
                 @shield('lawsTypes.index')<li class=""><a href="{{url('/lawsTypes', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipos de lei</a></li>@endshield
                 @shield('lawsTags.index')<li class=""><a href="{{url('/lawsTags', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tags de lei</a></li>@endshield
