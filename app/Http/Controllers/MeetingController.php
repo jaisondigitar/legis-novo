@@ -470,7 +470,11 @@ class MeetingController extends AppBaseController
         $vicePresidente = Parameters::where('slug', 'vice-presidente-assina-pauta-e-ata')->first();
         $secretario = Parameters::where('slug', '1-secretario-assina-pauta-e-ata')->first();
 
-        if($presidente->value == 1 || $vicePresidente->value == 1 || $secretario->value == 1) {
+        if(
+            ($presidente && $presidente->value == 1) ||
+            ($vicePresidente && $vicePresidente->value == 1) ||
+            $secretario && $secretario->value == 1
+        ) {
             $html1 = '<br> <br> <br>';
             $html1 .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 400px; margin-left: 8%;">';
             $html1 .= '<tbody>';
