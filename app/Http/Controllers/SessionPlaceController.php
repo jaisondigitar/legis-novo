@@ -6,16 +6,16 @@ use App\Http\Requests;
 use App\Http\Requests\CreateSessionPlaceRequest;
 use App\Http\Requests\UpdateSessionPlaceRequest;
 use App\Repositories\SessionPlaceRepository;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class SessionPlaceController extends AppBaseControfller
 {
-    /** @var  SessionPlaceRepository */
+    /** @var SessionPlaceRepository */
     private $sessionPlaceRepository;
 
     public function __construct(SessionPlaceRepository $sessionPlaceRepo)
@@ -31,9 +31,10 @@ class SessionPlaceController extends AppBaseControfller
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('sessionPlaces.index')) {
+        if (! Defender::hasPermission('sessionPlaces.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $this->sessionPlaceRepository->pushCriteria(new RequestCriteria($request));
@@ -50,10 +51,10 @@ class SessionPlaceController extends AppBaseControfller
      */
     public function create()
     {
-        if(!Defender::hasPermission('sessionPlaces.create'))
-        {
+        if (! Defender::hasPermission('sessionPlaces.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('sessionPlaces.create');
@@ -68,11 +69,11 @@ class SessionPlaceController extends AppBaseControfller
      */
     public function store(CreateSessionPlaceRequest $request)
     {
-       if(!Defender::hasPermission('sessionPlaces.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('sessionPlaces.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $input['slug'] = str_slug($input['name']);
@@ -93,10 +94,10 @@ class SessionPlaceController extends AppBaseControfller
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('sessionPlaces.show'))
-        {
+        if (! Defender::hasPermission('sessionPlaces.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
@@ -119,10 +120,10 @@ class SessionPlaceController extends AppBaseControfller
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('sessionPlaces.edit'))
-        {
+        if (! Defender::hasPermission('sessionPlaces.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
 
@@ -145,10 +146,10 @@ class SessionPlaceController extends AppBaseControfller
      */
     public function update($id, UpdateSessionPlaceRequest $request)
     {
-        if(!Defender::hasPermission('sessionPlaces.edit'))
-        {
+        if (! Defender::hasPermission('sessionPlaces.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
@@ -177,10 +178,10 @@ class SessionPlaceController extends AppBaseControfller
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('sessionPlaces.delete'))
-        {
+        if (! Defender::hasPermission('sessionPlaces.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
@@ -199,20 +200,21 @@ class SessionPlaceController extends AppBaseControfller
     }
 
     /**
-    	 * Update status of specified SessionPlace from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('sessionPlaces.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->sessionPlaceRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified SessionPlace from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('sessionPlaces.edit')) {
+            return json_encode(false);
         }
+        $register = $this->sessionPlaceRepository->findWithoutFail($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 }

@@ -6,19 +6,19 @@ use App\Http\Requests\CreateDocumentModelsRequest;
 use App\Http\Requests\UpdateDocumentModelsRequest;
 use App\Models\DocumentType;
 use App\Repositories\DocumentModelsRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class DocumentModelsController extends AppBaseController
 {
-    /** @var  DocumentModelsRepository */
+    /** @var DocumentModelsRepository */
     private $documentModelsRepository;
 
     public function __construct(DocumentModelsRepository $documentModelsRepo)
@@ -35,16 +35,16 @@ class DocumentModelsController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('documentModels.index')) {
+        if (! Defender::hasPermission('documentModels.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $documentModels = $this->documentModelsRepository->getAll(0);
 
         return view('documentModels.index')
             ->with('documentModels', $documentModels);
-
     }
 
     /**
@@ -54,13 +54,13 @@ class DocumentModelsController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('documentModels.create'))
-        {
+        if (! Defender::hasPermission('documentModels.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
-        $document_type = DocumentType::pluck('name', 'id')->prepend('Selecione...', '');;
+        $document_type = DocumentType::pluck('name', 'id')->prepend('Selecione...', '');
 
         return view('documentModels.create')->with('document_type', $document_type);
     }
@@ -75,11 +75,11 @@ class DocumentModelsController extends AppBaseController
      */
     public function store(CreateDocumentModelsRequest $request)
     {
-       if(!Defender::hasPermission('documentModels.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('documentModels.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $this->documentModelsRepository->create($input);
@@ -126,10 +126,10 @@ class DocumentModelsController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('documentModels.edit'))
-        {
+        if (! Defender::hasPermission('documentModels.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $documentModels = $this->documentModelsRepository->findByID($id);
 
@@ -155,10 +155,10 @@ class DocumentModelsController extends AppBaseController
      */
     public function update(int $id, UpdateDocumentModelsRequest $request)
     {
-        if(!Defender::hasPermission('documentModels.edit'))
-        {
+        if (! Defender::hasPermission('documentModels.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $documentModels = $this->documentModelsRepository->findByID($id);
@@ -186,10 +186,10 @@ class DocumentModelsController extends AppBaseController
      */
     public function destroy(int $id)
     {
-        if(!Defender::hasPermission('documentModels.delete'))
-        {
+        if (! Defender::hasPermission('documentModels.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $documentModels = $this->documentModelsRepository->findByID($id);
@@ -213,14 +213,15 @@ class DocumentModelsController extends AppBaseController
      * @param int $id
      * @throws BindingResolutionException
      */
-    public function toggle($id){
-        if(!Defender::hasPermission('documentModels.edit'))
-        {
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('documentModels.edit')) {
             return json_encode(false);
         }
         $register = $this->documentModelsRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 }

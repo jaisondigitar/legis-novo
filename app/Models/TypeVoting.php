@@ -7,21 +7,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TypeVoting extends Model
 {
-
     use SoftDeletes;
 
     public $table = 'type_votings';
 
-
     protected $dates = ['deleted_at'];
-
 
     protected $fillable = [
 
         'name',
         'anonymous',
-        'active'
+        'active',
 
     ];
-
 }

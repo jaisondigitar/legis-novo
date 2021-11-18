@@ -7,7 +7,6 @@ use App\Models\Test;
 
 class CreateTestRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

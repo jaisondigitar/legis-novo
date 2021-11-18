@@ -2,26 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Request;
 
 class TelegramController extends Controller
 {
-
     protected $telegram;
-
 
     public function __construct(/*$telegram*/)
     {
 //        $this->telegram = new $telegram(env('TELEGRAM_BOT_TOKEN'));
     }
 
-    /**
-     *
-     */
     public function getUpdates()
     {
         $updates = $this->telegram->getUpdates();
@@ -42,7 +36,7 @@ class TelegramController extends Controller
     {
         $input = $request->all();
         $rules = [
-            'message' => 'required'
+            'message' => 'required',
         ];
 
         /*$validator = Validator::make($request->all(), $rules);
@@ -56,7 +50,7 @@ class TelegramController extends Controller
 
         $this->telegram->sendMessage([
             'chat_id' => env('TELEGRAM_CHAT_ID'),
-            'text' => $input['message']
+            'text' => $input['message'],
         ]);
 
         return redirect()->back()

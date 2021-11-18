@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\LawsStructure;
+use Illuminate\Database\Seeder;
 
 class LawStructureTypeTableSeeder extends Seeder
 {
-
     public function run()
     {
         $nameTypes = [

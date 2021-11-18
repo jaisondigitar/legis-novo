@@ -1,4 +1,6 @@
-<?php namespace App\Libraries\Repositories;
+<?php
+
+namespace App\Libraries\Repositories;
 
 use App\Models\User;
 use App\Repositories\Repository;
@@ -8,23 +10,19 @@ class UserRepository extends Repository
 {
     protected $modelClass = User::class;
 
-	public function search($input)
+    public function search($input)
     {
         $query = User::query();
 
         $columns = Schema::getColumnListing('users');
-        $attributes = array();
+        $attributes = [];
 
-        foreach($columns as $attribute)
-        {
-            if(isset($input[$attribute]) and !empty($input[$attribute]))
-            {
+        foreach ($columns as $attribute) {
+            if (isset($input[$attribute]) and ! empty($input[$attribute])) {
                 $query->where($attribute, $input[$attribute]);
                 $attributes[$attribute] = $input[$attribute];
-            }
-            else
-            {
-                $attributes[$attribute] =  null;
+            } else {
+                $attributes[$attribute] = null;
             }
         }
 
@@ -35,9 +33,8 @@ class UserRepository extends Repository
     {
         $model = $this->find($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "User not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'User not found');
         }
 
         return $model;
@@ -47,9 +44,8 @@ class UserRepository extends Repository
     {
         $model = $this->find($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "User not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'User not found');
         }
 
         return $model->delete();

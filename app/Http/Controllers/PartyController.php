@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePartyRequest;
 use App\Http\Requests\UpdatePartyRequest;
 use App\Repositories\PartyRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class PartyController extends AppBaseController
 {
-    /** @var  PartyRepository */
+    /** @var PartyRepository */
     private $partyRepository;
 
     public function __construct(PartyRepository $partyRepo)
@@ -34,9 +34,10 @@ class PartyController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('parties.index')) {
+        if (! Defender::hasPermission('parties.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $parties = $this->partyRepository->getAll(0);
@@ -52,10 +53,10 @@ class PartyController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('parties.create'))
-        {
+        if (! Defender::hasPermission('parties.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('parties.create');
@@ -71,11 +72,11 @@ class PartyController extends AppBaseController
      */
     public function store(CreatePartyRequest $request)
     {
-       if(!Defender::hasPermission('parties.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('parties.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $party = $this->partyRepository->create($input);
@@ -95,10 +96,10 @@ class PartyController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('parties.show'))
-        {
+        if (! Defender::hasPermission('parties.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $party = $this->partyRepository->findByID($id);
@@ -122,10 +123,10 @@ class PartyController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('parties.edit'))
-        {
+        if (! Defender::hasPermission('parties.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $party = $this->partyRepository->findByID($id);
@@ -150,10 +151,10 @@ class PartyController extends AppBaseController
      */
     public function update($id, UpdatePartyRequest $request)
     {
-        if(!Defender::hasPermission('parties.edit'))
-        {
+        if (! Defender::hasPermission('parties.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $party = $this->partyRepository->findByID($id);
@@ -181,10 +182,10 @@ class PartyController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('parties.delete'))
-        {
+        if (! Defender::hasPermission('parties.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $party = $this->partyRepository->findByID($id);
@@ -208,15 +209,15 @@ class PartyController extends AppBaseController
      * @param int $id
      * @throws BindingResolutionException
      */
-    public function toggle($id){
-        if(!Defender::hasPermission('parties.edit'))
-        {
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('parties.edit')) {
             return json_encode(false);
         }
 
         $register = $this->partyRepository->findByID($id);
 
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
 
         $register->save();
 

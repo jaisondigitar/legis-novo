@@ -10,7 +10,7 @@ class AdvicePublicationLawRepository extends Repository
      * @var array
      */
     protected $fieldSearchable = [
-        
+
     ];
 
     protected $modelClass = AdvicePublicationLaw::class;

@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateComissionSituationRequest;
 use App\Http\Requests\UpdateComissionSituationRequest;
 use App\Repositories\ComissionSituationRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class ComissionSituationController extends AppBaseController
 {
-    /** @var  ComissionSituationRepository */
+    /** @var ComissionSituationRepository */
     private $comissionSituationRepository;
 
     public function __construct(ComissionSituationRepository $comissionSituationRepo)
@@ -33,9 +33,10 @@ class ComissionSituationController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('comissionSituations.index')) {
+        if (! Defender::hasPermission('comissionSituations.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $comissionSituations = $this->comissionSituationRepository->getAll(0);
@@ -51,10 +52,10 @@ class ComissionSituationController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('comissionSituations.create'))
-        {
+        if (! Defender::hasPermission('comissionSituations.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('comissionSituations.create');
@@ -70,11 +71,11 @@ class ComissionSituationController extends AppBaseController
      */
     public function store(CreateComissionSituationRequest $request)
     {
-       if(!Defender::hasPermission('comissionSituations.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('comissionSituations.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $this->comissionSituationRepository->create($input);
@@ -94,10 +95,10 @@ class ComissionSituationController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('comissionSituations.show'))
-        {
+        if (! Defender::hasPermission('comissionSituations.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $comissionSituation = $this->comissionSituationRepository->findByID($id);
@@ -121,10 +122,10 @@ class ComissionSituationController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('comissionSituations.edit'))
-        {
+        if (! Defender::hasPermission('comissionSituations.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $comissionSituation = $this->comissionSituationRepository->findByID($id);
 
@@ -148,10 +149,10 @@ class ComissionSituationController extends AppBaseController
      */
     public function update($id, UpdateComissionSituationRequest $request)
     {
-        if(!Defender::hasPermission('comissionSituations.edit'))
-        {
+        if (! Defender::hasPermission('comissionSituations.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $comissionSituation = $this->comissionSituationRepository->findByID($id);
@@ -162,8 +163,10 @@ class ComissionSituationController extends AppBaseController
             return redirect(route('comissionSituations.index'));
         }
 
-        $this->comissionSituationRepository->update($comissionSituation,
-            $request->all());
+        $this->comissionSituationRepository->update(
+            $comissionSituation,
+            $request->all()
+        );
 
         flash('Situação da Comissão atualizado com sucesso.')->success();
 
@@ -180,10 +183,10 @@ class ComissionSituationController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('comissionSituations.delete'))
-        {
+        if (! Defender::hasPermission('comissionSituations.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $comissionSituation = $this->comissionSituationRepository->findByID($id);
@@ -207,14 +210,15 @@ class ComissionSituationController extends AppBaseController
      * @param int $id
      * @throws BindingResolutionException
      */
-    public function toggle($id){
-        if(!Defender::hasPermission('comissionSituations.edit'))
-        {
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('comissionSituations.edit')) {
             return json_encode(false);
         }
         $register = $this->comissionSituationRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 }

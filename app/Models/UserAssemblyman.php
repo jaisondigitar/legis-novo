@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
 
 /**
  * @SWG\Definition(
@@ -48,10 +48,9 @@ class UserAssemblyman extends Model
 
 //    protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'users_id',
-        'assemblyman_id'
+        'assemblyman_id',
     ];
 
     /**
@@ -61,23 +60,25 @@ class UserAssemblyman extends Model
      */
     protected $casts = [
         'users_id' => 'integer',
-        'assemblyman_id' => 'integer'
+        'assemblyman_id' => 'integer',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'users_id');
     }
 
-    public function assemblyman(){
+    public function assemblyman()
+    {
         return $this->belongsTo(Assemblyman::class, 'assemblyman_id');
     }
 }

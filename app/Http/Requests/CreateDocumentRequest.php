@@ -7,7 +7,6 @@ use App\Models\Document;
 
 class CreateDocumentRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

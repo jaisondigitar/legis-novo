@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
 use App\Jobs\DocumentJob;
 use App\Jobs\LawProjectJob;
 use App\Models\Advice;
@@ -20,12 +21,10 @@ use App\Models\UserAssemblyman;
 use Chumper\Zipper\Zipper;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 
 class AdminController extends AppBaseController
@@ -34,9 +33,9 @@ class AdminController extends AppBaseController
 
     public function dashboard()
     {
-        $gabs       = UserAssemblyman::where('users_id',Auth::user()->id)->get();
+        $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
-        $gabIds     = $this->getAssembbyIds($gabs);
+        $gabIds = $this->getAssembbyIds($gabs);
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
@@ -47,13 +46,12 @@ class AdminController extends AppBaseController
         $tmp = null;
         $commissions = null;
 
-        if(Auth::user()->sector_id == 1){
+        if (Auth::user()->sector_id == 1) {
             $commissions = Commission::active()->get();
-        }else {
+        } else {
             foreach ($assemblymens as $assemblymen) {
                 foreach ($assemblymen->assemblyman->commision_assemblyman as $p) {
-                    foreach($p->commissions as $commition)
-                    {
+                    foreach ($p->commissions as $commition) {
                         $commissions[] = $commition;
                     }
                 }
@@ -67,7 +65,7 @@ class AdminController extends AppBaseController
         $projLeiRead = count(LawsProject::unRead()->get());
 
         $docAll = count(Document::all());
-        $docRead = count(Document::where('read',1)->get());
+        $docRead = count(Document::where('read', 1)->get());
 
         return view('admin.index', compact(
             'projLeiAll',
@@ -83,8 +81,8 @@ class AdminController extends AppBaseController
 
     public function commissions()
     {
-        $gabs       = UserAssemblyman::where('users_id',Auth::user()->id)->get();
-        $gabIds     = $this->getAssembbyIds($gabs);
+        $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
+        $gabIds = $this->getAssembbyIds($gabs);
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
@@ -95,13 +93,12 @@ class AdminController extends AppBaseController
         $tmp = null;
         $commissions = null;
 
-        if(Auth::user()->sector_id == 1){
+        if (Auth::user()->sector_id == 1) {
             $commissions = Commission::active()->get();
-        }else {
+        } else {
             foreach ($assemblymens as $assemblymen) {
                 foreach ($assemblymen->assemblyman->commision_assemblyman as $p) {
-                    foreach($p->commissions as $commition)
-                    {
+                    foreach ($p->commissions as $commition) {
                         $commissions[] = $commition;
                     }
                 }
@@ -119,8 +116,8 @@ class AdminController extends AppBaseController
 
     public function showLaw($id)
     {
-        $gabs       = UserAssemblyman::where('users_id',Auth::user()->id)->get();
-        $gabIds     = $this->getAssembbyIds($gabs);
+        $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
+        $gabIds = $this->getAssembbyIds($gabs);
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
@@ -149,9 +146,8 @@ class AdminController extends AppBaseController
 
     public function showDocument($id)
     {
-
-        $gabs       = UserAssemblyman::where('users_id',Auth::user()->id)->get();
-        $gabIds     = $this->getAssembbyIds($gabs);
+        $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
+        $gabIds = $this->getAssembbyIds($gabs);
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
@@ -166,7 +162,6 @@ class AdminController extends AppBaseController
 
         $advices = Advice::where('to_id', $id)->where('closed', 1)->whereNotNull('document_id')->where('laws_projects_id', 0)->get();
 
-
         return view('admin.show', compact(
             'commissions',
             'commissions_situation',
@@ -177,8 +172,8 @@ class AdminController extends AppBaseController
 
     public function showClose($id)
     {
-        $gabs       = UserAssemblyman::where('users_id',Auth::user()->id)->get();
-        $gabIds     = $this->getAssembbyIds($gabs);
+        $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
+        $gabIds = $this->getAssembbyIds($gabs);
 
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
@@ -201,44 +196,42 @@ class AdminController extends AppBaseController
         ));
     }
 
-    public function findAdvice(Request $request){
-
+    public function findAdvice(Request $request)
+    {
         $data = $request->all();
-        $obj = Advice::where('id',$data['id'])->with('document')->with('project')->first();
+        $obj = Advice::where('id', $data['id'])->with('document')->with('project')->first();
 
         $obj1 = AdviceAwnser::find($data['id']);
 
-        if($obj){
+        if ($obj) {
             return json_encode($obj);
         }
 
         return json_encode(false);
     }
 
-    public function saveAdvice(Request $request){
-
+    public function saveAdvice(Request $request)
+    {
         $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
         $tmp = null;
         $commissions = null;
 
-
-        if(Auth::user()->sector_id == 1){
+        if (Auth::user()->sector_id == 1) {
             $commissions = Commission::active()->get();
             $request->closed = isset($request->closed) ? 0 : 1;
 
-            if($request->closed == 0){
+            if ($request->closed == 0) {
                 $advice = Advice::find($request->id);
-                if($advice){
+                if ($advice) {
                     $advice->closed = 0;
                     $advice->save();
                 }
             }
-        }else {
+        } else {
             foreach ($assemblymens as $assemblymen) {
                 foreach ($assemblymen->assemblyman->commision_assemblyman as $p) {
-                    foreach($p->commissions as $commition)
-                    {
+                    foreach ($p->commissions as $commition) {
                         $commissions[] = $commition;
                     }
                 }
@@ -258,7 +251,7 @@ class AdminController extends AppBaseController
         $projLeiRead = count(LawsProject::unRead()->get());
 
         $docAll = count(Document::all());
-        $docRead = count(Document::where('read',1)->get());
+        $docRead = count(Document::where('read', 1)->get());
 
         $input = $request->all();
 
@@ -271,26 +264,24 @@ class AdminController extends AppBaseController
         $obj->description = $input['desc'];
         $obj->file = '';
 
-        if($obj->save()){
-
+        if ($obj->save()) {
             $adv = new AdviceSituation();
             $adv->advice_id = $obj->advice_id;
             $adv->comission_situation_id = $obj->commission_id;
             $adv->save();
 
-            if($request->file('Arquivo')) {
-
+            if ($request->file('Arquivo')) {
                 $file = $request['Arquivo'];
                 $extesion_img = strtolower($file->getClientOriginalExtension());
-                $image_file = uniqid() . time() . '.' . $extesion_img;
+                $image_file = uniqid().time().'.'.$extesion_img;
 
-                if($request->file('Arquivo')->move(base_path() . '/public/uploads/advice_awnser/', $image_file)) {
+                if ($request->file('Arquivo')->move(base_path().'/public/uploads/advice_awnser/', $image_file)) {
                     $obj->file = $image_file;
                     $obj->save();
                 }
-
             }
         }
+
         return view('admin.index', compact(
             'projLeiAll',
             'projLeiApr',
@@ -326,6 +317,7 @@ class AdminController extends AppBaseController
     public function exportFilesLaws()
     {
         dispatch(new LawProjectJob());
+
         return redirect(route('export.files'));
     }
 

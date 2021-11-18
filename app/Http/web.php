@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 });*/
 
-
 // Authentication routes...
 Auth::routes();
 
@@ -37,8 +36,7 @@ Route::get('logout', 'Auth\LoginController@logout');
     'password' => 'Auth\PasswordController',
 ]);*/
 
-
-/**
+/*
  *  ROTAS DE FRONT-END DE CONSULTAS PUBLICAS
  */
 
@@ -64,12 +62,10 @@ Route::get('download-meeting/{filename}', 'SiteController@downloadMeeting');
 //    return response()->download($file);
 //});
 
-
-/** --------------------------------------------------
+/* --------------------------------------------------
  *  ----| GRUPO CONFIG
  *  -------------------------------------------------*/
 Route::group(['prefix' => 'config', ['middleware' => 'needsRole', 'is' => 'root']], function () {
-
     Route::resource('/companies', 'CompanyController');
     Route::get('/companies/{id}/toggle', 'CompanyController@toggle');
     Route::get('/companies/{id}/delete', [
@@ -79,7 +75,6 @@ Route::group(['prefix' => 'config', ['middleware' => 'needsRole', 'is' => 'root'
 
     Route::get('/companies/removeImage/{id}', 'CompanyController@removeImage');
     Route::get('/companies/change-parameter/{id}/{value}', 'CompanyController@changeParamater');
-
 
     Route::resource('permissions', 'PermissionController');
     Route::get('/permissions/{id}/toggle', 'PermissionController@toggle');
@@ -95,7 +90,6 @@ Route::group(['prefix' => 'config', ['middleware' => 'needsRole', 'is' => 'root'
         'uses' => 'ModuleController@destroy',
     ]);
 
-
     Route::resource('parameters', 'ParametersController');
 
     Route::get('/importNumber', 'DocumentController@importNumber')->name('documents.importNumber');
@@ -108,15 +102,12 @@ Route::group(['prefix' => 'config', ['middleware' => 'needsRole', 'is' => 'root'
     Route::get('/export/files', 'AdminController@exportFiles')->name('export.files');
     Route::get('/export/files/laws', 'AdminController@exportFilesLaws')->name('export.files.laws');
     Route::get('/export/files/laws/zip', 'AdminController@exportFilesLawsZip')->name('export.files.laws.zip');
-
 });
 
-
-/** --------------------------------------------------
+/* --------------------------------------------------
  *  ----| GRUPO GERAL
  *  -------------------------------------------------*/
 Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
-
     Route::group(['prefix' => 'messages'], function () {
         Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
         Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);
@@ -124,7 +115,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
         Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessagesController@show']);
         Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
     });
-
 
     Route::group(['prefix' => '', ['middleware' => 'needsRole', 'is' => 'root']], function () {
         Route::resource('states', 'StateController');
@@ -139,7 +129,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
             'as' => 'cities.delete',
             'uses' => 'CityController@destroy',
         ]);
-
     });
 
     Route::get('/', 'AdminController@dashboard');
@@ -206,7 +195,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::resource('documentSituations', 'DocumentSituationController');
     Route::get('/documentSituations/{id}/toggle', 'DocumentSituationController@toggle');
 
-
     Route::resource('protocolTypes', 'ProtocolTypeController');
 
     Route::get('/documents-approved/{id}/toggle', 'DocumentController@toggleApproved');
@@ -216,11 +204,9 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::get('document-file-delete/{id}', 'DocumentController@attachamentDelete');
     Route::post('/documents/deleteBash', 'DocumentController@deleteBash');
 
-
     Route::post('/documents/findTextInitial', 'DocumentController@findTextInitial');
     Route::post('/protocolo/altera-protocolo', 'DocumentController@alteraProtocolo');
     Route::post('/protocolo/altera-numero', 'DocumentController@alteraNumero');
-
 
     Route::get('document-protocol/{id}', 'DocumentController@documentProtocol');
     Route::post('document-protocol-save', 'DocumentController@documentProtocolSave');
@@ -241,7 +227,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::resource('/version_pauta', 'VersionPautaController');
     Route::get('/version_pauta/{id}/structurepautas/create', 'VersionPautaController@createStructure')->name('version_pauta.createStructure');
     Route::get('/version_pauta/{id}/structurepauta/deleta/{structure_id}', 'VersionPautaController@destroyStructure')->name('version_pauta.destroyStructure');
-
 
     Route::resource('meetings', 'MeetingController');
     Route::get('meetings/can_number/{number}/{session_type_id}', 'MeetingController@meetingsCanNumber');
@@ -319,7 +304,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::get('law-file-delete/{id}', 'LawsProjectController@attachamentDelete');
     Route::post('/lawsProjects/{id}/attachament-upload', ['as' => 'lawsProjects.attachament.upload', 'uses' => 'LawsProjectController@attachamentUpload']);
 
-
     Route::post('/lawproject/{id}/toogleApproved', 'LawsProjectController@toogleApproved');
     Route::get('/lawproject/{id}/addFiles', 'LawsProjectController@addFiles')->name('lawsProjects.addFiles');
     Route::post('/lawproject/{id}/addFiles', 'LawsProjectController@addFilesSave')->name('lawsProjects.addFilesSave');
@@ -335,7 +319,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
 
     Route::post('lawProject-approvedGet', 'LawsProjectController@numberGetApproved');
     Route::post('lawProject-approvedEdit', ['as' => 'lawProject.approvedEdit', 'uses' => 'LawsProjectController@numberEditApproved']);
-
 
     Route::resource('/adviceSituationLaws', 'AdviceSituationLawController');
     Route::get('/adviceSituationLaws/{id}/toggle', 'AdviceSituationLawController@toggle');
@@ -355,13 +338,11 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::resource('advicePublicationDocuments', 'AdvicePublicationDocumentsController');
     Route::get('/advicePublicationDocuments/{id}/toggle', 'AdvicePublicationDocumentsController@toggle');
 
-
     Route::get('/painel-votacao', 'MeetingController@painel')->name('voting.panel');
     Route::get('/painel-votacao/default', 'MeetingController@panelDefault')->name('voting.default');
     Route::get('/painel-votacao/voting', 'MeetingController@painelVoting')->name('voting.voting');
     Route::get('/painel-votacao/resume', 'MeetingController@painelResume')->name('voting.resume');
     Route::get('/painel-votacao/discourse', 'MeetingController@painelDiscourse')->name('voting.discourse');
-
 
     Route::post('/painel-votacao/data', 'MeetingController@painelData');
     Route::get('/painel-votacao-parlamentar/{id}/data', 'MeetingController@painelParlamentarData');
@@ -370,7 +351,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::post('voting/assemblyman/computeVoting', 'MeetingController@computeVoting')->name('assemblyman.computeVoting');
 
     Route::get('voting/getVotes', 'MeetingController@getVotes')->name('assemblyman.getVotes');
-
 
     Route::get('/meetings/{id}/panel-stage', 'MeetingController@panelStage')->name('voting.panelStage');
     Route::post('/set-stage-panel', 'CompanyController@setStagePanel');
@@ -386,7 +366,7 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
 
     Route::get('/resume/voting/{id}', 'MeetingController@showResume');
 
-    /** --------------------------------------------------
+    /* --------------------------------------------------
      *  ----| GRUPO GERENCIAL
      *  -------------------------------------------------*/
     Route::group(['prefix' => 'gerencial'], function () {
@@ -405,9 +385,7 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
             'as' => 'gerencial.roles.delete',
             'uses' => 'RoleController@destroy',
         ]);
-
     });
-
 
     Route::resource('profiles', 'ProfileController');
     Route::get('/profiles/{id}/toggle', 'ProfileController@toggle');
@@ -433,7 +411,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::post('/advice/awnserUpdate', 'AdviceController@awnserUpdate');
     Route::get('/advice/awnser/{id}/removeFile', 'AdviceController@removeFile');
 
-
     Route::resource('comissionSituations', 'ComissionSituationController');
     Route::get('/comissionSituations/{id}/toggle', 'ComissionSituationController@toggle');
 });
@@ -449,8 +426,6 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
         require config('infyom.laravel_generator.path.api_routes');
     });
 });*/
-
-
 
 //
 //

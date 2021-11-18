@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateprotocolTypesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreateprotocolTypesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('protocol_types')) {
+        if (! Schema::hasTable('protocol_types')) {
             Schema::create('protocol_types', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name');

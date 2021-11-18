@@ -11,10 +11,8 @@ class ResponsibilitySeeder extends Seeder
      */
     public function run()
     {
-
-        $datas = ['Presidente', 'Vice-presidente', '1º Secretário','Vereador'];
-        $order = [1,2,3,15];
-
+        $datas = ['Presidente', 'Vice-presidente', '1º Secretário', 'Vereador'];
+        $order = [1, 2, 3, 15];
 
         foreach ($datas as $key => $data) {
             $resp = \App\Models\Responsibility::firstOrCreate(['name' => $data]);

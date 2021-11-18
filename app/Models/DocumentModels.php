@@ -50,16 +50,14 @@ class DocumentModels extends Model
     use SoftDeletes;
 
     public $table = 'document_models';
-    
 
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'document_type_id',
         'name',
         'content',
-        'text_initial'
+        'text_initial',
     ];
 
     /**
@@ -70,16 +68,16 @@ class DocumentModels extends Model
     protected $casts = [
         'document_type_id' => 'integer',
         'name' => 'string',
-        'content' => 'string'
+        'content' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     public function document_type()

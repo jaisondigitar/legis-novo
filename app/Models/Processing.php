@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
-
 
 class Processing extends Model
 {
-
     use SoftDeletes;
     protected $dates = ['deleted_at'];
 
@@ -22,10 +20,11 @@ class Processing extends Model
         'status_processing_law_id',
         'processing_date',
         'obsevation',
-        'processing_file'
+        'processing_file',
     ];
 
-    public function lawsProject(){
+    public function lawsProject()
+    {
         return $this->belongsTo(LawsProject::class);
     }
 
@@ -53,7 +52,4 @@ class Processing extends Model
     {
         return $this->belongsTo('App\Models\StatusProcessingLaw', 'status_processing_law_id');
     }
-
-
-
 }

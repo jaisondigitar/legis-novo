@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreatePartyAPIRequest;
 use App\Http\Requests\API\UpdatePartyAPIRequest;
 use App\Models\Party;
 use App\Repositories\PartyRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class PartyController
- * @package App\Http\Controllers\API
+ * Class PartyController.
  */
-
 class PartyAPIController extends AppBaseController
 {
-    /** @var  PartyRepository */
+    /** @var PartyRepository */
     private $partyRepository;
 
     public function __construct(PartyRepository $partyRepo)

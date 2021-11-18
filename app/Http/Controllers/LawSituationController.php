@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateLawSituationRequest;
 use App\Http\Requests\UpdateLawSituationRequest;
 use App\Repositories\LawSituationRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class LawSituationController extends AppBaseController
 {
-    /** @var  LawSituationRepository */
+    /** @var LawSituationRepository */
     private $lawSituationRepository;
 
     public function __construct(LawSituationRepository $lawSituationRepo)
@@ -34,9 +34,10 @@ class LawSituationController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('lawSituations.index')) {
+        if (! Defender::hasPermission('lawSituations.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawSituations = $this->lawSituationRepository->getAll(0);
@@ -52,10 +53,10 @@ class LawSituationController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('lawSituations.create'))
-        {
+        if (! Defender::hasPermission('lawSituations.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('lawSituations.create');
@@ -71,11 +72,11 @@ class LawSituationController extends AppBaseController
      */
     public function store(CreateLawSituationRequest $request)
     {
-       if(!Defender::hasPermission('lawSituations.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('lawSituations.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $this->lawSituationRepository->create($input);
@@ -95,10 +96,10 @@ class LawSituationController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('lawSituations.show'))
-        {
+        if (! Defender::hasPermission('lawSituations.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawSituation = $this->lawSituationRepository->findByID($id);
@@ -122,10 +123,10 @@ class LawSituationController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('lawSituations.edit'))
-        {
+        if (! Defender::hasPermission('lawSituations.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $lawSituation = $this->lawSituationRepository->findByID($id);
 
@@ -149,10 +150,10 @@ class LawSituationController extends AppBaseController
      */
     public function update($id, UpdateLawSituationRequest $request)
     {
-        if(!Defender::hasPermission('lawSituations.edit'))
-        {
+        if (! Defender::hasPermission('lawSituations.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawSituation = $this->lawSituationRepository->findByID($id);
@@ -180,10 +181,10 @@ class LawSituationController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('lawSituations.delete'))
-        {
+        if (! Defender::hasPermission('lawSituations.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawSituation = $this->lawSituationRepository->findByID($id);
@@ -207,14 +208,15 @@ class LawSituationController extends AppBaseController
      * @param int $id
      * @throws BindingResolutionException
      */
-    public function toggle($id){
-        if(!Defender::hasPermission('lawSituations.edit'))
-        {
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('lawSituations.edit')) {
             return json_encode(false);
         }
         $register = $this->lawSituationRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 }

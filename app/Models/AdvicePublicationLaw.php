@@ -34,13 +34,11 @@ class AdvicePublicationLaw extends Model
     use SoftDeletes;
 
     public $table = 'advice_publication_laws';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
-        'name'
+        'name',
     ];
 
     /**
@@ -49,15 +47,15 @@ class AdvicePublicationLaw extends Model
      * @var array
      */
     protected $casts = [
-        'name'=>'string'
+        'name'=>'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        'name'=>'required'
+        'name'=>'required',
     ];
 }

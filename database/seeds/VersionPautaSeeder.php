@@ -12,7 +12,7 @@ class VersionPautaSeeder extends Seeder
     public function run()
     {
         \App\Models\VersionPauta::firstOrCreate([
-           'name' => 'Padrão'
+           'name' => 'Padrão',
         ]);
     }
 }

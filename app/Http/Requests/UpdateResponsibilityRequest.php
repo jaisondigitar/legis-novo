@@ -7,7 +7,6 @@ use App\Models\Responsibility;
 
 class UpdateResponsibilityRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

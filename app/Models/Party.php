@@ -53,11 +53,10 @@ class Party extends Model
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'companies_id',
         'prefix',
-        'name'
+        'name',
     ];
 
     /**
@@ -68,21 +67,22 @@ class Party extends Model
     protected $casts = [
         'companies_id' => 'integer',
         'prefix' => 'string',
-        'name' => 'string'
+        'name' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
         'companies_id' => 'required',
         'prefix' => 'required',
-        'name' => 'required'
+        'name' => 'required',
     ];
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo('App\Models\Company', 'companies_id');
     }
 }

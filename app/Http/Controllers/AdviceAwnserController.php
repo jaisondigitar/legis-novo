@@ -6,16 +6,16 @@ use App\Http\Requests;
 use App\Http\Requests\CreateAdviceAwnserRequest;
 use App\Http\Requests\UpdateAdviceAwnserRequest;
 use App\Repositories\AdviceAwnserRepository;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class AdviceAwnserController extends AppBaseController
 {
-    /** @var  AdviceAwnserRepository */
+    /** @var AdviceAwnserRepository */
     private $adviceAwnserRepository;
 
     public function __construct(AdviceAwnserRepository $adviceAwnserRepo)
@@ -31,9 +31,10 @@ class AdviceAwnserController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('adviceAwnsers.index')) {
+        if (! Defender::hasPermission('adviceAwnsers.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $this->adviceAwnserRepository->pushCriteria(new RequestCriteria($request));
@@ -50,10 +51,10 @@ class AdviceAwnserController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('adviceAwnsers.create'))
-        {
+        if (! Defender::hasPermission('adviceAwnsers.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('$ROUTES_AS_PREFIX$adviceAwnsers.create');
@@ -68,11 +69,11 @@ class AdviceAwnserController extends AppBaseController
      */
     public function store(CreateAdviceAwnserRequest $request)
     {
-       if(!Defender::hasPermission('adviceAwnsers.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('adviceAwnsers.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $adviceAwnser = $this->adviceAwnserRepository->create($input);
@@ -91,10 +92,10 @@ class AdviceAwnserController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('adviceAwnsers.show'))
-        {
+        if (! Defender::hasPermission('adviceAwnsers.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
@@ -117,10 +118,10 @@ class AdviceAwnserController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('adviceAwnsers.edit'))
-        {
+        if (! Defender::hasPermission('adviceAwnsers.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
@@ -143,10 +144,10 @@ class AdviceAwnserController extends AppBaseController
      */
     public function update($id, UpdateAdviceAwnserRequest $request)
     {
-        if(!Defender::hasPermission('adviceAwnsers.edit'))
-        {
+        if (! Defender::hasPermission('adviceAwnsers.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
@@ -173,10 +174,10 @@ class AdviceAwnserController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('adviceAwnsers.delete'))
-        {
+        if (! Defender::hasPermission('adviceAwnsers.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
@@ -195,20 +196,21 @@ class AdviceAwnserController extends AppBaseController
     }
 
     /**
-    	 * Update status of specified AdviceAwnser from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('adviceAwnsers.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->adviceAwnserRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified AdviceAwnser from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('adviceAwnsers.edit')) {
+            return json_encode(false);
         }
+        $register = $this->adviceAwnserRepository->findWithoutFail($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 }

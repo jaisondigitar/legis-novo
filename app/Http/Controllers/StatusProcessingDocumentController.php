@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateStatusProcessingDocumentRequest;
 use App\Http\Requests\UpdateStatusProcessingDocumentRequest;
 use App\Repositories\StatusProcessingDocumentRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class StatusProcessingDocumentController extends AppBaseController
 {
-    /** @var  StatusProcessingDocumentRepository */
+    /** @var StatusProcessingDocumentRepository */
     private $statusProcessingDocumentRepository;
 
     public function __construct(StatusProcessingDocumentRepository $statusProcessingDocumentRepo)
@@ -34,9 +34,10 @@ class StatusProcessingDocumentController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('statusProcessingDocuments.index')) {
+        if (! Defender::hasPermission('statusProcessingDocuments.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $statusProcessingDocuments = $this->statusProcessingDocumentRepository->getAll(0);
@@ -52,10 +53,10 @@ class StatusProcessingDocumentController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('statusProcessingDocuments.create'))
-        {
+        if (! Defender::hasPermission('statusProcessingDocuments.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('statusProcessingDocuments.create');
@@ -71,11 +72,11 @@ class StatusProcessingDocumentController extends AppBaseController
      */
     public function store(CreateStatusProcessingDocumentRequest $request)
     {
-       if(!Defender::hasPermission('statusProcessingDocuments.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('statusProcessingDocuments.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $this->statusProcessingDocumentRepository->create($input);
@@ -95,10 +96,10 @@ class StatusProcessingDocumentController extends AppBaseController
      */
     public function show(int $id)
     {
-        if(!Defender::hasPermission('statusProcessingDocuments.show'))
-        {
+        if (! Defender::hasPermission('statusProcessingDocuments.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
@@ -122,10 +123,10 @@ class StatusProcessingDocumentController extends AppBaseController
      */
     public function edit(int $id)
     {
-        if(!Defender::hasPermission('statusProcessingDocuments.edit'))
-        {
+        if (! Defender::hasPermission('statusProcessingDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
@@ -149,10 +150,10 @@ class StatusProcessingDocumentController extends AppBaseController
      */
     public function update(int $id, UpdateStatusProcessingDocumentRequest $request)
     {
-        if(!Defender::hasPermission('statusProcessingDocuments.edit'))
-        {
+        if (! Defender::hasPermission('statusProcessingDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
@@ -180,10 +181,10 @@ class StatusProcessingDocumentController extends AppBaseController
      */
     public function destroy(int $id)
     {
-        if(!Defender::hasPermission('statusProcessingDocuments.delete'))
-        {
+        if (! Defender::hasPermission('statusProcessingDocuments.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
@@ -208,14 +209,15 @@ class StatusProcessingDocumentController extends AppBaseController
      * @return false|string
      * @throws BindingResolutionException
      */
-    public function toggle(int $id){
-        if(!Defender::hasPermission('statusProcessingDocuments.edit'))
-        {
+    public function toggle(int $id)
+    {
+        if (! Defender::hasPermission('statusProcessingDocuments.edit')) {
             return json_encode(false);
         }
         $register = $this->statusProcessingDocumentRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 }

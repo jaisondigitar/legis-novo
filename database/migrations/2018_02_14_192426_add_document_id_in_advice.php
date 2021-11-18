@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddDocumentIdInAdvice extends Migration
 {
@@ -14,7 +14,6 @@ class AddDocumentIdInAdvice extends Migration
     {
         Schema::table('advices', function (Blueprint $table) {
             $table->integer('document_id');
-
         });
     }
 
@@ -27,7 +26,6 @@ class AddDocumentIdInAdvice extends Migration
     {
         Schema::table('advices', function (Blueprint $table) {
             $table->dropColumn('document_id');
-
         });
     }
 }

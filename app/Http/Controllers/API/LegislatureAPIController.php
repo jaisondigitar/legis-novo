@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateLegislatureAPIRequest;
 use App\Http\Requests\API\UpdateLegislatureAPIRequest;
 use App\Models\Legislature;
 use App\Repositories\LegislatureRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class LegislatureController
- * @package App\Http\Controllers\API
+ * Class LegislatureController.
  */
-
 class LegislatureAPIController extends AppBaseController
 {
-    /** @var  LegislatureRepository */
+    /** @var LegislatureRepository */
     private $legislatureRepository;
 
     public function __construct(LegislatureRepository $legislatureRepo)

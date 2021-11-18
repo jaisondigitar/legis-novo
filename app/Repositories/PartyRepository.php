@@ -12,7 +12,7 @@ class PartyRepository extends Repository
     protected $fieldSearchable = [
         'companies_id',
         'prefix',
-        'name'
+        'name',
     ];
 
     protected $modelClass = Party::class;

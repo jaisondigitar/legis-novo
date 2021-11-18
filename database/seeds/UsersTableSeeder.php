@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use App\Models\User;
 use App\Models\Profile;
+use App\Models\User;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Database\Seeder;
+
 class UsersTableSeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      *
@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder
 
         Profile::firstOrCreate([
             'user_id'=> $usr->id,
-            'active'=>1
+            'active'=>1,
         ]);
     }
 }

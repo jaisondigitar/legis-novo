@@ -73,7 +73,7 @@ class DocumentProtocol extends Model
     public $fillable = [
         'document_id',
         'protocol_type_id',
-        'number'
+        'number',
     ];
 
     /**
@@ -84,24 +84,25 @@ class DocumentProtocol extends Model
     protected $casts = [
         'document_id' => 'integer',
         'protocol_type_id' => 'integer',
-        'number' => 'string'
+        'number' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    public function document(){
+    public function document()
+    {
         return $this->belongsTo('App\Models\Document', 'document_id');
     }
 
-    public function protocol_type(){
+    public function protocol_type()
+    {
         return $this->belongsTo('App\Models\ProtocolType', 'protocol_type_id');
     }
-
 }

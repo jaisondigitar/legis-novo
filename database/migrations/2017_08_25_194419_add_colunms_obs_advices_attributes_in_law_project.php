@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddColunmsObsAdvicesAttributesInLawProject extends Migration
 {
@@ -26,8 +26,6 @@ class AddColunmsObsAdvicesAttributesInLawProject extends Migration
     {
         Schema::table('laws_projects', function (Blueprint $table) {
             $table->dropColumn('observation');
-
-
         });
     }
 }

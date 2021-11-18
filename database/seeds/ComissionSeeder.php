@@ -17,8 +17,7 @@ class ComissionSeeder extends Seeder
             ['name'=>'Membro', 'slug' => 'membro'],
         ];
 
-        foreach($data as $reg)
-        {
+        foreach ($data as $reg) {
             \App\Models\OfficeCommission::firstOrCreate($reg);
         }
     }

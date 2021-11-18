@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddColunmsAdvicesAttributesInLawProject extends Migration
 {
@@ -54,7 +54,6 @@ class AddColunmsAdvicesAttributesInLawProject extends Migration
             $table->dropColumn('Vetoed');
             $table->dropColumn('Filed');
             $table->dropColumn('sustained');
-            
         });
     }
 }

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use App\Models\Meeting;
 use App\Models\TypeVoting;
 use Artesaos\Defender\Facades\Defender;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Flash;
+use Illuminate\Http\Request;
 
 class TypeVotingController extends Controller
 {
@@ -20,16 +19,15 @@ class TypeVotingController extends Controller
      */
     public function index()
     {
-
-        if(!Defender::hasPermission('typeVotings.index'))
-        {
+        if (! Defender::hasPermission('typeVotings.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $type_voting = TypeVoting::all();
 
-        return view( 'typeVotings.index', compact('type_voting' ));
+        return view('typeVotings.index', compact('type_voting'));
     }
 
     /**
@@ -39,10 +37,10 @@ class TypeVotingController extends Controller
      */
     public function create()
     {
-        if(!Defender::hasPermission('typeVotings.create'))
-        {
+        if (! Defender::hasPermission('typeVotings.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('typeVotings.create');
@@ -56,10 +54,10 @@ class TypeVotingController extends Controller
      */
     public function store(Request $request)
     {
-        if(!Defender::hasPermission('typeVotings.create'))
-        {
+        if (! Defender::hasPermission('typeVotings.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $input = $request->all();
         $input['anonymous'] = isset($input['anonymous']) ? 1 : 0;
@@ -80,10 +78,10 @@ class TypeVotingController extends Controller
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('typeVotings.show'))
-        {
+        if (! Defender::hasPermission('typeVotings.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $type_voting = TypeVoting::find($id);
@@ -105,10 +103,10 @@ class TypeVotingController extends Controller
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('typeVotings.edit'))
-        {
+        if (! Defender::hasPermission('typeVotings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $type_voting = TypeVoting::find($id);
 
@@ -130,10 +128,10 @@ class TypeVotingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(!Defender::hasPermission('typeVotings.edit'))
-        {
+        if (! Defender::hasPermission('typeVotings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $type_voting = TypeVoting::find($id);
@@ -141,7 +139,6 @@ class TypeVotingController extends Controller
 
         $input['anonymous'] = isset($input['anonymous']) ? 1 : 0;
         $input['active'] = isset($input['active']) ? 1 : 0;
-
 
         if (empty($type_voting)) {
             flash('Type not found')->error();
@@ -156,7 +153,6 @@ class TypeVotingController extends Controller
         $type_voting->anonymous = $input['anonymous'];
         $type_voting->save();
 
-
         flash('Type updated successfully.')->success();
 
         return redirect(route('typeVotings.index'));
@@ -170,10 +166,10 @@ class TypeVotingController extends Controller
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('typeVotings.delete'))
-        {
+        if (! Defender::hasPermission('typeVotings.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $type_voting = TypeVoting::find($id);

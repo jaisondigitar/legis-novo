@@ -11,7 +11,7 @@ class ProtocolTypeRepository extends Repository
      */
     protected $fieldSearchable = [
         'name',
-        'slug'
+        'slug',
     ];
 
     protected $modelClass = ProtocolType::class;

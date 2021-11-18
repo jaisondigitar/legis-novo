@@ -14,13 +14,13 @@ use App\Models\Responsibility;
 use App\Models\ResponsibilityAssemblyman;
 use App\Models\State;
 use App\Repositories\AssemblymanRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -28,7 +28,7 @@ use Intervention\Image\Facades\Image;
 
 class AssemblymanController extends AppBaseController
 {
-    /** @var  AssemblymanRepository */
+    /** @var AssemblymanRepository */
     private $assemblymanRepository;
 
     public function __construct(AssemblymanRepository $assemblymanRepo)
@@ -45,9 +45,10 @@ class AssemblymanController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('assemblymen.index')) {
+        if (! Defender::hasPermission('assemblymen.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $assemblymen = $this->assemblymanRepository->newQuery()->orderBy('short_name', 'ASC')->get()
@@ -55,7 +56,7 @@ class AssemblymanController extends AppBaseController
             ->load('party_assemblyman')
             ->load('responsibility_assemblyman');
 
-        foreach($assemblymen as $assemblyman){
+        foreach ($assemblymen as $assemblyman) {
             $assemblyman->party_last = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)
                 ->orderBy('date', 'DESC')
                 ->first();
@@ -64,7 +65,7 @@ class AssemblymanController extends AppBaseController
                 ->orderBy('date', 'DESC')
                 ->first();
 
-            $assemblyman->legislature_last = DB::table("legislature_assemblymen")
+            $assemblyman->legislature_last = DB::table('legislature_assemblymen')
                 ->where('assemblyman_id', $assemblyman->id)
                 ->join('legislatures', 'legislatures.id', '=', 'legislature_assemblymen.legislature_id')
                 ->orderBy('legislatures.from', 'DESC')
@@ -72,14 +73,13 @@ class AssemblymanController extends AppBaseController
                 ->first();
         }
 
-        $parties = Party::pluck('name', 'id')->prepend('Selecione..','');
-        $responsibilities = Responsibility::pluck('name', 'id')->prepend('Selecione..','');
+        $parties = Party::pluck('name', 'id')->prepend('Selecione..', '');
+        $responsibilities = Responsibility::pluck('name', 'id')->prepend('Selecione..', '');
 
         $legislatures = Legislature::all();
         $selectLegislature = ['' => 'Selecione...'];
-        foreach($legislatures as $legislature)
-        {
-            $selectLegislature[$legislature->id] = $legislature->from .' - '. $legislature->to;
+        foreach ($legislatures as $legislature) {
+            $selectLegislature[$legislature->id] = $legislature->from.' - '.$legislature->to;
         }
 
         return view('assemblymen.index')
@@ -96,10 +96,10 @@ class AssemblymanController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('assemblymen.create'))
-        {
+        if (! Defender::hasPermission('assemblymen.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $states = $this->statesList();
@@ -107,17 +107,17 @@ class AssemblymanController extends AppBaseController
 
         $legislatures = Legislature::all();
         $selectLegislature = ['' => 'Selecione...'];
-        foreach($legislatures as $legislature)
-        {
-            $selectLegislature[$legislature->id] = $legislature->from .' - '. $legislature->to;
+        foreach ($legislatures as $legislature) {
+            $selectLegislature[$legislature->id] = $legislature->from.' - '.$legislature->to;
         }
 
-        $parties = Party::pluck('prefix', 'id')->prepend('Selecione..','');
+        $parties = Party::pluck('prefix', 'id')->prepend('Selecione..', '');
 
-        $responsibility = Responsibility::pluck('name', 'id')->prepend('Selecione..','');
+        $responsibility = Responsibility::pluck('name', 'id')->prepend('Selecione..', '');
 
-        return view('assemblymen.create',
-            compact('states','cities','selectLegislature','parties','responsibility')
+        return view(
+            'assemblymen.create',
+            compact('states', 'cities', 'selectLegislature', 'parties', 'responsibility')
         );
     }
 
@@ -131,39 +131,39 @@ class AssemblymanController extends AppBaseController
      */
     public function store(CreateAssemblymanRequest $request)
     {
-       if(!Defender::hasPermission('assemblymen.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('assemblymen.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $assemblyman = $this->assemblymanRepository->create($input);
 
-        if(is_file($request->file('image'))){
-            $path       = '/uploads/assemblyman/';
-            $pathFull   = base_path()."/public".$path;
+        if (is_file($request->file('image'))) {
+            $path = '/uploads/assemblyman/';
+            $pathFull = base_path().'/public'.$path;
             $this->checkPath($pathFull);
 
-            $name = time() . '.' . $request->file('image')->getClientOriginalExtension();
+            $name = time().'.'.$request->file('image')->getClientOriginalExtension();
             $image = Image::make($request->file('image'));
-            $image->resize(400, null, function ($constraint) {$constraint->aspectRatio();});
+            $image->resize(400, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
 
-            if($image->save($pathFull.$name))
-            {
-                $assemblyman->image =  $path.$name;
+            if ($image->save($pathFull.$name)) {
+                $assemblyman->image = $path.$name;
                 $assemblyman->save();
             }
-
         }
-        if(!empty($input['legislature_id'])){
+        if (! empty($input['legislature_id'])) {
             $legislature_assemblyman = new LegislatureAssemblyman();
             $legislature_assemblyman->assemblyman_id = $assemblyman->id;
             $legislature_assemblyman->legislature_id = $input['legislature_id'];
             $legislature_assemblyman->save();
         }
 
-        if(!empty($input['party_id'])){
+        if (! empty($input['party_id'])) {
             $party_assemblyman = new PartiesAssemblyman();
             $party_assemblyman->assemblyman_id = $assemblyman->id;
             $party_assemblyman->date = $input['party_date'];
@@ -171,7 +171,7 @@ class AssemblymanController extends AppBaseController
             $party_assemblyman->save();
         }
 
-        if(!empty($input['responsibility_id'])){
+        if (! empty($input['responsibility_id'])) {
             $responsibility_assemblyman = new ResponsibilityAssemblyman();
             $responsibility_assemblyman->assemblyman_id = $assemblyman->id;
             $responsibility_assemblyman->date = $input['responsibility_date'];
@@ -194,10 +194,10 @@ class AssemblymanController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('assemblymen.show'))
-        {
+        if (! Defender::hasPermission('assemblymen.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $assemblyman = $this->assemblymanRepository->findByID($id);
@@ -221,10 +221,10 @@ class AssemblymanController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('assemblymen.edit'))
-        {
+        if (! Defender::hasPermission('assemblymen.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $assemblyman = $this->assemblymanRepository
             ->findByID($id)
@@ -250,17 +250,18 @@ class AssemblymanController extends AppBaseController
 
         $legislatures = Legislature::all();
         $selectLegislature = ['' => 'Selecione...'];
-        foreach($legislatures as $legislature)
-        {
-            $selectLegislature[$legislature->id] = $legislature->from .' - '. $legislature->to;
+        foreach ($legislatures as $legislature) {
+            $selectLegislature[$legislature->id] = $legislature->from.' - '.$legislature->to;
         }
 
-        $parties = Party::pluck('prefix', 'id')->prepend('Selecione..','');
+        $parties = Party::pluck('prefix', 'id')->prepend('Selecione..', '');
 
-        $responsibility = Responsibility::pluck('name', 'id')->prepend('Selecione..','');
+        $responsibility = Responsibility::pluck('name', 'id')->prepend('Selecione..', '');
 
-        return view('assemblymen.edit',
-            compact('states','cities','selectLegislature','parties','responsibility'))
+        return view(
+            'assemblymen.edit',
+            compact('states', 'cities', 'selectLegislature', 'parties', 'responsibility')
+        )
             ->with('assemblyman', $assemblyman);
     }
 
@@ -275,10 +276,10 @@ class AssemblymanController extends AppBaseController
      */
     public function update($id, UpdateAssemblymanRequest $request)
     {
-        if(!Defender::hasPermission('assemblymen.edit'))
-        {
+        if (! Defender::hasPermission('assemblymen.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $assemblyman = $this->assemblymanRepository->findByID($id);
@@ -295,37 +296,38 @@ class AssemblymanController extends AppBaseController
 
         $params = \Illuminate\Support\Facades\Request::all();
 
-        if(is_file($request->file('image'))){
-            $path       = '/uploads/assemblyman/';
-            $pathFull   = base_path()."/public".$path;
+        if (is_file($request->file('image'))) {
+            $path = '/uploads/assemblyman/';
+            $pathFull = base_path().'/public'.$path;
             $this->checkPath($pathFull);
 
-            $name = time() . '.' . $request->file('image')->getClientOriginalExtension();
+            $name = time().'.'.$request->file('image')->getClientOriginalExtension();
             $image = Image::make($request->file('image'));
-            $image->resize(400, null, function ($constraint) {$constraint->aspectRatio();});
+            $image->resize(400, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
 
-            if($image->save($pathFull.$name))
-            {
-                $assemblyman->image =  $path.$name;
+            if ($image->save($pathFull.$name)) {
+                $assemblyman->image = $path.$name;
                 $assemblyman->save();
             }
         }
 
-        if(!empty($params['legislature_id'])){
+        if (! empty($params['legislature_id'])) {
             $legislature = LegislatureAssemblyman::where('assemblyman_id', $id)->orderBy('created_at', 'desc')->first();
             $legislature->assemblyman_id = $id;
             $legislature->legislature_id = $params['legislature_id'];
             $legislature->save();
         }
 
-        if(!empty($params['party_id'])){
+        if (! empty($params['party_id'])) {
             $party = PartiesAssemblyman::where('assemblyman_id', $id)->orderBy('created_at', 'desc')->first();
             $party->date = $params['party_date'];
             $party->party_id = $params['party_id'];
             $party->save();
         }
 
-        if(!empty($params['responsibility_id'])){
+        if (! empty($params['responsibility_id'])) {
             $responsibility = ResponsibilityAssemblyman::where('assemblyman_id', $id)->orderBy('created_at', 'desc')->first();
             $responsibility->date = $params['responsibility_date'];
             $responsibility->responsibility_id = $params['responsibility_id'];
@@ -347,10 +349,10 @@ class AssemblymanController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('assemblymen.delete'))
-        {
+        if (! Defender::hasPermission('assemblymen.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $assemblyman = $this->assemblymanRepository->findByID($id);
@@ -374,119 +376,131 @@ class AssemblymanController extends AppBaseController
      * @param int $id
      * @throws BindingResolutionException
      */
-    public function toggle($id){
-        if(!Defender::hasPermission('assemblymen.edit'))
-        {
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('assemblymen.edit')) {
             return json_encode(false);
         }
         $register = $this->assemblymanRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 
-    public function delimage($id){
-        $path       = '/uploads/assemblyman/';
-        $register   = Assemblyman::find($id);
-        if(unlink(base_path()."/public".$register->image)){
-            $register->image=null;
+    public function delimage($id)
+    {
+        $path = '/uploads/assemblyman/';
+        $register = Assemblyman::find($id);
+        if (unlink(base_path().'/public'.$register->image)) {
+            $register->image = null;
             $register->save();
+
             return json_encode(true);
-        }else{
+        } else {
             return json_encode(false);
         }
     }
 
-    public function listLegislatures($assemblyman_id){
-
-        return DB::table("legislature_assemblymen")
+    public function listLegislatures($assemblyman_id)
+    {
+        return DB::table('legislature_assemblymen')
             ->where('assemblyman_id', $assemblyman_id)
             ->join('legislatures', 'legislatures.id', '=', 'legislature_assemblymen.legislature_id')
             ->orderBy('legislatures.from', 'desc')
             ->get();
     }
 
-    public function listParties($assemblyman_id){
+    public function listParties($assemblyman_id)
+    {
         return PartiesAssemblyman::where('assemblyman_id', $assemblyman_id)
             ->orderBy('date', 'DESC')
             ->get()
             ->load('party');
     }
 
-    public function listResponsibilities($assemblyman_id){
+    public function listResponsibilities($assemblyman_id)
+    {
         return ResponsibilityAssemblyman::where('assemblyman_id', $assemblyman_id)
             ->orderBy('date', 'DESC')
             ->get()
             ->load('responsibility');
     }
 
-    public function addLegislatures(){
+    public function addLegislatures()
+    {
         $params = \Illuminate\Support\Facades\Request::all();
         $legislature_assemblyman = new LegislatureAssemblyman();
         $legislature_assemblyman->legislature_id = $params['legislature_id'];
         $legislature_assemblyman->assemblyman_id = $params['assemblyman_id'];
 
-        if($legislature_assemblyman->save()){
+        if ($legislature_assemblyman->save()) {
             flash('Legislatura inserida com sucesso.')->success();
+
             return redirect(route('assemblymen.index'));
         } else {
             flash('Legislatura não inserida, favor tentar novamente.')->success();
+
             return redirect(route('assemblymen.index'));
         }
     }
 
-    public function addParties(){
+    public function addParties()
+    {
         $params = \Illuminate\Support\Facades\Request::all();
         $party_assemblyman = new PartiesAssemblyman();
         $party_assemblyman->party_id = $params['party_id'];
         $party_assemblyman->date = $params['party_date'];
         $party_assemblyman->assemblyman_id = $params['assemblyman_id'];
 
-        if($party_assemblyman->save()){
+        if ($party_assemblyman->save()) {
             flash('Partido inserido com sucesso.')->success();
+
             return redirect(route('assemblymen.index'));
-        }else{
+        } else {
             flash('Partido não inserido, favor tentar novamente.')->success();
+
             return redirect(route('assemblymen.index'));
         }
     }
 
-    public function addResponsibilities(){
+    public function addResponsibilities()
+    {
         $params = \Illuminate\Support\Facades\Request::all();
         $responsibility_assemblyman = new ResponsibilityAssemblyman();
         $responsibility_assemblyman->responsibility_id = $params['responsibility_id'];
         $responsibility_assemblyman->date = $params['responsibility_date'];
         $responsibility_assemblyman->assemblyman_id = $params['assemblyman_id'];
 
-        if($responsibility_assemblyman->save()){
+        if ($responsibility_assemblyman->save()) {
             flash('Responsabilidade inserida com sucesso.')->success();
+
             return redirect(route('assemblymen.index'));
-        }else{
+        } else {
             flash('Responsabilidade não inserida, favor tentar novamente.')->success();
+
             return redirect(route('assemblymen.index'));
         }
     }
 
-    public function removeParties($party_id, $assemblyman_id){
-
-        DB::delete('delete from parties_assemblymen where assemblyman_id = '. $assemblyman_id .' AND party_id = '. $party_id);
-
-        return ['data' => 'success'];
-    }
-
-    public function removeResponsibilities($responsibility_id, $assemblyman_id){
-
-        DB::delete('delete from responsibility_assemblymen where assemblyman_id = '. $assemblyman_id .' AND responsibility_id = '. $responsibility_id);
+    public function removeParties($party_id, $assemblyman_id)
+    {
+        DB::delete('delete from parties_assemblymen where assemblyman_id = '.$assemblyman_id.' AND party_id = '.$party_id);
 
         return ['data' => 'success'];
     }
 
-    public function removeLegislatures($legislature_id, $assemblyman_id){
-
-        DB::delete('delete from legislature_assemblymen where assemblyman_id = '. $assemblyman_id .' AND legislature_id = '. $legislature_id);
+    public function removeResponsibilities($responsibility_id, $assemblyman_id)
+    {
+        DB::delete('delete from responsibility_assemblymen where assemblyman_id = '.$assemblyman_id.' AND responsibility_id = '.$responsibility_id);
 
         return ['data' => 'success'];
     }
 
+    public function removeLegislatures($legislature_id, $assemblyman_id)
+    {
+        DB::delete('delete from legislature_assemblymen where assemblyman_id = '.$assemblyman_id.' AND legislature_id = '.$legislature_id);
 
+        return ['data' => 'success'];
+    }
 }

@@ -5,19 +5,20 @@ namespace App\Models;
 use Baum\Node;
 
 /**
-* Structurepautum
-*/
-class Structurepautum extends Node {
+ * Structurepautum.
+ */
+class Structurepautum extends Node
+{
     protected $table = 'structurepautas';
 
     protected $parentColumnName = 'parent_id';
-    protected $leftColumnName   = 'lft';
-    protected $rightColumnName  = 'rgt';
-    protected $depthColumnName  = 'depth';
-    protected $nameColumn   = 'name';
-    protected $orderColumnName  = 'order';
+    protected $leftColumnName = 'lft';
+    protected $rightColumnName = 'rgt';
+    protected $depthColumnName = 'depth';
+    protected $nameColumn = 'name';
+    protected $orderColumnName = 'order';
 
-    protected $guarded = array('id', 'parent_id', 'lft', 'rgt', 'depth');
+    protected $guarded = ['id', 'parent_id', 'lft', 'rgt', 'depth'];
 
     public $fillable = [
         'parent_id',
@@ -28,11 +29,10 @@ class Structurepautum extends Node {
         'add_obs',
         'add_ass',
         'add_advice',
-        'version_pauta_id'
+        'version_pauta_id',
     ];
 
     public static $rules = [
         'name' => 'required',
     ];
-
 }

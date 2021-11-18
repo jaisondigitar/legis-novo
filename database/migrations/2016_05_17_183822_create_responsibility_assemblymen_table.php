@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateresponsibilityAssemblymenTable extends Migration
 {
-
     /**
      * Run the migrations.
      *

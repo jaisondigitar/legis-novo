@@ -14,11 +14,11 @@ class AdviceAwnserRepository
         'commission_id',
         'date',
         'description',
-        'file'
+        'file',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

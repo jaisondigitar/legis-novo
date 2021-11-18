@@ -7,7 +7,6 @@ use Illuminate\Queue\InteractsWithQueue;
 
 class LawProjectExportJob extends Job implements ShouldQueue
 {
-
     use InteractsWithQueue;
 
     /**
@@ -15,7 +14,6 @@ class LawProjectExportJob extends Job implements ShouldQueue
      *
      * @return void
      */
-
     protected $type;
 
     public function __construct($type)
@@ -30,7 +28,7 @@ class LawProjectExportJob extends Job implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->type->laws as $law){
+        foreach ($this->type->laws as $law) {
             $job = (new LawProjectExportPDFJob($law))->onQueue('exportLawFile');
             dispatch($job);
         }

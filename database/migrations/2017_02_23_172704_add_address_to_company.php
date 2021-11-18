@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddAddressToCompany extends Migration
 {
@@ -13,7 +13,7 @@ class AddAddressToCompany extends Migration
     public function up()
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->string('address')->default("")->nullable();
+            $table->string('address')->default('')->nullable();
         });
     }
 

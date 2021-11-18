@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateSectorRequest;
 use App\Http\Requests\UpdateSectorRequest;
 use App\Repositories\SectorRepository;
+use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Artesaos\Defender\Facades\Defender;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class SectorController extends AppBaseController
 {
-    /** @var  SectorRepository */
+    /** @var SectorRepository */
     private $sectorRepository;
 
     public function __construct(SectorRepository $sectorRepo)
@@ -35,9 +35,10 @@ class SectorController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('sectors.index')) {
+        if (! Defender::hasPermission('sectors.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $sectors = $this->sectorRepository->getAll(0);
@@ -53,10 +54,10 @@ class SectorController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('sectors.create'))
-        {
+        if (! Defender::hasPermission('sectors.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('sectors.create');
@@ -72,11 +73,11 @@ class SectorController extends AppBaseController
      */
     public function store(CreateSectorRequest $request)
     {
-       if(!Defender::hasPermission('sectors.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('sectors.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
 
         $input = $request->all();
 
@@ -99,10 +100,10 @@ class SectorController extends AppBaseController
      */
     public function show(int $id)
     {
-        if(!Defender::hasPermission('sectors.show'))
-        {
+        if (! Defender::hasPermission('sectors.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $sector = $this->sectorRepository->findByID($id);
@@ -126,10 +127,10 @@ class SectorController extends AppBaseController
      */
     public function edit(int $id)
     {
-        if(!Defender::hasPermission('sectors.edit'))
-        {
+        if (! Defender::hasPermission('sectors.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $sector = $this->sectorRepository->findByID($id);
 
@@ -153,10 +154,10 @@ class SectorController extends AppBaseController
      */
     public function update($id, UpdateSectorRequest $request)
     {
-        if(!Defender::hasPermission('sectors.edit'))
-        {
+        if (! Defender::hasPermission('sectors.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $sector = $this->sectorRepository->findByID($id);
@@ -188,10 +189,10 @@ class SectorController extends AppBaseController
      */
     public function destroy(int $id)
     {
-        if(!Defender::hasPermission('sectors.delete'))
-        {
+        if (! Defender::hasPermission('sectors.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $sector = $this->sectorRepository->findByID($id);
@@ -216,14 +217,15 @@ class SectorController extends AppBaseController
      * @return false|string
      * @throws BindingResolutionException
      */
-    public function toggle(int $id){
-        if(!Defender::hasPermission('sectors.edit'))
-        {
+    public function toggle(int $id)
+    {
+        if (! Defender::hasPermission('sectors.edit')) {
             return json_encode(false);
         }
         $register = $this->sectorRepository->findByID($id);
-        $register->active = $register->active>0 ? 0 : 1;
+        $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 }

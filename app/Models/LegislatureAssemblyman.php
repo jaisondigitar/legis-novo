@@ -29,14 +29,13 @@ class LegislatureAssemblyman extends Model
 
     public $table = 'legislature_assemblymen';
 
-    public $primaryKey  = 'assemblyman_id';
+    public $primaryKey = 'assemblyman_id';
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'legislature_id',
-        'assemblyman_id'
+        'assemblyman_id',
     ];
 
     /**
@@ -46,23 +45,25 @@ class LegislatureAssemblyman extends Model
      */
     protected $casts = [
         'legislature_id' => 'integer',
-        'assemblyman_id' => 'integer'
+        'assemblyman_id' => 'integer',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    public function legislature(){
+    public function legislature()
+    {
         return $this->belongsTo(Legislature::class, 'legislature_id');
     }
 
-    public function assemblyman(){
+    public function assemblyman()
+    {
         return $this->belongsTo(Assemblyman::class, 'assemblyman_id');
     }
 }

@@ -44,14 +44,12 @@ class Type extends Model
     use SoftDeletes;
 
     public $table = 'types';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'prefix',
-        'name'
+        'name',
     ];
 
     /**
@@ -61,16 +59,16 @@ class Type extends Model
      */
     protected $casts = [
         'prefix' => 'string',
-        'name' => 'string'
+        'name' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
         'prefix' => 'required',
-        'name' => 'required'
+        'name' => 'required',
     ];
 }

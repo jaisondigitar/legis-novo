@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddTextToLaw extends Migration
 {
@@ -10,22 +10,22 @@ class AddTextToLaw extends Migration
      *
      * @return void
      */
-     public function up()
-     {
-         Schema::table('laws_projects', function (Blueprint $table) {
-             $table->text('justify')->default('');
-         });
-     }
+    public function up()
+    {
+        Schema::table('laws_projects', function (Blueprint $table) {
+            $table->text('justify')->default('');
+        });
+    }
 
-     /**
-      * Reverse the migrations.
-      *
-      * @return void
-      */
-     public function down()
-     {
-         Schema::table('laws_projects', function (Blueprint $table) {
-             $table->dropColumn('justify');
-         });
-     }
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('laws_projects', function (Blueprint $table) {
+            $table->dropColumn('justify');
+        });
+    }
 }

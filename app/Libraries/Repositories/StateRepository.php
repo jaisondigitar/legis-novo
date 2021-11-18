@@ -1,4 +1,6 @@
-<?php namespace App\Libraries\Repositories;
+<?php
+
+namespace App\Libraries\Repositories;
 
 use App\Models\State;
 use App\Repositories\Repository;
@@ -8,23 +10,19 @@ class StateRepository extends Repository
 {
     protected $modelClass = State::class;
 
-	public function search($input)
+    public function search($input)
     {
         $query = State::query();
 
         $columns = Schema::getColumnListing('states');
-        $attributes = array();
+        $attributes = [];
 
-        foreach($columns as $attribute)
-        {
-            if(isset($input[$attribute]) and !empty($input[$attribute]))
-            {
+        foreach ($columns as $attribute) {
+            if (isset($input[$attribute]) and ! empty($input[$attribute])) {
                 $query->where($attribute, $input[$attribute]);
                 $attributes[$attribute] = $input[$attribute];
-            }
-            else
-            {
-                $attributes[$attribute] =  null;
+            } else {
+                $attributes[$attribute] = null;
             }
         }
 
@@ -35,9 +33,8 @@ class StateRepository extends Repository
     {
         $model = $this->findByID($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "State not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'State not found');
         }
 
         return $model;
@@ -47,9 +44,8 @@ class StateRepository extends Repository
     {
         $model = $this->findByID($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "State not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'State not found');
         }
 
         return $model->delete();

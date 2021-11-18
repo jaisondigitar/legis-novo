@@ -10,7 +10,7 @@ class SessionTypeRepository extends Repository
      * @var array
      */
     protected $fieldSearchable = [
-        'name'
+        'name',
     ];
 
     protected $modelClass = SessionType::class;

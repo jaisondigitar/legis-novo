@@ -6,16 +6,16 @@ use App\Http\Requests;
 use App\Http\Requests\CreateLawsTypeRequest;
 use App\Http\Requests\UpdateLawsTypeRequest;
 use App\Repositories\LawsTypeRepository;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class LawsTypeController extends AppBaseController
 {
-    /** @var  LawsTypeRepository */
+    /** @var LawsTypeRepository */
     private $lawsTypeRepository;
 
     public function __construct(LawsTypeRepository $lawsTypeRepo)
@@ -31,9 +31,10 @@ class LawsTypeController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('lawsTypes.index')) {
+        if (! Defender::hasPermission('lawsTypes.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         // $this->lawsTypeRepository->pushCriteria(new RequestCriteria($request));
@@ -50,10 +51,10 @@ class LawsTypeController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('lawsTypes.create'))
-        {
+        if (! Defender::hasPermission('lawsTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         return view('lawsTypes.create');
@@ -68,11 +69,11 @@ class LawsTypeController extends AppBaseController
      */
     public function store(CreateLawsTypeRequest $request)
     {
-       if(!Defender::hasPermission('lawsTypes.create'))
-       {
-           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('lawsTypes.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $lawsType = $this->lawsTypeRepository->create($input);
@@ -91,19 +92,18 @@ class LawsTypeController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('lawsTypes.show'))
-        {
+        if (! Defender::hasPermission('lawsTypes.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawsType = $this->lawsTypeRepository->findById($id);
 
         if (empty($lawsType)) {
-
             flash('Tipo de lei não encontrada')->error();
-            return redirect(route('lawsTypes.index'));
 
+            return redirect(route('lawsTypes.index'));
         }
 
         return view('lawsTypes.show')->with('lawsType', $lawsType);
@@ -118,10 +118,10 @@ class LawsTypeController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('lawsTypes.edit'))
-        {
+        if (! Defender::hasPermission('lawsTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $lawsType = $this->lawsTypeRepository->findById($id);
 
@@ -144,10 +144,10 @@ class LawsTypeController extends AppBaseController
      */
     public function update($id, UpdateLawsTypeRequest $request)
     {
-        if(!Defender::hasPermission('lawsTypes.edit'))
-        {
+        if (! Defender::hasPermission('lawsTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawsType = $this->lawsTypeRepository->findById($id);
@@ -174,10 +174,10 @@ class LawsTypeController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('lawsTypes.delete'))
-        {
+        if (! Defender::hasPermission('lawsTypes.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawsType = $this->lawsTypeRepository->findById($id);
@@ -196,28 +196,30 @@ class LawsTypeController extends AppBaseController
     }
 
     /**
-    	 * Update status of specified LawsType from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('lawsTypes.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->lawsTypeRepository->findById($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified LawsType from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('lawsTypes.edit')) {
+            return json_encode(false);
         }
+        $register = $this->lawsTypeRepository->findById($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 
     public function toggleActive($id)
     {
         $register = $this->lawsTypeRepository->findById($id);
         $register->is_active = $register->is_active == 0 ? 1 : 0;
         $register->save();
+
         return json_encode(true);
     }
 }

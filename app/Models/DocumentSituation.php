@@ -44,14 +44,12 @@ class DocumentSituation extends Model
     use SoftDeletes;
 
     public $table = 'document_situations';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'name',
-        'active'
+        'active',
     ];
 
     /**
@@ -61,19 +59,20 @@ class DocumentSituation extends Model
      */
     protected $casts = [
         'name' => 'string',
-        'active' => 'boolean'
+        'active' => 'boolean',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        'name' => 'required'
+        'name' => 'required',
     ];
 
-    public function processingDocument(){
+    public function processingDocument()
+    {
         return $this->belongsTo(ProcessingDocument::class);
     }
 }

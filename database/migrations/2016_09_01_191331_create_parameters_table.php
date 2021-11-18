@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateparametersTable extends Migration
 {
-
     /**
      * Run the migrations.
      *

@@ -9,12 +9,12 @@ class StructureLaws extends Node
     public $table = 'structure_laws';
 
     protected $parentColumnName = 'parent_id';
-    protected $leftColumnName   = 'lft';
-    protected $rightColumnName  = 'rgt';
-    protected $depthColumnName  = 'depth';
-    protected $orderColumnName   = 'content';
+    protected $leftColumnName = 'lft';
+    protected $rightColumnName = 'rgt';
+    protected $depthColumnName = 'depth';
+    protected $orderColumnName = 'content';
 
-    protected $guarded = array('id', 'parent_id', 'lft', 'rgt', 'depth');
+    protected $guarded = ['id', 'parent_id', 'lft', 'rgt', 'depth'];
 
     public $fillable = [
         'law_id',
@@ -22,7 +22,7 @@ class StructureLaws extends Node
         'parent_id',
         'order',
         'number',
-        'content'
+        'content',
     ];
 
     protected $casts = [
@@ -34,19 +34,18 @@ class StructureLaws extends Node
         'content' => 'text',
     ];
 
-
     public static $rules = [
         'law_id' => 'required',
-        'law_structure_id' => 'required'
+        'law_structure_id' => 'required',
     ];
 
-    public function scopeIsRoot($query){
+    public function scopeIsRoot($query)
+    {
         return $query->whereNull('parent_id');
     }
 
     public function type()
     {
-        return $this->belongsTo('\App\Models\LawsStructure','law_structure_id');
+        return $this->belongsTo('\App\Models\LawsStructure', 'law_structure_id');
     }
-
 }

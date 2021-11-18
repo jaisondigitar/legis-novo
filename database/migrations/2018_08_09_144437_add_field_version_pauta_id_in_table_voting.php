@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddFieldVersionPautaIdInTableVoting extends Migration
 {
@@ -13,9 +13,7 @@ class AddFieldVersionPautaIdInTableVoting extends Migration
     public function up()
     {
         Schema::table('votings', function (Blueprint $table) {
-
             $table->integer('version_pauta_id')->nullable();
-
         });
     }
 
@@ -28,7 +26,6 @@ class AddFieldVersionPautaIdInTableVoting extends Migration
     {
         Schema::table('votings', function (Blueprint $table) {
             $table->dropColumn('version_pauta_id');
-
         });
     }
 }

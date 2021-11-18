@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\DocumentType;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class DocumentTypesTableSeeder extends Seeder
@@ -18,7 +18,7 @@ class DocumentTypesTableSeeder extends Seeder
             'Requerimento',
             'Moção',
             'Decreto',
-            'Emenda'
+            'Emenda',
         ];
 
         $prefix = [
@@ -26,11 +26,11 @@ class DocumentTypesTableSeeder extends Seeder
             'req',
             'moc',
             'dec',
-            'eme'
+            'eme',
         ];
 
         foreach ($documentTypes as $key => $documentType) {
-            DocumentType::firstOrCreate(['parent_id'=>0, 'name' => $documentType, 'prefix' => $prefix[$key],'slug' => Str::slug($documentType)]);
+            DocumentType::firstOrCreate(['parent_id'=>0, 'name' => $documentType, 'prefix' => $prefix[$key], 'slug' => Str::slug($documentType)]);
         }
     }
 }

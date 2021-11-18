@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreatecomissionSituationsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *

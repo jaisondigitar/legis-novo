@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateadviceSituationLawsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
