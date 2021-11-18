@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Cache;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use SoftDeletes, Authenticatable, CanResetPassword, Messagable,HasDefender;
+    use SoftDeletes, Authenticatable, CanResetPassword, Messagable, HasDefender;
 
     public $table = 'users';
 
