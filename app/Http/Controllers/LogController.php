@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateLogRequest;
 use App\Http\Requests\UpdateLogRequest;
 use App\Models\Log;
 use App\Repositories\LogRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class LogController extends AppBaseController
 {
@@ -27,8 +29,8 @@ class LogController extends AppBaseController
     /**
      * Display a listing of the Log.
      *
-     * @param Request $request
-     * @return Response
+     * @param $path
+     * @return array|string[]
      */
     function getModels($path){
         $out = [0 => 'Selecione'];
@@ -50,31 +52,25 @@ class LogController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('logs.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $path = app_path() . "/Models";
         $models = $this->getModels($path);
         $type = ['Selecione', 'created', 'updated', 'deleted'];
-        
+
+        $logs = Log::orderBy('created_at');
+
         if(count($request->all())){
             $model = str_replace(' ', '', 'App\Models\ '.$models[$request->owner_type]);
-
-            $logs = Log::orderBy('created_at');
 
             !empty($request->user_id)    ?  $logs->where('user_id', $request->user_id) : null;
             !empty($request->owner_type)  ?  $logs->where('owner_type', $model ) : null;
             !empty($request->type)        ?  $logs->where('type', $type[$request->type] ) : null;
             !empty($request->year)        ?  $logs->where('created_at','like',$request->year."%") : null;
-
-
-        }else{
-            $logs = $this->logRepository->pushCriteria(new RequestCriteria($request));
-
         }
 
-
-        $logs =$logs->paginate(20);
+        $logs = $logs->paginate(20);
         $path = app_path() . "/Models";
         $models = $this->getModels($path);
 
@@ -87,13 +83,13 @@ class LogController extends AppBaseController
     /**
      * Show the form for creating a new Log.
      *
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
      */
     public function create()
     {
         if(!Defender::hasPermission('logs.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -105,20 +101,21 @@ class LogController extends AppBaseController
      *
      * @param CreateLogRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateLogRequest $request)
     {
        if(!Defender::hasPermission('logs.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
-        $log = $this->logRepository->create($input);
+        $this->logRepository->create($input);
 
-        Flash::success('Log saved successfully.');
+        flash('Registo salvo com sucesso.')->success();
 
         return redirect(route('logs.index'));
     }
@@ -126,22 +123,23 @@ class LogController extends AppBaseController
     /**
      * Display the specified Log.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function show($id)
+    public function show(int $id)
     {
         if(!Defender::hasPermission('logs.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $log = $this->logRepository->findWithoutFail($id);
+        $log = $this->logRepository->findByID($id);
 
         if (empty($log)) {
-            Flash::error('Log not found');
+            flash('Registo não encontrado')->error();
 
             return redirect(route('logs.index'));
         }
@@ -152,21 +150,22 @@ class LogController extends AppBaseController
     /**
      * Show the form for editing the specified Log.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if(!Defender::hasPermission('logs.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $log = $this->logRepository->findWithoutFail($id);
+        $log = $this->logRepository->findByID($id);
 
         if (empty($log)) {
-            Flash::error('Log not found');
+            flash('Registo não encontrado')->error();
 
             return redirect(route('logs.index'));
         }
@@ -177,30 +176,31 @@ class LogController extends AppBaseController
     /**
      * Update the specified Log in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateLogRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
-    public function update($id, UpdateLogRequest $request)
+    public function update(int $id, UpdateLogRequest $request)
     {
         if(!Defender::hasPermission('logs.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $log = $this->logRepository->findWithoutFail($id);
+        $log = $this->logRepository->findByID($id);
 
         if (empty($log)) {
-            Flash::error('Log not found');
+            flash('Registo não encontrado')->error();
 
             return redirect(route('logs.index'));
         }
 
         $log = $this->logRepository->update($request->all(), $id);
 
-        Flash::success('Log updated successfully.');
+        flash('Registo atualizado com sucesso.')->success();
 
         return redirect(route('logs.index'));
     }
@@ -208,48 +208,48 @@ class LogController extends AppBaseController
     /**
      * Remove the specified Log from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if(!Defender::hasPermission('logs.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $log = $this->logRepository->findWithoutFail($id);
+        $log = $this->logRepository->findByID($id);
 
         if (empty($log)) {
-            Flash::error('Log not found');
+            flash('Registo não encontrado')->error();
 
             return redirect(route('logs.index'));
         }
 
         $this->logRepository->delete($id);
 
-        Flash::success('Log deleted successfully.');
+        flash('Registo removido com sucesso.')->success();
 
         return redirect(route('logs.index'));
     }
 
     /**
-    	 * Update status of specified Log from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('logs.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->logRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified Log from storage.
+     *
+     * @param int $id
+     * @throws BindingResolutionException
+     */
+    public function toggle(int $id){
+        if(!Defender::hasPermission('logs.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->logRepository->findByID($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 }

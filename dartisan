@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CONTAINER_PHP="legis-web"
-PHP_VERSAO=5.5
+PHP_VERSAO=7.4
 
 PARAMS=$@
 

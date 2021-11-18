@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\AdviceAwnser;
-use InfyOm\Generator\Common\BaseRepository;
 
-class AdviceAwnserRepository extends BaseRepository
+class AdviceAwnserRepository
 {
     /**
      * @var array

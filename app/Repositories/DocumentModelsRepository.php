@@ -3,24 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\DocumentModels;
-use InfyOm\Generator\Common\BaseRepository;
 
-class DocumentModelsRepository extends BaseRepository
+class DocumentModelsRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        'document_type_id',
-        'name',
-        'content'
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return DocumentModels::class;
-    }
+    protected $modelClass = DocumentModels::class;
 }

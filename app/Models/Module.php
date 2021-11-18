@@ -2,14 +2,13 @@
 
 use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\AuditingTrait;
 
 class Module extends Model
 {
-    use SoftDeletes, AuditingTrait;
+    use SoftDeletes;
 
 	public $table = "modules";
-    
+
 	protected $dates = ['deleted_at'];
 
 
@@ -27,11 +26,12 @@ class Module extends Model
     protected $casts = [
         "name" => "string",
 		"token" => "string",
-		"active" => "boolean"
+		"active" => "integer"
     ];
 
 	public static $rules = [
-	    "name" => "required"
+	    "name" => "required",
+	    "token" => "required"
 	];
 
     public function isActive($module){

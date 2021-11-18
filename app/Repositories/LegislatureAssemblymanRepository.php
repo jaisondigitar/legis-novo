@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\LegislatureAssemblyman;
-use InfyOm\Generator\Common\BaseRepository;
 
-class LegislatureAssemblymanRepository extends BaseRepository
+class LegislatureAssemblymanRepository
 {
     /**
      * @var array

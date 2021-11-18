@@ -2,15 +2,13 @@
 
 use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\AuditingTrait;
 
 
 class Company extends Model
 {
-    use SoftDeletes, AuditingTrait;
 
 	public $table = "companies";
-    
+
 	protected $dates = ['deleted_at'];
 
 
@@ -59,8 +57,11 @@ class Company extends Model
 	    "shortName" => "required",
 		"email" => "required",
 		"phone1" => "required",
+		"phone2" => "required",
 		"mayor" => "required",
 		"cnpjCpf" => "required",
+        "ieRg" => "required",
+        "im" => "required",
 		"city" => "required",
 		"state" => "required"
 	];

@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Party;
-use InfyOm\Generator\Common\BaseRepository;
 
-class PartyRepository extends BaseRepository
+class PartyRepository extends Repository
 {
     /**
      * @var array
@@ -16,11 +15,5 @@ class PartyRepository extends BaseRepository
         'name'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Party::class;
-    }
+    protected $modelClass = Party::class;
 }

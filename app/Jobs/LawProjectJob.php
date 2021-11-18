@@ -2,13 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
 use App\Models\LawsType;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class LawProjectJob extends Job implements SelfHandling, ShouldQueue
+class LawProjectJob extends Job implements ShouldQueue
 {
 
     use InteractsWithQueue;

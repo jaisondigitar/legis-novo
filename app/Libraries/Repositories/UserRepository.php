@@ -1,21 +1,12 @@
 <?php namespace App\Libraries\Repositories;
 
 use App\Models\User;
-use Bosnadev\Repositories\Eloquent\Repository;
-use Schema;
+use App\Repositories\Repository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UserRepository extends Repository
 {
-
-    /**
-    * Configure the Model
-    *
-    **/
-    public function model()
-    {
-      return 'App\Models\User';
-    }
+    protected $modelClass = User::class;
 
 	public function search($input)
     {

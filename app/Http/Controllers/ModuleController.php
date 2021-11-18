@@ -1,13 +1,15 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateModuleRequest;
 use App\Http\Requests\UpdateModuleRequest;
 use App\Libraries\Repositories\ModuleRepository;
-use Flash;
-use Illuminate\Support\Facades\App;
-use Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
+use Laracasts\Flash\Flash;
 
 class ModuleController extends AppBaseController
 {
@@ -20,14 +22,15 @@ class ModuleController extends AppBaseController
 		$this->moduleRepository = $moduleRepo;
 	}
 
-	/**
-	 * Display a listing of the Module.
-	 *
-	 * @return Response
-	 */
+    /**
+     * Display a listing of the Module.
+     *
+     * @return Application|Factory|View
+     * @throws BindingResolutionException
+     */
 	public function index()
 	{
-            $modules = $this->moduleRepository->paginate(30);
+            $modules = $this->moduleRepository->newQuery()->paginate(30);
             return view('modules.index')
                 ->with('modules', $modules);
 
@@ -36,7 +39,7 @@ class ModuleController extends AppBaseController
 	/**
 	 * Show the form for creating a new Module.
 	 *
-	 * @return Response
+	 * @return Application|Factory|View
 	 */
 	public function create()
 	{
@@ -44,37 +47,39 @@ class ModuleController extends AppBaseController
 
 	}
 
-	/**
-	 * Store a newly created Module in storage.
-	 *
-	 * @param CreateModuleRequest $request
-	 *
-	 * @return Response
-	 */
+    /**
+     * Store a newly created Module in storage.
+     *
+     * @param CreateModuleRequest $request
+     *
+     * @return Application|RedirectResponse|Redirector
+     * @throws BindingResolutionException
+     */
 	public function store(CreateModuleRequest $request)
 	{
 		$input = $request->all();
 
-		$module = $this->moduleRepository->create($input);
+		$this->moduleRepository->create($input);
 
-		Flash::success('Registro salvo com sucesso!');
+        flash('Registro salvo com sucesso!')->success();
 
-		return redirect(route('config.modules.index'));
+		return redirect(route('modules.index'));
 	}
 
-	/**
-	 * Display the specified Module.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
+    /**
+     * Display the specified Module.
+     *
+     * @param int $id
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
+     */
 	public function show($id)
 	{
-            $module = $this->moduleRepository->find($id);
+            $module = $this->moduleRepository->findByID($id);
 
             if (empty($module)) {
-                Flash::error('Registro não existe.');
+                flash('Registro não existe.')->error();
 
                 return redirect(route('modules.index'));
             }
@@ -83,87 +88,93 @@ class ModuleController extends AppBaseController
 
 	}
 
-	/**
-	 * Show the form for editing the specified Module.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
+    /**
+     * Show the form for editing the specified Module.
+     *
+     * @param int $id
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
+     */
 	public function edit($id)
 	{
-            $module = $this->moduleRepository->find($id);
+            $module = $this->moduleRepository->findByID($id);
 
             if (empty($module)) {
-                Flash::error('Registro não existe.');
+                flash('Registro não existe.')->error();
 
-                return redirect(route('config.modules.index'));
+                return redirect(route('modules.index'));
             }
 
             return view('modules.edit')->with('module', $module);
 
 	}
 
-	/**
-	 * Update the specified Module in storage.
-	 *
-	 * @param  int              $id
-	 * @param UpdateModuleRequest $request
-	 *
-	 * @return Response
-	 */
+    /**
+     * Update the specified Module in storage.
+     *
+     * @param int $id
+     * @param UpdateModuleRequest $request
+     *
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
+     */
 	public function update($id, UpdateModuleRequest $request)
 	{
-		$module = $this->moduleRepository->find($id);
+		$module = $this->moduleRepository->findByID($id);
 
 		if(empty($module))
 		{
-			Flash::error('Registro não existe.');
+			flash('Registro não existe.')->error();
 
-			return redirect(route('config.modules.index'));
+			return redirect(route('modules.index'));
 		}
 
-		$module = $this->moduleRepository->updateRich($request->all(), $id);
+		$this->moduleRepository->update($module, [
+            'name' => $request->get('name'),
+            'active' => (int) $request->get('active')
+        ]);
 
-		Flash::success('Registro editado com sucesso!');
+		flash('Registro editado com sucesso!')->success();
 
-		return redirect(route('config.modules.index'));
+		return redirect(route('modules.index'));
 	}
 
-	/**
-	 * Remove the specified Module from storage.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
+    /**
+     * Remove the specified Module from storage.
+     *
+     * @param int $id
+     *
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
+     */
 	public function destroy($id)
 	{
-            $module = $this->moduleRepository->find($id);
+            $module = $this->moduleRepository->findByID($id);
 
             if (empty($module)) {
-                Flash::error('Registro não existe.');
+                flash('Registro não existe.')->error();
 
                 return redirect(route('config.modules.index'));
             }
 
-            $this->moduleRepository->delete($id);
+            $this->moduleRepository->delete($module);
 
-            Flash::success('Registro deletado com sucesso!');
+            flash('Registro deletado com sucesso!')->success();
 
-            return redirect(route('config.modules.index'));
+            return redirect(route('modules.index'));
 
 	}
 
     /**
-	 * Update status of specified Module from storage.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Json
-	 */
+     * Update status of specified Module from storage.
+     *
+     * @param int $id
+     *
+     * @throws BindingResolutionException
+     */
 	public function toggle($id){
-            $register = $this->moduleRepository->find($id);
+            $register = $this->moduleRepository->findByID($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);

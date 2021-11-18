@@ -4,13 +4,10 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 
 
 class LawsProjectAssemblyman extends Model
 {
-    use AuditingTrait;
-
     public $table = 'law_project_assemblyman';
 
     public $fillable = [

@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\SessionType;
-use InfyOm\Generator\Common\BaseRepository;
 
-class SessionTypeRepository extends BaseRepository
+class SessionTypeRepository extends Repository
 {
     /**
      * @var array
@@ -14,11 +13,5 @@ class SessionTypeRepository extends BaseRepository
         'name'
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return SessionType::class;
-    }
+    protected $modelClass = SessionType::class;
 }

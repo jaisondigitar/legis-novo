@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
@@ -56,8 +55,6 @@ use Carbon\Carbon;
 class Commission extends Model
 {
     use SoftDeletes;
-
-    use AuditingTrait;
 
     public $table = 'commissions';
     

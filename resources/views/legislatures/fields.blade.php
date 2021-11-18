@@ -6,13 +6,13 @@
 
 <!-- From Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('from', 'De:') !!}
+    {!! Form::label('from', 'De:', ['class' => 'required']) !!}
     {!! Form::text('from', null, ['class' => 'form-control datepicker', 'minlength' => '10']) !!}
 </div>
 
 <!-- To Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('to', 'Até:') !!}
+    {!! Form::label('to', 'Até:', ['class' => 'required']) !!}
     {!! Form::text('to', null, ['class' => 'form-control datepicker', 'minlength' => '10']) !!}
 </div>
 

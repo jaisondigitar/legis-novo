@@ -27,20 +27,20 @@
 // See LICENSE.TXT file for more information.
 // -------------------------------------------------------------------
 //
-// Description : Example for tcpdf_barcodes_2d.php class
+// Description : Example for tcpdf_barcodes_1d.php class
 //
 //============================================================+
 
 /**
  * @file
- * Example for tcpdf_barcodes_2d.php class
+ * Example for tcpdf_barcodes_1d.php class
  * @package com.tecnick.tcpdf
  * @author Nicola Asuni
  * @version 1.0.000
  */
 
 // include 1D barcode class (search for installation path)
-require_once(dirname(__FILE__).'/tcpdf_barcodes_1d_include.php');
+require_once(dirname(__FILE__) . '/tcpdf_barcodes_1d_include.php');
 
 // set the barcode content and type
 $barcodeobj = new TCPDFBarcode('http://www.tcpdf.org', 'C128');

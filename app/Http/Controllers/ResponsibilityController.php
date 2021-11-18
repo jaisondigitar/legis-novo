@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateResponsibilityRequest;
 use App\Http\Requests\UpdateResponsibilityRequest;
 use App\Repositories\ResponsibilityRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class ResponsibilityController extends AppBaseController
 {
@@ -27,17 +29,16 @@ class ResponsibilityController extends AppBaseController
      * Display a listing of the Responsibility.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
     {
         if(!Defender::hasPermission('responsibilities.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $this->responsibilityRepository->pushCriteria(new RequestCriteria($request));
-        $responsibilities = $this->responsibilityRepository->all();
+        $responsibilities = $this->responsibilityRepository->getAll(0);
 
         return view('responsibilities.index')
             ->with('responsibilities', $responsibilities);
@@ -46,13 +47,13 @@ class ResponsibilityController extends AppBaseController
     /**
      * Show the form for creating a new Responsibility.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
         if(!Defender::hasPermission('responsibilities.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -64,20 +65,21 @@ class ResponsibilityController extends AppBaseController
      *
      * @param CreateResponsibilityRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateResponsibilityRequest $request)
     {
        if(!Defender::hasPermission('responsibilities.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
-        $responsibility = $this->responsibilityRepository->create($input);
+        $this->responsibilityRepository->create($input);
 
-        Flash::success('Responsibility saved successfully.');
+        flash('Responsabilidade salva com sucesso.')->success();
 
         return redirect(route('responsibilities.index'));
     }
@@ -85,22 +87,23 @@ class ResponsibilityController extends AppBaseController
     /**
      * Display the specified Responsibility.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function show($id)
     {
         if(!Defender::hasPermission('responsibilities.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $responsibility = $this->responsibilityRepository->findWithoutFail($id);
+        $responsibility = $this->responsibilityRepository->findByID($id);
 
         if (empty($responsibility)) {
-            Flash::error('Responsibility not found');
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
@@ -111,21 +114,23 @@ class ResponsibilityController extends AppBaseController
     /**
      * Show the form for editing the specified Responsibility.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function edit($id)
     {
         if(!Defender::hasPermission('responsibilities.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $responsibility = $this->responsibilityRepository->findWithoutFail($id);
+
+        $responsibility = $this->responsibilityRepository->findByID($id);
 
         if (empty($responsibility)) {
-            Flash::error('Responsibility not found');
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
@@ -139,29 +144,29 @@ class ResponsibilityController extends AppBaseController
      * @param  int              $id
      * @param UpdateResponsibilityRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
      */
     public function update($id, UpdateResponsibilityRequest $request)
     {
         if(!Defender::hasPermission('responsibilities.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $responsibility = $this->responsibilityRepository->findWithoutFail($id);
+        $responsibility = $this->responsibilityRepository->findByID($id);
 
         if (empty($responsibility)) {
-            Flash::error('Responsibility not found');
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
 
         $input = $request->all();
         $input['skip_board'] = isset($input['skip_board']) ? 1 : 0;
-        $responsibility = $this->responsibilityRepository->update($input, $id);
+        $this->responsibilityRepository->update($responsibility, $input);
 
-        Flash::success('Responsibility updated successfully.');
+        flash('Responsabilidade atualizada com sucesso.')->success();
 
         return redirect(route('responsibilities.index'));
     }
@@ -169,48 +174,48 @@ class ResponsibilityController extends AppBaseController
     /**
      * Remove the specified Responsibility from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
     public function destroy($id)
     {
         if(!Defender::hasPermission('responsibilities.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $responsibility = $this->responsibilityRepository->findWithoutFail($id);
+        $responsibility = $this->responsibilityRepository->findByID($id);
 
         if (empty($responsibility)) {
-            Flash::error('Responsibility not found');
+            flash('Responsabilidade não encontrada')->error();
 
             return redirect(route('responsibilities.index'));
         }
 
-        $this->responsibilityRepository->delete($id);
+        $this->responsibilityRepository->delete($responsibility);
 
-        Flash::success('Responsibility deleted successfully.');
+        flash('Responsabilidade removida com sucesso.')->success();
 
         return redirect(route('responsibilities.index'));
     }
 
     /**
-    	 * Update status of specified Responsibility from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('responsibilities.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->responsibilityRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified Responsibility from storage.
+     *
+     * @param int $id
+     * @throws BindingResolutionException
+     */
+    public function toggle($id){
+        if(!Defender::hasPermission('responsibilities.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->responsibilityRepository->findByID($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 }

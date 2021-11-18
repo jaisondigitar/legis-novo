@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-pills" style="margin-bottom: 10px">
-                    <li><a href="{!! route('config.modules.create') !!}">Novo Registro</a></li>
+                    <li><a href="{!! route('modules.create') !!}">Novo Registro</a></li>
                 </ul>
             </div>
         </div>
@@ -21,6 +21,5 @@
             </div>
         </div>
         @include('common.paginate', ['records' => $modules])
-
     </div>
 @endsection

@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group">
-                    <a href="{!! route('gerencial.roles.index') !!}">
+                    <a href="{!! route('roles.index') !!}">
                         <button type="button" class="btn btn-default"><i class="fa fa-chevron-left"></i> Voltar</button>
                     </a>
                 </div>

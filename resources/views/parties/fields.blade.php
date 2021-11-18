@@ -6,13 +6,13 @@
 
 <!-- Prefix Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('prefix', 'Sigla:') !!}
+    {!! Form::label('prefix', 'Sigla:', ['class' => 'required']) !!}
     {!! Form::text('prefix', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Name Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('name', 'Nome:') !!}
+    {!! Form::label('name', 'Nome:', ['class' => 'required']) !!}
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 

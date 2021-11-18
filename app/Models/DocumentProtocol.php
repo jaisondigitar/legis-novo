@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 
 /**
  * @SWG\Definition(
@@ -69,8 +68,6 @@ use OwenIt\Auditing\AuditingTrait;
  */
 class DocumentProtocol extends Model
 {
-    use AuditingTrait;
-
     public $table = 'document_protocol';
 
     public $fillable = [

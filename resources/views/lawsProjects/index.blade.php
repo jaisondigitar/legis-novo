@@ -11,18 +11,18 @@
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('owner_id', 'Tipo:') !!}
-                {!! Form::select('type', App\Models\LawsType::where('is_active', true)->lists('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                {!! Form::select('type', App\Models\LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Número:') !!}
-                {!! Form::text('number', $form->input('number'), ['class' => 'form-control']) !!}
+                {!! Form::input('number', 'number', $form->input('number'), ['class' => 'form-control', 'min' => 0]) !!}
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Ano:') !!}
-                {!! Form::text('year', $form->input('year'), ['class' => 'form-control']) !!}
+                {!! Form::input('number', 'year', $form->input('year'), ['class' => 'form-control', 'min' => 1000, 'max' => 9999]) !!}
             </div>
             <div class="form-group col-md-3">
-                {!! Form::label('owner_id', 'Responsável') !!}
+                {!! Form::label('owner_id', 'Responsável:') !!}
                 {!! Form::select('owner', $assemblymensList ,$form->input('owner'), ['class' => 'form-control']) !!}
             </div>
             <div class="form-group col-md-3">
@@ -46,13 +46,15 @@
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group">
                         @shield('documents.delete')
-                        <a href="javascript:void(0)" onclick="deletaBash()" style="display: none;" class="deleteAll">
-                            <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> DELETAR SELECIONADOS</button>
-                        </a>
+                            <a href="javascript:void(0)" onclick="deletaBash()" style="display: none;" class="deleteAll">
+                                <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> DELETAR SELECIONADOS</button>
+                            </a>
                         @endshield
-                        @shield('lawsProjects.create')<a href="{!! route('lawsProjects.create') !!}">
-                            <button type="button" class="btn btn-info"><i class="fa fa-plus-circle"></i> Novo registro</button>
-                        </a>@endshield
+                        @shield('lawsProjects.create')
+                            <a href="{!! route('lawsProjects.create') !!}">
+                                <button type="button" class="btn btn-info"><i class="fa fa-plus-circle"></i> Novo registro</button>
+                            </a>
+                        @endshield
                     </div>
                 </div>
             </div>
@@ -64,6 +66,5 @@
                 @include('lawsProjects.table')
             </div>
         </div>
-        
     </div>
 @endsection

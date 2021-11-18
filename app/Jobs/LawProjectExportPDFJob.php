@@ -2,18 +2,18 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
+use App\Models\Advice;
 use App\Models\Company;
 use App\Models\LawsProject;
 use App\Models\LawsProjectAssemblyman;
 use App\Models\Parameters;
 use App\Models\StructureLaws;
 use Carbon\Carbon;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Str;
 
-class LawProjectExportPDFJob extends Job implements SelfHandling, ShouldQueue
+class LawProjectExportPDFJob extends Job implements ShouldQueue
 {
     use InteractsWithQueue;
 
@@ -33,7 +33,7 @@ class LawProjectExportPDFJob extends Job implements SelfHandling, ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
+     * @return string
      */
 
     public function getResponsability($assemblyman, $date){
@@ -93,7 +93,7 @@ class LawProjectExportPDFJob extends Job implements SelfHandling, ShouldQueue
     public function loadAdvices($pdf, $lawsProjectId)
     {
 
-        $advices = \App\Models\Advice::where('laws_projects_id',$lawsProjectId)->get();
+        $advices = Advice::where('laws_projects_id',$lawsProjectId)->get();
 
         if(!$advices){
             $pdf->AddPage();
@@ -108,8 +108,6 @@ class LawProjectExportPDFJob extends Job implements SelfHandling, ShouldQueue
 
     protected function printAdvices($advices,$pdf)
     {
-        $return = "";
-
         foreach ($advices as $advice) {
 
             $pdf->AddPage();
@@ -384,18 +382,19 @@ class LawProjectExportPDFJob extends Job implements SelfHandling, ShouldQueue
 
         if($showAdvices)
         {
-            $advices =  $this->loadAdvices($pdf,$id);
+            $this->loadAdvices($pdf,$id);
 
         }
 
-        $path =  public_path('exportacao/projetoLei/'. str_slug($this->law->law_type->name));
+        $path =  public_path('exportacao/projetoLei/'. Str::slug($this->law->law_type->name));
 
         if(!file_exists($path)){
             mkdir($path, 0777, true);
             chmod($path, 0777);
         }
 
-        $name = str_slug($this->law->law_type->name) . '-' . $lawsProject->getNumberLaw() .'_' .  $lawsProject->getYearLawPublish($lawsProject->law_date) . '.pdf';
+        $name = Str::slug($this->law->law_type->name) . '-' . $lawsProject->getNumberLaw() .'_' .
+            $lawsProject->getYearLawPublish($lawsProject->law_date) . '.pdf';
 
         $pdf->Output($path . DIRECTORY_SEPARATOR . $name, 'F');
 

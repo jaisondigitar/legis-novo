@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\StatusProcessingLaw;
-use InfyOm\Generator\Common\BaseRepository;
 
-class StatusProcessingLawRepository extends BaseRepository
+class StatusProcessingLawRepository extends Repository
 {
     /**
      * @var array
@@ -14,11 +13,5 @@ class StatusProcessingLawRepository extends BaseRepository
         
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return StatusProcessingLaw::class;
-    }
+    protected $modelClass = StatusProcessingLaw::class;
 }

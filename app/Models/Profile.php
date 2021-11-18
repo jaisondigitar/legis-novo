@@ -2,11 +2,10 @@
 
 use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\AuditingTrait;
 
 class Profile extends Model
 {
-    use SoftDeletes, AuditingTrait;
+    use SoftDeletes;
 
 	public $table = "profiles";
     

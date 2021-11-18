@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>MakerLegis</title>
+    <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
+
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" />
@@ -36,7 +38,7 @@
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-            filter: blur(1px);
+            /*filter: blur(1px);*/
         }
         .button-submit {
             border-radius: 5px;
@@ -71,7 +73,7 @@
                 @endforeach
             </ul>
         @endif
-        {!! Form::token() !!}
+        @csrf
         <label>E-mail:</label>
         <input type="text" name="email" tabindex="1" placeholder="email" required>
         <label><a href="#" class="rLink" tabindex="5">Esqueci a senha?</a>Senha:</label>
@@ -82,12 +84,14 @@
     </footer>
 </form>
 <footer id="main">
+    &copy; {{Date('Y')}}
     <a href="https://www.genesis.tec.br/"
        onMouseOver="this.style.color='red'"
        onMouseOut="this.style.color='white'"
-       style="color: white;">
+       style="color: white;"
+    >
         Gênesis Tecnologia e Inovação
-    </a> | &copy; {{ date("Y") }} Todos os Direitos Reservados
+    </a>. Todos os Direitos Reservados
 </footer>
 </body>
 </html>

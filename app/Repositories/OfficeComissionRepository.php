@@ -2,10 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\OfficeComission;
-use InfyOm\Generator\Common\BaseRepository;
-
-class OfficeComissionRepository extends BaseRepository
+class OfficeComissionRepository
 {
     /**
      * @var array
@@ -20,6 +17,6 @@ class OfficeComissionRepository extends BaseRepository
      **/
     public function model()
     {
-        return OfficeComission::class;
+//        return OfficeComission::class;
     }
 }

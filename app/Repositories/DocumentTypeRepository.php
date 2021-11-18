@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\DocumentType;
-use InfyOm\Generator\Common\BaseRepository;
 
-class DocumentTypeRepository extends BaseRepository
+class DocumentTypeRepository
 {
     /**
      * @var array

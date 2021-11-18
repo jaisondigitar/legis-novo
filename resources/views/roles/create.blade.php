@@ -7,7 +7,7 @@
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
-            {!! Form::open(['route' => 'gerencial.roles.store','files' => true]) !!}
+            {!! Form::open(['route' => 'roles.store','files' => true]) !!}
             @include('roles.fields')
             {!! Form::close() !!}
         </div>

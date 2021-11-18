@@ -4,10 +4,10 @@
 @endsection
 @section('content')
 <div class="the-box rounded">
-    @include('core-templates::common.errors')
+    @include('common.errors')
     <div class="row">
         <div class="col-md-12">
-            {!! Form::model($parameters, ['route' => ['config.parameters.update', $parameters->id], 'method' => 'patch','files' => true]) !!}
+            {!! Form::model($parameters, ['route' => ['parameters.update', $parameters->id], 'method' => 'patch','files' => true]) !!}
                 @include('parameters.fields')
             {!! Form::close() !!}
         </div>

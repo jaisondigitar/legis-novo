@@ -2,12 +2,10 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class LawProjectExportJob extends Job implements SelfHandling, ShouldQueue
+class LawProjectExportJob extends Job implements ShouldQueue
 {
 
     use InteractsWithQueue;
@@ -32,7 +30,7 @@ class LawProjectExportJob extends Job implements SelfHandling, ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->type->laws as $key => $law){
+        foreach ($this->type->laws as $law){
             $job = (new LawProjectExportPDFJob($law))->onQueue('exportLawFile');
             dispatch($job);
         }

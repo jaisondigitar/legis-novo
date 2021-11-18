@@ -12,14 +12,13 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Cmgmyr\Messenger\Traits\Messagable;
 use Illuminate\Support\Facades\Cache;
 use Artesaos\Defender\Traits\HasDefender;
-use OwenIt\Auditing\AuditingTrait;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use SoftDeletes, Authenticatable, CanResetPassword, Messagable,HasDefender, AuditingTrait;
+    use SoftDeletes, Authenticatable, CanResetPassword, Messagable,HasDefender;
 
 	public $table = "users";
-    
+
 	protected $dates = ['deleted_at'];
 
 	public $fillable = [
@@ -48,7 +47,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     ];
 
 	public static $rules = [
-	    
+        "sector_id" => "required",
+        "name" => "required",
+        "email" => "required|unique:users,email",
+        "password" => "required",
 	];
 
     protected $hidden = ['password', 'remember_token','created_at','updated_at','deleted_at'];

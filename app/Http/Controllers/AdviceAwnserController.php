@@ -32,7 +32,7 @@ class AdviceAwnserController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('adviceAwnsers.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -52,7 +52,7 @@ class AdviceAwnserController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceAwnsers.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class AdviceAwnserController extends AppBaseController
     {
        if(!Defender::hasPermission('adviceAwnsers.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $adviceAwnser = $this->adviceAwnserRepository->create($input);
 
-        Flash::success('AdviceAwnser saved successfully.');
+        flash('AdviceAwnser saved successfully.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
     }
@@ -93,14 +93,14 @@ class AdviceAwnserController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceAwnsers.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
         if (empty($adviceAwnser)) {
-            Flash::error('AdviceAwnser not found');
+            flash('AdviceAwnser not found')->error();
 
             return redirect(route('adviceAwnsers.index'));
         }
@@ -119,13 +119,13 @@ class AdviceAwnserController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceAwnsers.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
         if (empty($adviceAwnser)) {
-            Flash::error('AdviceAwnser not found');
+            flash('AdviceAwnser not found')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
         }
@@ -145,21 +145,21 @@ class AdviceAwnserController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceAwnsers.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
         if (empty($adviceAwnser)) {
-            Flash::error('AdviceAwnser not found');
+            flash('AdviceAwnser not found')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->update($request->all(), $id);
 
-        Flash::success('AdviceAwnser updated successfully.');
+        flash('AdviceAwnser updated successfully.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
     }
@@ -175,21 +175,21 @@ class AdviceAwnserController extends AppBaseController
     {
         if(!Defender::hasPermission('adviceAwnsers.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
         if (empty($adviceAwnser)) {
-            Flash::error('AdviceAwnser not found');
+            flash('AdviceAwnser not found')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
         }
 
         $this->adviceAwnserRepository->delete($id);
 
-        Flash::success('AdviceAwnser deleted successfully.');
+        flash('AdviceAwnser deleted successfully.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
     }

@@ -1,27 +1,20 @@
 <?php namespace App\Libraries\Repositories;
 
 use App\Models\Module;
-use Bosnadev\Repositories\Eloquent\Repository;
-use Schema;
+use App\Repositories\Repository;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ModuleRepository extends Repository
 {
-
-    /**
-    * Configure the Model
-    *
-    **/
-    public function model()
-    {
-      return 'App\Models\Module';
-    }
+    protected $modelClass = Module::class;
 
 	public function search($input)
     {
         $query = Module::query();
 
         $columns = Schema::getColumnListing('modules');
+
         $attributes = array();
 
         foreach($columns as $attribute)
@@ -42,7 +35,7 @@ class ModuleRepository extends Repository
 
     public function apiFindOrFail($id)
     {
-        $model = $this->find($id);
+        $model = $this->findByID($id);
 
         if(empty($model))
         {
@@ -54,7 +47,7 @@ class ModuleRepository extends Repository
 
     public function apiDeleteOrFail($id)
     {
-        $model = $this->find($id);
+        $model = $this->findByID($id);
 
         if(empty($model))
         {

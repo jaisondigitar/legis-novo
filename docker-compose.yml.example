@@ -23,7 +23,7 @@ services:
       - MYSQL_USER=legis
       - MYSQL_PASSWORD=legis
   web:
-    image: ambientum/php:7.3-nginx
+    image: ambientum/php:7.4-nginx
     container_name: legis-web
     restart: unless-stopped
     environment:

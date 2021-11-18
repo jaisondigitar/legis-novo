@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateLawSituationRequest;
 use App\Http\Requests\UpdateLawSituationRequest;
 use App\Repositories\LawSituationRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class LawSituationController extends AppBaseController
 {
@@ -27,17 +29,17 @@ class LawSituationController extends AppBaseController
      * Display a listing of the LawSituation.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
     public function index(Request $request)
     {
         if(!Defender::hasPermission('lawSituations.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $this->lawSituationRepository->pushCriteria(new RequestCriteria($request));
-        $lawSituations = $this->lawSituationRepository->all();
+        $lawSituations = $this->lawSituationRepository->getAll(0);
 
         return view('lawSituations.index')
             ->with('lawSituations', $lawSituations);
@@ -46,13 +48,13 @@ class LawSituationController extends AppBaseController
     /**
      * Show the form for creating a new LawSituation.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
         if(!Defender::hasPermission('lawSituations.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -64,20 +66,21 @@ class LawSituationController extends AppBaseController
      *
      * @param CreateLawSituationRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateLawSituationRequest $request)
     {
        if(!Defender::hasPermission('lawSituations.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
-        $lawSituation = $this->lawSituationRepository->create($input);
+        $this->lawSituationRepository->create($input);
 
-        Flash::success('LawSituation saved successfully.');
+        flash('Situação Jurídica salva com sucesso.')->success();
 
         return redirect(route('lawSituations.index'));
     }
@@ -85,22 +88,23 @@ class LawSituationController extends AppBaseController
     /**
      * Display the specified LawSituation.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function show($id)
     {
         if(!Defender::hasPermission('lawSituations.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
+        $lawSituation = $this->lawSituationRepository->findByID($id);
 
         if (empty($lawSituation)) {
-            Flash::error('LawSituation not found');
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
@@ -111,21 +115,22 @@ class LawSituationController extends AppBaseController
     /**
      * Show the form for editing the specified LawSituation.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function edit($id)
     {
         if(!Defender::hasPermission('lawSituations.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
+        $lawSituation = $this->lawSituationRepository->findByID($id);
 
         if (empty($lawSituation)) {
-            Flash::error('LawSituation not found');
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
@@ -136,30 +141,31 @@ class LawSituationController extends AppBaseController
     /**
      * Update the specified LawSituation in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateLawSituationRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateLawSituationRequest $request)
     {
         if(!Defender::hasPermission('lawSituations.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
+        $lawSituation = $this->lawSituationRepository->findByID($id);
 
         if (empty($lawSituation)) {
-            Flash::error('LawSituation not found');
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
 
-        $lawSituation = $this->lawSituationRepository->update($request->all(), $id);
+        $this->lawSituationRepository->update($lawSituation, $request->all());
 
-        Flash::success('LawSituation updated successfully.');
+        flash('Situação Jurídica atualizada com sucesso.')->success();
 
         return redirect(route('lawSituations.index'));
     }
@@ -167,48 +173,48 @@ class LawSituationController extends AppBaseController
     /**
      * Remove the specified LawSituation from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
     public function destroy($id)
     {
         if(!Defender::hasPermission('lawSituations.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $lawSituation = $this->lawSituationRepository->findWithoutFail($id);
+        $lawSituation = $this->lawSituationRepository->findByID($id);
 
         if (empty($lawSituation)) {
-            Flash::error('LawSituation not found');
+            flash('Situação Jurídica não encontrada')->error();
 
             return redirect(route('lawSituations.index'));
         }
 
-        $this->lawSituationRepository->delete($id);
+        $this->lawSituationRepository->delete($lawSituation);
 
-        Flash::success('LawSituation deleted successfully.');
+        flash('Situação Jurídica removido com sucesso.')->success();
 
         return redirect(route('lawSituations.index'));
     }
 
     /**
-    	 * Update status of specified LawSituation from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('lawSituations.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->lawSituationRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified LawSituation from storage.
+     *
+     * @param int $id
+     * @throws BindingResolutionException
+     */
+    public function toggle($id){
+        if(!Defender::hasPermission('lawSituations.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->lawSituationRepository->findByID($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 }

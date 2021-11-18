@@ -1,28 +1,31 @@
 <ul class="nav navbar-nav">
     @is(['root'])
-    <li class="dropdown ">
-        <a href="#fakelink" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="hidden-xs" style="color: cadetblue"><i class="fa fa-cogs"></i></span>
-            <span class="visible-xs">Config</span></a>
-        </a>
-        <ul class="dropdown-menu square margin-list-rounded with-triangle">
-            <li class="disabled"><a href="#"><i class="fa fa-cog"></i> Configurações</a></li>
-            @is('root')
-                @shield('modules.index')<li><a href="{{url('/config/modules', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Módulos</a></li>@endshield
-                @shield('permissions.index')<li><a href="{{url('/config/permissions', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Permissões</a></li>@endshield
-                @shield('parameters.index')<li><a href="{{url('/config/parameters', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Parâmetros</a></li>@endshield
-                @shield('documents.importNumber')<li><a href="{{url('/config/importNumber', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Migrar número de documento</a></li>@endshield
-                @shield('lawsProjects.importNumberLaw')<li><a href="{{url('/config/importNumberLaw', $parameters = [], $secure = null)}}"><i class="fa fa-cog"></i> Migrar número da lei</a></li>@endshield
-            @endis
-        </ul>
-    </li>
+        <li class="dropdown ">
+            <a href="#fakelink" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="hidden-xs">Configurações</span>
+                <span class="visible-xs">Config</span>
+            </a>
+            <ul class="dropdown-menu square margin-list-rounded with-triangle">
+                @is('root')
+                    @shield('modules.index')
+                        <li><a href="{{url('/config/modules', $parameters = [], $secure = null)}}"><i class="fa fa-cubes"></i>Módulos</a></li>
+                    @endshield
+                    @shield('permissions.index')
+                        <li><a href="{{url('/config/permissions', $parameters = [], $secure = null)}}"><i class="fa fa-key"></i>Permissões</a></li>
+                    @endshield
+                    @shield('parameters.index')
+                        <li><a href="{{url('/config/parameters', $parameters = [], $secure = null)}}"><i class="fa fa-sliders"></i>Parâmetros</a></li>
+                    @endshield
+                    @shield('documents.importNumber')
+                        <li><a href="{{url('/config/importNumber', $parameters = [], $secure = null)}}"><i class="fa fa-file"></i>Migrar número de documento</a></li>
+                    @endshield
+                    @shield('lawsProjects.importNumberLaw')
+                        <li><a href="{{url('/config/importNumberLaw', $parameters = [], $secure = null)}}"><i class="fa fa-gavel"></i>Migrar número da lei</a></li>
+                    @endshield
+                @endis
+            </ul>
+        </li>
     @endis
-    <li>
-        <a href="/admin" >
-            <span class="hidden-xs"><i class="fa fa-dashboard"></i></span>
-            <span class="visible-xs">Dashboard</span></a>
-        </a>
-    </li>
 
     @if(App::make("ModuleService")->isActive('Geral'))
     <li>
@@ -66,8 +69,10 @@
         <ul class="dropdown-menu square margin-list-rounded with-triangle">
             @shield('documents.index')<li class=""><a href="{{url('/documents', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Documentos</a></li>@endshield
             <li class="divider"></li>
-            @shield('adviceSituationDocuments.index')<li class=""><a href="{{url('/adviceSituationDocuments', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do paracer do documento</a></li>@endshield
-            @shield('advicePublicationDocuments.index')<li class=""><a href="{{url('/advicePublicationDocuments', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Publicação do paracer do documento</a></li>@endshield
+            @shield('adviceSituationDocuments.index')<li class=""><a href="{{url
+            ('/adviceSituationDocuments', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do parecer do documento</a></li>@endshield
+            @shield('advicePublicationDocuments.index')<li class=""><a href="{{url
+            ('/advicePublicationDocuments', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Publicação do parecer do documento</a></li>@endshield
             @shield('documentModels.index')<li class=""><a href="{{url('/documentModels', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Modelos de documentos</a></li>@endshield
             @shield('documentTypes.index')<li class=""><a href="{{url('/documentTypes', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipos de documentos</a></li>@endshield
             @shield('documentSituations.index')<li class=""><a href="{{url('/documentSituations', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do documentos</a></li>@endshield
@@ -110,7 +115,7 @@
                 @shield('version_pauta.index')<li class=""><a href="{{url('/version_pauta', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Estrutura de Pauta</a></li>@endshield
                 @shield('sessionTypes.index')<li class=""><a href="{{url('/sessionTypes', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipo de Sessões</a></li>@endshield
                 {{--@shield('structurepautas.index')<li class=""><a href="{{url('/structurepautas', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Estrutura de Pauta</a></li>@endshield--}}
-                @shield('structurepautas.index')<li class=""><a href="{{url('/typeVotings', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipo de vontação</a></li>@endshield
+                @shield('structurepautas.index')<li class=""><a href="{{url('/typeVotings', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipo de votação</a></li>@endshield
 
             </ul>
         </li>
@@ -123,8 +128,10 @@
                 @shield('lawsProjects.index')<li class=""><a href="{{url('/lawsProjects', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Projeto de lei</a></li>@endshield
                 <li class="divider"></li>
                 @shield('lawSituations.index')<li class=""><a href="{{url('/lawSituations', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação de lei</a></li>@endshield
-                @shield('adviceSituationLaws.index')<li class=""><a href="{{url('/adviceSituationLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do paracer da lei</a></li>@endshield
-                @shield('advicePublicationLaws.index')<li class=""><a href="{{url('/advicePublicationLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Publicação do paracer da lei</a></li>@endshield
+                @shield('adviceSituationLaws.index')<li class=""><a href="{{url
+                ('/adviceSituationLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Situação do parecer da lei</a></li>@endshield
+                @shield('advicePublicationLaws.index')<li class=""><a href="{{url
+                ('/advicePublicationLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Publicação do parecer da lei</a></li>@endshield
                 @shield('statusProcessingLaws.index')<li class=""><a href="{{url('/statusProcessingLaws', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Status do Tramite</a></li>@endshield
                 @shield('lawsTypes.index')<li class=""><a href="{{url('/lawsTypes', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tipos de lei</a></li>@endshield
                 @shield('lawsTags.index')<li class=""><a href="{{url('/lawsTags', $parameters = [], $secure = null)}}"><i class="fa fa-check"></i> Tags de lei</a></li>@endshield
@@ -150,7 +157,7 @@
 
         </ul>
     </li>
-    <li><a href="http://digitarsuporte.jelasticlw.com.br/sacsistema/chatInterno.php" target="_blank"> Ajuda </a></li>
+    <li><a href="https://www.genesis.tec.br/" target="_blank"> Ajuda </a></li>
 </ul>
 
 

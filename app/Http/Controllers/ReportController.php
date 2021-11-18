@@ -25,7 +25,11 @@ use App\Models\PartiesAssemblyman;
 use App\Models\ProtocolType;
 use App\Models\UserAssemblyman;
 use Artesaos\Defender\Contracts\Defender;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Laracasts\Flash\Flash;
@@ -136,7 +140,7 @@ class ReportController extends AppBaseController {
         }
 
         $assemblymensList = $this->getAssemblymenList();
-        $protocol_types = ProtocolType::lists('name', 'id');
+        $protocol_types = ProtocolType::pluck('name', 'id');
 
         $doc = $documents;
 
@@ -199,6 +203,8 @@ class ReportController extends AppBaseController {
         }
 
         $documents = Document::whereIn('id', $doc_ids)->get();
+
+        return self::documentsVerify($documents, '/report/documents/noFiles');
 
         setlocale(LC_ALL, 'pt_BR');
         $company        = Company::first();
@@ -398,7 +404,7 @@ class ReportController extends AppBaseController {
 
         }
 
-        $law_places = LawsPlace::lists('name', 'id')->prepend('Selecione...', '');
+        $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
         $assemblymensList = $this->getAssemblymenList();
 
         $references = LawsProject::all();
@@ -486,7 +492,7 @@ class ReportController extends AppBaseController {
         }
 
         $assemblymensList = $this->getAssemblymenList();
-        $protocol_types = ProtocolType::lists('name', 'id');
+        $protocol_types = ProtocolType::pluck('name', 'id');
 
         return $documents;
 
@@ -737,7 +743,7 @@ $content  .="</table>";
 
         }
 
-        $law_places = LawsPlace::lists('name', 'id')->prepend('Selecione...', '');
+        $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
         $assemblymensList = $this->getAssemblymenList();
 
         $references = LawsProject::all();
@@ -985,6 +991,8 @@ $content  .="</table>";
 
         $documents = LawsProject::whereIn('id', $law_ids)->get();
 
+        return self::documentsVerify($documents, '/report/lawsProject/noFiles');
+
         setlocale(LC_ALL, 'pt_BR');
         $company        = Company::first();
         $doc       = LawsProject::find($documents[0]->id);
@@ -1103,6 +1111,8 @@ $content  .="</table>";
         }
 
         $documents = MeetingFiles::whereIn('id', $meeting_ids)->get();
+
+        return self::documentsVerify($documents, '/report/meeting/noFiles');
 
         setlocale(LC_ALL, 'pt_BR');
         $company        = Company::first();
@@ -1229,6 +1239,7 @@ $content  .="</table>";
         $doc = LawsProject::first();
 //        $doc       = LawsProject::find($doc_id);
 
+        return self::documentsVerify(collect($doc), '/report/getTramitacao');
 
         $showHeader = Parameters::where('slug', 'mostra-cabecalho-em-pdf-de-documentos-e-projetos')->first()->value;
         $marginHeader = Parameters::where('slug', 'espaco-entre-texto-e-cabecalho')->first()->value;
@@ -1310,5 +1321,18 @@ $content  .="</table>";
         $pdf->Output($doc->protocol . '.pdf', 'I');
 
 
+    }
+
+    /**
+     * @param Collection $documents
+     * @param string $path_to_return
+     * @return Application|RedirectResponse|Redirector|void
+     */
+    static function documentsVerify(Collection $documents, string $path_to_return)
+    {
+        if ($documents->isEmpty()) {
+            flash('Não há documentos para impressão.')->warning();
+            return redirect($path_to_return);
+        }
     }
 }

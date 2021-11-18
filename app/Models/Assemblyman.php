@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -117,10 +116,8 @@ class Assemblyman extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'assemblymen';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -179,8 +176,15 @@ class Assemblyman extends Model
         'short_name' => 'required',
         'email' => 'required',
         'phone1' => 'required',
+        'phone2' => 'required',
+        'zipcode' => 'required',
         'state_id' => 'required',
-        'city_id' => 'required'
+        'city_id' => 'required',
+        'full_name' => 'required',
+        'official_document' => 'required',
+        'general_register' => 'required',
+        'number' => 'required',
+        'complement' => 'required',
     ];
 
     public function company(){

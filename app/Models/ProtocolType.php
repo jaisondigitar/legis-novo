@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -43,8 +42,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ProtocolType extends Model
 {
     use SoftDeletes;
-
-    use AuditingTrait;
 
     public $table = 'protocol_types';
     

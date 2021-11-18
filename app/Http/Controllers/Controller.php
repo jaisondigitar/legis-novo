@@ -24,7 +24,7 @@ abstract class Controller extends BaseController
     }
 
     public function statesList(){
-        return State::lists('uf','id');
+        return State::pluck('uf','id');
     }
 
 

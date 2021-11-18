@@ -1,11 +1,11 @@
 <table class="table table-responsive" id="assemblymen-table">
     <thead>
-        <th>Cod</th>
+        <th>Código</th>
         <th>Nome Parlamentar</th>
         <th>E-mail</th>
         <th>Responsabilidade</th>
         <th>Legislatura</th>
-        <th>Active</th>
+        <th>Ativo</th>
         <th colspan="3">Manutenção</th>
     </thead>
     <tbody>

@@ -2,20 +2,17 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
 use App\Models\Company;
 use App\Models\DocumentAssemblyman;
 use App\Models\DocumentModels;
 use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
-use App\Models\ResponsibilityAssemblyman;
 use Carbon\Carbon;
 use App\Models\Document;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class DocumentExportPDF extends Job implements SelfHandling, ShouldQueue
+class DocumentExportPDF extends Job implements ShouldQueue
 {
     use InteractsWithQueue;
 

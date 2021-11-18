@@ -9,9 +9,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MakerLegis</title>
-
-    <link rel="shortcut icon" href="{!! asset('/assets/images/genesis.ico') !!}" >
-
+    <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
 
     <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -66,13 +64,32 @@
     }
 </style>
     <style>
+        body {
+            position: relative;
+            min-height: 100vh;
+            background: #E8E9EE;
+        }
+
+        .wrapper {
+            height: 100%;
+            padding-bottom: 5rem;
+        }
+
+        footer {
+            position: absolute;
+            height: 5rem;
+            bottom: 0;
+            width: 100%;
+            margin-top: 0;
+            border-top: 0;
+        }
 
         .dropdown-submenu {
             position: relative;
         }
 
         .logo-brand img {
-            margin-top: 0px;
+            margin-top: 0;
         }
 
         .dropdown-submenu>.dropdown-menu {
@@ -117,6 +134,11 @@
             -webkit-border-radius: 6px 0 6px 6px;
             -moz-border-radius: 6px 0 6px 6px;
             border-radius: 6px 0 6px 6px;
+        }
+        .required:before {
+            content: '*';
+            color: red;
+            padding-right: 3px;
         }
     </style>
     <script type="application/javascript">
@@ -201,7 +223,7 @@ BEGIN PAGE
         <div class="top-navbar-inner">
 
             <!-- Begin Logo brand -->
-            <a href="/admin">
+            <a href="/">
                 <div class="logo-brand" style="padding: 5px 0">
                     <img
                         src="/assets/images/not-name.png"
@@ -224,7 +246,7 @@ BEGIN PAGE
                             <strong>{{ Auth::user()->name }}</strong>
                         </a>
                         <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
-                            <li><a href="logout"><i class="fa fa-sign-out"></i> Sair do sistema</a></li>
+                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -267,7 +289,7 @@ BEGIN PAGE
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/admin">MakerLegis</a>
+                    <a class="navbar-brand" href="/">MakerLegis</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -402,37 +424,38 @@ BEGIN PAGE
     <!-- BEGIN PAGE CONTENT -->
     <div class="page-content no-left-sidebar">
         <div class="container-fluid" >
-            @if (Session::has('flash_notification.message'))
+            @if (Session::has('flash_notification'))
                 <script type="application/javascript">
-                    toastr["{{ Session::get('flash_notification.level') }}"]("{{ Session::get('flash_notification.message') }}");
+                    toastr["{{ Session::get('flash_notification')->first()->level }}"]
+                    ("{{ Session::get('flash_notification')->first()->message }}");
                 </script>
-                <div class="alert alert-{{ Session::get('flash_notification.level') }} alert-bold-border square fade in alert-dismissable">
+                <div class="alert alert-{{ Session::get('flash_notification')->first()->level }} alert-bold-border square fade in alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    {{ Session::get('flash_notification.message') }}
+                    {{ Session::get('flash_notification')->first()->message }}
                 </div>
             @endif
 
             @yield('content')
         </div><!-- /.container-fluid -->
 
-        <!-- BEGIN FOOTER -->
-        <footer>
-            &copy; {{Date('Y')}} <a href="https://www.genesis.tec.br/" target="_blank">
-                Gênesis Tecnologia e Inovação
-            </a>. Todos os Direitos Reservados
-        </footer>
-        <!-- END FOOTER -->
+
     </div><!-- /.page-content -->
 </div><!-- /.wrapper -->
 <!-- END PAGE CONTENT -->
 
+<!-- BEGIN FOOTER -->
+<footer>
+    &copy; {{Date('Y')}} <a href="https://www.genesis.tec.br/" target="_blank">
+        Gênesis Tecnologia e Inovação
+    </a>. Todos os Direitos Reservados
+</footer>
+<!-- END FOOTER -->
 
-
-<!-- BEGIN BACK TO TOP BUTTON -->
+{{--<!-- BEGIN BACK TO TOP BUTTON -->
 <div id="back-top">
     <a href="#top"><i class="fa fa-chevron-up"></i></a>
 </div>
-<!-- END BACK TO TOP -->
+<!-- END BACK TO TOP -->--}}
 
 
 

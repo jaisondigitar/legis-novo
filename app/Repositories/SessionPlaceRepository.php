@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\SessionPlace;
-use InfyOm\Generator\Common\BaseRepository;
 
-class SessionPlaceRepository extends BaseRepository
+class SessionPlaceRepository
 {
     /**
      * @var array

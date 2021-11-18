@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="/assets/js/jquery.mjs.nestedSortable.js"></script>
     <div class="row">
-        @include('core-templates::common.errors')
+        @include('common.errors')
         <div class="container">
             <div class="col-md-12 the-box rounded">
                 <h2>Estrutura de pauta</h2>

@@ -1,13 +1,11 @@
 <?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
-use OwenIt\Auditing\AuditingTrait;
 
 class Permission extends Model
 {
-    use AuditingTrait;
 	public $table = "permissions";
-    
+
 
 	public $fillable = [
 	    "id",
@@ -29,7 +27,8 @@ class Permission extends Model
     ];
 
 	public static $rules = [
-	    
+	    "name" => "required",
+        "readable_name" => "required"
 	];
 
 

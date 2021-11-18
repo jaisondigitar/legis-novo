@@ -1,34 +1,33 @@
 <!-- Document Type Id Field -->
 <div class="form-group col-sm-5">
-    {!! Form::label('document_type_id', 'Tipo de documento') !!}
-    {!! Form::select('document_type_id', $documentType, null, ['class' => 'form-control', 'required']) !!}
+    {!! Form::label('document_type_id', 'Tipo de documento', ['class' => 'required']) !!}
+    {!! Form::select('document_type_id', $documentType, null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Owner Id Field -->
 <div class="form-group col-sm-5">
-    {!! Form::label('owner_id', 'Parlamentar responsável') !!}
-    {!! Form::select('owner_id', $assemblymensList ,null, ['class' => 'form-control']) !!}
+    {!! Form::label('owner_id', 'Parlamentar responsável', ['class' => 'required']) !!}
+    {!! Form::select('owner_id', $assemblymensList, null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Owner Id Field -->
 <!-- From Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('date', 'Data:') !!}
+    {!! Form::label('date', 'Data', ['class' => 'required']) !!}
     {!! Form::text('date', null, ['class' => 'form-control datepicker', 'minlength' => '10']) !!}
 </div>
 
 
 <!-- Content Field -->
 <div class="form-group col-sm-12">
-    {!! Form::label('content', 'Conteúdo:') !!}
+    {!! Form::label('content', 'Conteúdo', ['class' => 'required']) !!}
     {!! Form::textarea('content', null, ['class' => 'form-control ckeditor']) !!}
 </div>
 
 <!-- Assemblymen Field -->
 <div class="form-group col-sm-12">
-    {!! Form::label('assemblymen', 'Parlamentares Assinando:') !!}
+    {!! Form::label('assemblymen', 'Parlamentares Assinando') !!}
     {!! Form::select('assemblymen[]', $assemblymen, null, ['class' => 'chosen-select', 'multiple', 'style' => 'width:100%;', 'data-placeholder' => 'Selecione o parlamentar...']) !!}
-
 </div>
 
 <!-- Submit Field -->

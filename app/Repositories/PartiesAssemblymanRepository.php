@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\PartiesAssemblyman;
-use InfyOm\Generator\Common\BaseRepository;
 
-class PartiesAssemblymanRepository extends BaseRepository
+class PartiesAssemblymanRepository
 {
     /**
      * @var array

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
@@ -46,8 +45,6 @@ use Carbon\Carbon;
 class ResponsibilityAssemblyman extends Model
 {
     use SoftDeletes;
-
-    use AuditingTrait;
 
     public $table = 'responsibility_assemblymen';
 

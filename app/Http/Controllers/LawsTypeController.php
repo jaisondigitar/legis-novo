@@ -32,12 +32,12 @@ class LawsTypeController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('lawsTypes.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $this->lawsTypeRepository->pushCriteria(new RequestCriteria($request));
-        $lawsTypes = $this->lawsTypeRepository->all();
+        // $this->lawsTypeRepository->pushCriteria(new RequestCriteria($request));
+        $lawsTypes = $this->lawsTypeRepository->getAll(0);
 
         return view('lawsTypes.index')
             ->with('lawsTypes', $lawsTypes);
@@ -52,7 +52,7 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class LawsTypeController extends AppBaseController
     {
        if(!Defender::hasPermission('lawsTypes.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $lawsType = $this->lawsTypeRepository->create($input);
 
-        Flash::success('LawsType saved successfully.');
+        flash('Tipo de lei salvo com sucesso.')->success();
 
         return redirect(route('lawsTypes.index'));
     }
@@ -93,17 +93,17 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
+        $lawsType = $this->lawsTypeRepository->findById($id);
 
         if (empty($lawsType)) {
 
-            Flash::error('LawsType not found');
+            flash('Tipo de lei não encontrada')->error();
             return redirect(route('lawsTypes.index'));
-            
+
         }
 
         return view('lawsTypes.show')->with('lawsType', $lawsType);
@@ -120,13 +120,13 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
+        $lawsType = $this->lawsTypeRepository->findById($id);
 
         if (empty($lawsType)) {
-            Flash::error('LawsType not found');
+            flash('Tipo de lei não encontrada')->error();
 
             return redirect(route('lawsTypes.index'));
         }
@@ -146,21 +146,21 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
+        $lawsType = $this->lawsTypeRepository->findById($id);
 
         if (empty($lawsType)) {
-            Flash::error('LawsType not found');
+            flash('Tipo de lei não encontrada')->error();
 
             return redirect(route('lawsTypes.index'));
         }
 
-        $lawsType = $this->lawsTypeRepository->update($request->all(), $id);
+        $lawsType = $this->lawsTypeRepository->update($lawsType, $request->all());
 
-        Flash::success('LawsType updated successfully.');
+        flash('Tipo de lei atualizado com sucesso.')->success();
 
         return redirect(route('lawsTypes.index'));
     }
@@ -176,21 +176,21 @@ class LawsTypeController extends AppBaseController
     {
         if(!Defender::hasPermission('lawsTypes.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $lawsType = $this->lawsTypeRepository->findWithoutFail($id);
+        $lawsType = $this->lawsTypeRepository->findById($id);
 
         if (empty($lawsType)) {
-            Flash::error('LawsType not found');
+            flash('Tipo de lei não encontrada')->error();
 
             return redirect(route('lawsTypes.index'));
         }
 
-        $this->lawsTypeRepository->delete($id);
+        $this->lawsTypeRepository->delete($lawsType);
 
-        Flash::success('LawsType deleted successfully.');
+        flash('Tipo de lei removido com sucesso.')->success();
 
         return redirect(route('lawsTypes.index'));
     }
@@ -207,7 +207,7 @@ class LawsTypeController extends AppBaseController
             {
                 return json_encode(false);
             }
-            $register = $this->lawsTypeRepository->findWithoutFail($id);
+            $register = $this->lawsTypeRepository->findById($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);
@@ -215,7 +215,7 @@ class LawsTypeController extends AppBaseController
 
     public function toggleActive($id)
     {
-        $register = $this->lawsTypeRepository->findWithoutFail($id);
+        $register = $this->lawsTypeRepository->findById($id);
         $register->is_active = $register->is_active == 0 ? 1 : 0;
         $register->save();
         return json_encode(true);

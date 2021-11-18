@@ -10,8 +10,7 @@ use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use Artesaos\Defender\Facades\Defender;
 use Illuminate\Validation\Rule;
-
-
+use Illuminate\Support\Str;
 
 class VersionPautaController extends Controller
 {
@@ -24,7 +23,7 @@ class VersionPautaController extends Controller
     {
         if(!Defender::hasPermission('version_pauta.index'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -42,7 +41,7 @@ class VersionPautaController extends Controller
     {
         if(!Defender::hasPermission('version_pauta.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -60,17 +59,17 @@ class VersionPautaController extends Controller
 
         if(!Defender::hasPermission('version_pauta.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $input = $request->all();
 
-        $version = VersionPauta::where('slug', str_slug($input['name']))->get();
+        $version = VersionPauta::where('slug', Str::slug($input['name']))->get();
 
         if($version->count() == 0){
             $version_pauta = VersionPauta::create($input);
-            Flash::warning('Versão salva com sucesso!!');
+            flash('Versão salva com sucesso!!')->warning();
         }
 
         return redirect(route('version_pauta.createStructure', [$version_pauta->id]));
@@ -97,14 +96,14 @@ class VersionPautaController extends Controller
     {
         if(!Defender::hasPermission('version_pauta.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
         $version = VersionPauta::find($id);
 
 
         if (empty($version)) {
-            Flash::error('Version not found');
+            flash('Version not found')->error();
 
             return redirect(route('version_pauta.index'));
         }
@@ -123,7 +122,7 @@ class VersionPautaController extends Controller
     {
         if(!Defender::hasPermission('version_pauta.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -132,12 +131,12 @@ class VersionPautaController extends Controller
         $version = VersionPauta::find($id);
 
         if (empty($version)) {
-            Flash::error('Version not found');
+            flash('Version not found')->error();
 
             return redirect(route('version_pauta.index'));
         }
 
-        $version->update($input, $id);
+        $version->update($input, $version);
 
         return redirect(route('version_pauta.index'));
     }
@@ -152,21 +151,21 @@ class VersionPautaController extends Controller
     {
         if(!Defender::hasPermission('version_pauta.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $version = VersionPauta::find($id);
 
         if (empty($version)) {
-            Flash::error('Version not found');
+            flash('Version not found')->error();
 
             return redirect(route('version_pauta.index'));
         }
 
         $version->delete($id);
 
-        Flash::success('Version deleted successfully.');
+        flash('Version deleted successfully.')->success();
 
         return redirect(route('version_pauta.index'));
     }
@@ -175,7 +174,7 @@ class VersionPautaController extends Controller
     {
         if(!Defender::hasPermission('structurepautas.create'))
         {
-            \Laracasts\Flash\Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            \Laracasts\Flash\flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 

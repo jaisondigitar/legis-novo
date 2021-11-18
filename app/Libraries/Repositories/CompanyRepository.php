@@ -1,27 +1,20 @@
 <?php namespace App\Libraries\Repositories;
 
 use App\Models\Company;
-use Bosnadev\Repositories\Eloquent\Repository;
-use Schema;
+use App\Repositories\Repository;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CompanyRepository extends Repository
 {
-
-    /**
-    * Configure the Model
-    *
-    **/
-    public function model()
-    {
-      return 'App\Models\Company';
-    }
+    protected $modelClass = Company::class;
 
 	public function search($input)
     {
         $query = Company::query();
 
         $columns = Schema::getColumnListing('companies');
+
         $attributes = array();
 
         foreach($columns as $attribute)
@@ -42,7 +35,7 @@ class CompanyRepository extends Repository
 
     public function apiFindOrFail($id)
     {
-        $model = $this->find($id);
+        $model = $this->findByID($id);
 
         if(empty($model))
         {
@@ -54,7 +47,7 @@ class CompanyRepository extends Repository
 
     public function apiDeleteOrFail($id)
     {
-        $model = $this->find($id);
+        $model = $this->findByID($id);
 
         if(empty($model))
         {

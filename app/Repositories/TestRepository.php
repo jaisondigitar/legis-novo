@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Test;
-use InfyOm\Generator\Common\BaseRepository;
 
-class TestRepository extends BaseRepository
+class TestRepository
 {
     /**
      * @var array

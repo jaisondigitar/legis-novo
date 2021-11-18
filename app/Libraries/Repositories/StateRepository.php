@@ -1,21 +1,12 @@
 <?php namespace App\Libraries\Repositories;
 
 use App\Models\State;
-use Bosnadev\Repositories\Eloquent\Repository;
-use Schema;
+use App\Repositories\Repository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class StateRepository extends Repository
 {
-
-    /**
-    * Configure the Model
-    *
-    **/
-    public function model()
-    {
-      return 'App\Models\State';
-    }
+    protected $modelClass = State::class;
 
 	public function search($input)
     {
@@ -42,7 +33,7 @@ class StateRepository extends Repository
 
     public function apiFindOrFail($id)
     {
-        $model = $this->find($id);
+        $model = $this->findByID($id);
 
         if(empty($model))
         {
@@ -54,7 +45,7 @@ class StateRepository extends Repository
 
     public function apiDeleteOrFail($id)
     {
-        $model = $this->find($id);
+        $model = $this->findByID($id);
 
         if(empty($model))
         {

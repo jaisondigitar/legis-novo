@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\DocumentNumber;
 use Carbon\Carbon;
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -75,8 +74,6 @@ class Document extends Model
 
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'documents';
 
 
@@ -118,9 +115,9 @@ class Document extends Model
      * @var array
      */
     public static $rules = [
+      "date" => "required",
       "document_type_id" => "required",
-		  "date" => "required",
-		  "owner_id" => "required",
+      "owner_id" => "required",
       "content" => "required",
     ];
 

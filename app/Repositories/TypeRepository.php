@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Type;
-use InfyOm\Generator\Common\BaseRepository;
 
-class TypeRepository extends BaseRepository
+class TypeRepository
 {
     /**
      * @var array

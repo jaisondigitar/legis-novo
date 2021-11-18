@@ -32,12 +32,12 @@ class AdvicePublicationLawController extends AppBaseController
     public function index(Request $request)
     {
         if(!Defender::hasPermission('advicePublicationLaws.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $this->advicePublicationLawRepository->pushCriteria(new RequestCriteria($request));
-        $advicePublicationLaws = $this->advicePublicationLawRepository->all();
+        // $this->advicePublicationLawRepository->pushCriteria(new RequestCriteria($request));
+        $advicePublicationLaws = $this->advicePublicationLawRepository->getAll(0);
 
         return view('advicePublicationLaws.index')
             ->with('advicePublicationLaws', $advicePublicationLaws);
@@ -52,7 +52,7 @@ class AdvicePublicationLawController extends AppBaseController
     {
         if(!Defender::hasPermission('advicePublicationLaws.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -70,14 +70,14 @@ class AdvicePublicationLawController extends AppBaseController
     {
        if(!Defender::hasPermission('advicePublicationLaws.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
         $advicePublicationLaw = $this->advicePublicationLawRepository->create($input);
 
-        Flash::success('AdvicePublicationLaw saved successfully.');
+        flash('Publicação do Parecer da Lei salvo com sucesso.')->success();
 
         return redirect(route('advicePublicationLaws.index'));
     }
@@ -93,14 +93,14 @@ class AdvicePublicationLawController extends AppBaseController
     {
         if(!Defender::hasPermission('advicePublicationLaws.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $advicePublicationLaw = $this->advicePublicationLawRepository->findWithoutFail($id);
+        $advicePublicationLaw = $this->advicePublicationLawRepository->findById($id);
 
         if (empty($advicePublicationLaw)) {
-            Flash::error('AdvicePublicationLaw not found');
+            flash('Publicação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('advicePublicationLaws.index'));
         }
@@ -119,13 +119,13 @@ class AdvicePublicationLawController extends AppBaseController
     {
         if(!Defender::hasPermission('advicePublicationLaws.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $advicePublicationLaw = $this->advicePublicationLawRepository->findWithoutFail($id);
+        $advicePublicationLaw = $this->advicePublicationLawRepository->findById($id);
 
         if (empty($advicePublicationLaw)) {
-            Flash::error('AdvicePublicationLaw not found');
+            flash('Publicação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('advicePublicationLaws.index'));
         }
@@ -145,21 +145,21 @@ class AdvicePublicationLawController extends AppBaseController
     {
         if(!Defender::hasPermission('advicePublicationLaws.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $advicePublicationLaw = $this->advicePublicationLawRepository->findWithoutFail($id);
+        $advicePublicationLaw = $this->advicePublicationLawRepository->findById($id);
 
         if (empty($advicePublicationLaw)) {
-            Flash::error('AdvicePublicationLaw not found');
+            flash('Publicação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('advicePublicationLaws.index'));
         }
 
-        $advicePublicationLaw = $this->advicePublicationLawRepository->update($request->all(), $id);
+        $advicePublicationLaw = $this->advicePublicationLawRepository->update($advicePublicationLaw, $request->all(), );
 
-        Flash::success('AdvicePublicationLaw updated successfully.');
+        flash('Publicação do Parecer da Lei atualizado com sucesso.')->success();
 
         return redirect(route('advicePublicationLaws.index'));
     }
@@ -175,21 +175,21 @@ class AdvicePublicationLawController extends AppBaseController
     {
         if(!Defender::hasPermission('advicePublicationLaws.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $advicePublicationLaw = $this->advicePublicationLawRepository->findWithoutFail($id);
+        $advicePublicationLaw = $this->advicePublicationLawRepository->findById($id);
 
         if (empty($advicePublicationLaw)) {
-            Flash::error('AdvicePublicationLaw not found');
+            flash('Publicação do Parecer da Lei não encontrado')->error();
 
             return redirect(route('advicePublicationLaws.index'));
         }
 
-        $this->advicePublicationLawRepository->delete($id);
+        $this->advicePublicationLawRepository->delete($advicePublicationLaw);
 
-        Flash::success('AdvicePublicationLaw deleted successfully.');
+        flash('Publicação do Parecer da Lei removido com sucesso.')->success();
 
         return redirect(route('advicePublicationLaws.index'));
     }
@@ -206,7 +206,7 @@ class AdvicePublicationLawController extends AppBaseController
             {
                 return json_encode(false);
             }
-            $register = $this->advicePublicationLawRepository->findWithoutFail($id);
+            $register = $this->advicePublicationLawRepository->findById($id);
             $register->active = $register->active>0 ? 0 : 1;
             $register->save();
             return json_encode(true);

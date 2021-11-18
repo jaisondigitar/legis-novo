@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
@@ -45,9 +44,6 @@ use Carbon\Carbon;
  */
 class UserAssemblyman extends Model
 {
-
-    use AuditingTrait;
-
     public $table = 'user_assemblyman';
 
 //    protected $dates = ['deleted_at'];

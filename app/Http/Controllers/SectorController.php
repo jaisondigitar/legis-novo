@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateSectorRequest;
 use App\Http\Requests\UpdateSectorRequest;
 use App\Repositories\SectorRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class SectorController extends AppBaseController
 {
@@ -28,17 +30,17 @@ class SectorController extends AppBaseController
      * Display a listing of the Sector.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
     public function index(Request $request)
     {
         if(!Defender::hasPermission('sectors.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $this->sectorRepository->pushCriteria(new RequestCriteria($request));
-        $sectors = $this->sectorRepository->all();
+        $sectors = $this->sectorRepository->getAll(0);
 
         return view('sectors.index')
             ->with('sectors', $sectors);
@@ -47,13 +49,13 @@ class SectorController extends AppBaseController
     /**
      * Show the form for creating a new Sector.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
         if(!Defender::hasPermission('sectors.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -65,13 +67,14 @@ class SectorController extends AppBaseController
      *
      * @param CreateSectorRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateSectorRequest $request)
     {
        if(!Defender::hasPermission('sectors.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
 
@@ -81,7 +84,7 @@ class SectorController extends AppBaseController
 
         $sector = $this->sectorRepository->create($input);
 
-        Flash::success('Sector saved successfully.');
+        flash('Setor salvo com sucesso.')->success();
 
         return redirect(route('sectors.index'));
     }
@@ -89,22 +92,23 @@ class SectorController extends AppBaseController
     /**
      * Display the specified Sector.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function show($id)
+    public function show(int $id)
     {
         if(!Defender::hasPermission('sectors.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $sector = $this->sectorRepository->findWithoutFail($id);
+        $sector = $this->sectorRepository->findByID($id);
 
         if (empty($sector)) {
-            Flash::error('Sector not found');
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
@@ -115,21 +119,22 @@ class SectorController extends AppBaseController
     /**
      * Show the form for editing the specified Sector.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if(!Defender::hasPermission('sectors.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $sector = $this->sectorRepository->findWithoutFail($id);
+        $sector = $this->sectorRepository->findByID($id);
 
         if (empty($sector)) {
-            Flash::error('Sector not found');
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
@@ -140,23 +145,24 @@ class SectorController extends AppBaseController
     /**
      * Update the specified Sector in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateSectorRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateSectorRequest $request)
     {
         if(!Defender::hasPermission('sectors.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $sector = $this->sectorRepository->findWithoutFail($id);
+        $sector = $this->sectorRepository->findByID($id);
 
         if (empty($sector)) {
-            Flash::error('Sector not found');
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
@@ -165,9 +171,9 @@ class SectorController extends AppBaseController
 
         $input['slug'] = Str::slug($request->name);
 
-        $sector = $this->sectorRepository->update($input, $id);
+        $this->sectorRepository->update($sector, $input);
 
-        Flash::success('Sector updated successfully.');
+        flash('Setor atualizado com sucesso.')->success();
 
         return redirect(route('sectors.index'));
     }
@@ -175,48 +181,49 @@ class SectorController extends AppBaseController
     /**
      * Remove the specified Sector from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if(!Defender::hasPermission('sectors.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $sector = $this->sectorRepository->findWithoutFail($id);
+        $sector = $this->sectorRepository->findByID($id);
 
         if (empty($sector)) {
-            Flash::error('Sector not found');
+            flash('Setor não encontrado')->error();
 
             return redirect(route('sectors.index'));
         }
 
-        $this->sectorRepository->delete($id);
+        $this->sectorRepository->delete($sector);
 
-        Flash::success('Sector deleted successfully.');
+        flash('Setor removido com sucesso.')->success();
 
         return redirect(route('sectors.index'));
     }
 
     /**
-    	 * Update status of specified Sector from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('sectors.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->sectorRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified Sector from storage.
+     *
+     * @param int $id
+     * @return false|string
+     * @throws BindingResolutionException
+     */
+    public function toggle(int $id){
+        if(!Defender::hasPermission('sectors.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->sectorRepository->findByID($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 }

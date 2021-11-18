@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -39,8 +38,6 @@ class LawSituation extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'law_situations';
     
 
@@ -52,7 +49,7 @@ class LawSituation extends Model
     ];
 
     /**
-     * The attributes that should be casted to native types.
+     * The attributes that should be casted to native tProtocolTypeypes.
      *
      * @var array
      */

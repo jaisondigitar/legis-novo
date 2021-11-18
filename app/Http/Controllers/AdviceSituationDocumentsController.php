@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateAdviceSituationDocumentsRequest;
 use App\Http\Requests\UpdateAdviceSituationDocumentsRequest;
 use App\Repositories\AdviceSituationDocumentsRepository;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class AdviceSituationDocumentsController extends AppBaseController
 {
@@ -27,17 +29,17 @@ class AdviceSituationDocumentsController extends AppBaseController
      * Display a listing of the AdviceSituationDocuments.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
     public function index(Request $request)
     {
         if(!Defender::hasPermission('adviceSituationDocuments.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $this->adviceSituationDocumentsRepository->pushCriteria(new RequestCriteria($request));
-        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->all();
+        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->getAll(0);
 
         return view('adviceSituationDocuments.index')
             ->with('adviceSituationDocuments', $adviceSituationDocuments);
@@ -46,13 +48,13 @@ class AdviceSituationDocumentsController extends AppBaseController
     /**
      * Show the form for creating a new AdviceSituationDocuments.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
         if(!Defender::hasPermission('adviceSituationDocuments.create'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -64,20 +66,21 @@ class AdviceSituationDocumentsController extends AppBaseController
      *
      * @param CreateAdviceSituationDocumentsRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateAdviceSituationDocumentsRequest $request)
     {
        if(!Defender::hasPermission('adviceSituationDocuments.create'))
        {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+           flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
            return redirect("/");
        }
         $input = $request->all();
 
-        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->create($input);
+        $this->adviceSituationDocumentsRepository->create($input);
 
-        Flash::success('AdviceSituationDocuments saved successfully.');
+        flash('Situação de Aconselhamento de Documentos salvo com sucesso.')->success();
 
         return redirect(route('adviceSituationDocuments.index'));
     }
@@ -85,22 +88,23 @@ class AdviceSituationDocumentsController extends AppBaseController
     /**
      * Display the specified AdviceSituationDocuments.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function show($id)
     {
         if(!Defender::hasPermission('adviceSituationDocuments.show'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
+        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
 
         if (empty($adviceSituationDocuments)) {
-            Flash::error('AdviceSituationDocuments not found');
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
@@ -111,21 +115,22 @@ class AdviceSituationDocumentsController extends AppBaseController
     /**
      * Show the form for editing the specified AdviceSituationDocuments.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if(!Defender::hasPermission('adviceSituationDocuments.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
+        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
 
         if (empty($adviceSituationDocuments)) {
-            Flash::error('AdviceSituationDocuments not found');
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
@@ -136,30 +141,32 @@ class AdviceSituationDocumentsController extends AppBaseController
     /**
      * Update the specified AdviceSituationDocuments in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateAdviceSituationDocumentsRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateAdviceSituationDocumentsRequest $request)
     {
         if(!Defender::hasPermission('adviceSituationDocuments.edit'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
+        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
 
         if (empty($adviceSituationDocuments)) {
-            Flash::error('AdviceSituationDocuments not found');
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
 
-        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->update($request->all(), $id);
+        $this->adviceSituationDocumentsRepository->update($adviceSituationDocuments,
+            $request->all());
 
-        Flash::success('AdviceSituationDocuments updated successfully.');
+        flash('Situação de Aconselhamento de Documentos atualizado com sucesso.')->success();
 
         return redirect(route('adviceSituationDocuments.index'));
     }
@@ -167,48 +174,49 @@ class AdviceSituationDocumentsController extends AppBaseController
     /**
      * Remove the specified AdviceSituationDocuments from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if(!Defender::hasPermission('adviceSituationDocuments.delete'))
         {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
+        $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
 
         if (empty($adviceSituationDocuments)) {
-            Flash::error('AdviceSituationDocuments not found');
+            flash('Situação de Aconselhamento de Documentos não encontrado')->error();
 
             return redirect(route('adviceSituationDocuments.index'));
         }
 
-        $this->adviceSituationDocumentsRepository->delete($id);
+        $this->adviceSituationDocumentsRepository->delete($adviceSituationDocuments);
 
-        Flash::success('AdviceSituationDocuments deleted successfully.');
+        flash('Situação de Aconselhamento de Documentos removido com sucesso.')->success();
 
         return redirect(route('adviceSituationDocuments.index'));
     }
 
     /**
-    	 * Update status of specified AdviceSituationDocuments from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('adviceSituationDocuments.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->adviceSituationDocumentsRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified AdviceSituationDocuments from storage.
+     *
+     * @param int $id
+     * @return false|string
+     * @throws BindingResolutionException
+     */
+    public function toggle(int $id){
+        if(!Defender::hasPermission('adviceSituationDocuments.edit'))
+        {
+            return json_encode(false);
         }
+        $register = $this->adviceSituationDocumentsRepository->findByID($id);
+        $register->active = $register->active>0 ? 0 : 1;
+        $register->save();
+        return json_encode(true);
+    }
 }

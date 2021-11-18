@@ -3,22 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\LawsPlace;
-use InfyOm\Generator\Common\BaseRepository;
 
-class LawsPlaceRepository extends BaseRepository
+class LawsPlaceRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        'name'
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return LawsPlace::class;
-    }
+    protected $modelClass = LawsPlace::class;
 }

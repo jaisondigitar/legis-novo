@@ -3,13 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\AuditingTrait;
 
 class DocumentNumber extends Model
 {
-
-    use AuditingTrait;
-
     protected $fillable = [
 
         'user_id',

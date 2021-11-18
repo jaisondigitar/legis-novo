@@ -254,11 +254,11 @@ class RolesTableSeeder extends Seeder
         $perm['company'][] = Defender::permissionExists('statusProcessingDocuments.delete') ? Defender::findPermission('statusProcessingDocuments.delete')  :  Defender::createPermission('statusProcessingDocuments.delete','Excluir status do tramite de documento');
         $perm['company'][] = Defender::permissionExists('statusProcessingDocuments.show') ? Defender::findPermission('statusProcessingDocuments.show')  :  Defender::createPermission('statusProcessingDocuments.show','Detalhe status do tramite de documento');
 
-        $perm['company'][] = Defender::permissionExists('typeVotings.create') ? Defender::findPermission('typeVotings.create')  :  Defender::createPermission('typeVotings.create','Criar tipo de vontação');
-        $perm['company'][] = Defender::permissionExists('typeVotings.index') ? Defender::findPermission('typeVotings.index')  :  Defender::createPermission('typeVotings.index','Ver status do tipo de vontação');
-        $perm['company'][] = Defender::permissionExists('typeVotings.edit') ? Defender::findPermission('typeVotings.edit')  :  Defender::createPermission('typeVotings.edit','Editar tipo de vontação');
-        $perm['company'][] = Defender::permissionExists('typeVotings.delete') ? Defender::findPermission('typeVotings.delete')  :  Defender::createPermission('typeVotings.delete','Excluir status do tipo de vontação');
-        $perm['company'][] = Defender::permissionExists('typeVotings.show') ? Defender::findPermission('typeVotings.show')  :  Defender::createPermission('typeVotings.show','Detalhe do tipo de vontação');
+        $perm['company'][] = Defender::permissionExists('typeVotings.create') ? Defender::findPermission('typeVotings.create')  :  Defender::createPermission('typeVotings.create','Criar tipo de votação');
+        $perm['company'][] = Defender::permissionExists('typeVotings.index') ? Defender::findPermission('typeVotings.index')  :  Defender::createPermission('typeVotings.index','Ver status do tipo de votação');
+        $perm['company'][] = Defender::permissionExists('typeVotings.edit') ? Defender::findPermission('typeVotings.edit')  :  Defender::createPermission('typeVotings.edit','Editar tipo de votação');
+        $perm['company'][] = Defender::permissionExists('typeVotings.delete') ? Defender::findPermission('typeVotings.delete')  :  Defender::createPermission('typeVotings.delete','Excluir status do tipo de votação');
+        $perm['company'][] = Defender::permissionExists('typeVotings.show') ? Defender::findPermission('typeVotings.show')  :  Defender::createPermission('typeVotings.show','Detalhe do tipo de votação');
 
         $perm['company'][] = Defender::permissionExists('version_pauta.create') ? Defender::findPermission('version_pauta.create')  :  Defender::createPermission('version_pauta.create','Criar tipo de versão de pauta');
         $perm['company'][] = Defender::permissionExists('version_pauta.index') ? Defender::findPermission('version_pauta.index')  :  Defender::createPermission('version_pauta.index','Ver status do tipo de versão de pauta');
