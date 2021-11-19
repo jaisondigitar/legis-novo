@@ -29,25 +29,28 @@
 
 > docker-compose down -v
 
-6. Executar para migrar o banco Legis:
+6. Para gerar a chave de acesso que está no arquivo **.env**:
+> ./dartisan key:generate
+
+7. Executar para migrar o banco Legis:
 > ./dartisan migrate
 
-7. Execute para entrar no Tinker CLI:
+8. Execute para entrar no Tinker CLI:
 > ./dartisan tinker
 
-8. Para criar um banco e migra-lo. Definir um nome dejesado para o cliente:
+9. Para criar um banco e migra-lo. Definir um nome dejesado para o cliente:
 > $tenant1 = App\Models\Tenant::create(['id' => '< Nome Cliente >']);
 
-9. Para criar um dominio. Definir um nome dejesado para o dominio:
+10. Para criar um dominio. Definir um nome dejesado para o dominio:
 > $tenant1->domains()->create(['domain' => '< Nome Dominio >']);
 
-10. Para sair do Tinker CLI:
+11. Para sair do Tinker CLI:
 > exit
 
-11. Para rodar a seed:
+12. Para rodar a seed:
 
 **Para rodar em todas os tenants**
-> .dartisan tenants:seed
+> ./dartisan tenants:seed
 
 **Para rodar em um tenent especifico**
-> .dartisan tenants:seed --tenants= < nome tenant >
+> ./dartisan tenants:seed --tenants= < nome tenant >
