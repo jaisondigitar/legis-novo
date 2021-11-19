@@ -18,7 +18,7 @@ services:
     ports:
       - 3307:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=legisblit
+      - MYSQL_ROOT_PASSWORD=legis
       - MYSQL_DATABASE=legis
       - MYSQL_USER=legis
       - MYSQL_PASSWORD=legis

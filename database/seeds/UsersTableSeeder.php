@@ -15,16 +15,17 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // USER ROOT
-        $usr = User::findOrNew(1);
-
-        $usr->company_id = 1;
-        $usr->name = 'Administrador';
-        $usr->sector_id = 1;
-        $usr->email = 'admin@genesis.tec.br';
-        $usr->active = 1;
-        $usr->password = bcrypt('G&nesis***');
-
-        $usr->save();
+        $usr = User::where('email', 'admin@genesis.tec.br')
+            ->firstOr(function () {
+                return User::create([
+                    'company_id' => 1,
+                    'name' => 'Administrador',
+                    'sector_id' => 1,
+                    'email' => 'admin@genesis.tec.br',
+                    'active' => 1,
+                    'password' => bcrypt('G&nesis***'),
+                ]);
+            });
 
         $role = Defender::findRole('root');
 

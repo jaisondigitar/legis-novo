@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
-class SessionPlaceController extends AppBaseControfller
+class SessionPlaceController extends AppBaseController
 {
     /** @var SessionPlaceRepository */
     private $sessionPlaceRepository;
