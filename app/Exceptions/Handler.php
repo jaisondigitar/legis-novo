@@ -57,10 +57,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e): Response
     {
         $code = 500;
-
-        $result = [
-            'message' => $e->getMessage(),
-        ];
+        $result = ['message' => $e->getMessage()];
 
         if ($e instanceof ConnectionException) {
             $result = [
@@ -69,17 +66,8 @@ class Handler extends ExceptionHandler
             ];
         }
 
-        if ($e instanceof BaseException) {
-            $result = [
-                'code' => $e->getCode(),
-                'message' => $e->getInfo(),
-                'cause' => $e->getMessage(),
-            ];
-        }
-
         if ($e instanceof ValidationException) {
             $code = 422;
-
             $result = [
                 'message' => "Erro nos dados enviados: {$e->getMessage()}",
                 'errors' => $e->validator->errors()->toArray(),
@@ -91,10 +79,7 @@ class Handler extends ExceptionHandler
             $e instanceof ModelNotFoundException
         ) {
             $code = 404;
-
-            $result = [
-                'message' => 'Recurso não encontrado.',
-            ];
+            $result = ['message' => 'Recurso não encontrado'];
         }
 
         if (
@@ -103,17 +88,13 @@ class Handler extends ExceptionHandler
             $e instanceof AuthenticationException
         ) {
             $code = 401;
-
-            $result = [
-                'message' => $e->getMessage() ?: 'Sem autorização.',
-            ];
+            $result = ['message' => $e->getMessage() ?: 'Sem autorização'];
         }
 
         if ($e instanceof QueryException) {
             $code = 500;
-
             $result = [
-                'message' => "Não foi possível completar ação: {$e->getMessage()}",
+                'message' => "Não foi possível completar a consulta: {$e->getMessage()}",
             ];
         }
 

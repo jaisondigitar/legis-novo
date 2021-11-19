@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/tenant', function () {
-    return 'native tenant route';
+Route::middleware(['authorize.key'])->group(function () {
+    Route::get('/tenant', function () {
+        return 'native tenant route';
+    });
 });
