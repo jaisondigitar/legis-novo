@@ -27,7 +27,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 6.x ]
+        node-version: [ 12.x ]
 
     steps:
       - uses: actions/checkout@v2
@@ -40,7 +40,6 @@ jobs:
       - name: Build
         run: |
           npm install
-          gulp
   deploy:
 
     runs-on: self-hosted
@@ -52,4 +51,6 @@ jobs:
         run: |
           cd /var/www/html/legis
           git pull
-          php artisan migrate --seed
+          php artisan migrate
+          php artisan tenants:migrate
+          php artisan tenants:seed
