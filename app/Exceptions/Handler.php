@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e): Response
     {
-        $code = 500;
+        /*$code = 500;
         $result = ['message' => $e->getMessage()];
 
         if ($e instanceof ConnectionException) {
@@ -100,6 +100,8 @@ class Handler extends ExceptionHandler
 
         $result['message'] = __($result['message']);
 
-        return response()->json($result, $code);
+        return response()->json($result, $code);*/
+
+        return parent::render($request, $e);
     }
 }
