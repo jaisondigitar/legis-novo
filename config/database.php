@@ -35,7 +35,7 @@ return [
 
     'connections' => [
 
-        'legis' => [
+        'central' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'db'),
             'port' => env('DB_PORT', '3306'),
