@@ -16,3 +16,7 @@ yarn-error.log
 docker-compose.yml
 
 .php-cs-fixer.cache
+
+.docker/nginx/logs/access.log
+
+.docker/nginx/logs/error.log
