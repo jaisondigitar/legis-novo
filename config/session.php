@@ -155,7 +155,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', 'null'),
+    'domain' => env('SESSION_DOMAIN', config('tenancy.central_domains')),
 
     /*
     |--------------------------------------------------------------------------
