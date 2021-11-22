@@ -18,6 +18,7 @@ return [
      */
     'central_domains' => [
         'legis.genesis.tec.br',
+        'dev.legis.genesis.tec.br',
         '127.0.0.1',
         '172.17.0.1',
         'localhost',
@@ -34,7 +35,7 @@ return [
         Stancl\Tenancy\Bootstrappers\CacheTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper::class,
-        // Stancl\Tenancy\Bootstrappers\RedisTenancyBootstrapper::class, // Note: phpredis is needed
+//        Stancl\Tenancy\Bootstrappers\RedisTenancyBootstrapper::class, // Note: phpredis is needed
     ],
 
     /*
