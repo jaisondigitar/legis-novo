@@ -2,17 +2,9 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
-use Illuminate\Validation\UnauthorizedException;
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -57,21 +49,33 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e): Response
     {
         /*$code = 500;
-        $result = ['message' => $e->getMessage()];
+
+        $result = [
+            'errors' => $e->getMessage(),
+        ];
 
         if ($e instanceof ConnectionException) {
             $result = [
-                'message' => 'Falha ao realizar requisição',
-                'cause' => $e->getMessage(),
+                'errors' => [
+                    'errors' => 'Falha ao realizar requisição',
+                    'message' => $e->getMessage(),
+                ],
             ];
+
+            return response()->view('common.errors', $result, $e->getCode());
         }
 
         if ($e instanceof ValidationException) {
             $code = 422;
+
             $result = [
-                'message' => "Erro nos dados enviados: {$e->getMessage()}",
-                'errors' => $e->validator->errors()->toArray(),
+                'errors' => [
+                    'errors' => $e->validator->errors()->toArray(),
+                    'message' => "Erro nos dados enviados: {$e->getMessage()}",
+                ],
             ];
+
+            return response()->view('common.errors', $result, $code);
         }
 
         if (
@@ -79,7 +83,12 @@ class Handler extends ExceptionHandler
             $e instanceof ModelNotFoundException
         ) {
             $code = 404;
-            $result = ['message' => 'Recurso não encontrado'];
+
+            $result = [
+                'errors' => 'Recurso não encontrado.',
+            ];
+
+            return response()->view('common.errors', $result, $code);
         }
 
         if (
@@ -88,19 +97,25 @@ class Handler extends ExceptionHandler
             $e instanceof AuthenticationException
         ) {
             $code = 401;
-            $result = ['message' => $e->getMessage() ?: 'Sem autorização'];
+
+            $result = [
+                'errors' => $e->getMessage() ?: 'Sem autorização.',
+            ];
+
+            return response()->view('common.errors', $result, $code);
         }
 
         if ($e instanceof QueryException) {
             $code = 500;
+
             $result = [
-                'message' => "Não foi possível completar a consulta: {$e->getMessage()}",
+                'errors' => "Não foi possível completar ação: {$e->getMessage()}",
             ];
+
+            return response()->view('common.errors', $result, $code);
         }
 
-        $result['message'] = __($result['message']);
-
-        return response()->json($result, $code);*/
+        $result['message'] = __($result['message']);*/
 
         return parent::render($request, $e);
     }

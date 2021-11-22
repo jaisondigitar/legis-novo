@@ -30,8 +30,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->mapWebRoutes();
         $this->mapApiRoutes();
+        $this->mapWebRoutes();
 
         parent::boot();
     }
@@ -80,7 +80,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::prefix('api')
                 ->domain($domain)
                 ->middleware('api')
-                ->namespace($this->namespace)
+                ->namespace("$this->namespace\API")
                 ->group(base_path('app/Http/api.php'));
         }
     }
