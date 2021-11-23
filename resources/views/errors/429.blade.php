@@ -8,4 +8,4 @@
     </div>
 @endsection
 
-@section('message', __('O cliente não deve repetir esta requisição sem modificações.'))
+@section('message', __('Excesso de requisições feitas em um período muito curto de tempo, tente novamente mais tarde.'))

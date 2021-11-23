@@ -1,11 +1,11 @@
 @extends('errors::illustrated-layout')
 
-@section('code', '429')
-@section('title', __('Too Many Requests'))
+@section('code', '403')
+@section('title', __('Forbidden'))
 
 @section('image')
     <div style="background-image: url({{ asset('/svg/403.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
     </div>
 @endsection
 
-@section('message', __('O cliente não deve repetir esta requisição sem modificações.'))
+@section('message', __($exception->getMessage() ?: 'Desculpe, está proibido de aceder a esta página.'))
