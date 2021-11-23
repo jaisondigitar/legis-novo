@@ -9,6 +9,7 @@ use App\Models\City;
 use App\Models\Company;
 use App\Models\Parameters;
 use App\Models\State;
+use App\Services\UploadService;
 use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -18,6 +19,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Intervention\Image\Facades\Image;
 
@@ -26,9 +28,16 @@ class CompanyController extends AppBaseController
     /** @var CompanyRepository */
     private $companyRepository;
 
+    /**
+     * @var UploadService
+     */
+    private static $uploadService;
+
     public function __construct(CompanyRepository $companyRepo)
     {
         $this->companyRepository = $companyRepo;
+
+        static::$uploadService = new UploadService();
     }
 
     /**
@@ -200,8 +209,17 @@ class CompanyController extends AppBaseController
 
         $company = Company::find($id);
 
-        if ($request->file('image')) {
-            $image = $request['image'];
+        $image = $request->file('image');
+
+        if ($image) {
+//            Storage::disk('digitalocean')->put('assemblyman', $image);
+
+            $file_path = static::$uploadService
+                ->inCompanyFolder()
+                ->sendFile($image)
+                ->send();
+
+            /*$image = $request['image'];
             $extension_img = strtolower($image->getClientOriginalExtension());
 
             $image_file = uniqid().time().'.'.$extension_img;
@@ -209,14 +227,15 @@ class CompanyController extends AppBaseController
             $request->file('image')->move(
                 base_path().'/public/uploads/company/',
                 $image_file
-            );
-            $company->image = $image_file;
+            );*/
+
+            $company->image = $file_path;
             $company->save();
 
-            Image::make(sprintf(base_path().'/public/uploads/company/%s', $image_file))
+            /*Image::make(sprintf(base_path().'/public/uploads/company/%s', $image_file))
                 ->resize(null, 150, function ($constraint) {
                     $constraint->aspectRatio();
-                })->save();
+                })->save();*/
         }
 
         flash('Registro editado com sucesso!')->success();
