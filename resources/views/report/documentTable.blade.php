@@ -28,8 +28,7 @@
                 @endif
 
             </td>
-            <td>@if($document->content) {!! strip_tags(str_limit($document->content, $limit = 500, $end = '...')) !!} @else - @endif</td>
-            <td id="tdnumber{{$document->id}}" style="text-align: center">
+            <td>@if($document->content) {!! strip_tags(Str::limit($document->content, $limit = 500, $end = '...')) !!} @else - @endif</td>            <td id="tdnumber{{$document->id}}" style="text-align: center">
                 @if($document->number==0)
                     -
                 @else

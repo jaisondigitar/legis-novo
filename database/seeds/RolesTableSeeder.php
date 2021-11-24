@@ -58,6 +58,24 @@ class RolesTableSeeder extends Seeder
         $perm['root'][] = Defender::permissionExists('documents.importNumber') ? Defender::findPermission('documents.importNumber') : Defender::createPermission('documents.importNumber', 'Migrar numero do documento');
         $perm['root'][] = Defender::permissionExists('lawsProjects.importNumberLaw') ? Defender::findPermission('lawsProjects.importNumberLaw') : Defender::createPermission('lawsProjects.importNumberLaw', 'Migrar numero da lei');
 
+        $perm['company'][] = Defender::permissionExists('people.create') ? Defender::findPermission('people.create') : Defender::createPermission('people.create', 'Cria pessoa');
+        $perm['company'][] = Defender::permissionExists('people.index') ? Defender::findPermission('people.index') : Defender::createPermission('people.index', 'Visualizar pessoas');
+        $perm['company'][] = Defender::permissionExists('people.edit') ? Defender::findPermission('people.edit') : Defender::createPermission('people.edit', 'Edita pessoa');
+        $perm['company'][] = Defender::permissionExists('people.delete') ? Defender::findPermission('people.delete') : Defender::createPermission('people.delete', 'Exclui pessoa');
+        $perm['company'][] = Defender::permissionExists('people.show') ? Defender::findPermission('people.show') : Defender::createPermission('people.show', 'Detalhes de pessoa');
+
+        $perm['company'][] = Defender::permissionExists('typesOfAttendance.create') ? Defender::findPermission('typesOfAttendance.create') : Defender::createPermission('typesOfAttendance.create', 'Cria tipo de atendimento');
+        $perm['company'][] = Defender::permissionExists('typesOfAttendance.index') ? Defender::findPermission('typesOfAttendance.index') : Defender::createPermission('typesOfAttendance.index', 'Visualiza tipos de atendimento');
+        $perm['company'][] = Defender::permissionExists('typesOfAttendance.edit') ? Defender::findPermission('typesOfAttendance.edit') : Defender::createPermission('typesOfAttendance.edit', 'Edita tipos de atendimento');
+        $perm['company'][] = Defender::permissionExists('typesOfAttendance.delete') ? Defender::findPermission('typesOfAttendance.delete') : Defender::createPermission('typesOfAttendance.delete', 'Exclui tipo de atendimento');
+        $perm['company'][] = Defender::permissionExists('typesOfAttendance.show') ? Defender::findPermission('typesOfAttendance.show') : Defender::createPermission('typesOfAttendance.show', 'Detalhes de tipo de atendimento');
+
+        $perm['company'][] = Defender::permissionExists('attendance.create') ? Defender::findPermission('attendance.create') : Defender::createPermission('attendance.create', 'Cria visitante');
+        $perm['company'][] = Defender::permissionExists('attendance.index') ? Defender::findPermission('attendance.index') : Defender::createPermission('attendance.index', 'Visualizar visitante');
+        $perm['company'][] = Defender::permissionExists('attendance.edit') ? Defender::findPermission('attendance.edit') : Defender::createPermission('attendance.edit', 'Edita visitante');
+        $perm['company'][] = Defender::permissionExists('attendance.delete') ? Defender::findPermission('attendance.delete') : Defender::createPermission('attendance.delete', 'Exclui visitante');
+        $perm['company'][] = Defender::permissionExists('attendance.show') ? Defender::findPermission('attendance.show') : Defender::createPermission('attendance.show', 'Detalhes de visitante');
+
         /*
          *  PERMISSOES ADMIN
          */

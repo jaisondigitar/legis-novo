@@ -192,7 +192,15 @@ return [
         'ieRg' => 'Insc. Estadual',
         'im' => 'Insc. Municipal',
 
-        "sector_id" => "Setor",
-        "password" => "Senha",
+        'cpf' => 'CPF',
+        'celular' => 'Celular',
+
+        'description' => 'Descrição',
+        'type_id' => 'Tipo de atendimento',
+        'people_id' => 'Dados Pessoais',
+        'time' => 'Hora',
+
+        'sector_id' => 'Setor',
+        'password' => 'Senha',
     ],
 ];
