@@ -2,18 +2,13 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
-
+use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Processing extends Model
 {
-
     use SoftDeletes;
-
-    use AuditingTrait;
     protected $dates = ['deleted_at'];
 
     public $table = 'processings';
@@ -25,10 +20,11 @@ class Processing extends Model
         'status_processing_law_id',
         'processing_date',
         'obsevation',
-        'processing_file'
+        'processing_file',
     ];
 
-    public function lawsProject(){
+    public function lawsProject()
+    {
         return $this->belongsTo(LawsProject::class);
     }
 
@@ -56,7 +52,4 @@ class Processing extends Model
     {
         return $this->belongsTo('App\Models\StatusProcessingLaw', 'status_processing_law_id');
     }
-
-
-
 }

@@ -7,7 +7,6 @@ use App\Models\LawsStructure;
 
 class CreateLawsStructureRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

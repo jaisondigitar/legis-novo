@@ -1,39 +1,30 @@
-<?php namespace App\Libraries\Repositories;
+<?php
+
+namespace App\Libraries\Repositories;
 
 use App\Models\Permission;
-use Bosnadev\Repositories\Eloquent\Repository;
-use Schema;
+use App\Repositories\Repository;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PermissionRepository extends Repository
 {
+    protected $modelClass = Permission::class;
 
-    /**
-    * Configure the Model
-    *
-    **/
-    public function model()
-    {
-      return 'App\Models\Permission';
-    }
-
-	public function search($input)
+    public function search($input)
     {
         $query = Permission::query();
 
         $columns = Schema::getColumnListing('permissions');
-        $attributes = array();
 
-        foreach($columns as $attribute)
-        {
-            if(isset($input[$attribute]) and !empty($input[$attribute]))
-            {
+        $attributes = [];
+
+        foreach ($columns as $attribute) {
+            if (isset($input[$attribute]) and ! empty($input[$attribute])) {
                 $query->where($attribute, $input[$attribute]);
                 $attributes[$attribute] = $input[$attribute];
-            }
-            else
-            {
-                $attributes[$attribute] =  null;
+            } else {
+                $attributes[$attribute] = null;
             }
         }
 
@@ -42,11 +33,10 @@ class PermissionRepository extends Repository
 
     public function apiFindOrFail($id)
     {
-        $model = $this->find($id);
+        $model = $this->findByID($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "Permission not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'Permission not found');
         }
 
         return $model;
@@ -54,11 +44,10 @@ class PermissionRepository extends Repository
 
     public function apiDeleteOrFail($id)
     {
-        $model = $this->find($id);
+        $model = $this->findByID($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "Permission not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'Permission not found');
         }
 
         return $model->delete();

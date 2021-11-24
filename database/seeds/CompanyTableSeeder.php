@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\Company;
+use Illuminate\Database\Seeder;
 
 class CompanyTableSeeder extends Seeder
 {
@@ -12,22 +12,20 @@ class CompanyTableSeeder extends Seeder
      */
     public function run()
     {
-        $obj = Company::find(1);
-        if(is_null($obj))
-        {
+        $obj = Company::find(2);
+        if (is_null($obj)) {
             Company::create([
-                'shortName'=>'i7 Creative',
-                'fullName'=>'i7 Creative Tecnologia',
-                'email'=>'lucas@i7creative.com.br',
-                'phone1'=>'(67) 8107-4917',
-                'mayor'=>'Lucas R. Pasquetto',
+                'shortName'=>'Gênesis',
+                'fullName'=>'Gênesis Tecnologia e Inovação',
+                'email'=>'comercial@genesis.tec.br',
+                'phone1'=>'(67) 9 9978-1420',
+                'mayor'=>'Igor M. Oliveira',
                 'cnpjCpf'=>'000.000.000-00',
                 'ieRG'=>'00000-0 SSP/MT',
                 'city'=>'5120',
                 'state'=>'12',
-                'active'=>'1'
+                'active'=>'1',
             ]);
         }
-
     }
 }

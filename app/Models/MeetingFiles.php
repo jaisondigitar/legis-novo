@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -45,17 +44,13 @@ class MeetingFiles extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'meeting_files';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'meeting_id',
-        'filename'
+        'filename',
     ];
 
     /**
@@ -65,21 +60,21 @@ class MeetingFiles extends Model
      */
     protected $casts = [
         'meeting_id' => 'integer',
-        'filename' => 'string'
+        'filename' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
         'meeting_id' => 'required',
-        'filename' => 'required'
+        'filename' => 'required',
     ];
 
-
-    public function meeting(){
+    public function meeting()
+    {
         return $this->belongsTo('App\Models\Meeting', 'meeting_id');
     }
 }

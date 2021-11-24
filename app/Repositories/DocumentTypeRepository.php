@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\DocumentType;
-use InfyOm\Generator\Common\BaseRepository;
 
-class DocumentTypeRepository extends BaseRepository
+class DocumentTypeRepository
 {
     /**
      * @var array
@@ -13,11 +12,11 @@ class DocumentTypeRepository extends BaseRepository
     protected $fieldSearchable = [
         'name',
         'prefix',
-        'slug'
+        'slug',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

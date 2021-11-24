@@ -3,25 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\Meeting;
-use InfyOm\Generator\Common\BaseRepository;
 
-class MeetingRepository extends BaseRepository
+class MeetingRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        'session_type_id',
-        'session_place_id',
-        'date_start',
-        'date_end'
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Meeting::class;
-    }
+    protected $modelClass = Meeting::class;
 }

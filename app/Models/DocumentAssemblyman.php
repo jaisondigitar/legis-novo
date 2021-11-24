@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 
 /**
  * @SWG\Definition(
@@ -69,13 +68,11 @@ use OwenIt\Auditing\AuditingTrait;
  */
 class DocumentAssemblyman extends Model
 {
-    use AuditingTrait;
-
     public $table = 'document_assemblyman';
 
     public $fillable = [
         'document_id',
-        'assemblyman_id'
+        'assemblyman_id',
     ];
 
     /**
@@ -85,24 +82,25 @@ class DocumentAssemblyman extends Model
      */
     protected $casts = [
         'document_id' => 'integer',
-        'assemblyman_id' => 'integer'
+        'assemblyman_id' => 'integer',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    public function document(){
+    public function document()
+    {
         return $this->belongsTo('App\Models\Document', 'document_id');
     }
 
-    public function assemblyman(){
+    public function assemblyman()
+    {
         return $this->belongsTo('App\Models\Assemblyman', 'assemblyman_id');
     }
-
 }

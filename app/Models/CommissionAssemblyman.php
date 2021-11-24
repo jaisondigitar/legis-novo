@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -55,20 +54,16 @@ use Carbon\Carbon;
  */
 class CommissionAssemblyman extends Model
 {
-    use AuditingTrait;
-
     public $table = 'commission_assemblyman';
-    
 
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'commission_id',
         'assemblyman_id',
         'office',
         'start_date',
-        'end_date'
+        'end_date',
     ];
 
     /**
@@ -79,27 +74,30 @@ class CommissionAssemblyman extends Model
     protected $casts = [
         'commission_id' => 'integer',
         'assemblyman_id' => 'integer',
-        'office' => 'integer'
+        'office' => 'integer',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    public function commissions(){
-        return $this->hasMany('App\Models\Commission', 'id','commission_id');
+    public function commissions()
+    {
+        return $this->hasMany('App\Models\Commission', 'id', 'commission_id');
     }
 
-    public function assemblyman(){
+    public function assemblyman()
+    {
         return $this->belongsTo('App\Models\Assemblyman', 'assemblyman_id');
     }
 
-    public function office_commission(){
+    public function office_commission()
+    {
         return $this->belongsTo('App\Models\OfficeCommission', 'office');
     }
 

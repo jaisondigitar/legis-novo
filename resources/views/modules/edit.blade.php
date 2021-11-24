@@ -12,7 +12,7 @@
                     <h3 class="panel-title">EDITAR REGISTRO</h3>
                 </div>
                 <div class="panel-body">
-                    {!! Form::model($module, ['route' => ['config.modules.update', $module->id], 'method' => 'patch','files' => true]) !!}
+                    {!! Form::model($module, ['route' => ['modules.update', $module->id], 'method' => 'patch','files' => true]) !!}
                     @include('modules.fields')
                     {!! Form::close() !!}
                 </div><!-- /.panel-body -->

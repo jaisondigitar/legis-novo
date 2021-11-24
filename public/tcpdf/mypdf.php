@@ -38,14 +38,14 @@ class MYPDF extends TCPDF {
 
         $this->SetY(-$menorvalor);
         // Set font
-        $this->SetFont('arial', '', 9);
+        $this->SetFont(PDF_FONT_NAME_DATA, '', 9);
         $this->Cell(0, $this->rMargin, 'PÁGINA '.$this->getAliasNumPage().' DE '.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'T');
 
         $this->SetX($this->lMargin);
         $this->SetY(-($menorvalor + 7 ));
-        $this->Write(10,"DOC: " . $this->docNumber);
+        $this->Write(10,"DOC: " . ($this->docNumber ?? ''));
         $this->SetY(-$menorvalor);
-        $this->write1DBarcode($this->docNumber,'C128',$this->lMargin,'',"","8");
+        $this->write1DBarcode(($this->docNumber ?? ''),'C128',$this->lMargin,'',"","8");
     }
 
     public function Output($name = 'doc.pdf', $dest = 'I')

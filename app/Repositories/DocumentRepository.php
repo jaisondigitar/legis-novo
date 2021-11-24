@@ -3,10 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\Document;
-use InfyOm\Generator\Common\BaseRepository;
 
-class DocumentRepository extends BaseRepository
+class DocumentRepository extends Repository
 {
+    protected $modelClass = Document::class;
+
     /**
      * @var array
      */
@@ -18,14 +19,6 @@ class DocumentRepository extends BaseRepository
         'content',
         'session_date',
         'read',
-        'approved'
+        'approved',
     ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Document::class;
-    }
 }

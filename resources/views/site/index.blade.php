@@ -29,14 +29,18 @@
     <script src="/jquery.highlight-5.js"></script>
 
 
-    <div id="h">
+    <div id="h" style="height: auto;">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 centered">
-                    <h1>
-                        <img src="/uploads/company/{{ \App\Models\Company::first()->image }}">
-                        {{ \App\Models\Company::first()->shortName }}
-                    </h1>
+                    <a href="/">
+                        <img
+                            src="/assets/images/genesis-black.png"
+                            alt="image"
+                            style="max-width: 100%;
+                            height: 50%;"
+                        >
+                    </a>
                     <div class="mtb">
                         <div>
                             <ul class="nav nav-tabs centered" role="tablist">

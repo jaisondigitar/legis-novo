@@ -6,16 +6,16 @@ use App\Http\Requests;
 use App\Http\Requests\CreateTestRequest;
 use App\Http\Requests\UpdateTestRequest;
 use App\Repositories\TestRepository;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class TestController extends AppBaseController
 {
-    /** @var  TestRepository */
+    /** @var TestRepository */
     private $testRepository;
 
     public function __construct(TestRepository $testRepo)
@@ -31,9 +31,10 @@ class TestController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('tests.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('tests.index')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $this->testRepository->pushCriteria(new RequestCriteria($request));
@@ -50,10 +51,10 @@ class TestController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('tests.create'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('tests.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         return view('$ROUTES_AS_PREFIX$tests.create');
@@ -68,16 +69,16 @@ class TestController extends AppBaseController
      */
     public function store(CreateTestRequest $request)
     {
-       if(!Defender::hasPermission('tests.create'))
-       {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('tests.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $test = $this->testRepository->create($input);
 
-        Flash::success('Test saved successfully.');
+        flash('Test saved successfully.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
     }
@@ -91,16 +92,16 @@ class TestController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('tests.show'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('tests.show')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            Flash::error('Test not found');
+            flash('Test not found')->error();
 
             return redirect(route('tests.index'));
         }
@@ -117,15 +118,15 @@ class TestController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('tests.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('tests.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            Flash::error('Test not found');
+            flash('Test not found')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
         }
@@ -143,23 +144,23 @@ class TestController extends AppBaseController
      */
     public function update($id, UpdateTestRequest $request)
     {
-        if(!Defender::hasPermission('tests.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('tests.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            Flash::error('Test not found');
+            flash('Test not found')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
         }
 
         $test = $this->testRepository->update($request->all(), $id);
 
-        Flash::success('Test updated successfully.');
+        flash('Test updated successfully.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
     }
@@ -173,42 +174,43 @@ class TestController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('tests.delete'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('tests.delete')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            Flash::error('Test not found');
+            flash('Test not found')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
         }
 
         $this->testRepository->delete($id);
 
-        Flash::success('Test deleted successfully.');
+        flash('Test deleted successfully.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
     }
 
     /**
-    	 * Update status of specified Test from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('tests.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->testRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified Test from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('tests.edit')) {
+            return json_encode(false);
         }
+        $register = $this->testRepository->findWithoutFail($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 }

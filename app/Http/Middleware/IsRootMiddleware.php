@@ -3,13 +3,13 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Guard;
 use Flash;
+use Illuminate\Contracts\Auth\Guard;
 
 class IsRootMiddleware
 {
-
     protected $auth;
+
     public function __construct(Guard $auth)
     {
         $this->auth = $auth;
@@ -25,10 +25,12 @@ class IsRootMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->auth->user()->hasRole('root')) {
-            Flash::error('Ops! Sem permissão.');
+        if (! $this->auth->user()->hasRole('root')) {
+            flash('Ops! Sem permissão.')->error();
+
             return redirect('/');
         }
+
         return $next($request);
     }
 }

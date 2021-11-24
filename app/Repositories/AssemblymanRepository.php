@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Assemblyman;
-use InfyOm\Generator\Common\BaseRepository;
 
-class AssemblymanRepository extends BaseRepository
+class AssemblymanRepository extends Repository
 {
     /**
      * @var array
@@ -26,14 +25,8 @@ class AssemblymanRepository extends BaseRepository
         'district',
         'state_id',
         'city_id',
-        'zipcode'
+        'zipcode',
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Assemblyman::class;
-    }
+    protected $modelClass = Assemblyman::class;
 }

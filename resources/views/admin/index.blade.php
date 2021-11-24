@@ -8,26 +8,20 @@
             font-weight: 300;
         }
 
-        .lista {
-            margin: 0px;
-            padding: 0px;
-        }
         .lista li{
-            margin: 0px;
-            padding: 0px;
+            margin: 0;
+            padding: 0;
             text-align: left;
             list-style-type: none;
-            /*border-bottom: 1px solid #ccc;*/
         }
     </style>
-    <h1 class="page-heading" style="margin-top: 0px;">DASHBOARD <small>Algumas informações úteis</small></h1>
+    <h1 class="page-heading" style="margin-top: 0;">DASHBOARD <small>Algumas informações úteis</small></h1>
 
     <div class="col-lg-3">
-        <div class="alert alert-warning alert-block square fade in">
+        <div class="alert alert-info alert-block square fade in">
             <p><strong>Bem vindo(a)!</strong></p>
-            <p>O MakerLegis é um software para Gestão de Processos Legislativos. </p>
-            <p>A aplicação está em constante atualização,
-                buscando atender todos os quesitos necessários para o controle e gestão de todo o processo em uma casa de leis.</p>
+            <p style="text-align: justify">O MakerLegis é um software para Gestão de Processos Legislativos. </p>
+            <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis.</p>
         </div>
     </div>
     <div class="col-lg-3">
@@ -135,7 +129,7 @@
 
                             <!-- advice_id Field -->
                             <div class="form-group col-sm-6 hidden">
-                                {!! Form::label('advice_id', 'id:') !!}
+                                {{ Form::label('advice_id', 'id:') }}
                                 <input type="text" id="advice_idP" />
                                 <label id="advice_id"></label>
                             </div>
@@ -181,7 +175,7 @@
                         <div class="modal-dialog  modal-lg">
                                 <!-- Modal content-->
                                 <form action="/admin/saveAdvice" method="POST" enctype="multipart/form-data">
-                                        {!! csrf_field() !!}
+                                        @csrf
                                     <div class="modal-content">
                                             <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>

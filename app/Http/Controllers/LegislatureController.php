@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Requests\CreateLegislatureRequest;
 use App\Http\Requests\UpdateLegislatureRequest;
 use App\Models\Assemblyman;
 use App\Models\LegislatureAssemblyman;
 use App\Repositories\LegislatureRepository;
-use Illuminate\Http\Request;
-use Flash;
-use Illuminate\Support\Facades\Input;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-use Illuminate\Support\Facades\Auth;
 use Artesaos\Defender\Facades\Defender;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class LegislatureController extends AppBaseController
 {
-    /** @var  LegislatureRepository */
+    /** @var LegislatureRepository */
     private $legislatureRepository;
 
     public function __construct(LegislatureRepository $legislatureRepo)
@@ -30,17 +31,18 @@ class LegislatureController extends AppBaseController
      * Display a listing of the Legislature.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('legislatures.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('legislatures.index')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $this->legislatureRepository->pushCriteria(new RequestCriteria($request));
-        $legislatures = $this->legislatureRepository->all();
+        $legislatures = $this->legislatureRepository->getAll(0);
 
         $assemblymen = Assemblyman::all()->load('legislature_assemblyman');
 
@@ -56,10 +58,10 @@ class LegislatureController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('legislatures.create'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('legislatures.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         return view('legislatures.create');
@@ -74,16 +76,16 @@ class LegislatureController extends AppBaseController
      */
     public function store(CreateLegislatureRequest $request)
     {
-       if(!Defender::hasPermission('legislatures.create'))
-       {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('legislatures.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $legislature = $this->legislatureRepository->create($input);
 
-        Flash::success('Legislature saved successfully.');
+        flash('Legislatura salva com sucesso.')->success();
 
         return redirect(route('legislatures.index'));
     }
@@ -91,22 +93,23 @@ class LegislatureController extends AppBaseController
     /**
      * Display the specified Legislature.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('legislatures.show'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('legislatures.show')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $legislature = $this->legislatureRepository->findWithoutFail($id);
+        $legislature = $this->legislatureRepository->findByID($id);
 
         if (empty($legislature)) {
-            Flash::error('Legislature not found');
+            flash('Legislatura não encontrada')->error();
 
             return redirect(route('legislatures.index'));
         }
@@ -128,21 +131,22 @@ class LegislatureController extends AppBaseController
     /**
      * Show the form for editing the specified Legislature.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('legislatures.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('legislatures.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
-        $legislature = $this->legislatureRepository->findWithoutFail($id);
+        $legislature = $this->legislatureRepository->findByID($id);
 
         if (empty($legislature)) {
-            Flash::error('Legislature not found');
+            flash('Legislatura não encontrada')->error();
 
             return redirect(route('legislatures.index'));
         }
@@ -153,30 +157,31 @@ class LegislatureController extends AppBaseController
     /**
      * Update the specified Legislature in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateLegislatureRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateLegislatureRequest $request)
     {
-        if(!Defender::hasPermission('legislatures.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('legislatures.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $legislature = $this->legislatureRepository->findWithoutFail($id);
+        $legislature = $this->legislatureRepository->findByID($id);
 
         if (empty($legislature)) {
-            Flash::error('Legislature not found');
+            flash('Legislatura não encontrada')->error();
 
             return redirect(route('legislatures.index'));
         }
 
-        $legislature = $this->legislatureRepository->update($request->all(), $id);
+        $this->legislatureRepository->update($legislature, $request->all());
 
-        Flash::success('Legislature updated successfully.');
+        flash('Legislature updated successfully.')->success();
 
         return redirect(route('legislatures.index'));
     }
@@ -184,72 +189,77 @@ class LegislatureController extends AppBaseController
     /**
      * Remove the specified Legislature from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('legislatures.delete'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('legislatures.delete')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $legislature = $this->legislatureRepository->findWithoutFail($id);
+        $legislature = $this->legislatureRepository->findByID($id);
 
         if (empty($legislature)) {
-            Flash::error('Legislature not found');
+            flash('Legislatura não encontrada')->error();
 
             return redirect(route('legislatures.index'));
         }
 
-        $this->legislatureRepository->delete($id);
+        $this->legislatureRepository->delete($legislature);
 
-        Flash::success('Legislature deleted successfully.');
+        flash('Legislatura removido com sucesso.')->success();
 
         return redirect(route('legislatures.index'));
     }
 
     /**
-    	 * Update status of specified Legislature from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('legislatures.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->legislatureRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified Legislature from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('legislatures.edit')) {
+            return json_encode(false);
         }
+        $register = $this->legislatureRepository->findWithoutFail($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
 
-    public function saveAssemblyman($id){
+        return json_encode(true);
+    }
+
+    public function saveAssemblyman($id)
+    {
         $params = Input::all();
 
-        foreach($params['assemblyman_id'] as $assemblyman){
+        foreach ($params['assemblyman_id'] as $assemblyman) {
             $legislature_assemblyman = new LegislatureAssemblyman();
             $legislature_assemblyman->legislature_id = $id;
             $legislature_assemblyman->assemblyman_id = $assemblyman;
             $legislature_assemblyman->save();
         }
-            Flash::success('Parlamentares inserido com sucesso.');
-            return redirect(route('legislatures.show', $id));
+        flash('Parlamentares inserido com sucesso.')->success();
+
+        return redirect(route('legislatures.show', $id));
     }
 
-    public function deleteAssemblyman($legislature_id, $assemblyman_id){
-
+    public function deleteAssemblyman($legislature_id, $assemblyman_id)
+    {
         $legislature_assemblyman = LegislatureAssemblyman::where('legislature_id', $legislature_id)
             ->where('assemblyman_id', $assemblyman_id)
             ->first();
 
-        if($legislature_assemblyman->delete()){
-            Flash::success('Parlamentar deletado com sucesso.');
+        if ($legislature_assemblyman->delete()) {
+            flash('Parlamentar deletado com sucesso.')->success();
+
             return redirect(route('legislatures.show', $legislature_id));
         }
     }

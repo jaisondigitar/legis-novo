@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -46,17 +45,13 @@ class AdviceSituation extends Model
 {
     //use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'advice_situations';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'advice_id',
-        'comission_situation_id'
+        'comission_situation_id',
     ];
 
     /**
@@ -66,24 +61,21 @@ class AdviceSituation extends Model
      */
     protected $casts = [
         'advice_id' => 'integer',
-        'comission_situation_id' => 'integer'
+        'comission_situation_id' => 'integer',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
         'advice_id' => 'required',
-        'comission_situation_id' => 'required'
+        'comission_situation_id' => 'required',
     ];
 
     public function situation()
     {
-
         return $this->belongsTo(ComissionSituation::class, 'comission_situation_id');
-
     }
-
 }

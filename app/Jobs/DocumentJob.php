@@ -2,28 +2,21 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
-use App\Models\Document;
 use App\Models\DocumentType;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use PhpParser\Comment\Doc;
 
-class DocumentJob extends Job implements SelfHandling, ShouldQueue
+class DocumentJob extends Job implements ShouldQueue
 {
     use InteractsWithQueue;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-
-
-
     public function __construct()
     {
-
     }
 
     /**
@@ -35,7 +28,7 @@ class DocumentJob extends Job implements SelfHandling, ShouldQueue
     {
         $types = DocumentType::all();
 
-        foreach ($types as $key => $type){
+        foreach ($types as $key => $type) {
             $job = (new exportDocumentJob($type))->onQueue('exportType');
             dispatch($job);
         }

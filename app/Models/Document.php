@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\DocumentNumber;
 use Carbon\Carbon;
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -72,16 +71,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Document extends Model
 {
-
     use SoftDeletes;
-
-    use AuditingTrait;
 
     public $table = 'documents';
 
-
     protected $dates = ['session_date', 'deleted_at', 'created_at', 'date'];
-
 
     public $fillable = [
         'document_type_id',
@@ -93,7 +87,7 @@ class Document extends Model
         'session_date',
         'read',
         'approved',
-        'updated_at'
+        'updated_at',
     ];
 
     /**
@@ -109,19 +103,19 @@ class Document extends Model
         'date' => 'date',
         'session_date' => 'date',
         'read' => 'boolean',
-        'approved' => 'boolean'
+        'approved' => 'boolean',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-      "document_type_id" => "required",
-		  "date" => "required",
-		  "owner_id" => "required",
-      "content" => "required",
+      'date' => 'required',
+      'document_type_id' => 'required',
+      'owner_id' => 'required',
+      'content' => 'required',
     ];
 
     public function user()
@@ -164,8 +158,10 @@ class Document extends Model
         return $this->hasOne('App\Models\DocumentProtocol', 'document_id');
     }
 
-    public function advices(){
-        return $this->hasMany('App\Models\Advice', 'document_id', 'id');    }
+    public function advices()
+    {
+        return $this->hasMany('App\Models\Advice', 'document_id', 'id');
+    }
 
     public function adviceSituationDocument()
     {
@@ -195,33 +191,36 @@ class Document extends Model
     public function getYear($date)
     {
         $date = explode('/', $date);
+
         return $date[2];
     }
 
     public function scopeByIdDesc($query)
     {
-        return $query->orderBy('id','desc');
+        return $query->orderBy('id', 'desc');
     }
 
     public function scopeByDateDesc($query)
     {
-        return $query->orderBy('date','desc');
+        return $query->orderBy('date', 'desc');
     }
 
-    public function document_number(){
+    public function document_number()
+    {
         return $this->hasMany(DocumentNumber::class);
     }
 
-    public function scopeGetNumber(){
-
+    public function scopeGetNumber()
+    {
         $number = $this->document_number()->get()->last();
 
-        if($number) {
+        if ($number) {
             $number = strtotime($number->date);
+
             return $number;
         }
 
-       return json_encode(false);
+        return json_encode(false);
     }
 
     public function voting()
@@ -231,20 +230,19 @@ class Document extends Model
 
     public function getName()
     {
-
         $str = '';
 
-        if($this->document_type->parent_id) { $str .= $this->document_type->parent->name . " :: "; };
-        $str .= $this->document_type->name . " - ";
+        if ($this->document_type->parent_id) {
+            $str .= $this->document_type->parent->name.' :: ';
+        }
+        $str .= $this->document_type->name.' - ';
 
-
-        if($this->number==0){
-            $str .= " - ";
-        }else {
-            $str .= $this->number . '/' . $this->getYear($this->date);
+        if ($this->number == 0) {
+            $str .= ' - ';
+        } else {
+            $str .= $this->number.'/'.$this->getYear($this->date);
         }
 
         return $str;
-
     }
 }

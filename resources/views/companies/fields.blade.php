@@ -4,7 +4,10 @@
 <div class="form-group col-sm-6 col-lg-4">
     @if(isset($company) && !empty($company->image))
         <div class="logo-inst">
-            <img src="{{ url('uploads/company/'. $company->image) }}">
+            <img
+                src="{{ (new \App\Services\StorageService())->inCompanyFolder()->get($company->image) }}"
+                height="150"
+            >
             <div style="width: 100px;padding: 5px;font-family: monospace;">
                 <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
             </div>
@@ -21,55 +24,55 @@
 
 <!--- Shortname Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('shortName', 'Nome Fantasia:') !!}
+    {!! Form::label('shortName', 'Nome Fantasia:', ['class' => 'required']) !!}
 	{!! Form::text('shortName', null, ['class' => 'form-control']) !!}
 </div>
 
 <!--- Fullname Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('fullName', 'Rasão Social:') !!}
+    {!! Form::label('fullName', 'Rasão Social:', ['class' => 'required']) !!}
 	{!! Form::text('fullName', null, ['class' => 'form-control']) !!}
 </div>
 
 <!--- Email Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('email', 'Email:') !!}
+    {!! Form::label('email', 'Email:', ['class' => 'required']) !!}
 	{!! Form::text('email', null, ['class' => 'form-control']) !!}
 </div>
 
 <!--- Phone1 Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('phone1', 'Telefone 1:') !!}
+    {!! Form::label('phone1', 'Celular:', ['class' => 'required']) !!}
 	{!! Form::text('phone1', null, ['class' => 'form-control phone']) !!}
 </div>
 
 <!--- Phone2 Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('phone2', 'Telefone 2:') !!}
+    {!! Form::label('phone2', 'Telefone 2:', ['class' => 'required']) !!}
 	{!! Form::text('phone2', null, ['class' => 'form-control phone']) !!}
 </div>
 
 <!--- Mayor Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('mayor', 'Responsável:') !!}
+    {!! Form::label('mayor', 'Responsável:', ['class' => 'required']) !!}
 	{!! Form::text('mayor', null, ['class' => 'form-control']) !!}
 </div>
 
 <!--- Cnpjcpf Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('cnpjCpf', 'Cnpj:') !!}
+    {!! Form::label('cnpjCpf', 'Cnpj:', ['class' => 'required']) !!}
 	{!! Form::text('cnpjCpf', null, ['class' => 'form-control cpfcnpj']) !!}
 </div>
 
 <!--- Ierg Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('ieRg', 'Insc. Estadual:') !!}
+    {!! Form::label('ieRg', 'Insc. Estadual:', ['class' => 'required']) !!}
 	{!! Form::text('ieRg', null, ['class' => 'form-control']) !!}
 </div>
 
 <!--- Im Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('im', 'Insc. Municipal:') !!}
+    {!! Form::label('im', 'Insc. Municipal:', ['class' => 'required']) !!}
 	{!! Form::text('im', null, ['class' => 'form-control']) !!}
 </div>
 <div class="form-group col-sm-6 col-lg-4">
@@ -106,7 +109,7 @@
 
 <script>
     function removeImage() {
-        var id = '{{$company->id}}';
+        var id = '{{ $company ? $company->id : '' }}';
         var r = confirm("Deseja remover a imagem?");
         if (r == true) {
             $.ajax({

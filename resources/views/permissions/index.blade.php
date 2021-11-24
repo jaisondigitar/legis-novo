@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group">
-                        <a href="{!! route('config.permissions.create') !!}">
+                        <a href="{!! route('permissions.create') !!}">
                             <button type="button" class="btn btn-default"><i class="fa fa-plus-circle"></i> Novo registro</button>
                         </a>
                     </div>

@@ -3,20 +3,19 @@
 namespace App\Repositories;
 
 use App\Models\Type;
-use InfyOm\Generator\Common\BaseRepository;
 
-class TypeRepository extends BaseRepository
+class TypeRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
         'prefix',
-        'name'
+        'name',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

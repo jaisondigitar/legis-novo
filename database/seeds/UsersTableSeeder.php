@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use App\Models\User;
 use App\Models\Profile;
+use App\Models\User;
 use Artesaos\Defender\Facades\Defender;
+use Illuminate\Database\Seeder;
+
 class UsersTableSeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      *
@@ -15,16 +15,17 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // USER ROOT
-        $usr = User::findOrNew(1);
-
-        $usr->company_id = 1;
-        $usr->name = 'Administrador Root';
-        $usr->sector_id = 1;
-        $usr->email = 'admin@blitsoft.com.br';
-        $usr->active = 1;
-        $usr->password = bcrypt('blit1843');
-
-        $usr->save();
+        $usr = User::where('email', 'admin@genesis.tec.br')
+            ->firstOr(function () {
+                return User::create([
+                    'company_id' => 1,
+                    'name' => 'Administrador',
+                    'sector_id' => 1,
+                    'email' => 'admin@genesis.tec.br',
+                    'active' => 1,
+                    'password' => bcrypt('G&nesis***'),
+                ]);
+            });
 
         $role = Defender::findRole('root');
 
@@ -32,7 +33,7 @@ class UsersTableSeeder extends Seeder
 
         Profile::firstOrCreate([
             'user_id'=> $usr->id,
-            'active'=>1
+            'active'=>1,
         ]);
     }
 }

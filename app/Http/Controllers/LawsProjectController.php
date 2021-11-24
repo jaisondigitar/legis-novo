@@ -28,12 +28,15 @@ use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
-use Flash;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
-use Response;
+use Illuminate\View\View;
 
 class LawsProjectController extends AppBaseController
 {
@@ -78,12 +81,12 @@ class LawsProjectController extends AppBaseController
      * Display a listing of the LawsProject.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
     {
         if (!Defender::hasPermission('lawsProjects.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -137,7 +140,7 @@ class LawsProjectController extends AppBaseController
 
         }
 
-        $law_places       = LawsPlace::lists('name', 'id')->prepend('Selecione...', '');
+        $law_places       = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
         $assemblymensList = $this->getAssemblymenList();
 
         $references         = LawsProject::all();
@@ -160,24 +163,24 @@ class LawsProjectController extends AppBaseController
     /**
      * Show the form for creating a new LawsProject.
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
         if (!Defender::hasPermission('lawsProjects.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
         $assemblymensList = $this->getAssemblymenList();
 
-        $law_types              = LawsType::where('is_active', true)->lists('name', 'id')->prepend('Selecione...', '');
-        $situation              = LawSituation::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_situation_law   = AdviceSituationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_publication_law = AdvicePublicationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::lists('name', 'id')->prepend('Selecione...', '');
+        $law_types              = LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '');
+        $situation              = LawSituation::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
 
-        $comission = Commission::lists('name', 'id')->prepend('Selecione', 0);
+        $comission = Commission::pluck('name', 'id')->prepend('Selecione', 0);
 
         $references         = LawsProject::all();
         $references_project = [0 => 'Selecione'];
@@ -186,7 +189,7 @@ class LawsProjectController extends AppBaseController
         }
 
         $lawsProject = new LawsProject();
-        return view('lawsProjects.create')->with(compact('status_processing_law', 'comission', 'lawsProject', 'law_types', 'situation', 'law_places', 'law_structure', 'advice_situation_law', 'advice_publication_law'))
+        return view('lawsProjects.create')->with(compact('status_processing_law', 'comission', 'lawsProject', 'law_types', 'situation', 'advice_situation_law', 'advice_publication_law'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('references_project', $references_project)
             ->with('assemblymensList', $assemblymensList[1]);
@@ -197,12 +200,13 @@ class LawsProjectController extends AppBaseController
      *
      * @param CreateLawsProjectRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function store(CreateLawsProjectRequest $request)
     {
         if (!Defender::hasPermission('lawsProjects.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
@@ -244,7 +248,7 @@ class LawsProjectController extends AppBaseController
         $law_number->date            = $lawsProject->updated_at;
         $law_number->save();
 
-        Flash::success('LawsProject saved successfully.');
+        flash('Projeto de Leis salvo com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
 
@@ -253,20 +257,24 @@ class LawsProjectController extends AppBaseController
     public function advices($lawProjectId)
     {
         setlocale(LC_ALL, 'pt_BR');
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($lawProjectId);
+        $lawsProject = $this->lawsProjectRepository->findByID($lawProjectId);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
 
-        $comission  = Commission::active()->lists('name', 'id');
+        $comission  = Commission::active()->pluck('name', 'id');
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-projetos')->first()->value;
 
-        $advice_situation_law   = AdviceSituationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_publication_law = AdvicePublicationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::lists('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...',
+            '');
+        $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
 
         return view('lawsProjects.advices', compact('comission', 'tramitacao', 'advice_situation_law', 'advice_publication_law', 'status_processing_law'))->with(compact('lawsProject'));
 
@@ -295,21 +303,21 @@ class LawsProjectController extends AppBaseController
      *
      * @param  int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse|void
      */
     public function show($id)
     {
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 
 //        if (!Defender::hasPermission('lawsProjects.show')) {
-        //            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+        //            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
         //            return redirect("/");
         //        }
 
         $lawsProject = LawsProject::find($id);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -616,7 +624,7 @@ class LawsProjectController extends AppBaseController
     public function loadAdvices($pdf, $lawsProjectId)
     {
 
-        $advices = \App\Models\Advice::where('laws_projects_id', $lawsProjectId)->get();
+        $advices = Advice::where('laws_projects_id', $lawsProjectId)->get();
 
         if (!$advices) {
             $pdf->AddPage();
@@ -631,8 +639,6 @@ class LawsProjectController extends AppBaseController
 
     protected function printAdvices($advices, $pdf)
     {
-        $return = "";
-
         foreach ($advices as $advice) {
 
             $pdf->AddPage();
@@ -696,34 +702,34 @@ class LawsProjectController extends AppBaseController
      *
      * @param  int $id
      *
-     * @return Response
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function edit($id)
     {
         if (!Defender::hasPermission('lawsProjects.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
 
         $assemblymensList = $this->getAssemblymenList();
 
-        $lawsAssemblyman = LawsProjectAssemblyman::where('law_project_id', $id)->lists('assemblyman_id');
+        $lawsAssemblyman = LawsProjectAssemblyman::where('law_project_id', $id)->pluck('assemblyman_id');
 
-        $law_types              = LawsType::where('is_active', true)->lists('name', 'id')->prepend('Selecione...', '');
-        $law_places             = LawsPlace::lists('name', 'id')->prepend('Selecione...', '');
-        $law_structure          = LawsStructure::lists('name', 'id')->prepend('Selecione...', '');
-        $situation              = LawSituation::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_situation_law   = AdviceSituationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $advice_publication_law = AdvicePublicationLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::lists('name', 'id')->prepend('Selecione...', '');
-        $comission              = Commission::lists('name', 'id')->prepend('Selecione', 0);
+        $law_types              = LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '');
+        $law_places             = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
+        $law_structure          = LawsStructure::pluck('name', 'id')->prepend('Selecione...', '');
+        $situation              = LawSituation::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $comission              = Commission::pluck('name', 'id')->prepend('Selecione', 0);
 
         $references         = LawsProject::all();
         $references_project = [0 => 'Selecione'];
@@ -740,22 +746,23 @@ class LawsProjectController extends AppBaseController
     /**
      * Update the specified LawsProject in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateLawsProjectRequest $request
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
      */
     public function update($id, UpdateLawsProjectRequest $request)
     {
         if (!Defender::hasPermission('lawsProjects.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -764,8 +771,8 @@ class LawsProjectController extends AppBaseController
 
         $input['town_hall'] = isset($input['town_hall']) ? 1 : 0;
 
-        $lawsProject = $this->lawsProjectRepository->update($input, $id);
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
+        $this->lawsProjectRepository->update($lawsProject, $input);
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
 
         LawsProjectAssemblyman::where('law_project_id', $id)->delete();
 
@@ -801,7 +808,7 @@ class LawsProjectController extends AppBaseController
         $law_number->date            = $lawsProject->updated_at;
         $law_number->save();
 
-        Flash::success('LawsProject updated successfully.');
+        flash('Projeto de Leis atualizado com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
     }
@@ -809,34 +816,36 @@ class LawsProjectController extends AppBaseController
     /**
      * Remove the specified LawsProject from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
+     *
+     * @throws Exception
      */
     public function destroy($id)
     {
         if (!Defender::hasPermission('lawsProjects.delete')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/");
         }
 
-        $lawsProject = $this->lawsProjectRepository->findWithoutFail($id);
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
 
         if (empty($lawsProject)) {
-            Flash::error('LawsProject not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
 
         if (MeetingPauta::where('law_id', $lawsProject->id)->get()->count() > 0) {
-            Flash::error('Registro em uso, não pode ser removido!');
+            flash('Registro em uso, não pode ser removido!')->error();
 
             return redirect(route('lawsProjects.index'));
         }
 
-        $this->lawsProjectRepository->delete($id);
+        $this->lawsProjectRepository->delete($lawsProject);
 
-        Flash::success('LawsProject deleted successfully.');
+        flash('Projeto de Leis removido com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
     }
@@ -844,16 +853,15 @@ class LawsProjectController extends AppBaseController
     /**
      * Update status of specified LawsProject from storage.
      *
-     * @param  int $id
-     *
-     * @return Json
+     * @param int $id
+     * @throws BindingResolutionException
      */
     public function toggle($id)
     {
         if (!Defender::hasPermission('lawsProjects.edit')) {
             return json_encode(false);
         }
-        $register         = $this->lawsProjectRepository->findWithoutFail($id);
+        $register         = $this->lawsProjectRepository->findByID($id);
         $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
         return json_encode(true);
@@ -862,13 +870,14 @@ class LawsProjectController extends AppBaseController
     /**
      * @param $id
      * @return string
+     * @throws BindingResolutionException
      */
     public function toggleRead($id)
     {
         if (!Defender::hasPermission('lawsProject.read')) {
             return json_encode(false);
         }
-        $register          = $this->lawsProjectRepository->findWithoutFail($id);
+        $register          = $this->lawsProjectRepository->findByID($id);
         $register->is_read = $register->is_read == 0 ? 1 : 0;
         $register->save();
         return json_encode(true);
@@ -877,17 +886,18 @@ class LawsProjectController extends AppBaseController
     /**
      * @param $id
      * @return string
+     * @throws BindingResolutionException
      */
     public function toggleApproved($id)
     {
         if (!Defender::hasPermission('lawsProject.approved')) {
             return json_encode(false);
         }
-        $register = $this->lawsProjectRepository->findWithoutFail($id);
+        $register = $this->lawsProjectRepository->findByID($id);
 
         $register->is_ready = $register->is_ready == 0 ? 1 : 0;
         $register->save();
-        dd($register);
+
         return json_encode(true);
     }
 
@@ -930,7 +940,7 @@ class LawsProjectController extends AppBaseController
 
     public function lawsProjectApprovedSave()
     {
-        $input = Input::all();
+        $input = \Illuminate\Support\Facades\Request::all();
 
         $lawProject = LawsProject::find($input['law_project_id']);
 
@@ -1004,7 +1014,7 @@ class LawsProjectController extends AppBaseController
 
     public function lawsProjectProtocolSave()
     {
-        $params = Input::all();
+        $params = \Illuminate\Support\Facades\Request::all();
 
         $law_project = LawsProject::find($params['law_project_id']);
 
@@ -1057,15 +1067,10 @@ class LawsProjectController extends AppBaseController
 
     }
 
-    public function addStructure($id)
-    {
-
-    }
-
     public function lawsProjectStructure($id)
     {
         $law_project          = LawsProject::find($id);
-        $laws_structure_types = LawsStructure::lists('name', 'id');
+        $laws_structure_types = LawsStructure::pluck('name', 'id');
         $structure_laws       = StructureLaws::where('law_id', $id)->isRoot()->get();
 
         if (count($structure_laws) == 0) {
@@ -1222,7 +1227,7 @@ class LawsProjectController extends AppBaseController
         $laws = LawsProject::all();
 
         if (empty($laws)) {
-            Flash::error('Law Project not found');
+            flash('Projeto de Leis não encontrado')->error();
 
             return redirect(route('lawsProjects.index'));
         }
@@ -1238,7 +1243,7 @@ class LawsProjectController extends AppBaseController
 
         LawProjectsNumber::insert($data);
 
-        Flash::success('Leis migradas com sucesso!');
+        flash('Leis migradas com sucesso!')->success();
         return redirect(route('lawsProjects.index'));
     }
 
@@ -1258,7 +1263,7 @@ class LawsProjectController extends AppBaseController
     public function attachamentUpload($id, Request $request)
     {
         if (!Defender::hasPermission('documents.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
             return redirect("/documents");
         }
 
@@ -1296,7 +1301,6 @@ class LawsProjectController extends AppBaseController
 
     public function addFilesSave($id, Request $request)
     {
-        $input       = $request->all();
         $lawsProject = LawsProject::find($id);
 
         if ($request->file('file')) {
@@ -1317,7 +1321,7 @@ class LawsProjectController extends AppBaseController
                 $lawsProject->save();
             }
         }
-        Flash::success('Arquivos salvos com sucesso!');
+        flash('Arquivos salvos com sucesso!')->success();
         return redirect(route('lawsProjects.index'));
     }
 }

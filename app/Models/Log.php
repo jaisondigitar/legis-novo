@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\AuditingTrait;
 
 /**
  * @SWG\Definition(
@@ -53,16 +52,13 @@ use OwenIt\Auditing\AuditingTrait;
 class Log extends Model
 {
     use SoftDeletes;
-    use AuditingTrait;
 
     public $table = 'logs';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'user_id',
@@ -70,7 +66,7 @@ class Log extends Model
         'owner_id',
         'old_value',
         'new_value',
-        'type'
+        'type',
     ];
 
     /**
@@ -85,16 +81,16 @@ class Log extends Model
         'owner_id' => 'integer',
         'old_value' => 'string',
         'new_value' => 'string',
-        'type' => 'string'
+        'type' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     /**
@@ -110,18 +106,18 @@ class Log extends Model
      */
     public function getColor()
     {
-        switch($this->type){
-            case "created":
-                return "success";
+        switch ($this->type) {
+            case 'created':
+                return 'success';
                 break;
-            case "updated":
-                return "warning";
+            case 'updated':
+                return 'warning';
                 break;
-            case "deleted":
-                return "danger";
+            case 'deleted':
+                return 'danger';
                 break;
             default:
-                return "primary";
+                return 'primary';
                 break;
         }
     }

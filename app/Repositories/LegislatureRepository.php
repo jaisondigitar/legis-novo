@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Legislature;
-use InfyOm\Generator\Common\BaseRepository;
 
-class LegislatureRepository extends BaseRepository
+class LegislatureRepository extends Repository
 {
     /**
      * @var array
@@ -13,14 +12,8 @@ class LegislatureRepository extends BaseRepository
     protected $fieldSearchable = [
         'companies_id',
         'from',
-        'to'
+        'to',
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Legislature::class;
-    }
+    protected $modelClass = Legislature::class;
 }

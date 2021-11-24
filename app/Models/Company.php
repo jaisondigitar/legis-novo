@@ -1,38 +1,35 @@
-<?php namespace App\Models;
+<?php
+
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\AuditingTrait;
-
 
 class Company extends Model
 {
-    use SoftDeletes, AuditingTrait;
+    public $table = 'companies';
 
-	public $table = "companies";
-    
-	protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
 
-
-	public $fillable = [
-	    "image",
-		"shortName",
-		"fullName",
-		"email",
-		"phone1",
-		"phone2",
-		"mayor",
-		"cnpjCpf",
-		"ieRg",
-		"im",
-        "address",
-		"city",
-		"state",
-		"active",
-        "stage",
-		"assemblyman_id",
-		"meeting_id"
-	];
+    public $fillable = [
+        'image',
+        'shortName',
+        'fullName',
+        'email',
+        'phone1',
+        'phone2',
+        'mayor',
+        'cnpjCpf',
+        'ieRg',
+        'im',
+        'address',
+        'city',
+        'state',
+        'active',
+        'stage',
+        'assemblyman_id',
+        'meeting_id',
+    ];
 
     /**
      * The attributes that should be casted to native types.
@@ -40,39 +37,41 @@ class Company extends Model
      * @var array
      */
     protected $casts = [
-        "image" => "string",
-		"shortName" => "string",
-		"fullName" => "string",
-		"email" => "string",
-		"phone1" => "string",
-		"phone2" => "string",
-		"mayor" => "string",
-		"cnpjCpf" => "string",
-		"ieRg" => "string",
-		"im" => "string",
-		"city" => "integer",
-		"state" => "integer",
-		"active" => "boolean"
+        'image' => 'string',
+        'shortName' => 'string',
+        'fullName' => 'string',
+        'email' => 'string',
+        'phone1' => 'string',
+        'phone2' => 'string',
+        'mayor' => 'string',
+        'cnpjCpf' => 'string',
+        'ieRg' => 'string',
+        'im' => 'string',
+        'city' => 'integer',
+        'state' => 'integer',
+        'active' => 'boolean',
     ];
 
-	public static $rules = [
-	    "shortName" => "required",
-		"email" => "required",
-		"phone1" => "required",
-		"mayor" => "required",
-		"cnpjCpf" => "required",
-		"city" => "required",
-		"state" => "required"
-	];
+    public static $rules = [
+        'shortName' => 'required',
+        'email' => 'required',
+        'phone1' => 'required',
+        'phone2' => 'required',
+        'mayor' => 'required',
+        'cnpjCpf' => 'required',
+        'ieRg' => 'required',
+        'im' => 'required',
+        'city' => 'required',
+        'state' => 'required',
+    ];
 
-    public function getState(){
-        return $this->belongsTo('App\Models\State','state','id');
+    public function getState()
+    {
+        return $this->belongsTo('App\Models\State', 'state', 'id');
     }
 
-    public function getCity(){
-        return $this->belongsTo('App\Models\City','city','id');
+    public function getCity()
+    {
+        return $this->belongsTo('App\Models\City', 'city', 'id');
     }
-
-
-
 }

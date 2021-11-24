@@ -6,16 +6,16 @@ use App\Http\Requests;
 use App\Http\Requests\CreateStatusProcessingLawRequest;
 use App\Http\Requests\UpdateStatusProcessingLawRequest;
 use App\Repositories\StatusProcessingLawRepository;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class StatusProcessingLawController extends AppBaseController
 {
-    /** @var  StatusProcessingLawRepository */
+    /** @var StatusProcessingLawRepository */
     private $statusProcessingLawRepository;
 
     public function __construct(StatusProcessingLawRepository $statusProcessingLawRepo)
@@ -31,13 +31,14 @@ class StatusProcessingLawController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('statusProcessingLaws.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('statusProcessingLaws.index')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $this->statusProcessingLawRepository->pushCriteria(new RequestCriteria($request));
-        $statusProcessingLaws = $this->statusProcessingLawRepository->all();
+        // $this->statusProcessingLawRepository->pushCriteria(new RequestCriteria($request));
+        $statusProcessingLaws = $this->statusProcessingLawRepository->getAll(0);
 
         return view('statusProcessingLaws.index')
             ->with('statusProcessingLaws', $statusProcessingLaws);
@@ -50,10 +51,10 @@ class StatusProcessingLawController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('statusProcessingLaws.create'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('statusProcessingLaws.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         return view('statusProcessingLaws.create');
@@ -68,16 +69,16 @@ class StatusProcessingLawController extends AppBaseController
      */
     public function store(CreateStatusProcessingLawRequest $request)
     {
-       if(!Defender::hasPermission('statusProcessingLaws.create'))
-       {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('statusProcessingLaws.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $statusProcessingLaw = $this->statusProcessingLawRepository->create($input);
 
-        Flash::success('StatusProcessingLaw saved successfully.');
+        flash('Status do Tramite salvo com sucesso.')->success();
 
         return redirect(route('statusProcessingLaws.index'));
     }
@@ -91,16 +92,16 @@ class StatusProcessingLawController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('statusProcessingLaws.show'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('statusProcessingLaws.show')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $statusProcessingLaw = $this->statusProcessingLawRepository->findWithoutFail($id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
-            Flash::error('StatusProcessingLaw not found');
+            flash('Status do Tramite não encontrado')->error();
 
             return redirect(route('statusProcessingLaws.index'));
         }
@@ -117,15 +118,15 @@ class StatusProcessingLawController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('statusProcessingLaws.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('statusProcessingLaws.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
-        $statusProcessingLaw = $this->statusProcessingLawRepository->findWithoutFail($id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
-            Flash::error('StatusProcessingLaw not found');
+            flash('Status do Tramite não encontrado')->error();
 
             return redirect(route('statusProcessingLaws.index'));
         }
@@ -143,23 +144,23 @@ class StatusProcessingLawController extends AppBaseController
      */
     public function update($id, UpdateStatusProcessingLawRequest $request)
     {
-        if(!Defender::hasPermission('statusProcessingLaws.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('statusProcessingLaws.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $statusProcessingLaw = $this->statusProcessingLawRepository->findWithoutFail($id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
-            Flash::error('StatusProcessingLaw not found');
+            flash('Status do Tramite não encontrado')->error();
 
             return redirect(route('statusProcessingLaws.index'));
         }
 
-        $statusProcessingLaw = $this->statusProcessingLawRepository->update($request->all(), $id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->update($statusProcessingLaw, $request->all());
 
-        Flash::success('StatusProcessingLaw updated successfully.');
+        flash('Status do Tramite atualizado com sucesso.')->success();
 
         return redirect(route('statusProcessingLaws.index'));
     }
@@ -173,42 +174,43 @@ class StatusProcessingLawController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('statusProcessingLaws.delete'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('statusProcessingLaws.delete')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $statusProcessingLaw = $this->statusProcessingLawRepository->findWithoutFail($id);
+        $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
         if (empty($statusProcessingLaw)) {
-            Flash::error('StatusProcessingLaw not found');
+            flash('Status do Tramite não encontrado')->error();
 
             return redirect(route('statusProcessingLaws.index'));
         }
 
-        $this->statusProcessingLawRepository->delete($id);
+        $this->statusProcessingLawRepository->delete($statusProcessingLaw);
 
-        Flash::success('StatusProcessingLaw deleted successfully.');
+        flash('Status do Tramite removido com sucesso.')->success();
 
         return redirect(route('statusProcessingLaws.index'));
     }
 
     /**
-    	 * Update status of specified StatusProcessingLaw from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('statusProcessingLaws.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->statusProcessingLawRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified StatusProcessingLaw from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('statusProcessingLaws.edit')) {
+            return json_encode(false);
         }
+        $register = $this->statusProcessingLawRepository->findById($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 }

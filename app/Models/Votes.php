@@ -4,13 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\AuditingTrait;
 
 class Votes extends Model
 {
     use SoftDeletes;
-
-    use AuditingTrait;
 
     public $table = 'votes';
 
@@ -23,7 +20,7 @@ class Votes extends Model
         'yes',
         'no',
         'abstention',
-        'out'
+        'out',
     ];
 
     public function voting()
@@ -38,11 +35,10 @@ class Votes extends Model
 
     public function reset()
     {
-        $this->yes=0;
-        $this->no=0;
-        $this->abstention=0;
-        $this->out=0;
+        $this->yes = 0;
+        $this->no = 0;
+        $this->abstention = 0;
+        $this->out = 0;
         $this->save();
     }
-
 }

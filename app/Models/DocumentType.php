@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -49,19 +48,15 @@ class DocumentType extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'document_types';
-    
 
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'parent_id',
         'name',
         'prefix',
-        'slug'
+        'slug',
     ];
 
     /**
@@ -72,16 +67,16 @@ class DocumentType extends Model
     protected $casts = [
         'name' => 'string',
         'prefix' => 'string',
-        'slug' => 'string'
+        'slug' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     public function hasChilds()
@@ -99,20 +94,18 @@ class DocumentType extends Model
         return $id;
     }
 
-
     public function childs()
     {
-        return $this->hasMany('App\Models\DocumentType','parent_id');
+        return $this->hasMany('App\Models\DocumentType', 'parent_id');
     }
 
     public function parent()
     {
-        return $this->belongsTo('App\Models\DocumentType','parent_id');
+        return $this->belongsTo('App\Models\DocumentType', 'parent_id');
     }
 
     public function documents()
     {
         return $this->hasMany(Document::class);
     }
-
 }

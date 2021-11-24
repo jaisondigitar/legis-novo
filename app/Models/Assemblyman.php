@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -117,13 +116,9 @@ class Assemblyman extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'assemblymen';
-    
 
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'companies_id',
@@ -142,7 +137,7 @@ class Assemblyman extends Model
         'state_id',
         'city_id',
         'active',
-        'zipcode'
+        'zipcode',
     ];
 
     /**
@@ -166,11 +161,11 @@ class Assemblyman extends Model
         'district' => 'string',
         'state_id' => 'integer',
         'city_id' => 'integer',
-        'zipcode' => 'string'
+        'zipcode' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
@@ -179,44 +174,58 @@ class Assemblyman extends Model
         'short_name' => 'required',
         'email' => 'required',
         'phone1' => 'required',
+        'phone2' => 'required',
+        'zipcode' => 'required',
         'state_id' => 'required',
-        'city_id' => 'required'
+        'city_id' => 'required',
+        'full_name' => 'required',
+        'official_document' => 'required',
+        'general_register' => 'required',
+        'number' => 'required',
+        'complement' => 'required',
     ];
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo('App\Models\Company', 'companies_id');
     }
 
-    public function getState(){
+    public function getState()
+    {
         return $this->belongsTo('App\Models\State', 'state_id');
     }
 
-    public function legislature_assemblyman(){
+    public function legislature_assemblyman()
+    {
         return $this->hasMany(LegislatureAssemblyman::class, 'assemblyman_id');
     }
 
-    public function party_assemblyman(){
+    public function party_assemblyman()
+    {
         return $this->hasMany(PartiesAssemblyman::class, 'assemblyman_id');
     }
 
-    public function responsibility_assemblyman(){
+    public function responsibility_assemblyman()
+    {
         return $this->hasMany(ResponsibilityAssemblyman::class, 'assemblyman_id');
     }
 
-    public function user_assemblyman(){
+    public function user_assemblyman()
+    {
         return $this->hasMany(UserAssemblyman::class, 'assemblyman_id');
     }
 
-    public function commision_assemblyman(){
+    public function commision_assemblyman()
+    {
         return $this->hasMany('\App\Models\CommissionAssemblyman', 'assemblyman_id');
     }
 
-    public function meeting(){
+    public function meeting()
+    {
         return $this->belongsToMany(Meeting::class, 'meeting_presences', 'assemblymen_id', 'meeting_id');
     }
 
 //    public function commissions(){
 //        return $this->hasManyThrough(Commission::class,CommissionAssemblyman::class, 'commission_id', 'assemblyman_id');
 //    }
-
 }

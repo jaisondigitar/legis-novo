@@ -2,14 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
-use Illuminate\Contracts\Bus\SelfHandling;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Madnest\Madzipper\Madzipper;
 
-class DocumentZipJob extends Job implements SelfHandling, ShouldQueue
+class DocumentZipJob extends Job implements ShouldQueue
 {
-    /**
+    /*
      * Create a new job instance.
      *
      * @return void
@@ -25,10 +25,11 @@ class DocumentZipJob extends Job implements SelfHandling, ShouldQueue
      * Execute the job.
      *
      * @return void
+     * @throws Exception
      */
     public function handle()
     {
         $files = glob(public_path('exportacao/documentos'));
-        \Chumper\Zipper\Facades\Zipper::make(public_path('exportacao/documentos-compactados.zip'))->add($files)->close();
+        (new Madzipper)->make(public_path('exportacao/documentos-compactados.zip'))->add($files)->close();
     }
 }

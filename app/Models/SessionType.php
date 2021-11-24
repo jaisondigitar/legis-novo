@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -44,17 +43,13 @@ class SessionType extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'session_types';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'name',
-        'slug'
+        'slug',
     ];
 
     /**
@@ -64,15 +59,15 @@ class SessionType extends Model
      */
     protected $casts = [
         'name' => 'string',
-        'slug' => 'string'
+        'slug' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        'name' => 'required'
+        'name' => 'required',
     ];
 }

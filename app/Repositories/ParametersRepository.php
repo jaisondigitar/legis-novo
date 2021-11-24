@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Parameters;
-use InfyOm\Generator\Common\BaseRepository;
 
-class ParametersRepository extends BaseRepository
+class ParametersRepository extends Repository
 {
     /**
      * @var array
@@ -14,14 +13,8 @@ class ParametersRepository extends BaseRepository
         'name',
         'type',
         'slug',
-        'value'
+        'value',
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Parameters::class;
-    }
+    protected $modelClass = Parameters::class;
 }

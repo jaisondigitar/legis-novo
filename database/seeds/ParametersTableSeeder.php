@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\Parameters;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class ParametersTableSeeder extends Seeder
@@ -49,7 +49,7 @@ class ParametersTableSeeder extends Seeder
             'Mostra votação em documento',
             'Mostra votação em ata',
             'Mostra votação em parecer',
-            'Painel digital permitir multi-sessões'
+            'Painel digital permitir multi-sessões',
         ];
 
         $type = [
@@ -88,7 +88,7 @@ class ParametersTableSeeder extends Seeder
             '1',
             '1',
             '1',
-            '1'
+            '1',
         ];
 
         $value = [
@@ -127,27 +127,24 @@ class ParametersTableSeeder extends Seeder
             '0',
             '0',
             '0',
-            '0'
+            '0',
         ];
 
         //Parameters::truncate();
 
         foreach ($name as $key => $item) {
-
             $data = [
                 'name' => $item,
                 'slug' => Str::slug($item),
                 'type' => $type[$key],
-                'value' => $value[$key]
+                'value' => $value[$key],
             ];
 
-            $param = Parameters::where('slug',$data['slug'])->first();
+            $param = Parameters::where('slug', $data['slug'])->first();
 
-            if(!$param)
-            {
+            if (! $param) {
                 Parameters::create($data);
             }
-
         }
     }
 }

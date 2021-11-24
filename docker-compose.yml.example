@@ -1,12 +1,14 @@
 version: "3"
 
 volumes:
-  mysql-data:
+  db-data:
+    driver: local
   redis-data:
-  dot-config:
-  dot-local:
-  dot-cache:
-  dot-composer:
+    driver: local
+
+networks:
+  legis-network:
+    driver: bridge
 
 services:
   db:
@@ -14,41 +16,54 @@ services:
     container_name: legis-db
     restart: unless-stopped
     volumes:
-      - mysql-data:/var/lib/mysql
+      - db-data:/var/lib/mysql
+      - ./.docker/database/init:/docker-entrypoint-initdb.d
     ports:
-      - 3308:3306
+      - "3307:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=legisblit
+      - MYSQL_ROOT_PASSWORD=legis
       - MYSQL_DATABASE=legis
-      - MYSQL_USER=legis
+      - MYSQL_USER=gen
       - MYSQL_PASSWORD=legis
+    networks:
+      - legis-network
+
   web:
-    image: ambientum/php:7.3-nginx
-    container_name: legis-web
-    restart: unless-stopped
-    environment:
-      - PHP_IDE_CONFIG=legisName=ambientum
+    image: nginx:stable
+    container_name: legis-nginx
     volumes:
-      - .:/var/www/app:cached
-      - dot-config:/home/ambientum/.config
-      - dot-cache:/home/ambientum/.cache
-      - dot-local:/home/ambientum/.local
-      - dot-composer:/home/ambientum/.composer
-    ports:
-      - 8080:8080
-      - 443:8083
-    links:
+      - ./:/var/www/html
+      - ./.docker/nginx/conf.d/legis.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/nginx/logs:/var/log/nginx
+    depends_on:
+      - php
       - db
-      
-  # # Redis.
-  # cache:
-  #   image: redis:4.0-alpine
-  #   container_name: legis-redis
-  #   restart: unless-stopped
-  #   volumes:
-  #     - redis-data:/data
-  #   ports:
-  #     - 6379:6379
+    ports:
+      - "8080:80"
+      - "443:8083"
+    networks:
+      - legis-network
+
+  redis:
+    image: redis
+    container_name: legis-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: legis-php
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "9000:9000"
+    networks:
+      - legis-network
 
   # QUEUE
   # queue:

@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateSessionAPIRequest;
 use App\Http\Requests\API\UpdateSessionAPIRequest;
 use App\Models\Session;
 use App\Repositories\SessionRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class SessionController
- * @package App\Http\Controllers\API
+ * Class SessionController.
  */
-
 class SessionAPIController extends AppBaseController
 {
-    /** @var  SessionRepository */
+    /** @var SessionRepository */
     private $sessionRepository;
 
     public function __construct(SessionRepository $sessionRepo)

@@ -11,7 +11,7 @@
 			<td>{!! $permission->name !!}</td>
 			<td>{!! $permission->readable_name !!}</td>
             <td>
-                @is('root')<a href="{!! route('config.permissions.edit', [$permission->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>@endis
+                @is('root')<a href="{!! route('permissions.edit', [$permission->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>@endis
                 @is('root')<a href="{!! route('config.permissions.delete', [$permission->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"><i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i></a>@endis
             </td>
         </tr>

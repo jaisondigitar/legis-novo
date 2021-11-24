@@ -3,23 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\ProtocolType;
-use InfyOm\Generator\Common\BaseRepository;
 
-class ProtocolTypeRepository extends BaseRepository
+class ProtocolTypeRepository extends Repository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
         'name',
-        'slug'
+        'slug',
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return ProtocolType::class;
-    }
+    protected $modelClass = ProtocolType::class;
 }

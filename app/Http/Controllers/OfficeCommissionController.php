@@ -6,16 +6,17 @@ use App\Http\Requests;
 use App\Http\Requests\CreateOfficeCommissionRequest;
 use App\Http\Requests\UpdateOfficeCommissionRequest;
 use App\Repositories\OfficeCommissionRepository;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class OfficeCommissionController extends AppBaseController
 {
-    /** @var  OfficeCommissionRepository */
+    /** @var OfficeCommissionRepository */
     private $officeCommissionRepository;
 
     public function __construct(OfficeCommissionRepository $officeCommissionRepo)
@@ -31,13 +32,13 @@ class OfficeCommissionController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('officeCommissions.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('officeCommissions.index')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $this->officeCommissionRepository->pushCriteria(new RequestCriteria($request));
-        $officeCommissions = $this->officeCommissionRepository->all();
+        $officeCommissions = $this->officeCommissionRepository->getAll(0);
 
         return view('officeCommissions.index')
             ->with('officeCommissions', $officeCommissions);
@@ -50,10 +51,10 @@ class OfficeCommissionController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('officeCommissions.create'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('officeCommissions.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         return view('officeCommissions.create');
@@ -68,18 +69,18 @@ class OfficeCommissionController extends AppBaseController
      */
     public function store(CreateOfficeCommissionRequest $request)
     {
-       if(!Defender::hasPermission('officeCommissions.create'))
-       {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('officeCommissions.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
-        $input['slug'] = str_slug($input['name']);
+        $input['slug'] = Str::slug($input['name']);
 
         $officeCommission = $this->officeCommissionRepository->create($input);
 
-        Flash::success('Cargo de comissão salvo com sucesso.');
+        flash('Cargo de comissão salvo com sucesso.')->success();
 
         return redirect(route('officeCommissions.index'));
     }
@@ -93,16 +94,16 @@ class OfficeCommissionController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('officeCommissions.show'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('officeCommissions.show')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
+        $officeCommission = $this->officeCommissionRepository->findById($id);
 
         if (empty($officeCommission)) {
-            Flash::error('OfficeCommission not found');
+            flash('OfficeCommission not found')->error();
 
             return redirect(route('officeCommissions.index'));
         }
@@ -119,15 +120,15 @@ class OfficeCommissionController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('officeCommissions.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('officeCommissions.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
-        $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
+        $officeCommission = $this->officeCommissionRepository->findById($id);
 
         if (empty($officeCommission)) {
-            Flash::error('OfficeCommission not found');
+            flash('OfficeCommission not found')->error();
 
             return redirect(route('officeCommissions.index'));
         }
@@ -145,25 +146,25 @@ class OfficeCommissionController extends AppBaseController
      */
     public function update($id, UpdateOfficeCommissionRequest $request)
     {
-        if(!Defender::hasPermission('officeCommissions.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('officeCommissions.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
+        $officeCommission = $this->officeCommissionRepository->findById($id);
 
         if (empty($officeCommission)) {
-            Flash::error('OfficeCommission not found');
+            flash('OfficeCommission not found')->error();
 
             return redirect(route('officeCommissions.index'));
         }
 
-        $request['slug'] = str_slug($request['name']);
+        $request['slug'] = Str::slug($request['name']);
 
-        $officeCommission = $this->officeCommissionRepository->update($request->all(), $id);
+        $officeCommission = $this->officeCommissionRepository->update($officeCommission, $request->all());
 
-        Flash::success('Cargo de comissão editado com sucesso.');
+        flash('Cargo de comissão editado com sucesso.')->success();
 
         return redirect(route('officeCommissions.index'));
     }
@@ -177,28 +178,28 @@ class OfficeCommissionController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('officeCommissions.delete'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('officeCommissions.delete')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $officeCommission = $this->officeCommissionRepository->findWithoutFail($id);
+        $officeCommission = $this->officeCommissionRepository->findById($id);
 
         if (empty($officeCommission)) {
-            Flash::error('OfficeCommission not found');
+            flash('OfficeCommission not found')->error();
 
             return redirect(route('officeCommissions.index'));
         }
 
-        $this->officeCommissionRepository->delete($id);
+        $this->officeCommissionRepository->delete($officeCommission);
 
-        Flash::success('Cargo de comissão excluído com sucesso');
+        flash('Cargo de comissão excluído com sucesso')->success();
 
         return redirect(route('officeCommissions.index'));
     }
 
-    /**
+    /*
     	 * Update status of specified OfficeCommission from storage.
     	 *
     	 * @param  int $id
@@ -210,7 +211,7 @@ class OfficeCommissionController extends AppBaseController
 //            {
 //                return json_encode(false);
 //            }
-//            $register = $this->officeCommissionRepository->findWithoutFail($id);
+//            $register = $this->officeCommissionRepository->findById($id);
 //            $register->active = $register->active>0 ? 0 : 1;
 //            $register->save();
 //            return json_encode(true);

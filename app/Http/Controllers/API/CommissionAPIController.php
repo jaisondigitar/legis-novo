@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateCommissionAPIRequest;
 use App\Http\Requests\API\UpdateCommissionAPIRequest;
 use App\Models\Commission;
 use App\Repositories\CommissionRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class CommissionController
- * @package App\Http\Controllers\API
+ * Class CommissionController.
  */
-
 class CommissionAPIController extends AppBaseController
 {
-    /** @var  CommissionRepository */
+    /** @var CommissionRepository */
     private $commissionRepository;
 
     public function __construct(CommissionRepository $commissionRepo)

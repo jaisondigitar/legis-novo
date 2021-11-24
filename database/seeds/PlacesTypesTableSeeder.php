@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\LawsPlace;
 use App\Models\LawsType;
+use Illuminate\Database\Seeder;
 
 class PlacesTypesTableSeeder extends Seeder
 {
@@ -15,7 +15,7 @@ class PlacesTypesTableSeeder extends Seeder
     {
         $namePlaces = [
             'Diário Oficial',
-            'Internet'
+            'Internet',
         ];
 
         foreach ($namePlaces as $key => $item) {
@@ -33,7 +33,7 @@ class PlacesTypesTableSeeder extends Seeder
             'Lei Ordinária',
             'Lei Orgânica',
             'Regime Interno',
-            'Projeto de Lei'
+            'Projeto de Lei',
         ];
 
         foreach ($nameTypes as $key => $itemType) {

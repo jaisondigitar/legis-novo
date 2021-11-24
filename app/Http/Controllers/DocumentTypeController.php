@@ -7,17 +7,17 @@ use App\Http\Requests\CreateDocumentTypeRequest;
 use App\Http\Requests\UpdateDocumentTypeRequest;
 use App\Models\DocumentType;
 use App\Repositories\DocumentTypeRepository;
-use Illuminate\Http\Request;
+use Artesaos\Defender\Facades\Defender;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class DocumentTypeController extends AppBaseController
 {
-    /** @var  DocumentTypeRepository */
+    /** @var DocumentTypeRepository */
     private $documentTypeRepository;
 
     public function __construct(DocumentTypeRepository $documentTypeRepo)
@@ -33,12 +33,13 @@ class DocumentTypeController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('documentTypes.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('documentTypes.index')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $documentTypes = DocumentType::where('parent_id',0)->get();
+        $documentTypes = DocumentType::where('parent_id', 0)->get();
 
         return view('documentTypes.index')
             ->with('documentTypes', $documentTypes);
@@ -51,10 +52,10 @@ class DocumentTypeController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('documentTypes.create'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('documentTypes.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         return view('documentTypes.create');
@@ -69,18 +70,18 @@ class DocumentTypeController extends AppBaseController
      */
     public function store(CreateDocumentTypeRequest $request)
     {
-       if(!Defender::hasPermission('documentTypes.create'))
-       {
-           Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-           return redirect("/");
-       }
+        if (! Defender::hasPermission('documentTypes.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
         $input = $request->all();
 
         $input['slug'] = Str::slug($request->name);
 
         $documentType = $this->documentTypeRepository->create($input);
 
-        Flash::success('Tipo de documento salvo com sucesso.');
+        flash('Tipo de documento salvo com sucesso.')->success();
 
         return redirect(route('documentTypes.index'));
     }
@@ -94,16 +95,16 @@ class DocumentTypeController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('documentTypes.show'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('documentTypes.show')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $documentType = $this->documentTypeRepository->findWithoutFail($id);
 
         if (empty($documentType)) {
-            Flash::error('DocumentType not found');
+            flash('DocumentType not found')->error();
 
             return redirect(route('documentTypes.index'));
         }
@@ -120,15 +121,15 @@ class DocumentTypeController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('documentTypes.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('documentTypes.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
         $documentType = $this->documentTypeRepository->findWithoutFail($id);
 
         if (empty($documentType)) {
-            Flash::error('DocumentType not found');
+            flash('DocumentType not found')->error();
 
             return redirect(route('documentTypes.index'));
         }
@@ -146,16 +147,16 @@ class DocumentTypeController extends AppBaseController
      */
     public function update($id, UpdateDocumentTypeRequest $request)
     {
-        if(!Defender::hasPermission('documentTypes.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('documentTypes.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $documentType = $this->documentTypeRepository->findWithoutFail($id);
 
         if (empty($documentType)) {
-            Flash::error('DocumentType not found');
+            flash('DocumentType not found')->error();
 
             return redirect(route('documentTypes.index'));
         }
@@ -166,7 +167,7 @@ class DocumentTypeController extends AppBaseController
 
         $documentType = $this->documentTypeRepository->update($input, $id);
 
-        Flash::success('Tipo de documento atualizado com sucesso.');
+        flash('Tipo de documento atualizado com sucesso.')->success();
 
         return redirect(route('documentTypes.index'));
     }
@@ -180,42 +181,43 @@ class DocumentTypeController extends AppBaseController
      */
     public function destroy($id)
     {
-        if(!Defender::hasPermission('documentTypes.delete'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('documentTypes.delete')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $documentType = $this->documentTypeRepository->findWithoutFail($id);
 
         if (empty($documentType)) {
-            Flash::error('DocumentType not found');
+            flash('DocumentType not found')->error();
 
             return redirect(route('documentTypes.index'));
         }
 
         $this->documentTypeRepository->delete($id);
 
-        Flash::success('DocumentType deleted successfully.');
+        flash('DocumentType deleted successfully.')->success();
 
         return redirect(route('documentTypes.index'));
     }
 
     /**
-    	 * Update status of specified DocumentType from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('documentTypes.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->documentTypeRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified DocumentType from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('documentTypes.edit')) {
+            return json_encode(false);
         }
+        $register = $this->documentTypeRepository->findWithoutFail($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
+
+        return json_encode(true);
+    }
 }

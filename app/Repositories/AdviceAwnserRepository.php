@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\AdviceAwnser;
-use InfyOm\Generator\Common\BaseRepository;
 
-class AdviceAwnserRepository extends BaseRepository
+class AdviceAwnserRepository
 {
     /**
      * @var array
@@ -15,11 +14,11 @@ class AdviceAwnserRepository extends BaseRepository
         'commission_id',
         'date',
         'description',
-        'file'
+        'file',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

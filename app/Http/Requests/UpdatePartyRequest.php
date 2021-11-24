@@ -7,7 +7,6 @@ use App\Models\Party;
 
 class UpdatePartyRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

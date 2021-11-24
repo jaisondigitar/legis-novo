@@ -3,22 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\AdvicePublicationDocuments;
-use InfyOm\Generator\Common\BaseRepository;
 
-class AdvicePublicationDocumentsRepository extends BaseRepository
+class AdvicePublicationDocumentsRepository extends Repository
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $fieldSearchable = [
-        
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return AdvicePublicationDocuments::class;
-    }
+    protected $modelClass = AdvicePublicationDocuments::class;
 }

@@ -3,23 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\Responsibility;
-use InfyOm\Generator\Common\BaseRepository;
 
-class ResponsibilityRepository extends BaseRepository
+class ResponsibilityRepository extends Repository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
         'companies_id',
-        'name'
+        'name',
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Responsibility::class;
-    }
+    protected $modelClass = Responsibility::class;
 }

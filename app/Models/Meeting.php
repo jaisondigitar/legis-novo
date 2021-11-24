@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -47,13 +46,9 @@ class Meeting extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'meetings';
-    
 
     protected $dates = ['deleted_at', 'date_start', 'date_end'];
-
 
     public $fillable = [
         'session_type_id',
@@ -61,7 +56,7 @@ class Meeting extends Model
         'date_start',
         'date_end',
         'number',
-        'version_pauta_id'
+        'version_pauta_id',
     ];
 
     /**
@@ -74,16 +69,16 @@ class Meeting extends Model
         'date_end' => 'datetime',
         'session_type_id' => 'integer',
         'session_place_id' => 'integer',
-        'number' => 'string'
+        'number' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     public function session_type()
@@ -91,22 +86,24 @@ class Meeting extends Model
         return $this->belongsTo(SessionType::class, 'session_type_id');
     }
 
-    public function files(){
+    public function files()
+    {
         return $this->hasMany('App\Models\MeetingFiles', 'meeting_id', 'id');
     }
 
-    public function meeting_pauta(){
+    public function meeting_pauta()
+    {
         return $this->hasMany(MeetingPauta::class);
     }
 
     public function laws()
     {
-        return $this->belongsToMany(LawsProject::class,'meeting_pauta','meeting_id','law_id');
+        return $this->belongsToMany(LawsProject::class, 'meeting_pauta', 'meeting_id', 'law_id');
     }
 
     public function documents()
     {
-        return $this->belongsToMany(Document::class,'meeting_pauta','meeting_id','document_id');
+        return $this->belongsToMany(Document::class, 'meeting_pauta', 'meeting_id', 'document_id');
     }
 
     public function session_place()
@@ -136,19 +133,21 @@ class Meeting extends Model
 
     public function scopeByIdDesc($query)
     {
-        return $query->orderBy('id','desc');
+        return $query->orderBy('id', 'desc');
     }
 
     public function scopeByDateDesc($query)
     {
-        return $query->orderBy('date_start','desc');
+        return $query->orderBy('date_start', 'desc');
     }
 
-    public function assemblyman(){
+    public function assemblyman()
+    {
         return $this->belongsToMany(Assemblyman::class, 'meeting_presences', 'meeting_id', 'assemblymen_id');
     }
 
-    public function hasAssemblyman($assemblyman){
+    public function hasAssemblyman($assemblyman)
+    {
         return $assemblyman->meeting()->count();
     }
 
@@ -159,7 +158,7 @@ class Meeting extends Model
 
     public function situation($id, $type)
     {
-        if($type == 'law') {
+        if ($type == 'law') {
             if ($this->voting()->where('law_id', $id)->first()->votes()->sum('yes') > $this->voting()->where('law_id', $id)->first()->votes()->sum('no')) {
                 return true;
             } else {
@@ -167,8 +166,7 @@ class Meeting extends Model
             }
         }
 
-        if($type == 'document')
-        {
+        if ($type == 'document') {
             if ($this->voting()->where('document_id', $id)->first()->votes()->sum('yes') > $this->voting()->where('document_id', $id)->first()->votes()->sum('no')) {
                 return true;
             } else {
@@ -176,9 +174,8 @@ class Meeting extends Model
             }
         }
 
-        if($type == 'ata')
-        {
-            if($this->voting()->where('ata_id', $id)->count() > 0) {
+        if ($type == 'ata') {
+            if ($this->voting()->where('ata_id', $id)->count() > 0) {
                 if ($this->voting()->where('ata_id', $id)->first()->votes()->sum('yes') > $this->voting()->where('ata_id', $id)->first()->votes()->sum('no')) {
                     return true;
                 } else {
@@ -187,9 +184,8 @@ class Meeting extends Model
             }
         }
 
-        if($type == 'advice')
-        {
-            if($this->voting()->where('advice_id', $id)->count() > 0) {
+        if ($type == 'advice') {
+            if ($this->voting()->where('advice_id', $id)->count() > 0) {
                 if ($this->voting()->where('advice_id', $id)->first()->votes()->sum('yes') > $this->voting()->where('advice_id', $id)->first()->votes()->sum('no')) {
                     return true;
                 } else {
@@ -197,7 +193,6 @@ class Meeting extends Model
                 }
             }
         }
-
     }
 
     public function version_pauta()
@@ -217,8 +212,7 @@ class Meeting extends Model
         $ano = $data[2];
 
         $data = $ano.'-'.$mes.'-'.$dia;
+
         return $data;
-
     }
-
 }

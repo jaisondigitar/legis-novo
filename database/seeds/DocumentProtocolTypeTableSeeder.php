@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\ProtocolType;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class DocumentProtocolTypeTableSeeder extends Seeder
@@ -15,12 +15,12 @@ class DocumentProtocolTypeTableSeeder extends Seeder
     {
         $documentProtocolTypes = [
             'Automático',
-            'Externo'
+            'Externo',
         ];
 
         $prefix = [
             'aut',
-            'ext'
+            'ext',
         ];
 
         foreach ($documentProtocolTypes as $key => $documentProtocolType) {

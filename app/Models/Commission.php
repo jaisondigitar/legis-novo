@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -57,19 +56,15 @@ class Commission extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'commissions';
-    
 
     protected $dates = ['deleted_at', 'date_start', 'date_end'];
-
 
     public $fillable = [
         'date_start',
         'date_end',
         'name',
-        'description'
+        'description',
     ];
 
     /**
@@ -81,21 +76,21 @@ class Commission extends Model
         'date_start' => 'date',
         'date_end' => 'date',
         'name' => 'string',
-        'description' => 'string'
+        'description' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     public function scopeActive($query)
     {
-        return $query->whereDate('date_end','>=', date('Y-m-d',time()));
+        return $query->whereDate('date_end', '>=', date('Y-m-d', time()));
     }
 
     public function setDateStartAttribute($date_start)
@@ -118,29 +113,28 @@ class Commission extends Model
         return $this->asDateTime($date_end)->format('d/m/Y');
     }
 
-    public function advices(){
+    public function advices()
+    {
         return $this->hasMany('\App\Models\Advice', 'to_id', 'id');
     }
 
     public function projects()
     {
-        return $this->belongsToMany('\App\Models\LawsProject','advices','to_id','laws_projects_id')->closed();
+        return $this->belongsToMany('\App\Models\LawsProject', 'advices', 'to_id', 'laws_projects_id')->closed();
     }
-
 
     public function documents()
     {
-        return $this->belongsToMany('\App\Models\Document','advices','to_id','document_id');
+        return $this->belongsToMany('\App\Models\Document', 'advices', 'to_id', 'document_id');
     }
 
-    public function awnsers(){
-        return $this->belongsToMany('\App\Models\AdviceAwnser','advices','to_id','advice_id');
+    public function awnsers()
+    {
+        return $this->belongsToMany('\App\Models\AdviceAwnser', 'advices', 'to_id', 'advice_id');
     }
 
     public function scopeClosed($query)
     {
-        return $query->where('closed',1);
+        return $query->where('closed', 1);
     }
-
-
 }

@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -47,17 +46,14 @@ class PartiesAssemblyman extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'parties_assemblymen';
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'party_id',
         'assemblyman_id',
-        'date'
+        'date',
     ];
 
     /**
@@ -68,16 +64,16 @@ class PartiesAssemblyman extends Model
     protected $casts = [
         'party_id' => 'integer',
         'assemblyman_id' => 'integer',
-        'date' => 'date'
+        'date' => 'date',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     public function setDateAttribute($date)
@@ -90,11 +86,13 @@ class PartiesAssemblyman extends Model
         return $this->asDateTime($date)->format('d/m/Y');
     }
 
-    public function party(){
+    public function party()
+    {
         return $this->belongsTo(Party::class, 'party_id');
     }
 
-    public function assemblyman(){
+    public function assemblyman()
+    {
         return $this->belongsTo(Assemblyman::class, 'assemblyman_id');
     }
 }

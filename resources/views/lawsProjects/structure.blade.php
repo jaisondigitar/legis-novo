@@ -9,7 +9,7 @@
         }
     </style>
 <div class="row">
-    @include('core-templates::common.errors')
+    @include('common.errors')
     <div class="container">
         <div class="col-md-12 the-box rounded">
             <h2>{{ $law_project->title }}</h2>

@@ -2,56 +2,120 @@
 
 namespace App\Exceptions;
 
-use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Flash;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of the exception types that should not be reported.
+     * A list of the exception types that are not reported.
      *
      * @var array
      */
-    protected $dontReport = [
-        HttpException::class,
-        ModelNotFoundException::class,
+    protected $dontReport = [];
+
+    /**
+     * A list of the inputs that are never flashed for validation exceptions.
+     *
+     * @var array
+     */
+    protected $dontFlash = [
+        'password',
+        'password_confirmation',
     ];
 
     /**
      * Report or log an exception.
      *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param  \Exception  $e
+     * @param Throwable $e
      * @return void
+     * @throws Throwable
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
-        return parent::report($e);
+        parent::report($e);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param Throwable $e
+     * @return Response
+     * @throws Throwable
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e): Response
     {
-        if ($e instanceof ModelNotFoundException) {
-            Flash::error($e);
-            return redirect()->back();
+        /*$code = 500;
+
+        $result = [
+            'errors' => $e->getMessage(),
+        ];
+
+        if ($e instanceof ConnectionException) {
+            $result = [
+                'errors' => [
+                    'errors' => 'Falha ao realizar requisição',
+                    'message' => $e->getMessage(),
+                ],
+            ];
+
+            return response()->view('common.errors', $result, $e->getCode());
         }
 
-        if ($e instanceof \Bican\Roles\Exceptions\RoleDeniedException) {
-            Flash::error('Ops! Sem permissão.');
-            return redirect()->back();
+        if ($e instanceof ValidationException) {
+            $code = 422;
+
+            $result = [
+                'errors' => [
+                    'errors' => $e->validator->errors()->toArray(),
+                    'message' => "Erro nos dados enviados: {$e->getMessage()}",
+                ],
+            ];
+
+            return response()->view('common.errors', $result, $code);
         }
+
+        if (
+            $e instanceof NotFoundHttpException ||
+            $e instanceof ModelNotFoundException
+        ) {
+            $code = 404;
+
+            $result = [
+                'errors' => 'Recurso não encontrado.',
+            ];
+
+            return response()->view('common.errors', $result, $code);
+        }
+
+        if (
+            $e instanceof UnauthorizedException ||
+            $e instanceof AuthorizationException ||
+            $e instanceof AuthenticationException
+        ) {
+            $code = 401;
+
+            $result = [
+                'errors' => $e->getMessage() ?: 'Sem autorização.',
+            ];
+
+            return response()->view('common.errors', $result, $code);
+        }
+
+        if ($e instanceof QueryException) {
+            $code = 500;
+
+            $result = [
+                'errors' => "Não foi possível completar ação: {$e->getMessage()}",
+            ];
+
+            return response()->view('common.errors', $result, $code);
+        }
+
+        $result['message'] = __($result['message']);*/
 
         return parent::render($request, $e);
     }

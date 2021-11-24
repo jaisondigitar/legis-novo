@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -55,19 +54,15 @@ class Parameters extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'parameters';
-    
 
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'name',
         'type',
         'slug',
-        'value'
+        'value',
     ];
 
     /**
@@ -79,15 +74,15 @@ class Parameters extends Model
         'name' => 'string',
         'type' => 'integer',
         'slug' => 'string',
-        'value' => 'string'
+        'value' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        
+
     ];
 }

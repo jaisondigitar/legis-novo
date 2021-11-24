@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Advice;
-use InfyOm\Generator\Common\BaseRepository;
 
-class AdviceRepository extends BaseRepository
+class AdviceRepository
 {
     /**
      * @var array
@@ -13,11 +12,11 @@ class AdviceRepository extends BaseRepository
     protected $fieldSearchable = [
         'date',
         'type',
-        'to_id'
+        'to_id',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

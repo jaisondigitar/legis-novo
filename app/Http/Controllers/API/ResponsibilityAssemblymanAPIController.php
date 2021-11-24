@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateResponsibilityAssemblymanAPIRequest;
 use App\Http\Requests\API\UpdateResponsibilityAssemblymanAPIRequest;
 use App\Models\ResponsibilityAssemblyman;
 use App\Repositories\ResponsibilityAssemblymanRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class ResponsibilityAssemblymanController
- * @package App\Http\Controllers\API
+ * Class ResponsibilityAssemblymanController.
  */
-
 class ResponsibilityAssemblymanAPIController extends AppBaseController
 {
-    /** @var  ResponsibilityAssemblymanRepository */
+    /** @var ResponsibilityAssemblymanRepository */
     private $responsibilityAssemblymanRepository;
 
     public function __construct(ResponsibilityAssemblymanRepository $responsibilityAssemblymanRepo)

@@ -1,39 +1,28 @@
-<?php namespace App\Libraries\Repositories;
+<?php
+
+namespace App\Libraries\Repositories;
 
 use App\Models\City;
-use Bosnadev\Repositories\Eloquent\Repository;
-use Schema;
+use App\Repositories\Repository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CityRepository extends Repository
 {
+    protected $modelClass = City::class;
 
-    /**
-    * Configure the Model
-    *
-    **/
-    public function model()
-    {
-      return 'App\Models\City';
-    }
-
-	public function search($input)
+    public function search($input)
     {
         $query = City::query();
 
         $columns = Schema::getColumnListing('cities');
-        $attributes = array();
+        $attributes = [];
 
-        foreach($columns as $attribute)
-        {
-            if(isset($input[$attribute]) and !empty($input[$attribute]))
-            {
+        foreach ($columns as $attribute) {
+            if (isset($input[$attribute]) and ! empty($input[$attribute])) {
                 $query->where($attribute, $input[$attribute]);
                 $attributes[$attribute] = $input[$attribute];
-            }
-            else
-            {
-                $attributes[$attribute] =  null;
+            } else {
+                $attributes[$attribute] = null;
             }
         }
 
@@ -44,9 +33,8 @@ class CityRepository extends Repository
     {
         $model = $this->find($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "City not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'City not found');
         }
 
         return $model;
@@ -56,9 +44,8 @@ class CityRepository extends Repository
     {
         $model = $this->find($id);
 
-        if(empty($model))
-        {
-            throw new HttpException(1001, "City not found");
+        if (empty($model)) {
+            throw new HttpException(1001, 'City not found');
         }
 
         return $model->delete();

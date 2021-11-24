@@ -3,22 +3,15 @@
 namespace App\Repositories;
 
 use App\Models\SessionType;
-use InfyOm\Generator\Common\BaseRepository;
 
-class SessionTypeRepository extends BaseRepository
+class SessionTypeRepository extends Repository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name'
+        'name',
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return SessionType::class;
-    }
+    protected $modelClass = SessionType::class;
 }

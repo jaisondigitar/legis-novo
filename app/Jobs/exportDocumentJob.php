@@ -2,11 +2,10 @@
 
 namespace App\Jobs;
 
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class exportDocumentJob extends Job implements SelfHandling, ShouldQueue
+class exportDocumentJob extends Job implements ShouldQueue
 {
     use InteractsWithQueue;
     /**
@@ -28,7 +27,7 @@ class exportDocumentJob extends Job implements SelfHandling, ShouldQueue
      */
     public function handle()
     {
-       foreach ($this->type->documents as $key => $doc){
+        foreach ($this->type->documents as $key => $doc) {
             $job = (new DocumentExportPDF($doc))->onQueue('exportFile');
             dispatch($job);
         }

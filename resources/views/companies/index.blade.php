@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-pills" style="margin-bottom: 10px">
-                    <li><a href="{!! route('config.companies.create') !!}">Novo Registro</a></li>
+                    <li><a href="{!! route('companies.create') !!}">Novo Registro</a></li>
                 </ul>
             </div>
         </div>

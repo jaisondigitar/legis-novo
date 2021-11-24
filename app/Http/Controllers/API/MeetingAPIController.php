@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateMeetingAPIRequest;
 use App\Http\Requests\API\UpdateMeetingAPIRequest;
 use App\Models\Meeting;
 use App\Repositories\MeetingRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class MeetingController
- * @package App\Http\Controllers\API
+ * Class MeetingController.
  */
-
 class MeetingAPIController extends AppBaseController
 {
-    /** @var  MeetingRepository */
+    /** @var MeetingRepository */
     private $meetingRepository;
 
     public function __construct(MeetingRepository $meetingRepo)

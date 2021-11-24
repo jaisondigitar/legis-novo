@@ -20,9 +20,7 @@
             <div class="col-md-12">
                 @include('flash::message')
                 @include('commissions.table')
-                
             </div>
         </div>
-        
     </div>
 @endsection

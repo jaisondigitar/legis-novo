@@ -7,56 +7,56 @@
 
 <!-- Short Name Field -->
 <div class="form-group col-sm-4">
-    {!! Form::label('short_name', 'Nome Parlamentar:') !!}
+    {!! Form::label('short_name', 'Nome Parlamentar:', ['class' => 'required']) !!}
     {!! Form::text('short_name', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Full Name Field -->
 <div class="form-group col-sm-8">
-    {!! Form::label('full_name', 'Nome Completo:') !!}
+    {!! Form::label('full_name', 'Nome Completo:', ['class' => 'required']) !!}
     {!! Form::text('full_name', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Email Field -->
 <div class="form-group col-sm-4">
-    {!! Form::label('email', 'E-mail:') !!}
+    {!! Form::label('email', 'E-mail:', ['class' => 'required']) !!}
     {!! Form::email('email', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Phone1 Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('phone1', 'Celular:') !!}
+    {!! Form::label('phone1', 'Celular:', ['class' => 'required']) !!}
     {!! Form::text('phone1', null, ['class' => 'form-control phone']) !!}
 </div>
 
 <!-- Phone2 Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('phone2', 'Telefone 2:') !!}
+    {!! Form::label('phone2', 'Telefone 2:', ['class' => 'required']) !!}
     {!! Form::text('phone2', null, ['class' => 'form-control phone']) !!}
 </div>
 
 <!-- Official Document Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('official_document', 'CPF:') !!}
+    {!! Form::label('official_document', 'CPF:', ['class' => 'required']) !!}
     {!! Form::text('official_document', null, ['class' => 'form-control cpf']) !!}
 </div>
 
 <!-- General Register Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('general_register', 'RG:') !!}
-    {!! Form::text('general_register', null, ['class' => 'form-control']) !!}
+    {!! Form::label('general_register', 'RG:', ['class' => 'required']) !!}
+    {!! Form::number('general_register', null, ['class' => 'form-control', 'min' => 1000000, 'max' => 999999999]) !!}
 </div>
 <div class="form-group col-sm-12">
     <div class="form-group col-sm-4">
         <h2>Associações</h2><hr>
         <div class="col-sm-12 table-bordered bg-color-showcase" style="padding: 10px 10px; margin-top: 15px">
-            {!! Form::label('legislature_id', 'Legislatura:' , ['class' => 'small-title']) !!}
-            {!! Form::select('legislature_id', $selectLegislature, null, ['class' => 'form-control', 'required']) !!}
+            {!! Form::label('legislature_id', 'Legislatura:', ['class' => 'small-title', 'required']) !!}
+            {!! Form::select('legislature_id', $selectLegislature, null, ['class' => 'form-control']) !!}
         </div>
         <div class="col-sm-12 table-bordered" style="padding: 10px 10px; margin-top: 15px">
             <div class="col-sm-6">
-            {!! Form::label('party_id', 'Partidos:', ['class' => 'small-title']) !!}
-            {!! Form::select('party_id', $parties, null, ['class' => 'form-control', 'required']) !!}
+            {!! Form::label('party_id', 'Partidos:', ['class' => 'small-title', 'required']) !!}
+            {!! Form::select('party_id', $parties, null, ['class' => 'form-control']) !!}
             </div>
             <div class="col-sm-6">
             {!! Form::label('party_date', 'Data:') !!}
@@ -65,8 +65,8 @@
         </div>
         <div class="col-sm-12 table-bordered" style="padding: 10px 10px; margin-top: 15px">
             <div class="col-sm-6">
-                {!! Form::label('responsibility_id', 'Responsabilidade:', ['class' => 'small-title']) !!}
-                {!! Form::select('responsibility_id', $responsibility, null, ['class' => 'form-control', 'required']) !!}
+                {!! Form::label('responsibility_id', 'Responsabilidade:', ['class' => 'small-title', 'required']) !!}
+                {!! Form::select('responsibility_id', $responsibility, null, ['class' => 'form-control']) !!}
             </div>
             <div class="col-sm-6">
                 {!! Form::label('responsibility_date', 'Data:') !!}
@@ -79,7 +79,7 @@
         <div class="form-group col-sm-12">
             <!-- Zipcode Field -->
             <div class="form-group col-sm-2">
-                {!! Form::label('zipcode', 'Código Postal:') !!}
+                {!! Form::label('zipcode', 'Código Postal:', ['class' => 'required']) !!}
                 {!! Form::text('zipcode', null, ['class' => 'form-control cep']) !!}
             </div>
             <!-- Street Field -->
@@ -89,14 +89,14 @@
             </div>
 
             <!-- Number Field -->
-            <div class="form-group col-sm-1">
-                {!! Form::label('number', 'Número:') !!}
+            <div class="form-group col-sm-2">
+                {!! Form::label('number', 'Número:', ['class' => 'required']) !!}
                 {!! Form::text('number', null, ['class' => 'form-control']) !!}
             </div>
 
             <!-- Complement Field -->
-            <div class="form-group col-sm-4">
-                {!! Form::label('complement', 'Complemento:') !!}
+            <div class="form-group col-sm-3">
+                {!! Form::label('complement', 'Complemento:', ['class' => 'required']) !!}
                 {!! Form::text('complement', null, ['class' => 'form-control']) !!}
             </div>
 
@@ -105,16 +105,15 @@
                 {!! Form::label('district', 'Bairro:') !!}
                 {!! Form::text('district', null, ['class' => 'form-control']) !!}
             </div>
-
             <!-- State Id Field -->
             <div class="form-group col-sm-2">
-                {!! Form::label('state_id', 'Estado') !!}
+                {!! Form::label('state_id', 'Estado', ['class' => 'required']) !!}
                 {!! Form::select('state_id', $states, null, ['class' => 'form-control states', 'onChange'=>'getCities(\'state_id\')']) !!}
             </div>
 
             <!-- City Id Field -->
             <div class="form-group col-sm-4">
-                {!! Form::label('city_id', 'Cidade:') !!}
+                {!! Form::label('city_id', 'Cidade:', ['class' => 'required']) !!}
                 {!! Form::select('city_id', $cities, null, ['class' => 'form-control cities']) !!}
             </div>
             <div class="form-group col-sm-4 col-lg-4">
@@ -135,8 +134,6 @@
         </div>
     </div>
 </div>
-
-
 
 <!-- Submit Field -->
 <div class="form-group col-sm-3">

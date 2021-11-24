@@ -11,17 +11,17 @@ use App\Models\AdviceSituation;
 use App\Models\ComissionSituation;
 use App\Models\MeetingPauta;
 use App\Repositories\AdviceRepository;
+use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use Illuminate\Support\Facades\Auth;
-use Artesaos\Defender\Facades\Defender;
 
 class AdviceController extends AppBaseController
 {
-    /** @var  AdviceRepository */
+    /** @var AdviceRepository */
     private $adviceRepository;
 
     public function __construct(AdviceRepository $adviceRepo)
@@ -37,9 +37,10 @@ class AdviceController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if(!Defender::hasPermission('advices.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('advices.index')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $this->adviceRepository->pushCriteria(new RequestCriteria($request));
@@ -56,10 +57,10 @@ class AdviceController extends AppBaseController
      */
     public function create()
     {
-        if(!Defender::hasPermission('advices.create'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('advices.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         return view('$ROUTES_AS_PREFIX$advices.create');
@@ -83,31 +84,30 @@ class AdviceController extends AppBaseController
 
         $flag = 0;
 
-        foreach($input['to_id'] as $key => $val){
+        foreach ($input['to_id'] as $key => $val) {
             $advice = new Advice();
             $advice->date = $input['date'];
             $advice->type = $type[$key];
             $advice->to_id = $to_id[$key];
-            $advice->laws_projects_id = isset($input['laws_projects_id']) ? $input['laws_projects_id'] : 0 ;
+            $advice->laws_projects_id = isset($input['laws_projects_id']) ? $input['laws_projects_id'] : 0;
             $advice->document_id = $input['document_id'];
             $advice->description = $input['description'];
 
-            if($advice->save()){
+            if ($advice->save()) {
                 $situation = ComissionSituation::first();
                 AdviceSituation::create([
                     'advice_id' => $advice->id,
-                    'comission_situation_id' => $situation->id
+                    'comission_situation_id' => $situation->id,
                 ]);
                 $flag = 1;
             }
         }
 
-        if($flag) {
+        if ($flag) {
             return \GuzzleHttp\json_encode(true);
-        }else{
+        } else {
             return json_encode(false);
         }
-
     }
 
     /**
@@ -119,16 +119,16 @@ class AdviceController extends AppBaseController
      */
     public function show($id)
     {
-        if(!Defender::hasPermission('advices.show'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('advices.show')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $advice = $this->adviceRepository->findWithoutFail($id);
 
         if (empty($advice)) {
-            Flash::error('Advice not found');
+            flash('Aconselhamento não encontrado')->error();
 
             return redirect(route('advices.index'));
         }
@@ -145,15 +145,15 @@ class AdviceController extends AppBaseController
      */
     public function edit($id)
     {
-        if(!Defender::hasPermission('advices.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('advices.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
         $advice = $this->adviceRepository->findWithoutFail($id);
 
         if (empty($advice)) {
-            Flash::error('Advice not found');
+            flash('Aconselhamento não encontrado')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
         }
@@ -171,23 +171,23 @@ class AdviceController extends AppBaseController
      */
     public function update($id, UpdateAdviceRequest $request)
     {
-        if(!Defender::hasPermission('advices.edit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('advices.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $advice = $this->adviceRepository->findWithoutFail($id);
 
         if (empty($advice)) {
-            Flash::error('Advice not found');
+            flash('Aconselhamento não encontrado')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
         }
 
         $advice = $this->adviceRepository->update($request->all(), $id);
 
-        Flash::success('Advice updated successfully.');
+        flash('Aconselhamento atualizado com sucesso.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
     }
@@ -199,29 +199,29 @@ class AdviceController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy(Request $request )
+    public function destroy(Request $request)
     {
         $id = $request->id;
 
-        if(Auth::user()->sector->name == 'Secretaria'){
-
+        if (Auth::user()->sector->name == 'Secretaria') {
             $advice = Advice::find($id);
 
             if (empty($advice) || MeetingPauta::where('advice_id', $advice->id)->get()->count > 0) {
                 return json_encode(false);
             }
 
-            if($this->adviceRepository->delete($id)){
+            if ($this->adviceRepository->delete($id)) {
                 AdviceAwnser::where('advice_id', $id)->delete();
+
                 return json_encode($id);
             }
-        }else{
+        } else {
             return json_encode(false);
         }
 
 //        if(!Defender::hasPermission('advices.delete'))
 //        {
-//            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
+//            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
 //            return redirect("/");
 //        }
 
@@ -230,7 +230,7 @@ class AdviceController extends AppBaseController
 //        dd($advice);
 //
 //        if (empty($advice)) {
-////            Flash::error('Advice not found');
+////            flash('Aconselhamento não encontrado')->error(;
 ////
 ////            return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
 //            return json_encode(false);
@@ -241,31 +241,32 @@ class AdviceController extends AppBaseController
 //        }
 //
 //        return json_encode(false);
-//        Flash::success('Advice deleted successfully.');
+//        flash('Aconselhamento removido com sucesso.')->success();
 
 //        return redirect(route('$ROUTES_AS_PREFIX$advices.index'));
     }
 
     /**
-    	 * Update status of specified Advice from storage.
-    	 *
-    	 * @param  int $id
-    	 *
-    	 * @return Json
-    	 */
-    	public function toggle($id){
-            if(!Defender::hasPermission('advices.edit'))
-            {
-                return json_encode(false);
-            }
-            $register = $this->adviceRepository->findWithoutFail($id);
-            $register->active = $register->active>0 ? 0 : 1;
-            $register->save();
-            return json_encode(true);
+     * Update status of specified Advice from storage.
+     *
+     * @param  int $id
+     *
+     * @return Json
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('advices.edit')) {
+            return json_encode(false);
         }
+        $register = $this->adviceRepository->findWithoutFail($id);
+        $register->active = $register->active > 0 ? 0 : 1;
+        $register->save();
 
-    public function findAwnser(Request $request, $id){
+        return json_encode(true);
+    }
 
+    public function findAwnser(Request $request, $id)
+    {
         $obj = Advice::find($id);
         $commissions_situation = ComissionSituation::lists('name', 'id')->prepend('Selecione', 0);
 //        dd($obj->project);
@@ -277,13 +278,12 @@ class AdviceController extends AppBaseController
     {
         $awnser = AdviceAwnser::find($id);
 
-        if(!Defender::hasPermission('lawsProject.advicesDelete'))
-        {
+        if (! Defender::hasPermission('lawsProject.advicesDelete')) {
             return json_encode(false);
         }
 
-        if($awnser){
-            if($awnser->delete()){
+        if ($awnser) {
+            if ($awnser->delete()) {
                 return json_encode($awnser);
             }
         }
@@ -295,30 +295,29 @@ class AdviceController extends AppBaseController
     {
         $id = $request->id;
 
-        if(Auth::user()->sector->id == 1){
-
+        if (Auth::user()->sector->id == 1) {
             $advice = Advice::find($id);
 
             if (empty($advice)) {
                 return json_encode(false);
-            }else{
-                if($advice->awnser->count() == 0 ) {
+            } else {
+                if ($advice->awnser->count() == 0) {
                     $advice->delete();
+
                     return json_encode($id);
-                }else{
+                } else {
                     return json_encode(false);
                 }
             }
-        }else{
+        } else {
             return json_encode(false);
         }
-
     }
 
     public function getAwnser($id)
     {
         $advice_awnsers = AdviceAwnser::find($id);
-        if(!$advice_awnsers){
+        if (! $advice_awnsers) {
             return json_encode(false);
         }
 
@@ -327,58 +326,62 @@ class AdviceController extends AppBaseController
 
     public function awnserUpdate(Request $request)
     {
-        if(!Defender::hasPermission('lawsProject.advicesEdit'))
-        {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        if (! Defender::hasPermission('lawsProject.advicesEdit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-       $input = $request->all();
+        $input = $request->all();
 
-       $awnser = AdviceAwnser::find($input['id']);
+        $awnser = AdviceAwnser::find($input['id']);
 
-       if($awnser){
-           $awnser->date = $input['date'];
-           $awnser->commission_id = $input['situation_awnser'];
-           $awnser->description = $input['description_awnser'];
-           if($awnser->save()){
-               if($request->file('Arquivo')) {
-                   $file = $request['Arquivo'];
-                   $extesion_img = strtolower($file->getClientOriginalExtension());
-                   $image_file = uniqid() . time() . '.' . $extesion_img;
+        if ($awnser) {
+            $awnser->date = $input['date'];
+            $awnser->commission_id = $input['situation_awnser'];
+            $awnser->description = $input['description_awnser'];
+            if ($awnser->save()) {
+                if ($request->file('Arquivo')) {
+                    $file = $request['Arquivo'];
+                    $extesion_img = strtolower($file->getClientOriginalExtension());
+                    $image_file = uniqid().time().'.'.$extesion_img;
 
-                   if($request->file('Arquivo')->move(base_path() . '/public/uploads/advice_awnser/', $image_file)) {
-                       $awnser->file = $image_file;
-                       $awnser->save();
-                   }
-               }
-               Flash::success('Advice updated successfully.');
-               return redirect(route('advices.find', $awnser->advice_id));
-           }else{
-               Flash::error('Advice not save.');
-               return redirect(route('advices.find', $awnser->advice_id));
-           }
-       }else{
-           Flash::error('Advice not found.');
-           return redirect(route('advices.find', $awnser->advice_id));
-       }
+                    if ($request->file('Arquivo')->move(base_path().'/public/uploads/advice_awnser/', $image_file)) {
+                        $awnser->file = $image_file;
+                        $awnser->save();
+                    }
+                }
+                flash('Aconselhamento atualizado com sucesso.')->success();
 
+                return redirect(route('advices.find', $awnser->advice_id));
+            } else {
+                flash('Aconselhamento não salvo.')->error();
+
+                return redirect(route('advices.find', $awnser->advice_id));
+            }
+        } else {
+            flash('Aconselhamento não encontrado.')->error();
+
+            return redirect(route('advices.find', $awnser->advice_id));
+        }
     }
 
     public function removeFile($id)
     {
         $awnser = AdviceAwnser::find($id);
 
-        if($awnser){
-            $file = (base_path() . '/public/uploads/advice_awnser/' . $awnser->file);
+        if ($awnser) {
+            $file = (base_path().'/public/uploads/advice_awnser/'.$awnser->file);
             $awnser->file = null;
-            if($awnser->save()) {
+            if ($awnser->save()) {
                 if (file_exists($file)) {
                     unlink($file);
+
                     return json_encode(true);
                 }
             }
         }
+
         return json_encode(false);
     }
 }

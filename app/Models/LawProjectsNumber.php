@@ -3,20 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\AuditingTrait;
 
 class LawProjectsNumber extends Model
 {
-    use AuditingTrait;
-
     protected $fillable = [
 
         'laws_project_id',
-        'date'
+        'date',
 
     ];
 
-    public function lawProject(){
+    public function lawProject()
+    {
         return $this->belongsTo(LawsProject::class);
     }
 }

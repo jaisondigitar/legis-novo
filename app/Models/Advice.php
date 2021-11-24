@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Commission;
 use Carbon\Carbon;
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Commission;
 
 /**
  * @SWG\Definition(
@@ -47,20 +46,16 @@ class Advice extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'advices';
-    
 
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'date',
         'type',
         'to_id',
         'laws_projects_id',
-        'description'
+        'description',
     ];
 
     /**
@@ -70,18 +65,18 @@ class Advice extends Model
      */
     protected $casts = [
         'type' => 'string',
-        'to_id' => 'integer'
+        'to_id' => 'integer',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
         'type' => 'required',
         'laws_projects_id' => 'required',
-        'to_id' => 'required'
+        'to_id' => 'required',
     ];
 
     public function getDateAttribute($date)
@@ -96,43 +91,40 @@ class Advice extends Model
 
     public function destination()
     {
-        if($this->type=='c') {
-
+        if ($this->type == 'c') {
             return $this->belongsTo(Commission::class, 'to_id');
-
         }
     }
 
     public function situation()
     {
-        if($this->type=='c') {
-
-            return $this->hasMany(AdviceSituation::class,'advice_id');
-
+        if ($this->type == 'c') {
+            return $this->hasMany(AdviceSituation::class, 'advice_id');
         }
     }
 
-    public function commission(){
+    public function commission()
+    {
         return $this->belongsTo('\App\Models\Commission', 'to_id');
     }
 
-    public function project(){
+    public function project()
+    {
         return $this->belongsTo('\App\Models\LawsProject', 'laws_projects_id');
     }
 
-    public function document(){
+    public function document()
+    {
         return $this->belongsTo('\App\Models\Document', 'document_id');
     }
 
-    public function awnser(){
+    public function awnser()
+    {
         return $this->hasMany('\App\Models\AdviceAwnser', 'advice_id', 'id');
     }
-
-
 
     public function voting()
     {
         return $this->hasOne(Voting::class);
     }
-
 }

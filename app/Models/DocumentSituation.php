@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -44,17 +43,13 @@ class DocumentSituation extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'document_situations';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'name',
-        'active'
+        'active',
     ];
 
     /**
@@ -64,19 +59,20 @@ class DocumentSituation extends Model
      */
     protected $casts = [
         'name' => 'string',
-        'active' => 'boolean'
+        'active' => 'boolean',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        'name' => 'required'
+        'name' => 'required',
     ];
 
-    public function processingDocument(){
+    public function processingDocument()
+    {
         return $this->belongsTo(ProcessingDocument::class);
     }
 }

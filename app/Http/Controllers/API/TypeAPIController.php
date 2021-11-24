@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateTypeAPIRequest;
 use App\Http\Requests\API\UpdateTypeAPIRequest;
 use App\Models\Type;
 use App\Repositories\TypeRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class TypeController
- * @package App\Http\Controllers\API
+ * Class TypeController.
  */
-
 class TypeAPIController extends AppBaseController
 {
-    /** @var  TypeRepository */
+    /** @var TypeRepository */
     private $typeRepository;
 
     public function __construct(TypeRepository $typeRepo)

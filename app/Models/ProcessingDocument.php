@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProcessingDocument extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
     protected $dates = ['deleted_at'];
 
     public $table = 'processing_documents';
@@ -22,15 +20,17 @@ class ProcessingDocument extends Model
         'status_processing_document_id',
         'processing_document_date',
         'obsevation',
-        'processing_document_file'
+        'processing_document_file',
     ];
 
-    public function document(){
+    public function document()
+    {
         return $this->belongsTo(Document::class);
     }
 
-    public function documentSituation(){
-        return $this->belongsTo('App\Models\DocumentSituation',  'document_situation_id');
+    public function documentSituation()
+    {
+        return $this->belongsTo('App\Models\DocumentSituation', 'document_situation_id');
     }
 
     public function statusProcessingDocument()
@@ -57,5 +57,4 @@ class ProcessingDocument extends Model
     {
         return $this->belongsTo('App\Models\AdvicePublicationDocuments', 'advice_publication_documents_id');
     }
-
 }

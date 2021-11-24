@@ -8,9 +8,8 @@
     <meta name="keywords" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ Auth::user()->company->shortName }} - MakerLegis</title>
-
-
+    <title>MakerLegis</title>
+    <link rel="shortcut icon" href="/assets/images/genesis.ico" type="image/png"/>
 
     <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -59,15 +58,36 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-<style>
-    .busy * {
-        cursor: wait !important;
-    }
-</style>
     <style>
+        .busy * {
+            cursor: wait !important;
+        }
+        body {
+            position: relative;
+            min-height: 100vh;
+            background: #E8E9EE;
+        }
+
+        .wrapper {
+            height: 100%;
+            padding-bottom: 5rem;
+        }
+
+        footer {
+            position: absolute;
+            height: 5rem;
+            bottom: 0;
+            width: 100%;
+            margin-top: 0;
+            border-top: 0;
+        }
 
         .dropdown-submenu {
             position: relative;
+        }
+
+        .logo-brand img {
+            margin-top: 0;
         }
 
         .dropdown-submenu>.dropdown-menu {
@@ -113,6 +133,11 @@
             -moz-border-radius: 6px 0 6px 6px;
             border-radius: 6px 0 6px 6px;
         }
+        .required:before {
+            content: '*';
+            color: red;
+            padding-right: 3px;
+        }
     </style>
     <script type="application/javascript">
 
@@ -146,11 +171,9 @@
             "hideMethod": "fadeOut"
         };
 
-        var getCities = function(id){
-            var state  = $("#"+id).val();
-
-            var url = "/getcities/"+state;
-
+        const getCities = function(id) {
+            const state  = $("#"+id).val() || id;
+            const url = "/getcities/"+state;
             $.ajax({
                 method: "POST",
                 url: url,
@@ -159,31 +182,48 @@
                     state: state
                 },
                 dataType: "json"
-            }).success(function(result,textStatus,jqXHR) {
-                //success data    = JSON.parse(result);
-                var cities  = $('.cities');
-
+            }).success(function(result) {
+                const cities  = $('.cities');
                 cities.empty();
                 $.each(result, function(i, item) {
-                    var tmp = '<option value="' + item.id + '">' + item.name + '</option>';
+                    const tmp = '<option value="' + item.id + '">' + item.name + '</option>';
                     cities.append(tmp);
                 });
-
             });
-
         }
-    </script>
-    <script>
-        var showMessage = function(data){
+
+        const getPeople = async cpf => {
+            const resp = await fetch(
+                `/people/search-by-cpf?cpf=${cpf}`, {
+                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
+                    method: 'POST',
+                }
+            ).catch(() => new Error(`Não possível obter dados do CPF ${cpf}`))
+            const data = await resp.json()
+            if (data[0]) {
+                document.querySelector('.phone').value = data[0].celular
+                document.querySelector('.name').value = data[0].name
+                document.querySelector('.cep').value = data[0].zipcode
+                document.querySelector('.street').value = data[0].street
+                document.querySelector('.number').value = data[0].number
+                document.querySelector('.district').value = data[0].district
+                document.querySelector('.state').value = data[0].state
+                document.querySelector('.city').value = data[0].city
+                document.querySelector('.complement').index = data[0].complement
+                await getCities(data[0].state_id)
+                document.querySelector('.states').selectedIndex = data[0].state_id-1
+                document.querySelector('.cities').selectedIndex = data[0].city_id
+            }
+        }
+
+        const showMessage = function(data){
             toastr[data.type](data.message,data.title);
         }
-
-
     </script>
 </head>
 
 <body class="tooltips top-navigation">
-  
+
 
 <!--
 ===========================================================
@@ -196,9 +236,16 @@ BEGIN PAGE
         <div class="top-navbar-inner">
 
             <!-- Begin Logo brand -->
-            <div class="logo-brand">
-                <img src="/assets/images/maker_legis3.png" alt="Logo">
-            </div><!-- /.logo-brand -->
+            <a href="/">
+                <div class="logo-brand" style="padding: 5px 0">
+                    <img
+                        src="/assets/images/not-name.png"
+                        alt="Logo"
+                        style="max-width: 100%;
+                        height: 100%;"
+                    >
+                </div><!-- /.logo-brand -->
+            </a>
             <!-- End Logo brand -->
 
             <div class="top-nav-content main-top-nav-layout">
@@ -212,7 +259,7 @@ BEGIN PAGE
                             <strong>{{ Auth::user()->name }}</strong>
                         </a>
                         <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
-                            <li><a href="/auth/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a></li>
+                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -255,7 +302,7 @@ BEGIN PAGE
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/admin">MakerLegis</a>
+                    <a class="navbar-brand" href="/">MakerLegis</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -390,35 +437,38 @@ BEGIN PAGE
     <!-- BEGIN PAGE CONTENT -->
     <div class="page-content no-left-sidebar">
         <div class="container-fluid" >
-            @if (Session::has('flash_notification.message'))
+            @if (Session::has('flash_notification'))
                 <script type="application/javascript">
-                    toastr["{{ Session::get('flash_notification.level') }}"]("{{ Session::get('flash_notification.message') }}");
+                    toastr["{{ Session::get('flash_notification')->first()->level }}"]
+                    ("{{ Session::get('flash_notification')->first()->message }}");
                 </script>
-                <div class="alert alert-{{ Session::get('flash_notification.level') }} alert-bold-border square fade in alert-dismissable">
+                <div class="alert alert-{{ Session::get('flash_notification')->first()->level }} alert-bold-border square fade in alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    {{ Session::get('flash_notification.message') }}
+                    {{ Session::get('flash_notification')->first()->message }}
                 </div>
             @endif
 
             @yield('content')
         </div><!-- /.container-fluid -->
 
-        <!-- BEGIN FOOTER -->
-        <footer>
-            &copy; {{Date('Y')}} <a>MakerLegis</a>. Todos os Direitos Reservados
-        </footer>
-        <!-- END FOOTER -->
+
     </div><!-- /.page-content -->
 </div><!-- /.wrapper -->
 <!-- END PAGE CONTENT -->
 
+<!-- BEGIN FOOTER -->
+<footer>
+    &copy; {{Date('Y')}} <a href="https://www.genesis.tec.br/" target="_blank">
+        Gênesis Tecnologia e Inovação
+    </a>. Todos os Direitos Reservados
+</footer>
+<!-- END FOOTER -->
 
-
-<!-- BEGIN BACK TO TOP BUTTON -->
+{{--<!-- BEGIN BACK TO TOP BUTTON -->
 <div id="back-top">
     <a href="#top"><i class="fa fa-chevron-up"></i></a>
 </div>
-<!-- END BACK TO TOP -->
+<!-- END BACK TO TOP -->--}}
 
 
 

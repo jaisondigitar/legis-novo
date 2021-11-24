@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -34,16 +33,12 @@ class AdvicePublicationLaw extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'advice_publication_laws';
-    
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
-        'name'
+        'name',
     ];
 
     /**
@@ -52,15 +47,15 @@ class AdvicePublicationLaw extends Model
      * @var array
      */
     protected $casts = [
-        'name'=>'string'
+        'name'=>'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     public static $rules = [
-        'name'=>'required'
+        'name'=>'required',
     ];
 }

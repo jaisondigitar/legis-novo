@@ -12,7 +12,7 @@
                 </div>
                 <div class="panel-body">
                     <ul class="nav nav-pills" style="margin-bottom: 10px">
-                        <li><a href="{!! route('config.companies.edit', [$company->id]) !!}">Editar Registro</a></li>
+                        <li><a href="{!! route('companies.edit', [$company->id]) !!}">Editar Registro</a></li>
                     </ul>
                     @include('companies.show_fields')
                 </div>

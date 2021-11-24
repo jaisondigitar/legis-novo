@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use App\Models\Processing;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class ProcessingController extends Controller
 {
@@ -41,8 +40,9 @@ class ProcessingController extends Controller
         $input = $request->all();
         $processing = Processing::create($request->all());
 
-        if($processing){
+        if ($processing) {
             $processing = Processing::where('law_projects_id', $input['law_projects_id'])->orderBy('processing_date', 'desc')->with('AdviceSituationLaw')->with('AdvicePublicationLaw')->with('StatusProcessingLaw')->get();
+
             return json_encode($processing);
         }
 
@@ -91,11 +91,11 @@ class ProcessingController extends Controller
      */
     public function destroy($id)
     {
-
         $processing = Processing::find($id);
 
-        if($processing){
+        if ($processing) {
             $processing->delete();
+
             return json_encode($id);
         }
 

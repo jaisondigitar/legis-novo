@@ -1,262 +1,272 @@
-<?php namespace App\Http\Controllers;
+<?php
 
-use App\Http\Requests;
+namespace App\Http\Controllers;
+
 use App\Http\Requests\CreateCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Libraries\Repositories\CompanyRepository;
+use App\Models\City;
 use App\Models\Company;
 use App\Models\Parameters;
 use App\Models\State;
+use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
-use Flash;
-use Illuminate\Support\Facades\Request;
-use Intervention\Image\Facades\Image;
-use Response;
-use App\Models\City;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
+use Intervention\Image\Facades\Image;
+use Throwable;
 
 class CompanyController extends AppBaseController
 {
+    /** @var CompanyRepository */
+    private $companyRepository;
 
-	/** @var  CompanyRepository */
-	private $companyRepository;
+    /**
+     * @var StorageService
+     */
+    private static $uploadService;
 
-	function __construct(CompanyRepository $companyRepo)
-	{
-		$this->companyRepository = $companyRepo;
-	}
+    public function __construct(CompanyRepository $companyRepo)
+    {
+        $this->companyRepository = $companyRepo;
 
-	/**
-	 * Display a listing of the Company.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		if(!Defender::hasPermission('companies.index')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        static::$uploadService = new StorageService();
+    }
+
+    /**
+     * Display a listing of the Company.
+     *
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
+     */
+    public function index()
+    {
+        if (! Defender::hasPermission('companies.index')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $companies = $this->companyRepository->paginate(10);
+        $companies = $this->companyRepository->newQuery()->paginate(10);
+
         return view('companies.index')
             ->with('companies', $companies);
-	}
+    }
 
-	/**
-	 * Show the form for creating a new Company.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-        if(!Defender::hasPermission('companies.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+    /**
+     * Show the form for creating a new Company.
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     */
+    public function create()
+    {
+        if (! Defender::hasPermission('companies.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
         $states = $this->statesList();
-        $cities = City::where('state', '=', $states[1])->lists('name', 'id');
+        $cities = City::where('state', '=', $states[1])->pluck('name', 'id');
+
         return view('companies.create', compact('states', 'cities'));
-	}
+    }
 
-	/**
-	 * Store a newly created Company in storage.
-	 *
-	 * @param CreateCompanyRequest $request
-	 *
-	 * @return Response
-	 */
-	public function store(CreateCompanyRequest $request)
-	{
+    /**
+     * Store a newly created Company in storage.
+     *
+     * @param CreateCompanyRequest $request
+     *
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException
+     * @throws Throwable
+     */
+    public function store(CreateCompanyRequest $request)
+    {
+        if (! Defender::hasPermission('companies.create')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-        if(!Defender::hasPermission('companies.create')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+            return redirect('/');
         }
 
         $input = $request->all();
-		$company = $this->companyRepository->create($input);
+        $company = $this->companyRepository->create($input);
 
-        if($request->file('image')) {
+        $image = $request->file('image');
 
-            $image = $request['image'];
-            $extesion_img = strtolower($image->getClientOriginalExtension());
+        if ($image) {
+            $filename = static::$uploadService
+                ->inCompanyFolder()
+                ->sendFile($image)
+                ->send();
 
-            $image_file = uniqid() . time() . '.' . $extesion_img;
-
-            $request->file('image')->move(
-                base_path() . '/public/uploads/company/', $image_file
-            );
-            $company->image = $image_file;
+            $company->image = $filename;
             $company->save();
-
-            Image::make(sprintf(base_path() . '/public/uploads/company/%s', $image_file))
-                ->resize(null, 150, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save();
         }
 
-		Flash::success('Registro salvo com sucesso!');
-		return redirect(route('config.companies.index'));
-	}
+        flash('Registro salvo com sucesso!')->success();
 
-	/**
-	 * Display the specified Company.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function show($id)
-	{
-        if(!Defender::hasPermission('companies.show')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+        return redirect(route('companies.index'));
+    }
+
+    /**
+     * Display the specified Company.
+     *
+     * @param int $id
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
+     */
+    public function show($id)
+    {
+        if (! Defender::hasPermission('companies.show')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
         }
 
-        $company = $this->companyRepository->find($id);
+        $company = $this->companyRepository->findByID($id);
 
         $parameters = Parameters::all();
 
-		if(empty($company))
-		{
-			Flash::error('Registro não existe.');
+        if (empty($company)) {
+            flash('Registro não existe.')->error();
 
-			return redirect(route('config.companies.index'));
-		}
-
-		return view('companies.show')->with('company', $company)->with('parameters', $parameters);
-	}
-
-	/**
-	 * Show the form for editing the specified Company.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-        if(!Defender::hasPermission('companies.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+            return redirect(route('companies.index'));
         }
 
-        $company = $this->companyRepository->find($id);
+        return view('companies.show')->with('company', $company)->with('parameters', $parameters);
+    }
+
+    /**
+     * Show the form for editing the specified Company.
+     *
+     * @param int $id
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @throws BindingResolutionException
+     */
+    public function edit(int $id)
+    {
+        if (! Defender::hasPermission('companies.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
+
+        $company = $this->companyRepository->findByID($id);
         $states = $this->statesList();
         $state = State::find($company->state);
-        $cities = City::where('state', '=', $state->uf)->lists('name', 'id');
-		if(empty($company))
-		{
-			Flash::error('Registro não existe.');
+        $cities = City::where('state', '=', $state->uf)->pluck('name', 'id');
+        if (empty($company)) {
+            flash('Registro não existe.')->error();
 
-			return redirect(route('config.companies.index'));
-		}
-
-		return view('companies.edit',compact('states','cities'))->with('company', $company);
-	}
-
-	/**
-	 * Update the specified Company in storage.
-	 *
-	 * @param  int              $id
-	 * @param UpdateCompanyRequest $request
-	 *
-	 * @return Response
-	 */
-	public function update($id, UpdateCompanyRequest $request)
-	{
-        if(!Defender::hasPermission('companies.edit')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
+            return redirect(route('companies.index'));
         }
 
-        $company = $this->companyRepository->find($id);
+        return view('companies.edit', compact('states', 'cities'))->with('company', $company);
+    }
 
-		if(empty($company))
-		{
-			Flash::error('Registro não existe.');
+    /**
+     * Update the specified Company in storage.
+     *
+     * @param int $id
+     * @param UpdateCompanyRequest $request
+     * @return Application|Redirector|RedirectResponse
+     * @throws BindingResolutionException|Throwable
+     */
+    public function update(int $id, UpdateCompanyRequest $request)
+    {
+        if (! Defender::hasPermission('companies.edit')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-			return redirect(route('config.companies.index'));
-		}
+            return redirect('/');
+        }
 
-		$company = $this->companyRepository->updateRich($request->all(), $id);
+        $company = $this->companyRepository->findByID($id);
+
+        if (empty($company)) {
+            flash('Registro não existe.')->error();
+
+            return redirect(route('companies.index'));
+        }
+
+        $this->companyRepository->update($company, $request->all());
 
         $company = Company::find($id);
 
-        if($request->file('image')) {
+        $image = $request->file('image');
 
-            $image = $request['image'];
-            $extesion_img = strtolower($image->getClientOriginalExtension());
+        if ($image) {
+            $filename = static::$uploadService
+                ->inCompanyFolder()
+                ->sendFile($image)
+                ->send();
 
-            $image_file = uniqid() . time() . '.' . $extesion_img;
-
-            $request->file('image')->move(
-                base_path() . '/public/uploads/company/', $image_file
-            );
-            $company->image = $image_file;
+            $company->image = $filename;
             $company->save();
-
-            Image::make(sprintf(base_path() . '/public/uploads/company/%s', $image_file))
-                ->resize(null, 150, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save();
         }
 
+        flash('Registro editado com sucesso!')->success();
 
-		Flash::success('Registro editado com sucesso!');
-
-		return redirect(route('config.companies.index'));
-	}
-
-	/**
-	 * Remove the specified Company from storage.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-        if(!Defender::hasPermission('companies.delete')) {
-            Flash::warning('Ops! Desculpe, você não possui permissão para esta ação.');
-            return redirect("/");
-        }
-
-        $company = $this->companyRepository->find($id);
-
-		if(empty($company))
-		{
-			Flash::error('Registro não existe.');
-
-			return redirect(route('config.companies.index'));
-		}
-
-		$this->companyRepository->delete($id);
-
-		Flash::success('Registro deletado com sucesso!');
-
-		return redirect(route('config.companies.index'));
-	}
+        return redirect(route('companies.index'));
+    }
 
     /**
-	 * Update status of specified Company from storage.
-	 *
-	 * @param  int $id
-	 *
-	 * @return Json
-	 */
-	public function toggle($id)
+     * Remove the specified Company from storage.
+     *
+     * @param int $id
+     *
+     * @return Application|Redirector|RedirectResponse
+     * @throws Exception
+     */
+    public function destroy($id)
     {
-        if (!Defender::hasPermission('companies.edit')) {
+        if (! Defender::hasPermission('companies.delete')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/');
+        }
+
+        $company = $this->companyRepository->findByID($id);
+
+        if (empty($company)) {
+            flash('Registro não existe.')->error();
+
+            return redirect(route('config.companies.index'));
+        }
+
+        $this->companyRepository->delete($company);
+
+        flash('Registro deletado com sucesso!')->success();
+
+        return redirect(route('companies.index'));
+    }
+
+    /**
+     * Update status of specified Company from storage.
+     *
+     * @param int $id
+     * @throws BindingResolutionException
+     */
+    public function toggle($id)
+    {
+        if (! Defender::hasPermission('companies.edit')) {
             return json_encode(false);
         }
 
-        $register = $this->companyRepository->find($id);
+        $register = $this->companyRepository->findByID($id);
         $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 
@@ -265,7 +275,7 @@ class CompanyController extends AppBaseController
         $company = Company::find($id);
         $company->image = null;
 
-        if($company->save()){
+        if ($company->save()) {
             return 'true';
         } else {
             return 'false';
@@ -277,33 +287,33 @@ class CompanyController extends AppBaseController
         $parameter = Parameters::find($id);
         $parameter->value = $value;
 
-        if($parameter->save()){
+        if ($parameter->save()) {
             return 'true';
         } else {
             return 'false';
         }
     }
 
-    public function setStagePanel( \Illuminate\Http\Request $request)
+    public function setStagePanel(Request $request)
     {
         $input = $request->all();
         $company = Company::find(Auth::user()->company->id);
         $company->stage = $input['stage'];
-        if($company->save())
+        if ($company->save()) {
             return json_encode(true);
+        }
 
         return json_encode(false);
-
     }
 
     public function getStagePanel()
     {
         $company = Company::find(Auth::user()->company->id);
 
-        if($company)
+        if ($company) {
             return json_encode($company);
+        }
 
         return json_encode(false);
     }
-
 }

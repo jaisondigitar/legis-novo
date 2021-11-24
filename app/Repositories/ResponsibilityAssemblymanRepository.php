@@ -3,19 +3,18 @@
 namespace App\Repositories;
 
 use App\Models\ResponsibilityAssemblyman;
-use InfyOm\Generator\Common\BaseRepository;
 
-class ResponsibilityAssemblymanRepository extends BaseRepository
+class ResponsibilityAssemblymanRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        
+
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

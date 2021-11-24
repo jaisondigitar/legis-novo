@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreatePartiesAssemblymanAPIRequest;
 use App\Http\Requests\API\UpdatePartiesAssemblymanAPIRequest;
 use App\Models\PartiesAssemblyman;
 use App\Repositories\PartiesAssemblymanRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use InfyOm\Generator\Utils\ResponseUtil;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class PartiesAssemblymanController
- * @package App\Http\Controllers\API
+ * Class PartiesAssemblymanController.
  */
-
 class PartiesAssemblymanAPIController extends AppBaseController
 {
-    /** @var  PartiesAssemblymanRepository */
+    /** @var PartiesAssemblymanRepository */
     private $partiesAssemblymanRepository;
 
     public function __construct(PartiesAssemblymanRepository $partiesAssemblymanRepo)

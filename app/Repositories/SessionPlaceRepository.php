@@ -3,19 +3,18 @@
 namespace App\Repositories;
 
 use App\Models\SessionPlace;
-use InfyOm\Generator\Common\BaseRepository;
 
-class SessionPlaceRepository extends BaseRepository
+class SessionPlaceRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name'
+        'name',
     ];
 
     /**
-     * Configure the Model
+     * Configure the Model.
      **/
     public function model()
     {

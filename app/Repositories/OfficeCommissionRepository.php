@@ -3,23 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\OfficeCommission;
-use InfyOm\Generator\Common\BaseRepository;
 
-class OfficeCommissionRepository extends BaseRepository
+class OfficeCommissionRepository extends Repository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
         'name',
-        'slug'
+        'slug',
     ];
 
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return OfficeCommission::class;
-    }
+    protected $modelClass = OfficeCommission::class;
 }

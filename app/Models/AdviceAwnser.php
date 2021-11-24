@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Eloquent as Model;
-use OwenIt\Auditing\AuditingTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -63,20 +62,16 @@ class AdviceAwnser extends Model
 {
     use SoftDeletes;
 
-    use AuditingTrait;
-
     public $table = 'advice_awnsers';
-    
 
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'advice_id',
         'commission_id',
         'date',
         'description',
-        'file'
+        'file',
     ];
 
     /**
@@ -89,11 +84,11 @@ class AdviceAwnser extends Model
         'commission_id' => 'integer',
         'date' => 'date',
         'description' => 'string',
-        'file' => 'string'
+        'file' => 'string',
     ];
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
@@ -101,10 +96,11 @@ class AdviceAwnser extends Model
         'advice_id' => 'required',
         'commission_id' => 'required',
         'date' => 'required',
-        'description' => 'required'
+        'description' => 'required',
     ];
 
-    public function commission_situation(){
+    public function commission_situation()
+    {
         return $this->belongsTo('\App\Models\ComissionSituation', 'commission_id');
     }
 
