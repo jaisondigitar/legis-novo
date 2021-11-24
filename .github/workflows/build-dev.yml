@@ -1,4 +1,4 @@
-name: Build and dependencies
+name: Dev build and dependencies
 
 on:
   push:
@@ -6,9 +6,7 @@ on:
 
 jobs:
   composer-dependencies:
-
     runs-on: self-hosted
-
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
@@ -22,28 +20,23 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
 
   build-dependencies:
-
     runs-on: self-hosted
-
     strategy:
       matrix:
         node-version: [ 12.x ]
-
     steps:
       - uses: actions/checkout@v2
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
-
+          node-version: ${{ matrix.node-version }
       - name: Build
         run: |
           npm install
+
   deploy:
-
+    needs: composer-dependencies
     runs-on: self-hosted
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
