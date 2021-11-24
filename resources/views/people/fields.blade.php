@@ -27,7 +27,7 @@
 
         <!-- Phone2 Field -->
         <div class="form-group col-sm-6">
-            {!! Form::label('telephone', 'Telefone 2:') !!}
+            {!! Form::label('telephone', 'Telefone:') !!}
             {!! Form::text('telephone', null, ['class' => 'form-control phone']) !!}
         </div>
 

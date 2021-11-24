@@ -8,8 +8,6 @@ class Attendance extends Model
 {
     public $table = 'attendance';
 
-    protected $dates = ['deleted_at'];
-
     public $fillable = [
         'date',
         'time',
@@ -33,11 +31,11 @@ class Attendance extends Model
 
     public function people()
     {
-        return $this->hasOne('App\Models\People', 'id', 'people_id');
+        return $this->hasOne('People::class', 'id', 'people_id');
     }
 
     public function type()
     {
-        return $this->hasOne('App\Models\TypesOfAttendance', 'id', 'type_id');
+        return $this->hasOne('TypesOfAttendance::class', 'id', 'type_id');
     }
 }

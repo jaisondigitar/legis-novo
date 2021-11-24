@@ -164,7 +164,7 @@ Route::middleware([
 
         Route::resource('attendance', 'AttendanceController');
 
-        Route::resource('typesOfAttendance', 'TypesOfAttendanceController');
+        Route::resource('types-of-attendance', 'TypesOfAttendanceController');
 
         Route::resource('profiles', 'ProfileController');
         Route::get('/profiles/{id}/toggle', 'ProfileController@toggle');

@@ -11,8 +11,6 @@ class People extends Model
 
     public $table = 'people';
 
-    protected $dates = ['deleted_at'];
-
     public $fillable = [
         'name',
         'cpf',

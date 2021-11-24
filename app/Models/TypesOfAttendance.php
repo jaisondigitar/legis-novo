@@ -11,4 +11,8 @@ class TypesOfAttendance extends Model
     protected $fillable = [
         'name',
     ];
+
+    public static $rules = [
+        'name' => 'required',
+    ];
 }
