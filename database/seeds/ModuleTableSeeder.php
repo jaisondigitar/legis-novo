@@ -17,5 +17,6 @@ class ModuleTableSeeder extends Seeder
         \App\Models\Module::firstOrCreate(['name' => 'Comissoes', 'active'=>'1']);
         \App\Models\Module::firstOrCreate(['name' => 'Sessoes', 'active'=>'1']);
         \App\Models\Module::firstOrCreate(['name' => 'Leis', 'active'=>'1']);
+        \App\Models\Module::firstOrCreate(['name' => 'Attendance', 'active'=>'1']);
     }
 }

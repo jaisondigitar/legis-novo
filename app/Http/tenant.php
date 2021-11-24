@@ -157,6 +157,52 @@ Route::middleware([
         Route::resource('parties', 'PartyController');
         Route::resource('responsibilities', 'ResponsibilityController');
 
+
+        Route::resource('people', 'PeopleController');
+
+        Route::post('people/search-by-cpf', 'PeopleController@searchByCpf');
+
+        Route::resource('attendance', 'AttendanceController');
+
+        Route::resource('types-of-attendance', 'TypesOfAttendanceController', [
+            'names' => [
+                'index' => 'typesOfAttendance.index',
+                'create' => 'typesOfAttendance.create',
+                'show' => 'typesOfAttendance.show',
+                'edit' => 'typesOfAttendance.edit',
+                'store' => 'typesOfAttendance.store',
+                'destroy' => 'typesOfAttendance.destroy',
+                'update' => 'typesOfAttendance.update',
+            ],
+        ]);
+
+        Route::resource('profiles', 'ProfileController');
+        Route::get('/profiles/{id}/toggle', 'ProfileController@toggle');
+        Route::get('profiles/{id}/delete', [
+            'as' => 'profiles.delete',
+            'uses' => 'ProfileController@destroy',
+        ]);
+
+        Route::resource('users', 'UserController');
+        Route::get('/users/{id}/toggle', 'UserController@toggle');
+        Route::get('/users/{id}/auditing', 'UserController@auditing');
+        Route::get('users/{id}/delete', [
+            'as' => 'users.delete',
+            'uses' => 'UserController@destroy',
+        ]);
+
+        Route::post('/advice/create', 'AdviceController@store');
+        Route::post('/advice/delete', 'AdviceController@removerAdvice');
+
+        Route::get('/advice/findAwnser/{id?}', 'AdviceController@findAwnser')->name('advices.find');
+        Route::post('/advice/findAwnser/{id?}/delete', 'AdviceController@deleteAwnser');
+        Route::get('/advice/findAwnser/{id}/getAwnser', 'AdviceController@getAwnser');
+        Route::post('/advice/awnserUpdate', 'AdviceController@awnserUpdate');
+        Route::get('/advice/awnser/{id}/removeFile', 'AdviceController@removeFile');
+
+        Route::resource('comissionSituations', 'ComissionSituationController');
+        Route::get('/comissionSituations/{id}/toggle', 'ComissionSituationController@toggle');
+
         Route::get('assemblymen/listLegislatures/{assemblyman_id}', ['as' => 'legislatures.listlegislatures', 'uses' => 'AssemblymanController@listLegislatures']);
         Route::get('assemblymen/listParties/{assemblyman_id}', ['as' => 'legislatures.listparties', 'uses' => 'AssemblymanController@listParties']);
         Route::get('assemblymen/listResponsibilities/{assemblyman_id}', ['as' => 'legislatures.listresponsibilities', 'uses' => 'AssemblymanController@listResponsibilities']);

@@ -564,3 +564,69 @@ Breadcrumbs::for('advicePublicationLaws.show', function ($breadcrumbs) {
     $breadcrumbs->parent('advicePublicationLaws.list');
     $breadcrumbs->push('publicação de parecer da lei', null);
 });
+
+/*
+ * ATTENDANCE
+ */
+
+Breadcrumbs::for('attendance.list', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Cadastro', null);
+    $breadcrumbs->push('Atendimento', '/attendance');
+});
+Breadcrumbs::for('attendance.new', function ($breadcrumbs) {
+    $breadcrumbs->parent('attendance.list');
+    $breadcrumbs->push('Novo Atendimento', '/attendance/create');
+});
+Breadcrumbs::for('attendance.edit', function ($breadcrumbs) {
+    $breadcrumbs->parent('attendance.list');
+    $breadcrumbs->push('Editar Atendimento', null);
+});
+Breadcrumbs::for('attendance.show', function ($breadcrumbs) {
+    $breadcrumbs->parent('attendance.list');
+    $breadcrumbs->push('Atendimento', null);
+});
+
+/*
+ * PEOPLE
+ */
+
+Breadcrumbs::for('people.list', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Cadastro', null);
+    $breadcrumbs->push('Pessoa', '/people');
+});
+Breadcrumbs::for('people.new', function ($breadcrumbs) {
+    $breadcrumbs->parent('people.list');
+    $breadcrumbs->push('Novo Pessoa', '/people/create');
+});
+Breadcrumbs::for('people.edit', function ($breadcrumbs) {
+    $breadcrumbs->parent('people.list');
+    $breadcrumbs->push('Editar Pessoa', null);
+});
+Breadcrumbs::for('people.show', function ($breadcrumbs) {
+    $breadcrumbs->parent('people.list');
+    $breadcrumbs->push('Pessoa', null);
+});
+
+/*
+ * PEOPLE
+ */
+
+Breadcrumbs::for('typesOfAttendance.list', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Cadastro', null);
+    $breadcrumbs->push('Tipo de Atendimento', '/types-of-attendance');
+});
+Breadcrumbs::for('typesOfAttendance.new', function ($breadcrumbs) {
+    $breadcrumbs->parent('typesOfAttendance.list');
+    $breadcrumbs->push('Novo Tipo de Atendimento', '/types-of-attendance/create');
+});
+Breadcrumbs::for('typesOfAttendance.edit', function ($breadcrumbs) {
+    $breadcrumbs->parent('typesOfAttendance.list');
+    $breadcrumbs->push('Editar Tipo de Atendimento', null);
+});
+Breadcrumbs::for('typesOfAttendance.show', function ($breadcrumbs) {
+    $breadcrumbs->parent('typesOfAttendance.list');
+    $breadcrumbs->push('Tipo de Atendimento', null);
+});

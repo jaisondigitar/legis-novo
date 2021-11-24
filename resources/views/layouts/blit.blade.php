@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MakerLegis</title>
-    <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
+    <link rel="shortcut icon" href="/assets/images/genesis.ico" type="image/png"/>
 
     <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -58,12 +58,10 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-<style>
-    .busy * {
-        cursor: wait !important;
-    }
-</style>
     <style>
+        .busy * {
+            cursor: wait !important;
+        }
         body {
             position: relative;
             min-height: 100vh;
@@ -173,11 +171,9 @@
             "hideMethod": "fadeOut"
         };
 
-        var getCities = function(id){
-            var state  = $("#"+id).val();
-
-            var url = "/getcities/"+state;
-
+        const getCities = function(id) {
+            const state  = $("#"+id).val() || id;
+            const url = "/getcities/"+state;
             $.ajax({
                 method: "POST",
                 url: url,
@@ -186,26 +182,43 @@
                     state: state
                 },
                 dataType: "json"
-            }).success(function(result,textStatus,jqXHR) {
-                //success data    = JSON.parse(result);
-                var cities  = $('.cities');
-
+            }).success(function(result) {
+                const cities  = $('.cities');
                 cities.empty();
                 $.each(result, function(i, item) {
-                    var tmp = '<option value="' + item.id + '">' + item.name + '</option>';
+                    const tmp = '<option value="' + item.id + '">' + item.name + '</option>';
                     cities.append(tmp);
                 });
-
             });
-
         }
-    </script>
-    <script>
-        var showMessage = function(data){
+
+        const getPeople = async cpf => {
+            const resp = await fetch(
+                `/people/search-by-cpf?cpf=${cpf}`, {
+                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
+                    method: 'POST',
+                }
+            ).catch(() => new Error(`Não possível obter dados do CPF ${cpf}`))
+            const data = await resp.json()
+            if (data[0]) {
+                document.querySelector('.phone').value = data[0].celular
+                document.querySelector('.name').value = data[0].name
+                document.querySelector('.cep').value = data[0].zipcode
+                document.querySelector('.street').value = data[0].street
+                document.querySelector('.number').value = data[0].number
+                document.querySelector('.district').value = data[0].district
+                document.querySelector('.state').value = data[0].state
+                document.querySelector('.city').value = data[0].city
+                document.querySelector('.complement').index = data[0].complement
+                await getCities(data[0].state_id)
+                document.querySelector('.states').selectedIndex = data[0].state_id-1
+                document.querySelector('.cities').selectedIndex = data[0].city_id
+            }
+        }
+
+        const showMessage = function(data){
             toastr[data.type](data.message,data.title);
         }
-
-
     </script>
 </head>
 
