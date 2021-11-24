@@ -2,16 +2,19 @@
 
 namespace App\Services;
 
-use App\Contracts\UploadInterface;
-use Illuminate\Http\UploadedFile;
+use App\Contracts\StorageInterface;
+use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Throwable;
 
-class UploadService implements UploadInterface
+class StorageService implements StorageInterface
 {
     protected static $disk = 'digitalocean';
 
     protected static $file = null;
+
+    protected static $ext = null;
 
     private $folder;
 
@@ -30,7 +33,7 @@ class UploadService implements UploadInterface
      */
     public function inCompanyFolder(): self
     {
-        $this->folder = 'assemblyman';
+        $this->folder = 'company';
 
         return $this;
     }
@@ -40,7 +43,7 @@ class UploadService implements UploadInterface
      */
     public function inDocumentsFolder(): self
     {
-        $this->folder = 'assemblyman';
+        $this->folder = 'documents';
 
         return $this;
     }
@@ -50,7 +53,7 @@ class UploadService implements UploadInterface
      */
     public function inLawProjectsFolder(): self
     {
-        $this->folder = 'assemblyman';
+        $this->folder = 'law-projects';
 
         return $this;
     }
@@ -79,7 +82,7 @@ class UploadService implements UploadInterface
 
     /**
      * @param $file
-     * @return UploadService
+     * @return StorageService
      */
     public function sendFile($file): self
     {
@@ -89,20 +92,29 @@ class UploadService implements UploadInterface
     }
 
     /**
-     * @param string $folder
-     * @param null $file
-     * @return bool
+     * @return string
+     * @throws Throwable
      */
-    public function send(string $folder = '', $file = null): bool
+    public function send(): string
     {
-        $folder = $this->folder ?? $folder;
-        $file = static::$file ?? $file;
+        static::$ext = static::$file->getClientOriginalExtension();
 
-        $file = UploadedFile::createFromBase($file);
-        $ext = $file->getClientOriginalExtension();
-        $filename = Str::random();
+        $filename = Str::random(32).'.'.static::$ext;
 
-        return Storage::disk(self::$disk)
-            ->put("{$folder}/{$filename}", $file);
+        $resp = Storage::disk(self::$disk)
+            ->putFileAs($this->folder, static::$file, $filename, 'public');
+
+        throw_if(! $resp, new Exception('Falha ao salvar arquivo'));
+
+        return $filename;
+    }
+
+    /**
+     * @param string $filename
+     * @return string
+     */
+    public function get(string $filename): string
+    {
+        return Storage::disk(self::$disk)->url("{$this->folder}/{$filename}");
     }
 }

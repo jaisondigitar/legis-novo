@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-interface UploadInterface
+interface StorageInterface
 {
     public function inAssemblymanFolder();
 
@@ -18,5 +18,7 @@ interface UploadInterface
 
     public function sendFile($file);
 
-    public function send(string $folder = '', $file = null);
+    public function send();
+
+    public function get(string $filename);
 }

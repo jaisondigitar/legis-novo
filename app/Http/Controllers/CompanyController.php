@@ -9,7 +9,7 @@ use App\Models\City;
 use App\Models\Company;
 use App\Models\Parameters;
 use App\Models\State;
-use App\Services\UploadService;
+use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Intervention\Image\Facades\Image;
+use Throwable;
 
 class CompanyController extends AppBaseController
 {
@@ -29,7 +30,7 @@ class CompanyController extends AppBaseController
     private $companyRepository;
 
     /**
-     * @var UploadService
+     * @var StorageService
      */
     private static $uploadService;
 
@@ -37,7 +38,7 @@ class CompanyController extends AppBaseController
     {
         $this->companyRepository = $companyRepo;
 
-        static::$uploadService = new UploadService();
+        static::$uploadService = new StorageService();
     }
 
     /**
@@ -86,6 +87,7 @@ class CompanyController extends AppBaseController
      *
      * @return Application|Redirector|RedirectResponse
      * @throws BindingResolutionException
+     * @throws Throwable
      */
     public function store(CreateCompanyRequest $request)
     {
@@ -98,23 +100,16 @@ class CompanyController extends AppBaseController
         $input = $request->all();
         $company = $this->companyRepository->create($input);
 
-        if ($request->file('image')) {
-            $image = $request['image'];
-            $extesion_img = strtolower($image->getClientOriginalExtension());
+        $image = $request->file('image');
 
-            $image_file = uniqid().time().'.'.$extesion_img;
+        if ($image) {
+            $filename = static::$uploadService
+                ->inCompanyFolder()
+                ->sendFile($image)
+                ->send();
 
-            $request->file('image')->move(
-                base_path().'/public/uploads/company/',
-                $image_file
-            );
-            $company->image = $image_file;
+            $company->image = $filename;
             $company->save();
-
-            Image::make(sprintf(base_path().'/public/uploads/company/%s', $image_file))
-                ->resize(null, 150, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save();
         }
 
         flash('Registro salvo com sucesso!')->success();
@@ -159,7 +154,7 @@ class CompanyController extends AppBaseController
      * @return Application|Factory|Redirector|RedirectResponse|View
      * @throws BindingResolutionException
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if (! Defender::hasPermission('companies.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -185,9 +180,8 @@ class CompanyController extends AppBaseController
      *
      * @param int $id
      * @param UpdateCompanyRequest $request
-     *
      * @return Application|Redirector|RedirectResponse
-     * @throws BindingResolutionException
+     * @throws BindingResolutionException|Throwable
      */
     public function update(int $id, UpdateCompanyRequest $request)
     {
@@ -212,30 +206,13 @@ class CompanyController extends AppBaseController
         $image = $request->file('image');
 
         if ($image) {
-//            Storage::disk('digitalocean')->put('assemblyman', $image);
-
-            $file_path = static::$uploadService
+            $filename = static::$uploadService
                 ->inCompanyFolder()
                 ->sendFile($image)
                 ->send();
 
-            /*$image = $request['image'];
-            $extension_img = strtolower($image->getClientOriginalExtension());
-
-            $image_file = uniqid().time().'.'.$extension_img;
-
-            $request->file('image')->move(
-                base_path().'/public/uploads/company/',
-                $image_file
-            );*/
-
-            $company->image = $file_path;
+            $company->image = $filename;
             $company->save();
-
-            /*Image::make(sprintf(base_path().'/public/uploads/company/%s', $image_file))
-                ->resize(null, 150, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save();*/
         }
 
         flash('Registro editado com sucesso!')->success();
