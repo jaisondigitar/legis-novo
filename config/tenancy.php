@@ -18,7 +18,8 @@ return [
      */
     'central_domains' => [
         'legis.genesis.tec.br',
-        'dev.legis.genesis.tec.br',
+        'local.legis.genesis.tec.br',
+        'homolog.legis.genesis.tec.br',
         '127.0.0.1',
         '172.17.0.1',
         'localhost',
