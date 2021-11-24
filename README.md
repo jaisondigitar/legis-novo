@@ -47,34 +47,31 @@ docker-compose down -v
 ./dartisan migrate
 ```
 
-8. Execute para entrar no Tinker CLI:
+8. Abrir o Postman:
+
+9. Criar uma request **post** para o endpoint **/api/tenant**. Podem ser utilizados somente os dominios que estão listados no **config/tenancy** dentro do seu projeto, por exemplo:
 ```shell
-./dartisan tinker
+'central_domains' => [
+    'legis.genesis.tec.br',
+    'dev.legis.genesis.tec.br',
+    '127.0.0.1',
+    '172.17.0.1',
+    'localhost',
+],
 ```
 
-9. Para criar um banco e migra-lo. Definir um nome dejesado para o cliente:
-```shell
-$tenant1 = App\Models\Tenant::create(['id' => '< Nome Cliente >']);
-```
+10. Após isso, vá em **Auth** da **Request** criada e siga os segintes passos:
+    1. Escolha como tipo da autorização **Api Key**
+    2. Em **Key** escreva: **X-Authorization**
+    3. Volte no **.env** e copie o **LEGIS_KEY**. Obs.: Caso não exista crie uma.
+    4. Retorne ao **Postman** e cole no **Value**
+    
+Agora voltamos ao **Postman** vamos ter uma aplicação parecida com isso `localhost:8080/api/tenant`. Obs.: É importante ter o /api/tenant.
 
-10. Para criar um dominio. Definir um nome dejesado para o dominio:
+14. Agora vamos ao **body** da request e colocaremos um json parecido com esse:
 ```shell
-$tenant1->domains()->create(['domain' => '< Nome Dominio >']);
+{
+    "name" : "< nome da tenant >"
+}
 ```
-
-11. Para sair do Tinker CLI:
-```shell
-exit
-```
-
-12. Para rodar a seed:
-
-**Para rodar em todas os tenants**
-```shell
-./dartisan tenants:seed
-```
-
-**Para rodar em um tenent especifico**
-```shell
-./dartisan tenants:seed --tenants= < nome tenant >
-```
+15. Essa execução pode demorar um pouco pois estará criando o banco e executando as seeds.
