@@ -164,7 +164,17 @@ Route::middleware([
 
         Route::resource('attendance', 'AttendanceController');
 
-        Route::resource('types-of-attendance', 'TypesOfAttendanceController');
+        Route::resource('types-of-attendance', 'TypesOfAttendanceController', [
+            'names' => [
+                'index' => 'typesOfAttendance.index',
+                'create' => 'typesOfAttendance.create',
+                'show' => 'typesOfAttendance.show',
+                'edit' => 'typesOfAttendance.edit',
+                'store' => 'typesOfAttendance.store',
+                'destroy' => 'typesOfAttendance.destroy',
+                'update' => 'typesOfAttendance.update',
+            ],
+        ]);
 
         Route::resource('profiles', 'ProfileController');
         Route::get('/profiles/{id}/toggle', 'ProfileController@toggle');

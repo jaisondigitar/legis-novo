@@ -616,11 +616,11 @@ Breadcrumbs::for('people.show', function ($breadcrumbs) {
 Breadcrumbs::for('typesOfAttendance.list', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Cadastro', null);
-    $breadcrumbs->push('Tipo de Atendimento', '/typesOfAttendance');
+    $breadcrumbs->push('Tipo de Atendimento', '/types-of-attendance');
 });
 Breadcrumbs::for('typesOfAttendance.new', function ($breadcrumbs) {
     $breadcrumbs->parent('typesOfAttendance.list');
-    $breadcrumbs->push('Novo Tipo de Atendimento', '/typesOfAttendance/create');
+    $breadcrumbs->push('Novo Tipo de Atendimento', '/types-of-attendance/create');
 });
 Breadcrumbs::for('typesOfAttendance.edit', function ($breadcrumbs) {
     $breadcrumbs->parent('typesOfAttendance.list');
