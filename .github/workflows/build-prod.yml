@@ -1,8 +1,8 @@
-name: Dev build and dependencies
+name: Prod build and dependencies
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ master ]
 
 jobs:
   composer-dependencies:
