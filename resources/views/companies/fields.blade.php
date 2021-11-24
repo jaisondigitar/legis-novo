@@ -4,7 +4,10 @@
 <div class="form-group col-sm-6 col-lg-4">
     @if(isset($company) && !empty($company->image))
         <div class="logo-inst">
-            <img src="{{ url('uploads/company/'. $company->image) }}">
+            <img
+                src="{{ (new \App\Services\StorageService())->inCompanyFolder()->get($company->image) }}"
+                height="150"
+            >
             <div style="width: 100px;padding: 5px;font-family: monospace;">
                 <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
             </div>
@@ -106,7 +109,7 @@
 
 <script>
     function removeImage() {
-        var id = '{{ $company ?? '' }}';
+        var id = '{{ $company ? $company->id : '' }}';
         var r = confirm("Deseja remover a imagem?");
         if (r == true) {
             $.ajax({
