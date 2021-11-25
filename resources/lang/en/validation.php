@@ -203,7 +203,7 @@ return [
         'order' => 'Ordem',
         'text_initial' => 'Texto Inicial',
 
-        'roles' => 'Grupo de Permissões',
+        'roles' => 'Permissões',
 
         'sector_id' => 'Setor',
         'password' => 'Senha',
