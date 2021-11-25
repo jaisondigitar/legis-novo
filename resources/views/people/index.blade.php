@@ -9,9 +9,11 @@
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group">
                         @shield('people.create')
-                        <a href="{!! route('people.create') !!}">
-                            <button type="button" class="btn btn-default"><i class="fa fa-plus-circle"></i> Novo registro</button>
-                        </a>
+                            <a href="{!! route('people.create') !!}">
+                                <button type="button" class="btn btn-default">
+                                    <i class="fa fa-plus-circle"></i> Novo registro
+                                </button>
+                            </a>
                         @endshield
                     </div>
                 </div>
@@ -21,7 +23,11 @@
         <div class="row">
             <div class="col-md-12">
                 @include('flash::message')
-                @include('people.table')
+                @if($people->isEmpty())
+                    <div class="well text-center">Sem dados. Insira um novo registro.</div>
+                @else
+                    @include('people.table')
+                @endif
             </div>
         </div>
     </div>

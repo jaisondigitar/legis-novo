@@ -19,6 +19,5 @@
             </div>
         </div>
         @include('common.paginate', ['records' => $profiles])
-
     </div>
 @endsection

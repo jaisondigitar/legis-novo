@@ -8,9 +8,13 @@
             <div class="col-md-12">
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group">
-                        @shield('roles.create')<a href="{!! route('roles.create') !!}">
-                            <button type="button" class="btn btn-default"><i class="fa fa-plus-circle"></i> Novo registro</button>
-                        </a>@endshield
+                        @shield('roles.create')
+                            <a href="{!! route('roles.create') !!}">
+                                <button type="button" class="btn btn-default">
+                                    <i class="fa fa-plus-circle"></i> Novo registro
+                                </button>
+                            </a>
+                        @endshield
                     </div>
                 </div>
             </div>
