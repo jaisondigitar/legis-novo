@@ -101,7 +101,7 @@ class DocumentTypeController extends AppBaseController
             return redirect('/');
         }
 
-        $documentType = $this->documentTypeRepository->findWithoutFail($id);
+        $documentType = $this->documentTypeRepository->findById($id);
 
         if (empty($documentType)) {
             flash('DocumentType not found')->error();
@@ -126,7 +126,7 @@ class DocumentTypeController extends AppBaseController
 
             return redirect('/');
         }
-        $documentType = $this->documentTypeRepository->findWithoutFail($id);
+        $documentType = $this->documentTypeRepository->findById($id);
 
         if (empty($documentType)) {
             flash('DocumentType not found')->error();
@@ -153,7 +153,7 @@ class DocumentTypeController extends AppBaseController
             return redirect('/');
         }
 
-        $documentType = $this->documentTypeRepository->findWithoutFail($id);
+        $documentType = $this->documentTypeRepository->findById($id);
 
         if (empty($documentType)) {
             flash('DocumentType not found')->error();
@@ -165,7 +165,7 @@ class DocumentTypeController extends AppBaseController
 
         $input['slug'] = Str::slug($request->name);
 
-        $documentType = $this->documentTypeRepository->update($input, $id);
+        $documentType = $this->documentTypeRepository->update($documentType, $input);
 
         flash('Tipo de documento atualizado com sucesso.')->success();
 
@@ -187,7 +187,7 @@ class DocumentTypeController extends AppBaseController
             return redirect('/');
         }
 
-        $documentType = $this->documentTypeRepository->findWithoutFail($id);
+        $documentType = $this->documentTypeRepository->findById($id);
 
         if (empty($documentType)) {
             flash('DocumentType not found')->error();
@@ -195,7 +195,7 @@ class DocumentTypeController extends AppBaseController
             return redirect(route('documentTypes.index'));
         }
 
-        $this->documentTypeRepository->delete($id);
+        $this->documentTypeRepository->delete($documentType, $id);
 
         flash('DocumentType deleted successfully.')->success();
 
@@ -214,7 +214,7 @@ class DocumentTypeController extends AppBaseController
         if (! Defender::hasPermission('documentTypes.edit')) {
             return json_encode(false);
         }
-        $register = $this->documentTypeRepository->findWithoutFail($id);
+        $register = $this->documentTypeRepository->findById($id);
         $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
 

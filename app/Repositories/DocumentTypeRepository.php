@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\DocumentType;
 
-class DocumentTypeRepository
+class DocumentTypeRepository extends Repository
 {
     /**
      * @var array
@@ -15,11 +15,5 @@ class DocumentTypeRepository
         'slug',
     ];
 
-    /**
-     * Configure the Model.
-     **/
-    public function model()
-    {
-        return DocumentType::class;
-    }
+    protected $modelClass = DocumentType::class;
 }
