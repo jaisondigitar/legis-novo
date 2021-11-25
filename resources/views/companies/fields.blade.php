@@ -109,15 +109,15 @@
 
 <script>
     function removeImage() {
-        var id = '{{ $company ? $company->id : '' }}';
-        var r = confirm("Deseja remover a imagem?");
-        if (r == true) {
+        const id = '{{ $company->id ?? '' }}';
+        const r = confirm("Deseja remover a imagem?");
+        if (r === true) {
             $.ajax({
                 url: "{{ url('config/companies/removeImage') }}/" + id,
                 type: 'GET',
                 dataType: 'json'
             }).done(function (result) {
-                if(result == true) {
+                if(result === true) {
                     location.reload();
                 } else {
                     alert('Tente Novamente1')
