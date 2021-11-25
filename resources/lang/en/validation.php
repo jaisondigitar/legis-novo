@@ -200,6 +200,9 @@ return [
         'people_id' => 'Dados Pessoais',
         'time' => 'Hora',
 
+        'order' => 'Ordem',
+        'text_initial' => 'Texto Inicial',
+
         'sector_id' => 'Setor',
         'password' => 'Senha',
     ],
