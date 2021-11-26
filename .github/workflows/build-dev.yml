@@ -35,7 +35,7 @@ jobs:
           npm install
 
   deploy:
-    needs: composer-dependencies
+#    needs: composer-dependencies
     runs-on: self-hosted
     steps:
       - name: Checkout
