@@ -73,6 +73,7 @@ class Responsibility extends Model
     public static $rules = [
         'companies_id' => 'required',
         'name' => 'required',
+        'order' => 'required',
     ];
 
     public function company()

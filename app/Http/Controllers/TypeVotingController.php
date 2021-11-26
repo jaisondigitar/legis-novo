@@ -7,10 +7,9 @@ use App\Http\Requests\TypeVotingRequest;
 use App\Models\Meeting;
 use App\Models\TypeVoting;
 use Artesaos\Defender\Facades\Defender;
-use Flash;
 use Illuminate\Http\Request;
 
-class TypeVotingController extends Controller
+class TypeVotingController extends AppBaseController
 {
     /**
      * Display a listing of the resource.

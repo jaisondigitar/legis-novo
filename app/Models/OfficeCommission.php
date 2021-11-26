@@ -68,6 +68,6 @@ class OfficeCommission extends Model
      * @var array
      */
     public static $rules = [
-
+        'name' => 'required',
     ];
 }
