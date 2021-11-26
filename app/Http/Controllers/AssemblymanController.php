@@ -14,6 +14,7 @@ use App\Models\Responsibility;
 use App\Models\ResponsibilityAssemblyman;
 use App\Models\State;
 use App\Repositories\AssemblymanRepository;
+use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -31,9 +32,13 @@ class AssemblymanController extends AppBaseController
     /** @var AssemblymanRepository */
     private $assemblymanRepository;
 
+    private static $uploadService;
+
     public function __construct(AssemblymanRepository $assemblymanRepo)
     {
         $this->assemblymanRepository = $assemblymanRepo;
+
+        static::$uploadService = new StorageService();
     }
 
     /**
@@ -140,21 +145,16 @@ class AssemblymanController extends AppBaseController
 
         $assemblyman = $this->assemblymanRepository->create($input);
 
-        if (is_file($request->file('image'))) {
-            $path = '/uploads/assemblyman/';
-            $pathFull = base_path().'/public'.$path;
-            $this->checkPath($pathFull);
+        $image = $request->file('image');
 
-            $name = time().'.'.$request->file('image')->getClientOriginalExtension();
-            $image = Image::make($request->file('image'));
-            $image->resize(400, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+        if ($image) {
+            $filename = static::$uploadService
+                ->inAssemblymanFolder()
+                ->sendFile($image)
+                ->send();
 
-            if ($image->save($pathFull.$name)) {
-                $assemblyman->image = $path.$name;
-                $assemblyman->save();
-            }
+            $assemblyman->image = $filename;
+            $assemblyman->save();
         }
         if (! empty($input['legislature_id'])) {
             $legislature_assemblyman = new LegislatureAssemblyman();
@@ -296,21 +296,16 @@ class AssemblymanController extends AppBaseController
 
         $params = \Illuminate\Support\Facades\Request::all();
 
-        if (is_file($request->file('image'))) {
-            $path = '/uploads/assemblyman/';
-            $pathFull = base_path().'/public'.$path;
-            $this->checkPath($pathFull);
+        $image = $request->file('image');
 
-            $name = time().'.'.$request->file('image')->getClientOriginalExtension();
-            $image = Image::make($request->file('image'));
-            $image->resize(400, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+        if ($image) {
+            $filename = static::$uploadService
+                ->inAssemblymanFolder()
+                ->sendFile($image)
+                ->send();
 
-            if ($image->save($pathFull.$name)) {
-                $assemblyman->image = $path.$name;
-                $assemblyman->save();
-            }
+            $assemblyman->image = $filename;
+            $assemblyman->save();
         }
 
         if (! empty($params['legislature_id'])) {
@@ -390,16 +385,14 @@ class AssemblymanController extends AppBaseController
 
     public function delimage($id)
     {
-        $path = '/uploads/assemblyman/';
-        $register = Assemblyman::find($id);
-        if (unlink(base_path().'/public'.$register->image)) {
+        if ($register = Assemblyman::find($id)) {
             $register->image = null;
             $register->save();
 
             return json_encode(true);
-        } else {
-            return json_encode(false);
         }
+
+        return json_encode(false);
     }
 
     public function listLegislatures($assemblyman_id)

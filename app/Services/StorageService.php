@@ -59,6 +59,16 @@ class StorageService implements StorageInterface
     }
 
     /**
+     * @return $this
+     */
+    public function inPeopleFolder(): self
+    {
+        $this->folder = 'people';
+
+        return $this;
+    }
+
+    /**
      * @param string $folder
      * @return $this
      */
