@@ -7,7 +7,6 @@
         <div class="row">
             <div class="col-md-12">
                 <form method="GET">
-
                     <div class="form-group col-md-2">
                         {!! Form::label('user_id', 'Usuário:') !!}
                         {!! Form::select('user_id', App\Models\User::where('company_id',
@@ -30,14 +29,18 @@
                     </div>
 
                     <div class="clearfix"></div>
+
                     <div class="form-group col-md-10">
-                        <button class="btn btn-block btn-primary"><i class="fa fa-search"></i> Pesquisar</button>
+                        <button class="btn btn-block btn-primary">
+                            <i class="fa fa-search"></i> Pesquisar
+                        </button>
                     </div>
                     <div class="form-group col-md-2">
-                        <a href="/logs" class="btn btn-block btn-warning"> <i class="fa fa-recycle"></i> Reset </a>
+                        <a href="/logs" class="btn btn-block btn-warning">
+                            <i class="fa fa-recycle"></i> Reset
+                        </a>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -49,10 +52,12 @@
         <div class="row">
             <div class="col-md-12">
                 @include('flash::message')
-                @include('logs.table')
-                
+                @if($logs->isEmpty())
+                    <div class="well text-center">Sem dados. Insira um novo registro.</div>
+                @else
+                    @include('logs.table')
+                @endif
             </div>
         </div>
-        
     </div>
 @endsection
