@@ -29,13 +29,13 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }
+          node-version: ${{ matrix.node-version }}
       - name: Build
         run: |
           npm install
 
   deploy:
-#    needs: composer-dependencies
+    needs: composer-dependencies
     runs-on: self-hosted
     steps:
       - name: Checkout
