@@ -44,7 +44,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Deployment
         run: |
-          cd /var/www/html/legis
           git pull
           php artisan migrate
           php artisan tenants:migrate
