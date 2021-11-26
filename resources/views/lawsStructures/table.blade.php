@@ -1,14 +1,14 @@
 <table class="table table-responsive" id="lawsStructures-table">
     <thead>
-        <th width="40px">Prefix</th>
         <th>Name</th>
+        <th>Prefix</th>
         <th colspan="3">Manutenção</th>
     </thead>
     <tbody>
     @foreach($lawsStructures as $lawsStructure)
         <tr>
-            <td>{!! $lawsStructure->prefix !!}</td>
             <td>{!! $lawsStructure->name !!}</td>
+            <td>{!! $lawsStructure->prefix !!}</td>
             <td>
                 {!! Form::open(['route' => ['lawsStructures.destroy', $lawsStructure->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>

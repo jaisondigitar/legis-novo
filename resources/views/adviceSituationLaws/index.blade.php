@@ -19,10 +19,12 @@
         <div class="row">
             <div class="col-md-12">
                 @include('flash::message')
-                @include('adviceSituationLaws.table')
-
+                @if($adviceSituationLaws->isEmpty())
+                    <div class="well text-center">Sem dados. Insira um novo registro.</div>
+                @else
+                    @include('adviceSituationLaws.table')
+                @endif
             </div>
         </div>
-
     </div>
 @endsection

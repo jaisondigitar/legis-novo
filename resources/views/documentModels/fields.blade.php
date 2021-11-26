@@ -1,12 +1,12 @@
 <!-- Document Type Id Field -->
 <div class="form-group col-sm-3">
-    {!! Form::label('document_type_id', 'Tipo de Documento') !!}
+    {!! Form::label('document_type_id', 'Tipo de Documento' , ['class' => 'required']) !!}
     {!! Form::select('document_type_id', $document_type, null, ['class' => 'form-control', 'required']) !!}
 </div>
 
 <!-- Name Field -->
 <div class="form-group col-sm-9">
-    {!! Form::label('name', 'Nome:') !!}
+    {!! Form::label('name', 'Nome:' , ['class' => 'required']) !!}
     {!! Form::text('name', null, ['class' => 'form-control', 'required']) !!}
 </div>
 
@@ -35,13 +35,13 @@
 </div>
 <!-- Content Field -->
 <div class="form-group col-sm-12 col-md-9">
-    {!! Form::label('content', 'Estrutura:') !!}
+    {!! Form::label('content', 'Conteúdo:' , ['class' => 'required']) !!}
     {!! Form::textarea('content', null, ['class' => 'form-control ckeditor']) !!}
 </div>
 
 <!-- Content Field -->
 <div class="form-group col-sm-12 col-md-9 pull-right">
-    {!! Form::label('text_initial', 'Texto Inicial:') !!}
+    {!! Form::label('text_initial', 'Texto Inicial:' , ['class' => 'required']) !!}
     {!! Form::textarea('text_initial', null, ['class' => 'form-control ckeditor']) !!}
 </div>
 
