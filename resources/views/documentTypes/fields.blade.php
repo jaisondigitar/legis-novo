@@ -1,7 +1,7 @@
 <!-- Name Field -->
 <div class="form-group col-sm-2">
     {!! Form::label('parent_id', 'Filho de:') !!}
-    {!! Form::select('parent_id', \App\Models\DocumentType::where('parent_id',0)->lists('name','id')->prepend('Selecione...', 0),null, ['class' => 'form-control']) !!}
+    {!! Form::select('parent_id', \App\Models\DocumentType::where('parent_id',0)->pluck('name','id')->prepend('Selecione...', 0),null, ['class' => 'form-control']) !!}
 </div>
 <!-- Name Field -->
 <div class="form-group col-sm-6">

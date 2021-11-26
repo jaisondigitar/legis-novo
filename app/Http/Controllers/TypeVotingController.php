@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
+use App\Http\Requests\TypeVotingRequest;
 use App\Models\Meeting;
 use App\Models\TypeVoting;
 use Artesaos\Defender\Facades\Defender;
@@ -52,13 +52,14 @@ class TypeVotingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TypeVotingRequest $request)
     {
         if (! Defender::hasPermission('typeVotings.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
             return redirect('/');
         }
+
         $input = $request->all();
         $input['anonymous'] = isset($input['anonymous']) ? 1 : 0;
         $input['active'] = isset($input['active']) ? 1 : 0;
@@ -126,7 +127,7 @@ class TypeVotingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TypeVotingRequest $request, $id)
     {
         if (! Defender::hasPermission('typeVotings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
