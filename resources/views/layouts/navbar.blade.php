@@ -415,11 +415,9 @@
                     </li>
                 @endshield
                 @shield('typesOfAttendance.index')
-                    <li>
-                        <a href="{{url('/types-of-attendance', $parameters = [], $secure = null)}}">
-                            Tipo de Atendimento
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{url('/types-of-attendance', $parameters = [], $secure = null)}}">Tipo de Atendimento</a>
+                </li>
                 @endshield
             </ul>
         </li>

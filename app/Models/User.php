@@ -28,6 +28,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'email',
         'password',
         'active',
+        'roles',
     ];
 
     /**
@@ -50,6 +51,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'name' => 'required',
         'email' => 'exists:users,email',
         'password' => 'required',
+        'roles' => 'required',
     ];
 
     protected $hidden = ['password', 'remember_token', 'created_at', 'updated_at', 'deleted_at'];

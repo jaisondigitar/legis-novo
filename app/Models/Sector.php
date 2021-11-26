@@ -68,7 +68,7 @@ class Sector extends Model
      * @var array
      */
     public static $rules = [
-
+        'nome' => 'required',
     ];
 
     public function user()
