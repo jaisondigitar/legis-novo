@@ -117,15 +117,23 @@
                 {!! Form::select('city_id', $cities, null, ['class' => 'form-control cities']) !!}
             </div>
             <div class="form-group col-sm-4 col-lg-4">
-                @if(isset($assemblyman) && is_file(base_path()."/public".$assemblyman->image))
+                @if(isset($assemblyman) && !empty($assemblyman->image))
                     <div class="logo-inst">
-                        <img src="{{ $assemblyman->image }}" class="img-thumbnail img-rounded">
+                        <img
+                            src="{{ (new \App\Services\StorageService())->inAssemblymanFolder()->get($assemblyman->image) }}"
+                            class="img-thumbnail img-rounded"
+                        >
                         <div style="width: 100px;padding: 5px;font-family: monospace;">
                             <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
                         </div>
                     </div>
                 @endif
-                <div class="upload" @if(isset($assemblyman) && is_file(base_path()."/public".$assemblyman->image)) style="display: none;" @endif >
+                <div
+                    class="upload"
+                    @if(isset($assemblyman) && !empty($assemblyman->image))
+                        style="display: none;"
+                    @endif
+                >
                     <i class="fa fa-image"></i>
                     {!! Form::label('image', " Foto:") !!}
                     {!! Form::file('image', ['class' => 'form-control']) !!}
@@ -140,15 +148,16 @@
     {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
     <a href="{!! route('assemblymen.index') !!}" class="btn btn-default">Cancelar</a>
 </div>
-@if(isset($assemblyman) && is_file(base_path()."/public".$assemblyman->image))
+
+@if(isset($assemblyman) && !empty($assemblyman->image))
     <script>
-        var removeImage = function(){
-            var url = '/assemblymen/{{ $assemblyman->id }}/delimage';
+        const removeImage = function(){
+            const url = '/assemblymen/{{ $assemblyman->id }}/delimage';
             $.ajax({
                 method: "GET",
                 url: url,
                 dataType: "json"
-            }).success(function(result,textStatus,jqXHR) {
+            }).success(function(result) {
                 if(result){
                     $(".logo-inst").fadeOut(300,function(){
                         $(".upload").fadeIn(300);

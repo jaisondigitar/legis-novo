@@ -26,6 +26,7 @@ use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
 use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
+use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
 use Exception;
@@ -40,12 +41,15 @@ use Illuminate\View\View;
 
 class LawsProjectController extends AppBaseController
 {
+    private static $uploadService;
     /** @var  LawsProjectRepository */
     private $lawsProjectRepository;
 
     public function __construct(LawsProjectRepository $lawsProjectRepo)
     {
         $this->lawsProjectRepository = $lawsProjectRepo;
+
+        static::$uploadService = new StorageService();
     }
 
     public function getAssemblymenList()
@@ -1267,22 +1271,27 @@ class LawsProjectController extends AppBaseController
             return redirect("/documents");
         }
 
-        $law = LawsProject::find($id);
+        $lawsProject = LawsProject::find($id);
+        $file = $request->file('file');
 
         if ($request->file) {
             foreach ($request->file as $key => $file) {
                 $new_file = new LawFile();
-                $fileName = $law->id . $key . time() . '.' . $file->getClientOriginalExtension();
+                $filename = static::$uploadService
+                    ->inLawProjectsFolder()
+                    ->sendFile($file)
+                    ->send();
+
                 $file->move(
-                    base_path() . '/public/uploads/law_projects/' . $law->id . '/files', $fileName
+                    base_path() . '/public/uploads/law_projects/' . $lawsProject->id . '/files', $filename
                 );
-                $new_file->law_project_id = $law->id;
-                $new_file->filename       = $fileName;
+                $new_file->law_project_id = $lawsProject->id;
+                $new_file->filename       = $filename;
                 $new_file->save();
             }
         }
 
-        return Redirect(route('lawsProjects.addFiles', $law->id));
+        return Redirect(route('lawsProjects.addFiles', $lawsProject->id));
     }
 
     public function attachamentDelete($id)

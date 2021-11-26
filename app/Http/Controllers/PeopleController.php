@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\People;
 use App\Models\State;
 use App\Repositories\PeopleRepository;
+use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -20,12 +21,15 @@ use Illuminate\View\View;
 
 class PeopleController extends AppBaseController
 {
+    private static $uploadService;
     /** @var PeopleRepository */
     private $peopleRepository;
 
     public function __construct(PeopleRepository $peopleRepo)
     {
         $this->peopleRepository = $peopleRepo;
+
+        static::$uploadService = new StorageService();
     }
 
     /**
@@ -85,6 +89,18 @@ class PeopleController extends AppBaseController
         $input = $request->all();
 
         $people = $this->peopleRepository->create($input);
+
+        $image = $request->file('image');
+
+        if ($image) {
+            $filename = static::$uploadService
+                ->inPeopleFolder()
+                ->sendFile($image)
+                ->send();
+
+            $people->image = $filename;
+            $people->save();
+        }
 
         flash('Pessoa salva com sucesso.')->success();
 
@@ -154,6 +170,18 @@ class PeopleController extends AppBaseController
         $people = $this->peopleRepository->findById($id);
 
         $this->peopleRepository->update($people, $request->all());
+
+        $image = $request->file('image');
+
+        if ($image) {
+            $filename = static::$uploadService
+                ->inPeopleFolder()
+                ->sendFile($image)
+                ->send();
+
+            $people->image = $filename;
+            $people->save();
+        }
 
         return redirect(route('people.index'));
     }

@@ -18,6 +18,7 @@ class People extends Model
         'email',
         'telephone',
         'celular',
+        'image',
         'zipcode',
         'street',
         'number',
@@ -25,23 +26,6 @@ class People extends Model
         'district',
         'state_id',
         'city_id',
-    ];
-
-    protected $casts = [
-        'name' => 'string',
-        'cpf' => 'string',
-        'rg' => 'string',
-        'address' => 'string',
-        'email' => 'string',
-        'telephone' => 'string',
-        'celular' => 'string',
-        'zipcode' => 'string',
-        'street' => 'string',
-        'number' => 'string',
-        'complement' => 'string',
-        'district' => 'string',
-        'state_id' => 'string',
-        'city_id' => 'string',
     ];
 
     /**
