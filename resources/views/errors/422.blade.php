@@ -1,6 +1,6 @@
 @extends('errors::illustrated-layout')
 
-@section('code', '429')
+@section('code', '422')
 @section('title', __('Too Many Requests'))
 
 @section('image')
