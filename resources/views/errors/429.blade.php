@@ -1,11 +1,8 @@
-@extends('errors::illustrated-layout')
+@extends('errors/error')
 
 @section('code', '429')
 @section('title', __('Too Many Requests'))
 
-@section('image')
-    <div style="background-image: url({{ asset('/svg/403.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
-    </div>
-@endsection
+@section('name', 'Excesso de Requisições')
 
 @section('message', __('Excesso de requisições feitas em um período muito curto de tempo, tente novamente mais tarde.'))

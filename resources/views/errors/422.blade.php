@@ -1,11 +1,8 @@
-@extends('errors::illustrated-layout')
+@extends('errors/error')
 
 @section('code', '422')
 @section('title', __('Too Many Requests'))
 
-@section('image')
-    <div style="background-image: url({{ asset('/svg/403.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
-    </div>
-@endsection
+@section('name', 'Entidade não processável')
 
 @section('message', __('O cliente não deve repetir esta requisição sem modificações.'))

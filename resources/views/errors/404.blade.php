@@ -1,11 +1,14 @@
-@extends('errors::illustrated-layout')
+@extends('errors/error')
 
 @section('code', '404')
 @section('title', __('Page Not Found'))
 
+@section('name', 'Página não encontrada')
+
 @section('image')
-    <div style="background-image: url({{ asset('/svg/404.svg') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
+    <div class="body-image">
+        <img alt="error" src="/svg/error.png" class="image">
     </div>
 @endsection
 
-@section('message', __('Desculpe, a página que procura não pôde ser encontrada.'))
+@section('message', __('Desculpe, a página que procura não pode ser encontrada.'))
