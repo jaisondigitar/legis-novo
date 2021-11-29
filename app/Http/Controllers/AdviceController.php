@@ -11,6 +11,7 @@ use App\Models\AdviceSituation;
 use App\Models\ComissionSituation;
 use App\Models\MeetingPauta;
 use App\Repositories\AdviceRepository;
+use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
 use Flash;
@@ -21,12 +22,19 @@ use Response;
 
 class AdviceController extends AppBaseController
 {
+    /**
+     * @var
+     */
+    private static $uploadService;
+
     /** @var AdviceRepository */
     private $adviceRepository;
 
     public function __construct(AdviceRepository $adviceRepo)
     {
         $this->adviceRepository = $adviceRepo;
+
+        static::$uploadService = new StorageService();
     }
 
     /**
@@ -341,15 +349,21 @@ class AdviceController extends AppBaseController
             $awnser->commission_id = $input['situation_awnser'];
             $awnser->description = $input['description_awnser'];
             if ($awnser->save()) {
-                if ($request->file('Arquivo')) {
-                    $file = $request['Arquivo'];
-                    $extesion_img = strtolower($file->getClientOriginalExtension());
-                    $image_file = uniqid().time().'.'.$extesion_img;
+                $file = $request->file('Arquivo');
 
-                    if ($request->file('Arquivo')->move(base_path().'/public/uploads/advice_awnser/', $image_file)) {
+                if ($file) {
+                    $filename = static::$uploadService
+                        ->inAdvicesFolder()
+                        ->sendFile($file)
+                        ->send();
+
+                    $awnser->file = $filename;
+                    $awnser->save();
+
+                    /*if ($request->file('Arquivo')->move(base_path().'/public/uploads/advice_awnser/', $image_file)) {
                         $awnser->file = $image_file;
                         $awnser->save();
-                    }
+                    }*/
                 }
                 flash('Aconselhamento atualizado com sucesso.')->success();
 

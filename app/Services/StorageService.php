@@ -69,6 +69,46 @@ class StorageService implements StorageInterface
     }
 
     /**
+     * @return $this
+     */
+    public function inAdvicesFolder(): self
+    {
+        $this->folder = 'advices';
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function inLawsFolder(): self
+    {
+        $this->folder = 'laws';
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function inMeetingsFolder(): self
+    {
+        $this->folder = 'meetings';
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function inImageProfileFolder(): self
+    {
+        $this->folder = 'images/profile';
+
+        return $this;
+    }
+
+    /**
      * @param string $folder
      * @return $this
      */

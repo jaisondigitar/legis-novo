@@ -212,19 +212,16 @@
                                                 <strong>Anexos: </strong>
                                                 <div class="clearfix"></div>
                                                 @foreach($documentModel->documents as $doc)
-                                                    @if(file_exists('uploads/documents/files/' . $doc->filename))
-                                                    <div class="col-md-3" style="width: auto !important;">
+                                                    @if($doc->filename)
+                                                    <div class="col-md-3" style="    width: auto !important;">
                                                     <a
-                                                        href="{{('uploads/documents/files') . '/' . $doc->filename}}"
-                                                        target="_blank"
-                                                        class="btn btn-xs btn-success"
-                                                    >
+                                                        href="{{ (new \App\Services\StorageService())->inDocumentsFolder()->get($doc->filename) }}"
+                                                        target="_blank" class="btn btn-xs btn-success">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
-                                                    <a href="{{ url('download-document/'. $doc->filename) }}">
-                                                        <button class="btn btn-xs btn-info">
-                                                            {{ $doc->filename }}
-                                                        </button>
+                                                    <a
+                                                        href="{{ (new \App\Services\StorageService())->inDocumentsFolder()->get($doc->filename) }}">
+                                                        <button class="btn btn-xs btn-info">{{ $doc->filename }}</button>
                                                     </a>
                                                     </div>
                                                     @endif
@@ -327,10 +324,8 @@
                                                         @foreach($lawsProject->lawFiles as $file)
                                                             <li class="list-group-item">
                                                                 <a
-                                                                    href="{{ url('download-law/' .$file->filename. '/id/' . $file->law_project_id ) }}"
-                                                                    target="_blank"
-                                                                >
-                                                                     {{$file->filename}} - <i class="fa fa-download"></i>
+                                                                    href="{{ (new \App\Services\StorageService())->inLawProjectsFolder()->get($file->filename) }}"
+                                                                    target="_blank">{{$file->filename}} - <i class="fa fa-download"></i>
                                                                 </a>
                                                             </li>
                                                         @endforeach

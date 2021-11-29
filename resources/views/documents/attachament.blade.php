@@ -23,7 +23,9 @@
                         <tr id="tr{{$file->id}}">
                             <td width="80%">{{ $file->filename }}</td>
                             <td align="center">
-                                <a href="{{ url('download-document/'. $file->filename) }}">
+                                <a
+                                    target="_blank"
+                                    href="{{ (new \App\Services\StorageService())->inDocumentsFolder()->get($file->filename) }}">
                                     <span class="label label-info">Download</span>
                                 </a>
                                 <a style="text-decoration: none" id="delFile" onclick="deleteFile({{$file->id}})">
@@ -57,30 +59,28 @@
                     <div class="col-lg-12 log" @if($key%2==0) style="border: 1px solid #ddd; background-color: #ddd;" @else style="border: 1px solid #ddd; background-color: #fff;" @endif>
                         <?php
 
-                        switch ($log->type){
-                            case "created": echo "<label class='badge badge-success'>CRIOU</label>";break;
-                            case "updated": echo "<label class='badge badge-warning'>EDITOU</label>";break;
-                            case "deleted": echo "<label class='badge badge-danger'>DELETOU</label>";break;
+                        switch ($log->type) {
+                            case 'created': echo "<label class='badge badge-success'>CRIOU</label>"; break;
+                            case 'updated': echo "<label class='badge badge-warning'>EDITOU</label>"; break;
+                            case 'deleted': echo "<label class='badge badge-danger'>DELETOU</label>"; break;
                         }
 
-                        echo " " .  date("d/m/Y h:i:s",strtotime($log->created_at));
+                        echo ' '.date('d/m/Y h:i:s', strtotime($log->created_at));
 
-                        $model = explode("\\",$log->owner_type);
+                        $model = explode('\\', $log->owner_type);
 
-                        echo "<br><br>";
+                        echo '<br><br>';
 
-                        echo " <b>USUÁRIO:</b> " . strtoupper($log->user->name) . " <br> <b>EMAIL:</b> " . $log->user->email . "<br>";
-                        echo "<b>IP:</b> " .  $log->ip . "<br><br>";
-                        echo "<b>Rota:</b> " . $log->route . "<br>";
+                        echo ' <b>USUÁRIO:</b> '.strtoupper($log->user->name).' <br> <b>EMAIL:</b> '.$log->user->email.'<br>';
+                        echo '<b>IP:</b> '.$log->ip.'<br><br>';
+                        echo '<b>Rota:</b> '.$log->route.'<br>';
 
-                        if($log->type == "updated")
-                        {
-                            echo "<br><p><strong>VALOR ANTIGO</strong></p>" . filter_var($log->old_value, FILTER_SANITIZE_STRING);
+                        if ($log->type == 'updated') {
+                            echo '<br><p><strong>VALOR ANTIGO</strong></p>'.filter_var($log->old_value, FILTER_SANITIZE_STRING);
                         }
 
-                        if($log->type == "updated" || $log->type ==  "created")
-                        {
-                            echo "<br><br><p><strong>NOVO VALOR</strong></p>" . filter_var($log->new_value, FILTER_SANITIZE_STRING);
+                        if ($log->type == 'updated' || $log->type == 'created') {
+                            echo '<br><br><p><strong>NOVO VALOR</strong></p>'.filter_var($log->new_value, FILTER_SANITIZE_STRING);
                         }
 
 

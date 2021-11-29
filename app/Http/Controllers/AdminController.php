@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Jobs\DocumentJob;
 use App\Jobs\LawProjectJob;
 use App\Models\Advice;
@@ -11,25 +10,27 @@ use App\Models\AdviceSituation;
 use App\Models\Assemblyman;
 use App\Models\ComissionSituation;
 use App\Models\Commission;
-use App\Models\CommissionAssemblyman;
 use App\Models\Document;
-use App\Models\DocumentType;
 use App\Models\LawsProject;
-use App\Models\LawsType;
-use App\Models\User;
 use App\Models\UserAssemblyman;
-use Chumper\Zipper\Zipper;
+use App\Services\StorageService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 
 class AdminController extends AppBaseController
 {
     use DispatchesJobs;
+
+    /**
+     * @var
+     */
+    private static $uploadService;
+
+    public function __construct()
+    {
+        static::$uploadService = new StorageService();
+    }
 
     public function dashboard()
     {
@@ -270,15 +271,21 @@ class AdminController extends AppBaseController
             $adv->comission_situation_id = $obj->commission_id;
             $adv->save();
 
-            if ($request->file('Arquivo')) {
-                $file = $request['Arquivo'];
-                $extesion_img = strtolower($file->getClientOriginalExtension());
-                $image_file = uniqid().time().'.'.$extesion_img;
+            $file = $request->file('Arquivo');
 
-                if ($request->file('Arquivo')->move(base_path().'/public/uploads/advice_awnser/', $image_file)) {
-                    $obj->file = $image_file;
+            if ($file) {
+                $filename = static::$uploadService
+                    ->inAdvicesFolder()
+                    ->sendFile($file)
+                    ->send();
+
+                $obj->file = $filename;
+                $obj->save();
+
+                /*if ($request->file('Arquivo')->move(base_path().'/public/uploads/advice_awnser/', $image_file)) {
+                    $obj->file = $filename;
                     $obj->save();
-                }
+                }*/
             }
         }
 
