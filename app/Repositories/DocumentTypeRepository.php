@@ -4,22 +4,7 @@ namespace App\Repositories;
 
 use App\Models\DocumentType;
 
-class DocumentTypeRepository
+class DocumentTypeRepository extends Repository
 {
-    /**
-     * @var array
-     */
-    protected $fieldSearchable = [
-        'name',
-        'prefix',
-        'slug',
-    ];
-
-    /**
-     * Configure the Model.
-     **/
-    public function model()
-    {
-        return DocumentType::class;
-    }
+    protected $modelClass = DocumentType::class;
 }

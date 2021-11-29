@@ -362,7 +362,7 @@ class DocumentController extends AppBaseController
         }
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -603,7 +603,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->findByID($id);
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -662,7 +662,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->findByID($id);
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -711,7 +711,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->findByID($id);
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -1020,7 +1020,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->findByID($documentId);
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -1041,7 +1041,7 @@ class DocumentController extends AppBaseController
         $documents = Document::all();
 
         if (empty($documents)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }

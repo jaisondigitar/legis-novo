@@ -44,13 +44,29 @@
                     <div class="mtb">
                         <div>
                             <ul class="nav nav-tabs centered" role="tablist">
-                                <li role="presentation" class="@if(isset($_GET['documents'])) in active @endif"><a href="#docs" aria-controls="docs" role="tab" data-toggle="tab">DOCUMENTOS</a></li>
-                                <li role="presentation" class="@if(isset($_GET['projects'])) in active @endif"><a href="#projects" aria-controls="projects" role="tab" data-toggle="tab">PROJETOS DE LEI</a></li>
-                                <li role="presentation" class="@if(isset($_GET['atas'])) in active @endif"><a href="#atas" aria-controls="atas" role="tab" data-toggle="tab">ATAS/PAUTAS</a></li>
+                                <li role="presentation" class="@if(isset($_GET['documents'])) in active @endif">
+                                    <a href="#docs" aria-controls="docs" role="tab" data-toggle="tab">
+                                        DOCUMENTOS
+                                    </a>
+                                </li>
+                                <li role="presentation" class="@if(isset($_GET['projects'])) in active @endif">
+                                    <a href="#projects" aria-controls="projects" role="tab" data-toggle="tab">
+                                        PROJETOS DE LEI
+                                    </a>
+                                </li>
+                                <li role="presentation" class="@if(isset($_GET['atas'])) in active @endif">
+                                    <a href="#atas" aria-controls="atas" role="tab" data-toggle="tab">
+                                        ATAS/PAUTAS
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade @if(isset($_GET['documents'])) in active @endif" id="docs">
+                            <div
+                                role="tabpanel"
+                                class="tab-pane fade @if(isset($_GET['documents'])) in active @endif"
+                                id="docs"
+                            >
                                 <h1>DOCUMENTOS</h1>
                                 <form method="GET" id="formDocuments">
                                     <input type="hidden" name="documents" value="true">
@@ -87,7 +103,11 @@
                                     </div>
                                 </form>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade @if(isset($_GET['projects'])) in active @endif" id="projects">
+                            <div
+                                role="tabpanel"
+                                class="tab-pane fade @if(isset($_GET['projects'])) in active @endif"
+                                id="projects"
+                            >
                                 <h1>PROJETOS DE LEI</h1>
                                 <form method="GET" id="formDocuments">
                                     <input type="hidden" name="projects" value="true">
@@ -124,7 +144,11 @@
                                     </div>
                                 </form>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade @if(isset($_GET['atas'])) in active @endif" id="atas">
+                            <div
+                                role="tabpanel"
+                                class="tab-pane fade @if(isset($_GET['atas'])) in active @endif"
+                                id="atas"
+                            >
                                 <h1>ATAS E PAUTAS</h1>
                                 <form method="GET" id="formDocuments">
                                     <input type="hidden" name="atas" value="true">
@@ -148,12 +172,10 @@
                         </div>
                         <div class="clearfix"></div>
                     </div><!--/mt-->
-                    <h6></h6>
                 </div>
             </div><!--/row-->
         </div><!--/container-->
     </div><!-- /H -->
-
 
         @if(isset($_GET['documents']))
             <div class="container ptb">
@@ -209,7 +231,13 @@
                                     </td>
                                     <td>
                                         <div class='btn-group'>
-                                            <a target="_blank" href="{!! url('documentPdf', [$documentModel->id]) !!}" class='btn btn-default btn-xs'>PDF</a>
+                                            <a
+                                                target="_blank"
+                                                href="{!! url('documentPdf', [$documentModel->id]) !!}"
+                                                class='btn btn-default btn-xs'
+                                            >
+                                                PDF
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
@@ -227,47 +255,69 @@
                     <div class="col-md-12">
                         <table class="table table-responsive" id="documentModels-table">
                             <thead>
-                            <th>Descrição</th>
-                            <th>Download</th>
+                                <th>Descrição</th>
+                                <th>Download</th>
                             </thead>
                             <tbody>
-                            @foreach($documents as $lawsProject)
-                                <tr class="line">
-                                  <td>
-                                      <strong>
-                                          {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!} -
-                                          @if(!$lawsProject->law_type) {{ $lawsProject->law_type_id }} @else {{ mb_strtoupper($lawsProject->law_type->name, 'UTF-8') }} @endif
-                                      </strong><br>
-                                      {!! $lawsProject->title !!}
-                                  </td>
-                                    <td>
-                                        @if($lawsProject->lawFiles || $lawsProject->file)
-                                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#anexos_{{$lawsProject->id}}" ><i class="fa fa-paperclip"></i> Anexos </button>
-                                        @endif
+                                @foreach($documents as $lawsProject)
+                                    <tr class="line">
+                                        <td>
+                                            <strong>
+                                                {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!} -
+                                                @if(!$lawsProject->law_type)
+                                                    {{ $lawsProject->law_type_id }}
+                                                @else {{ mb_strtoupper($lawsProject->law_type->name, 'UTF-8') }}
+                                                @endif
+                                            </strong><br>
+                                            {!! $lawsProject->title !!}
+                                        </td>
+                                        <td>
+                                            @if($lawsProject->lawFiles || $lawsProject->file)
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-info btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#anexos_{{$lawsProject->id}}"
+                                                >
+                                                    <i class="fa fa-paperclip"></i> Anexos
+                                                </button>
+                                            @endif
 
-                                        <a target="_blank" href="{!! url('lawPdf', [$lawsProject->id]) !!}" class='btn btn-default btn-xs'>PROJETO</a>
+                                            <a
+                                                target="_blank"
+                                                href="{!! url('lawPdf', [$lawsProject->id]) !!}"
+                                                class='btn btn-default btn-xs'
+                                            >
+                                                PROJETO
+                                            </a>
 
-                                        @if($lawsProject->is_ready == 1)
-                                            <label class="label label-success">SANCIONADA</label>
-                                        @endif
-                                    </td>
-                                </tr>
+                                            @if($lawsProject->is_ready == 1)
+                                                <label class="label label-success">SANCIONADA</label>
+                                            @endif
+                                        </td>
+                                    </tr>
 
-                                <div class="modal fade" id="anexos_{{$lawsProject->id}}" role="dialog">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h3 class="modal-title">Anexos</h3>
-                                            </div>
-                                            <div class="modal-body">
-                                                {{--<div class="container col-md-12">--}}
+                                    <div class="modal fade" id="anexos_{{$lawsProject->id}}" role="dialog">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h3 class="modal-title">Anexos</h3>
+                                                </div>
+                                                <div class="modal-body">
                                                     <h4> Clique no link para download</h4>
                                                     <ul class="list-group">
                                                         @foreach($lawsProject->advices()->where('laws_projects_id', $lawsProject->id)->get() as $advices)
                                                             @foreach($advices->awnser()->get() as $awnser)
                                                                 @if($awnser->file != '')
-                                                                    <li class="list-group-item"> <a href="/uploads/advice_awnser/{{$awnser->file}}" target="_blank"> {{$awnser->file}} - <i class="fa fa-download"></i> </a></li>
+                                                                    <li class="list-group-item">
+                                                                        <a
+                                                                            href="/uploads/advice_awnser/{{$awnser->file}}"
+                                                                            target="_blank"
+                                                                        >
+                                                                            {{$awnser->file}} - <i class="fa fa-download"></i>
+                                                                        </a>
+                                                                    </li>
                                                                 @endif
                                                             @endforeach
                                                         @endforeach
@@ -280,40 +330,34 @@
                                                             </li>
                                                         @endforeach
                                                     </ul>
-                                                {{--</div>--}}
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                            @endforeach
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div><!--/row-->
                 {!! $documents->appends(request()->input())->render() !!}
-
-                <!-- Modal -->
-
-
-
             </div><!--/container-->
         @elseif(isset($_GET['atas']))
-
             <div class="container ptb">
                 <div class="row">
                     <h1 style="margin-top: 0px">Registros</h1>
                     <div class="col-md-12">
                         <table class="table table-responsive" id="documentModels-table">
                             <thead>
-                            <th>Data</th>
-                            <th>Tipo</th>
-                            <th>Numero</th>
-                            <th>Local</th>
-                            <th colspan="3">Visualizar</th>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th>Numero</th>
+                                <th>Local</th>
+                                <th colspan="3">Visualizar</th>
                             </thead>
                             <tbody>
                             @foreach($documents as $meeting)
@@ -324,10 +368,35 @@
                                     <td>{!! $meeting->session_place->name !!}</td>
                                     <td>
                                         <div class='btn-group'>
-                                            {{--{{dd($meeting)}}--}}
-                                            @if($meeting->files()->count()>0) <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#anexos_ata_{{$meeting->id}}" style="margin-right: 2px;"><i class="fa fa-paperclip"></i> Anexos </button> @endif
-                                            @if($params['showPautas'])<a target="_blank" href="/meeting/pauta/{{ $meeting->id }}/pdf" class='btn btn-primary btn-xs'><i class="fa fa-download"></i> PAUTA</a>@endif
-                                            @if($params['showAtas'])<a target="_blank" href="/meeting/ata/{{ $meeting->id }}/pdf" class='btn btn-warning btn-xs'><i class="fa fa-download"></i> ATA</a>@endif
+                                            @if($meeting->files()->count()>0)
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-success btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#anexos_ata_{{$meeting->id}}"
+                                                    style="margin-right: 2px;"
+                                                >
+                                                    <i class="fa fa-paperclip"></i> Anexos
+                                                </button>
+                                            @endif
+                                            @if($params['showPautas'])
+                                                <a
+                                                    target="_blank"
+                                                    href="/meeting/pauta/{{ $meeting->id }}/pdf"
+                                                    class='btn btn-primary btn-xs'
+                                                >
+                                                    <i class="fa fa-download"></i> PAUTA
+                                                </a>
+                                            @endif
+                                            @if($params['showAtas'])
+                                                <a
+                                                    target="_blank"
+                                                    href="/meeting/ata/{{ $meeting->id }}/pdf"
+                                                    class='btn btn-warning btn-xs'
+                                                >
+                                                    <i class="fa fa-download"></i> ATA
+                                                </a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -340,19 +409,26 @@
                                                 <h3 class="modal-title">Anexos</h3>
                                             </div>
                                             <div class="modal-body">
-                                                {{--<div class="container col-md-12">--}}
                                                 <h4> Clique no link para download</h4>
                                                 <ul class="list-group">
                                                     @foreach($meeting->files()->where('meeting_id', $meeting->id)->get() as $files)
                                                         @if($files->filename != '')
-                                                            <li class="list-group-item"> <a href="/uploads/meetings/files/{{$files->filename}}" target="_blank"> {{$files->filename}} - <i class="fa fa-download"></i> </a></li>
+                                                            <li class="list-group-item">
+                                                                <a
+                                                                    href="/uploads/meetings/files/{{$files->filename}}"
+                                                                    target="_blank"
+                                                                >
+                                                                    {{$files->filename}} - <i class="fa fa-download"></i>
+                                                                </a>
+                                                            </li>
                                                         @endif
                                                     @endforeach
                                                 </ul>
-                                                {{--</div>--}}
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                    Close
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -366,40 +442,33 @@
             </div><!--/container-->
         @endif
 
-
-
-
-
-
-
     <script>
         $(document).ready(function () {
 
             getMeetingDates();
 
-            var palavra = $('#texto').val().split(" ");
+            const palavra = $('#texto').val().split(" ");
 
             $.each(palavra, function(j,palavra){
                 $('.line').highlight(palavra);
             });
         });
 
-
-        var loadPicker = function(dates)
+        const loadPicker = function(dates)
         {
             $('.datepicker').datepicker({
                 language: 'pt-BR',
                 format: 'dd/mm/yyyy',
                 autoclose: true,
                 beforeShowDay: function(date) {
-                    var active_dates = dates;
-                    var d = date;
-                    var curr_date = d.getDate();
-                    var curr_month = d.getMonth() + 1; //Months are zero based
-                    var curr_year = d.getFullYear();
-                    var formattedDate = curr_date + "/" + curr_month + "/" + curr_year
+                    const active_dates = dates;
+                    const d = date;
+                    const curr_date = d.getDate();
+                    const curr_month = d.getMonth() + 1; //Months are zero based
+                    const curr_year = d.getFullYear();
+                    const formattedDate = curr_date + "/" + curr_month + "/" + curr_year
 
-                    if ($.inArray(formattedDate, active_dates) != -1){
+                    if ($.inArray(formattedDate, active_dates) !== -1){
                         return {
                             classes: 'activeClass'
                         };
@@ -408,12 +477,11 @@
                             enabled: false
                         }
                     }
-
                 }
             });
         };
 
-        var getMeetingDates = function()
+        const getMeetingDates = function()
         {
             $.ajax({
                 url: '/getMeetingDates'

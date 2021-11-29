@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
+use App\Http\Requests\TypeVotingRequest;
 use App\Models\Meeting;
 use App\Models\TypeVoting;
 use Artesaos\Defender\Facades\Defender;
-use Flash;
 use Illuminate\Http\Request;
 
-class TypeVotingController extends Controller
+class TypeVotingController extends AppBaseController
 {
     /**
      * Display a listing of the resource.
@@ -52,20 +51,21 @@ class TypeVotingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TypeVotingRequest $request)
     {
         if (! Defender::hasPermission('typeVotings.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
             return redirect('/');
         }
+
         $input = $request->all();
         $input['anonymous'] = isset($input['anonymous']) ? 1 : 0;
         $input['active'] = isset($input['active']) ? 1 : 0;
 
         TypeVoting::create($input);
 
-        flash('Type saved successfully.')->success();
+        flash('Tipo salvo com sucesso.')->success();
 
         return redirect(route('typeVotings.index'));
     }
@@ -87,7 +87,7 @@ class TypeVotingController extends Controller
         $type_voting = TypeVoting::find($id);
 
         if (empty($type_voting)) {
-            flash('Type voting not found')->error();
+            flash('Tipo de votação não encontrado')->error();
 
             return redirect(route('typeVotings.index'));
         }
@@ -111,7 +111,7 @@ class TypeVotingController extends Controller
         $type_voting = TypeVoting::find($id);
 
         if (empty($type_voting)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('typeVotings.index'));
         }
@@ -126,7 +126,7 @@ class TypeVotingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TypeVotingRequest $request, $id)
     {
         if (! Defender::hasPermission('typeVotings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -141,7 +141,7 @@ class TypeVotingController extends Controller
         $input['active'] = isset($input['active']) ? 1 : 0;
 
         if (empty($type_voting)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('typeVotings.index'));
         }
@@ -153,7 +153,7 @@ class TypeVotingController extends Controller
         $type_voting->anonymous = $input['anonymous'];
         $type_voting->save();
 
-        flash('Type updated successfully.')->success();
+        flash('Tipo atualizado com sucesso.')->success();
 
         return redirect(route('typeVotings.index'));
     }
@@ -175,14 +175,14 @@ class TypeVotingController extends Controller
         $type_voting = TypeVoting::find($id);
 
         if (empty($type_voting)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('typeVotings.index'));
         }
 
         $type_voting->delete($id);
 
-        flash('Type deleted successfully.')->success();
+        flash('Tipo removido com sucesso.')->success();
 
         return redirect(route('typeVotings.index'));
     }

@@ -1,24 +1,24 @@
 <!-- Date Start Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('date_start', 'Data início:') !!}
+    {!! Form::label('date_start', 'Data início:', ['class' => 'required']) !!}
     {!! Form::text('date_start', null, ['class' => 'form-control datepicker', 'required']) !!}
 </div>
 
 <!-- Date End Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('date_end', 'Data encerramento:') !!}
+    {!! Form::label('date_end', 'Data encerramento:', ['class' => 'required']) !!}
     {!! Form::text('date_end', null, ['class' => 'form-control datepicker', 'required']) !!}
 </div>
 
 <!-- Name Field -->
 <div class="form-group col-sm-12">
-    {!! Form::label('name', 'Nome:') !!}
+    {!! Form::label('name', 'Nome:', ['class' => 'required']) !!}
     {!! Form::text('name', null, ['class' => 'form-control', 'required']) !!}
 </div>
 
 <!-- Description Field -->
 <div class="form-group col-sm-12">
-    {!! Form::label('description', 'Descrição:') !!}
+    {!! Form::label('description', 'Descrição:', ['class' => 'required']) !!}
     {!! Form::textarea('description', null, ['class' => 'form-control ckeditor']) !!}
 </div>
 <div class="form-group col-sm-12">

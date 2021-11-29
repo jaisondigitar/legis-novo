@@ -69,6 +69,7 @@ class DocumentModels extends Model
         'document_type_id' => 'integer',
         'name' => 'string',
         'content' => 'string',
+        'text_initial' => 'string',
     ];
 
     /**
@@ -77,7 +78,10 @@ class DocumentModels extends Model
      * @var array
      */
     public static $rules = [
-
+        'document_type_id' => 'required',
+        'name' => 'required',
+        'content' => 'required',
+        'text_initial' => 'required',
     ];
 
     public function document_type()

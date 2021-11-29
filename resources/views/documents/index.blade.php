@@ -45,16 +45,20 @@
             <div class="col-md-12">
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group">
-                      @shield('documents.delete')
-                      <a href="javascript:void(0)" onclick="deletaBash()" style="display: none;" class="deleteAll">
-                          <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> DELETAR SELECIONADOS</button>
-                      </a>
-                      @endshield
-                        @shield('documents.create')<a href="{!! route('documents.create') !!}">
-                            <button type="button" class="btn btn-info"><i class="fa fa-plus-circle"></i> Novo registro</button>
-                        </a>
+                        @shield('documents.delete')
+                            <a href="javascript:void(0)" onclick="deletaBash()" style="display: none;" class="deleteAll">
+                                <button type="button" class="btn btn-danger">
+                                    <i class="fa fa-trash"></i> DELETAR SELECIONADOS
+                                </button>
+                            </a>
                         @endshield
-
+                        @shield('documents.create')
+                            <a href="{!! route('documents.create') !!}">
+                                <button type="button" class="btn btn-info">
+                                    <i class="fa fa-plus-circle"></i> Novo registro
+                                </button>
+                            </a>
+                        @endshield
                     </div>
                 </div>
             </div>
@@ -63,8 +67,11 @@
             <br>
             <div class="col-md-12">
                 @include('flash::message')
-                @include('documents.table')
-
+                @if($documents->isEmpty())
+                    <div class="well text-center">Sem dados. Insira um novo registro.</div>
+                @else
+                    @include('documents.table')
+                @endif
             </div>
         </div>
     </div>

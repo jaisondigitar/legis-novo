@@ -127,7 +127,7 @@ class AssemblymanController extends AppBaseController
     }
 
     /**
-     * Store a newly created Assemblyman in storage.
+     * Store a newly created Parlamentar in storage.
      *
      * @param CreateAssemblymanRequest $request
      *
@@ -266,7 +266,7 @@ class AssemblymanController extends AppBaseController
     }
 
     /**
-     * Update the specified Assemblyman in storage.
+     * Update the specified Parlamentar in storage.
      *
      * @param int $id
      * @param UpdateAssemblymanRequest $request
@@ -335,7 +335,7 @@ class AssemblymanController extends AppBaseController
     }
 
     /**
-     * Remove the specified Assemblyman from storage.
+     * Remove the specified Parlamentar from storage.
      *
      * @param int $id
      *
@@ -366,7 +366,7 @@ class AssemblymanController extends AppBaseController
     }
 
     /**
-     * Update status of specified Assemblyman from storage.
+     * Update status of specified Parlamentar from storage.
      *
      * @param int $id
      * @throws BindingResolutionException

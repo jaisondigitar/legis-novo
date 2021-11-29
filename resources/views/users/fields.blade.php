@@ -49,34 +49,54 @@
     </label>
 </div>
 
-<div class="form-group col-sm-12">
+<div class="form-group col-sm-6">
     <div class="the-box bg-success no-border">
-        <h4 class="small-title required">GRUPO DE PERMISSÕES:</h4>
-        @foreach($levels as $value)
-            <?php
+        <table>
+            <tr>
+                <th>
+                    <h4 class="small-title required">GRUPO DE PERMISSÕES:</h4>
+                </th>
+            </tr>
+            @foreach($levels as $value)
+                <?php
                 $teste = false;
                 if (isset($user)) {
                     $teste = $user->hasRole($value->name);
                 }
-            ?>
-            <div class="col-sm-2">
-                {!! Form::checkbox('roles[]', $value->id, $teste, ['class' => 'required']) !!}
-                {{ $value->name }}
-            </div>
-        @endforeach
+                ?>
+                    <tr>
+                        <td>
+                            <label>
+                                {!! Form::checkbox('roles[]', $value->id, $teste, ['class' => 'required']) !!}
+                                {!! $value->name !!}
+                            </label>
+                        </td>
+                    </tr>
+            @endforeach
+        </table>
         <div class="clearfix"></div>
     </div>
 </div>
 
 <div class="form-group col-sm-6" id="assemblym_div">
     <div class="the-box bg-success no-border">
-        <h4 class="small-title">GABINETES</h4>
-        @foreach($assemblyman as $value)
-            <div class="col-sm-2">
-                {!! Form::checkbox('assemblyman[]',$value->id, in_array($value->id, $user_assemblyman) ? true : false) !!}
-                {{ $value->short_name }}
-            </div>
-        @endforeach
+        <table>
+            <tr>
+                <th>
+                    <h4 class="small-title">GABINETES</h4>
+                </th>
+            </tr>
+            @foreach($assemblyman as $value)
+                <tr>
+                    <td>
+                        <label>
+                            {!! Form::checkbox('assemblyman[]',$value->id, in_array($value->id, $user_assemblyman) ? true : false) !!}
+                            {{ $value->short_name }}
+                        </label>
+                    </td>
+                </tr>
+            @endforeach
+        </table>
         <div class="clearfix"></div>
     </div>
 </div>
