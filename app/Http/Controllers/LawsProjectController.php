@@ -1253,8 +1253,8 @@ class LawsProjectController extends AppBaseController
 
     public function toogleApproved($id, Request $request)
     {
-        $law                = LawsProject::find($id);
-        $input              = $request->all();
+        $law = LawsProject::find($id);
+        $input = $request->all();
         $input['town_hall'] = ($input['town_hall'] == "true") ? 1 : 0;
         if ($law) {
             $law->town_hall = $input['town_hall'];
@@ -1282,11 +1282,8 @@ class LawsProjectController extends AppBaseController
                     ->sendFile($file)
                     ->send();
 
-                $file->move(
-                    base_path() . '/public/uploads/law_projects/' . $lawsProject->id . '/files', $filename
-                );
                 $new_file->law_project_id = $lawsProject->id;
-                $new_file->filename       = $filename;
+                $new_file->filename = $filename;
                 $new_file->save();
             }
         }

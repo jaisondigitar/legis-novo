@@ -5,13 +5,22 @@
 @section('content')
 <div class="the-box rounded">
     @include('common.errors')
-<h4 class="text-uppercase">
-    Anexos - @if(!$lawsProject->law_type) {{ $lawsProject->law_type_id }} @else {!! mb_strtoupper($lawsProject->law_type->name, 'UTF-8') !!} @endif
-    <span id="tdLawProjectNumber{{$lawsProject->id}}">
-        {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!}
-    </span>
-    <a href="{!! route('lawsProjects.index') !!}" class="btn btn-default  pull-right" style="margin-top: 5px;">Voltar</a>
-</h4>
+    <h4 class="text-uppercase">
+        Anexos -
+        @if(!$lawsProject->law_type)
+            {{ $lawsProject->law_type_id }}
+        @else
+            {!! mb_strtoupper($lawsProject->law_type->name, 'UTF-8') !!}
+        @endif
+
+        <span id="tdLawProjectNumber{{$lawsProject->id}}">
+            {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!}
+        </span>
+
+        <a href="{!! route('lawsProjects.index') !!}" class="btn btn-default  pull-right" style="margin-top: 5px;">
+            Voltar
+        </a>
+    </h4>
     <hr>
     <div class="col-md-12">
         <div class="the-box rounded">
@@ -31,27 +40,30 @@
                 <div class="col-md-9">
                     <h4 align="center">Anexos:</h4>
                     <table class="table table-bordered table-striped">
-                        @foreach($law_files as $file)
-                            <tr id="tr{{$file->id}}">
-                                <td width="80%">{{ $file->filename }}</td>
-                                <td align="center">
-                                    <a href="{{ url('download-law/' .$file->filename. '/id/' . $file->law_project_id ) }}">
-                                        <span class="label label-info">Download</span>
-                                    </a>
-                                    @shield('lawsProjects.upload')
-                                        <a style="text-decoration: none" id="delFile" onclick="deleteFile({{$file->id}})">
-                                            <span class="label label-danger">Excluir</span>
+                        @if($law_files->isEmpty())
+                            <div class="well text-center">Sem dados. Insira um novo registro.</div>
+                        @else
+                            @foreach($law_files as $file)
+                                <tr id="tr{{$file->id}}">
+                                    <td width="80%">{{ $file->filename }}</td>
+                                    <td align="center">
+                                        <a href="{{ (new \App\Services\StorageService())->inLawProjectsFolder()->get($file->filename) }}">
+                                            <span class="label label-info">Download</span>
                                         </a>
-                                    @endshield
-                                </td>
-                            </tr>
-                        @endforeach
+                                        @shield('lawsProjects.upload')
+                                            <a style="text-decoration: none" id="delFile" onclick="deleteFile({{$file->id}})">
+                                                <span class="label label-danger">Excluir</span>
+                                            </a>
+                                        @endshield
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="clearfix"></div>
 </div>
 
@@ -71,5 +83,4 @@
         }
     }
 </script>
-
 @endsection

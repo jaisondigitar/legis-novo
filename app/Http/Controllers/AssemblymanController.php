@@ -179,7 +179,7 @@ class AssemblymanController extends AppBaseController
             $responsibility_assemblyman->save();
         }
 
-        flash('Assemblyman saved successfully.')->success();
+        flash('Parlamentar salvo com sucesso.')->success();
 
         return redirect(route('assemblymen.index'));
     }
@@ -203,7 +203,7 @@ class AssemblymanController extends AppBaseController
         $assemblyman = $this->assemblymanRepository->findByID($id);
 
         if (empty($assemblyman)) {
-            flash('Assemblyman not found')->error();
+            flash('Parlamentar não encontrado')->error();
 
             return redirect(route('assemblymen.index'));
         }
@@ -233,7 +233,7 @@ class AssemblymanController extends AppBaseController
             ->load('responsibility_assemblyman');
 
         if (empty($assemblyman)) {
-            flash('Assemblyman not found')->error();
+            flash('Parlamentar não encontrado')->error();
 
             return redirect(route('assemblymen.index'));
         }
@@ -285,7 +285,7 @@ class AssemblymanController extends AppBaseController
         $assemblyman = $this->assemblymanRepository->findByID($id);
 
         if (empty($assemblyman)) {
-            flash('Assemblyman not found')->error();
+            flash('Parlamentar não encontrado')->error();
 
             return redirect(route('assemblymen.index'));
         }
@@ -329,7 +329,7 @@ class AssemblymanController extends AppBaseController
             $responsibility->save();
         }
 
-        flash('Assemblyman updated successfully.')->success();
+        flash('Parlamentar atualizado com sucesso.')->success();
 
         return redirect(route('assemblymen.index'));
     }
@@ -353,14 +353,14 @@ class AssemblymanController extends AppBaseController
         $assemblyman = $this->assemblymanRepository->findByID($id);
 
         if (empty($assemblyman)) {
-            flash('Assemblyman not found')->error();
+            flash('Parlamentar não encontrado')->error();
 
             return redirect(route('assemblymen.index'));
         }
 
         $this->assemblymanRepository->delete($assemblyman);
 
-        flash('Assemblyman deleted successfully.')->success();
+        flash('Parlamentar removido com sucesso.')->success();
 
         return redirect(route('assemblymen.index'));
     }
