@@ -61,7 +61,7 @@ class SessionPlaceController extends AppBaseController
     }
 
     /**
-     * Store a newly created Local da Sessão in storage.
+     * Store a newly created Local da sessão in storage.
      *
      * @param CreateSessionPlaceRequest $request
      *
@@ -80,7 +80,7 @@ class SessionPlaceController extends AppBaseController
 
         $sessionPlace = $this->sessionPlaceRepository->create($input);
 
-        flash('Local da Sessão salvo com sucesso.')->success();
+        flash('Local da sessão salvo com sucesso.')->success();
 
         return redirect(route('sessionPlaces.index'));
     }
@@ -103,7 +103,7 @@ class SessionPlaceController extends AppBaseController
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
 
         if (empty($sessionPlace)) {
-            flash('Local da Sessão não encontrado')->error();
+            flash('Local da sessão não encontrado')->error();
 
             return redirect(route('sessionPlaces.index'));
         }
@@ -128,7 +128,7 @@ class SessionPlaceController extends AppBaseController
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
 
         if (empty($sessionPlace)) {
-            flash('Local da Sessão não encontrado')->error();
+            flash('Local da sessão não encontrado')->error();
 
             return redirect(route('sessionPlaces.index'));
         }
@@ -137,7 +137,7 @@ class SessionPlaceController extends AppBaseController
     }
 
     /**
-     * Update the specified Local da Sessão in storage.
+     * Update the specified Local da sessão in storage.
      *
      * @param  int              $id
      * @param UpdateSessionPlaceRequest $request
@@ -155,7 +155,7 @@ class SessionPlaceController extends AppBaseController
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
 
         if (empty($sessionPlace)) {
-            flash('Local da Sessão não encontrado')->error();
+            flash('Local da sessão não encontrado')->error();
 
             return redirect(route('sessionPlaces.index'));
         }
@@ -164,13 +164,13 @@ class SessionPlaceController extends AppBaseController
 
         $sessionPlace = $this->sessionPlaceRepository->update($request->all(), $id);
 
-        flash('Local da Sessão atualizado com sucesso.')->success();
+        flash('Local da sessão atualizado com sucesso.')->success();
 
         return redirect(route('sessionPlaces.index'));
     }
 
     /**
-     * Remove the specified Local da Sessão from storage.
+     * Remove the specified Local da sessão from storage.
      *
      * @param  int $id
      *
@@ -187,20 +187,20 @@ class SessionPlaceController extends AppBaseController
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
 
         if (empty($sessionPlace)) {
-            flash('Local da Sessão não encontrado')->error();
+            flash('Local da sessão não encontrado')->error();
 
             return redirect(route('sessionPlaces.index'));
         }
 
         $this->sessionPlaceRepository->delete($id);
 
-        flash('Local da Sessão removido com sucesso.')->success();
+        flash('Local da sessão removido com sucesso.')->success();
 
         return redirect(route('sessionPlaces.index'));
     }
 
     /**
-     * Update status of specified Local da Sessão from storage.
+     * Update status of specified Local da sessão from storage.
      *
      * @param  int $id
      *

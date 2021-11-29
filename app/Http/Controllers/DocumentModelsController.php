@@ -66,7 +66,7 @@ class DocumentModelsController extends AppBaseController
     }
 
     /**
-     * Store a newly created Modelos de documento in storage.
+     * Store a newly created Modelo de documento in storage.
      *
      * @param CreateDocumentModelsRequest $request
      *
@@ -134,7 +134,7 @@ class DocumentModelsController extends AppBaseController
         $documentModels = $this->documentModelsRepository->findByID($id);
 
         if (empty($documentModels)) {
-            flash('Modelos de documento não encontramos')->error();
+            flash('Modelo de documento não encontrado')->error();
 
             return redirect(route('documentModels.index'));
         }
@@ -164,7 +164,7 @@ class DocumentModelsController extends AppBaseController
         $documentModels = $this->documentModelsRepository->findByID($id);
 
         if (empty($documentModels)) {
-            flash('Modelos de documento não encontramos')->error();
+            flash('Modelo de documento não encontrado')->error();
 
             return redirect(route('documentModels.index'));
         }
@@ -195,20 +195,20 @@ class DocumentModelsController extends AppBaseController
         $documentModels = $this->documentModelsRepository->findByID($id);
 
         if (empty($documentModels)) {
-            flash('Modelos de documento não encontramos')->error();
+            flash('Modelo de documento não encontrado')->error();
 
             return redirect(route('documentModels.index'));
         }
 
         $this->documentModelsRepository->delete($documentModels);
 
-        flash('Modelos de documento removido com secesso.')->success();
+        flash('Modelo de documento removido com secesso.')->success();
 
         return redirect(route('documentModels.index'));
     }
 
     /**
-     * Update status of specified Modelos de documento from storage.
+     * Update status of specified Modelo de documento from storage.
      *
      * @param int $id
      * @throws BindingResolutionException

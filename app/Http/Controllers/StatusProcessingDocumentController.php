@@ -63,7 +63,7 @@ class StatusProcessingDocumentController extends AppBaseController
     }
 
     /**
-     * Store a newly created Documento de Processamento de Estado in storage.
+     * Store a newly created Status do processamento do documento in storage.
      *
      * @param CreateStatusProcessingDocumentRequest $request
      *
@@ -81,7 +81,7 @@ class StatusProcessingDocumentController extends AppBaseController
 
         $this->statusProcessingDocumentRepository->create($input);
 
-        flash('Documento de Processamento de Estado salvo com sucesso.')->success();
+        flash('Status do processamento do documento salvo com sucesso.')->success();
 
         return redirect(route('statusProcessingDocuments.index'));
     }
@@ -105,7 +105,7 @@ class StatusProcessingDocumentController extends AppBaseController
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
         if (empty($statusProcessingDocument)) {
-            flash('Documento de Processamento de Estado não encontrado')->error();
+            flash('Status do processamento do documento não encontrado')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
@@ -131,7 +131,7 @@ class StatusProcessingDocumentController extends AppBaseController
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
         if (empty($statusProcessingDocument)) {
-            flash('Documento de Processamento de Estado não encontrado')->error();
+            flash('Status do processamento do documento não encontrado')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
@@ -140,7 +140,7 @@ class StatusProcessingDocumentController extends AppBaseController
     }
 
     /**
-     * Update the specified Documento de Processamento de Estado in storage.
+     * Update the specified Status do processamento do documento in storage.
      *
      * @param int $id
      * @param UpdateStatusProcessingDocumentRequest $request
@@ -159,20 +159,20 @@ class StatusProcessingDocumentController extends AppBaseController
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
         if (empty($statusProcessingDocument)) {
-            flash('Documento de Processamento de Estado não encontrado')->error();
+            flash('Status do processamento do documento não encontrado')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
 
         $this->statusProcessingDocumentRepository->update($statusProcessingDocument, $request->all());
 
-        flash('Documento de Processamento de Estado atualizado com sucesso.')->success();
+        flash('Status do processamento do documento atualizado com sucesso.')->success();
 
         return redirect(route('statusProcessingDocuments.index'));
     }
 
     /**
-     * Remove the specified Documento de Processamento de Estado from storage.
+     * Remove the specified Status do processamento do documento from storage.
      *
      * @param int $id
      *
@@ -190,20 +190,20 @@ class StatusProcessingDocumentController extends AppBaseController
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
         if (empty($statusProcessingDocument)) {
-            flash('Documento de Processamento de Estado não encontrado')->error();
+            flash('Status do processamento do documento não encontrado')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
 
         $this->statusProcessingDocumentRepository->delete($statusProcessingDocument);
 
-        flash('Documento de Processamento de Estado removido com sucesso.')->success();
+        flash('Status do processamento do documento removido com sucesso.')->success();
 
         return redirect(route('statusProcessingDocuments.index'));
     }
 
     /**
-     * Update status of specified Documento de Processamento de Estado from storage.
+     * Update status of specified Status do processamento do documento from storage.
      *
      * @param int $id
      * @return false|string

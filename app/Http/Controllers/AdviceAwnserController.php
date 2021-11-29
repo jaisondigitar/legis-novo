@@ -78,7 +78,7 @@ class AdviceAwnserController extends AppBaseController
 
         $adviceAwnser = $this->adviceAwnserRepository->create($input);
 
-        flash('Resposta ao conselho salvo com sucesso.')->success();
+        flash('Resposta salva com sucesso.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
     }
@@ -101,7 +101,7 @@ class AdviceAwnserController extends AppBaseController
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
         if (empty($adviceAwnser)) {
-            flash('Resposta ao conselho não encontrada')->error();
+            flash('Resposta não encontrada')->error();
 
             return redirect(route('adviceAwnsers.index'));
         }
@@ -126,7 +126,7 @@ class AdviceAwnserController extends AppBaseController
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
         if (empty($adviceAwnser)) {
-            flash('Resposta ao conselho não encontrada')->error();
+            flash('Resposta não encontrada')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
         }
@@ -153,14 +153,14 @@ class AdviceAwnserController extends AppBaseController
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
         if (empty($adviceAwnser)) {
-            flash('Resposta ao conselho não encontrada')->error();
+            flash('Resposta não encontrada')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->update($request->all(), $id);
 
-        flash('Resposta ao conselho atualizado com sucesso.')->success();
+        flash('Resposta atualizado com sucesso.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
     }
@@ -183,14 +183,14 @@ class AdviceAwnserController extends AppBaseController
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
         if (empty($adviceAwnser)) {
-            flash('Resposta ao conselho não encontrada')->error();
+            flash('Resposta não encontrada')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
         }
 
         $this->adviceAwnserRepository->delete($id);
 
-        flash('Resposta ao conselho removido com sucesso.')->success();
+        flash('Resposta removido com sucesso.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$adviceAwnsers.index'));
     }
