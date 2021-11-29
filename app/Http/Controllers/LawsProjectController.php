@@ -41,10 +41,17 @@ use Illuminate\View\View;
 
 class LawsProjectController extends AppBaseController
 {
+    /**
+     * @var
+     */
     private static $uploadService;
-    /** @var  LawsProjectRepository */
+
+    /** @var LawsProjectRepository */
     private $lawsProjectRepository;
 
+    /**
+     * @param LawsProjectRepository $lawsProjectRepo
+     */
     public function __construct(LawsProjectRepository $lawsProjectRepo)
     {
         $this->lawsProjectRepository = $lawsProjectRepo;
@@ -52,9 +59,12 @@ class LawsProjectController extends AppBaseController
         static::$uploadService = new StorageService();
     }
 
-    public function getAssemblymenList()
+    /**
+     * @return array
+     */
+    public function getAssemblymenList(): array
     {
-        if (Auth::user()->sector_id == 2) {
+        if (Auth::user()->sector_id === 2) {
             $assemblymens = UserAssemblyman::where('users_id', Auth::user()->id)
                 ->leftJoin('assemblymen', function ($join) {
                     $join->on('assemblymen.id', '=', 'user_assemblyman.assemblyman_id');
@@ -65,92 +75,91 @@ class LawsProjectController extends AppBaseController
             $assemblymens = Assemblyman::where('assemblymen.active', '=', 1)->get();
         }
 
-        $assemblymen      = [];
+        $assemblymen = [];
+
         $assemblymensList = [null => 'Selecione...'];
+
         foreach ($assemblymens as $assemblyman) {
-            $parties                            = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
-            $assemblymensList[$assemblyman->id] = $assemblyman->short_name . ' - ' . $parties->party->prefix;
+            $parties = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
+
+            $assemblymensList[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix;
         }
 
         $assemblymens1 = Assemblyman::where('assemblymen.active', '=', 1)->get();
+
         foreach ($assemblymens1 as $assemblyman) {
-            $parties                       = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
-            $assemblymen[$assemblyman->id] = $assemblyman->short_name . ' - ' . $parties->party->prefix;
+            $parties = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
+
+            $assemblymen[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix;
         }
 
         return [$assemblymen, $assemblymensList];
     }
 
     /**
-     * Display a listing of the LawsProject.
-     *
      * @param Request $request
      * @return Application|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
     {
-        if (!Defender::hasPermission('lawsProjects.index')) {
+        if (! Defender::hasPermission('lawsProjects.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $parameters = Parameters::where('slug', 'sempre-usa-protocolo-externo')->first();
 
-        if (!$parameters->value) {
+        if (! $parameters->value) {
             $externo = 'readonly';
         } else {
             $externo = '';
         }
 
         if (count($request->all())) {
-
             if ($request->parecer) {
                 $lawsProjects = LawsProject::join('advices', 'laws_projects_id', '=', 'laws_projects.id')->byDateDesc();
             } else {
                 $lawsProjects = LawsProject::byDateDesc();
             }
 
-            !empty($request->reg) ? $lawsProjects->where('updated_at', date('Y-m-d H:i:s', $request->reg)) : null;
-            !empty($request->type) ? $lawsProjects->where('law_type_id', $request->type) : null;
-            !empty($request->number) ? $lawsProjects->where('project_number', $request->number) : null;
-            !empty($request->year) ? $lawsProjects->where('law_date', 'like', $request->year . "%") : null;
-            !empty($request->owner) ? $lawsProjects->where('assemblyman_id', $request->owner) : null;
+            ! empty($request->reg) ? $lawsProjects->where('updated_at', date('Y-m-d H:i:s', $request->reg)) : null;
+            ! empty($request->type) ? $lawsProjects->where('law_type_id', $request->type) : null;
+            ! empty($request->number) ? $lawsProjects->where('project_number', $request->number) : null;
+            ! empty($request->year) ? $lawsProjects->where('law_date', 'like', $request->year.'%') : null;
+            ! empty($request->owner) ? $lawsProjects->where('assemblyman_id', $request->owner) : null;
 
-            if (Auth::user()->sector->slug != "gabinete") {
-
+            if (Auth::user()->sector->slug != 'gabinete') {
                 $lawsProjects = $lawsProjects->paginate(20);
-
             } else {
+                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
-                $gabs         = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds       = $this->getAssembbyIds($gabs);
+                $gabIds = $this->getAssembbyIds($gabs);
+
                 $lawsProjects = $lawsProjects->whereIN('assemblyman_id', $gabIds)->paginate(20);
-
             }
-
         } else {
-
-            if (Auth::user()->sector->slug != "gabinete") {
-
+            if (Auth::user()->sector->slug != 'gabinete') {
                 $lawsProjects = LawsProject::byDateDesc()->paginate(20);
-
             } else {
+                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
-                $gabs         = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds       = $this->getAssembbyIds($gabs);
+                $gabIds = $this->getAssembbyIds($gabs);
+
                 $lawsProjects = LawsProject::whereIN('assemblyman_id', $gabIds)->byDateDesc()->paginate(20);
-
             }
-
         }
 
-        $law_places       = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
+        $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
+
         $assemblymensList = $this->getAssemblymenList();
 
-        $references         = LawsProject::all();
+        $references = LawsProject::all();
+
         $references_project = [0 => 'Selecione'];
+
         foreach ($references as $reference) {
-            $references_project[$reference->id] = $reference->project_number . '/' . $reference->getYearLaw($reference->law_date . ' - ' . $reference->law_type->name);
+            $references_project[$reference->id] = $reference->project_number.'/'.$reference->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
         }
 
         $lawsProjects->parecer = $request->parecer;
@@ -165,34 +174,36 @@ class LawsProjectController extends AppBaseController
     }
 
     /**
-     * Show the form for creating a new LawsProject.
-     *
-     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @return Application|Factory|RedirectResponse|Redirector|View
      */
     public function create()
     {
-        if (!Defender::hasPermission('lawsProjects.create')) {
+        if (! Defender::hasPermission('lawsProjects.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $assemblymensList = $this->getAssemblymenList();
 
-        $law_types              = LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '');
-        $situation              = LawSituation::pluck('name', 'id')->prepend('Selecione...', '');
-        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $law_types = LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '');
+        $situation = LawSituation::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
         $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
 
         $comission = Commission::pluck('name', 'id')->prepend('Selecione', 0);
 
-        $references         = LawsProject::all();
+        $references = LawsProject::all();
+
         $references_project = [0 => 'Selecione'];
+
         foreach ($references as $reference) {
-            $references_project[$reference->id] = $reference->project_number . '/' . $reference->getYearLaw($reference->law_date . ' - ' . $reference->law_type->name);
+            $references_project[$reference->id] = $reference->project_number.'/'.$reference->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
         }
 
         $lawsProject = new LawsProject();
+
         return view('lawsProjects.create')->with(compact('status_processing_law', 'comission', 'lawsProject', 'law_types', 'situation', 'advice_situation_law', 'advice_publication_law'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('references_project', $references_project)
@@ -200,18 +211,16 @@ class LawsProjectController extends AppBaseController
     }
 
     /**
-     * Store a newly created LawsProject in storage.
-     *
      * @param CreateLawsProjectRequest $request
-     *
-     * @return Application|Redirector|RedirectResponse
+     * @return Application|RedirectResponse|Redirector
      * @throws BindingResolutionException
      */
     public function store(CreateLawsProjectRequest $request)
     {
-        if (!Defender::hasPermission('lawsProjects.create')) {
+        if (! Defender::hasPermission('lawsProjects.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $input = $request->all();
@@ -220,47 +229,62 @@ class LawsProjectController extends AppBaseController
 
         $lawsProject = $this->lawsProjectRepository->create($input);
 
-        if (!empty($input['assemblymen'])) {
+        if (! empty($input['assemblymen'])) {
             foreach ($input['assemblymen'] as $assemblyman) {
-                $lawsProjectAssemblyman                 = new LawsProjectAssemblyman();
+                $lawsProjectAssemblyman = new LawsProjectAssemblyman();
                 $lawsProjectAssemblyman->law_project_id = $lawsProject->id;
                 $lawsProjectAssemblyman->assemblyman_id = $assemblyman;
                 $lawsProjectAssemblyman->save();
             }
         }
 
-        if ($request->file('file')) {
-            $extension = $request->file('file')->getClientOriginalExtension();
-            $fileName  = 'law_' . $lawsProject->id . '.' . $extension;
-            if ($request->file('file')->move('laws', $fileName)) {
-                $lawsProject->file = $fileName;
-                $lawsProject->save();
-            }
+        $file = $request->file('file');
+
+        if ($file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
-        if ($request->file('law_file')) {
-            $extension = $request->file('law_file')->getClientOriginalExtension();
-            $fileName  = 'law_file_' . $lawsProject->id . '.' . $extension;
-            if ($request->file('law_file')->move('laws', $fileName)) {
-                $lawsProject->law_file = $fileName;
-                $lawsProject->save();
-            }
+        $law_file = $request->file('law_file');
+
+        if ($law_file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->law_file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
 
-        $law_number                  = new LawProjectsNumber();
+        $law_number = new LawProjectsNumber();
         $law_number->laws_project_id = $lawsProject->id;
-        $law_number->date            = $lawsProject->updated_at;
+        $law_number->date = $lawsProject->updated_at;
         $law_number->save();
 
         flash('Projeto de Leis salvo com sucesso.')->success();
 
         return redirect(route('lawsProjects.index'));
-
     }
 
+    /**
+     * @param $lawProjectId
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
+     */
     public function advices($lawProjectId)
     {
         setlocale(LC_ALL, 'pt_BR');
+
         $lawsProject = $this->lawsProjectRepository->findByID($lawProjectId);
 
         if (empty($lawsProject)) {
@@ -269,54 +293,52 @@ class LawsProjectController extends AppBaseController
             return redirect(route('lawsProjects.index'));
         }
 
-        $comission  = Commission::active()->pluck('name', 'id');
+        $comission = Commission::active()->pluck('name', 'id');
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-projetos')->first()->value;
 
-        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...',
-            '');
+        AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
         $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
-        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
-        $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $status_processing_law = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
 
         return view('lawsProjects.advices', compact('comission', 'tramitacao', 'advice_situation_law', 'advice_publication_law', 'status_processing_law'))->with(compact('lawsProject'));
-
     }
 
-    public function getResponsability($assemblyman, $date)
+    /**
+     * @param $assemblyman
+     * @param $date
+     * @return string
+     */
+    public function getResponsability($assemblyman, $date): string
     {
         $achou = 0;
+
         foreach ($assemblyman->assemblyman->responsibility_assemblyman()->orderBy('date', 'desc')->get() as $item) {
             $date1 = explode('/', $item->date);
-            $date1 = $date1[2] . '-' . $date1[1] . '-' . $date1[0];
+
+            $date1 = $date1[2].'-'.$date1[1].'-'.$date1[0];
+
             if (strtotime($date1) <= strtotime($date) && $achou == 0) {
                 $achou = 1;
-                $resp  = $item->responsibility->name . "(a) ";
+
+                $resp = $item->responsibility->name.'(a) ';
             } else {
                 $resp = 'Vereador(a)';
             }
         }
 
         return $resp;
-
     }
 
     /**
-     * Display the specified LawsProject.
-     *
-     * @param  int $id
-     *
-     * @return Application|Redirector|RedirectResponse|void
+     * @param $id
+     * @return Application|RedirectResponse|Redirector|void
      */
     public function show($id)
     {
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-
-//        if (!Defender::hasPermission('lawsProjects.show')) {
-        //            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
-        //            return redirect("/");
-        //        }
 
         $lawsProject = LawsProject::find($id);
 
@@ -327,25 +349,25 @@ class LawsProjectController extends AppBaseController
         }
 
         // load Parameters
-        $showAdvices    = Parameters::where('slug', 'mostra-historico-de-tramites-no-front')->first()->value;
-        $showHeader     = Parameters::where('slug', 'mostra-cabecalho-em-pdf-de-documentos-e-projetos')->first()->value;
-        $marginHeader   = Parameters::where('slug', 'espaco-entre-texto-e-cabecalho')->first()->value;
+        $showAdvices = Parameters::where('slug', 'mostra-historico-de-tramites-no-front')->first()->value;
+        $showHeader = Parameters::where('slug', 'mostra-cabecalho-em-pdf-de-documentos-e-projetos')->first()->value;
+        $marginHeader = Parameters::where('slug', 'espaco-entre-texto-e-cabecalho')->first()->value;
         $margemSuperior = Parameters::where('slug', 'margem-superior-de-documentos')->first()->value;
         $margemInferior = Parameters::where('slug', 'margem-inferior-de-documentos')->first()->value;
         $margemEsquerda = Parameters::where('slug', 'margem-esquerda-de-documentos')->first()->value;
-        $margemDireita  = Parameters::where('slug', 'margem-direita-de-documentos')->first()->value;
-        $tramitacao     = Parameters::where('slug', 'exibe-detalhe-de-tramitacao')->first()->value;
-        $votacao        = Parameters::where('slug', 'mostra-votacao-em-projeto-de-lei')->first()->value;
+        $margemDireita = Parameters::where('slug', 'margem-direita-de-documentos')->first()->value;
+        $tramitacao = Parameters::where('slug', 'exibe-detalhe-de-tramitacao')->first()->value;
+        $votacao = Parameters::where('slug', 'mostra-votacao-em-projeto-de-lei')->first()->value;
 
-        require_once public_path() . '/tcpdf/mypdf.php';
+        require_once public_path().'/tcpdf/mypdf.php';
 
         $pdf = new \MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('MakerLegis');
 
         $pdf->SetPrintHeader($showHeader);
-        $pdf->setFooterData($lawsProject->getNumberLaw(), array(0, 64, 0), array(0, 64, 128));
-        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->setFooterData($lawsProject->getNumberLaw(), [0, 64, 0]);
+        $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         $pdf->SetMargins($margemEsquerda, $marginHeader, $margemDireita);
         $pdf->SetHeaderMargin($margemSuperior);
@@ -361,260 +383,202 @@ class LawsProjectController extends AppBaseController
         $pdf->setListIndentWidth(5);
 
         $assemblymen = LawsProjectAssemblyman::where('law_project_id', $lawsProject->id)->orderBy('id')->get();
-        $date        = explode('/', $lawsProject->law_date);
-        $date        = $date[2] . '-' . $date[1] . '-' . $date[0];
+        $date = explode('/', $lawsProject->law_date);
+        $date = $date[2].'-'.$date[1].'-'.$date[0];
 
-        $list       = [];
+        $list = [];
         $list[0][0] = $lawsProject->owner->short_name;
-        $list[0][1] = count($lawsProject->owner->responsibility_assemblyman) > 1 ? $lawsProject->owner->responsibility_assemblyman()->where('date', '<=', $date)->get()->last()->responsibility->name . "(a) " : $lawsProject->owner->responsibility_assemblyman()->first()->responsibility->name . "(a) ";
+        $list[0][1] = count($lawsProject->owner->responsibility_assemblyman) > 1 ? $lawsProject->owner->responsibility_assemblyman()->where('date', '<=', $date)->get()->last()->responsibility->name.'(a) ' : $lawsProject->owner->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
 
-        if (!empty($assemblymen)) {
+        if (! empty($assemblymen)) {
             foreach ($assemblymen as $key => $assemblyman) {
                 $list[$key + 1][0] = $assemblyman->assemblyman->short_name;
                 if (count($assemblyman->assemblyman->responsibility_assemblyman) > 1) {
                     $list[$key + 1][1] = $this->getResponsability($assemblyman, $date);
                 } else {
-                    $list[$key + 1][1] = count($assemblyman->assemblyman->responsibility_assemblyman) == 0 ? '-' : $assemblyman->assemblyman->responsibility_assemblyman()->first()->responsibility->name . "(a) ";
+                    $list[$key + 1][1] = count($assemblyman->assemblyman->responsibility_assemblyman) == 0 ? '-' : $assemblyman->assemblyman->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
                 }
             }
         }
 
-        $html  = "";
+        $html = '';
         $count = 0;
 
         if (count($list) == 1) {
-            $html .= "<table cellspacing=\"10\" cellpadding=\"10\" style=\" margin-top: 300px; width:100%;  \"><tbody>";
-            $html .= "<tr style=\"height: 300px\">";
-            $html .= "<td style=\"width:25%;\"></td>";
-            $html .= "<td style=\"width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top\">" . $list[0][0] . "<br>" . $list[0][1] . "<br><br><br></td>";
-            $html .= "<td style=\"width:25%;\"></td>";
-            $html .= "</tr>";
-            $html .= "</tbody></table>";
+            $html .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+            $html .= '<tr style="height: 300px">';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '<td style="width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][1].'<br><br><br></td>';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '</tr>';
+            $html .= '</tbody></table>';
         } else {
-            $html .= "<table cellspacing=\"10\" cellpadding=\"10\" style=\"position:absolute; width: 100%; margin-top: 300px\"><tbody>";
+            $html .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 300px"><tbody>';
             foreach ($list as $vereador) {
                 if ($count == 0) {
-                    $html .= "<tr style=\"height: 300px\">";
+                    $html .= '<tr style="height: 300px">';
                 }
 
-                $html .= "<td style=\"text-align: center; border-top: 1px solid #000000; vertical-align: text-top\">" . $vereador[0] . "<br>" . $vereador[1] . "<br><br><br></td>";
+                $html .= '<td style="text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$vereador[0].'<br>'.$vereador[1].'<br><br><br></td>';
 
                 if ($count == 2 || $vereador === end($list)) {
-                    $html .= "</tr>";
+                    $html .= '</tr>';
                     $count = 0;
                 } else {
                     $count++;
                 }
-
             }
-            $html .= "</tbody></table>";
+            $html .= '</tbody></table>';
         }
 
         $structure = StructureLaws::where('law_id', $lawsProject->id)->isRoot()->get();
-        $content   = "<h3 style=\"text-align: center\">" . mb_strtoupper($lawsProject->law_type->name, 'UTF-8') . " " . $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) . "</h3>";
-//        $content .= "<span><strong>DATA DO PROJETO:</strong> " . strftime('%d/%m/%Y', strtotime(Carbon::createFromFormat('d/m/Y', $lawsProject->law_date))) . "</span><br>";
+        $content = '<h3 style="text-align: center">'.mb_strtoupper($lawsProject->law_type->name, 'UTF-8').' '.$lawsProject->project_number.'/'.$lawsProject->getYearLawPublish($lawsProject->law_date).'</h3>';
 
-        $content .= "<table cellspacing=\"10\" cellpadding=\"10\" style=\" margin-top: 300px; width:100%;  \"><tbody>";
-        $content .= "<tr style=\"height: 300px\">";
-        $content .= "<td style=\"width:25%;\"></td>";
-        $content .= "<td style=\"width:15%;\"></td>";
-        $content .= "<td style=\"width:65%; text-align: justify; text-justify: inter-word \">" . $lawsProject->title . "</td>";
-        $content .= "</tr>";
-        $content .= "</tbody></table>";
+        $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+        $content .= '<tr style="height: 300px">';
+        $content .= '<td style="width:25%;"></td>';
+        $content .= '<td style="width:15%;"></td>';
+        $content .= '<td style="width:65%; text-align: justify; text-justify: inter-word ">'.$lawsProject->title.'</td>';
+        $content .= '</tr>';
+        $content .= '</tbody></table>';
 
-        $content .= "<br>";
+        $content .= '<br>';
 
-        $content .= "<p>" . ($lawsProject->sub_title) . "</p>";
+        $content .= '<p>'.($lawsProject->sub_title).'</p>';
 
         $content .= "<p><ul style='list-style-type:none; list-style: none;counter-reset: num; margin-bottom: 300px'>";
-
-        //dd($structure);
 
         foreach ($structure as $reg) {
             $content .= $this->renderNode($reg, 0, 0);
         }
 
-        $content .= "</ul></p>";
+        $content .= '</ul></p>';
 
-        $content .= "<br><br>";
-        $content .= "<p>" . ($lawsProject->sufix) . "</p>";
+        $content .= '<br><br>';
+        $content .= '<p>'.($lawsProject->sufix).'</p>';
 
-        $lawsProject->situation_id1          = $lawsProject->advice_situation_id > 0 ? $lawsProject->adviceSituationLaw->name : '-';
+        $lawsProject->situation_id1 = $lawsProject->advice_situation_id > 0 ? $lawsProject->adviceSituationLaw->name : '-';
         $lawsProject->advice_publication_id1 = $lawsProject->advice_publication_id > 0 ? $lawsProject->advicePublicationLaw->name : '-';
-        $lawsProject->observation            = $lawsProject->observation == null ? '-' : $lawsProject->observation;
+        $lawsProject->observation = $lawsProject->observation == null ? '-' : $lawsProject->observation;
 
         $data_USA = explode(' ', ucfirst(iconv('ISO-8859-1', 'UTF-8', strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $lawsProject->law_date))))));
 
-        $mes['January']   = 'Janeiro';
-        $mes['February']  = 'Fevereiro';
-        $mes['March']     = 'Março';
-        $mes['April']     = 'Abril';
-        $mes['May']       = 'Maio';
-        $mes['June']      = 'Junho';
-        $mes['July']      = 'Julho';
-        $mes['August']    = 'Agosto';
+        $mes['January'] = 'Janeiro';
+        $mes['February'] = 'Fevereiro';
+        $mes['March'] = 'Março';
+        $mes['April'] = 'Abril';
+        $mes['May'] = 'Maio';
+        $mes['June'] = 'Junho';
+        $mes['July'] = 'Julho';
+        $mes['August'] = 'Agosto';
         $mes['September'] = 'Setembro';
-        $mes['October']   = 'Outubro';
-        $mes['November']  = 'Novembro';
-        $mes['December']  = 'Dezembro';
+        $mes['October'] = 'Outubro';
+        $mes['November'] = 'Novembro';
+        $mes['December'] = 'Dezembro';
 
-        $mes_pt    = isset($mes[$data_USA[2]]) ? $mes[$data_USA[2]] : $data_USA[2];
-        $data_ptbr = $data_USA[0] . ' ' . $data_USA[1] . ' ' . $mes_pt . ' ' . $data_USA[3] . ' ' . $data_USA[4];
+        $mes_pt = $mes[$data_USA[2]] ?? $data_USA[2];
+        $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
 
         $dataProject = $data_ptbr;
 
-        $cidade = Company::first()->getCity->name . "/" . Company::first()->getState->uf;
+        $cidade = Company::first()->getCity->name.'/'.Company::first()->getState->uf;
 
-        $content .= "<table cellspacing=\"10\" cellpadding=\"10\" style=\" margin-top: 300px; width:100%;  \"><tbody>";
-        $content .= "<tr style=\"height: 300px\">";
-        $content .= "<td style=\"width:25%;\"></td>";
-        $content .= "<td style=\"width:75%; text-align: right\">" . $cidade . ", " . $dataProject . "</td>";
-        $content .= "</tr>";
-        $content .= "</tbody></table>";
+        $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+        $content .= '<tr style="height: 300px">';
+        $content .= '<td style="width:25%;"></td>';
+        $content .= '<td style="width:75%; text-align: right">'.$cidade.', '.$dataProject.'</td>';
+        $content .= '</tr>';
+        $content .= '</tbody></table>';
 
         if ($lawsProject->comission) {
-            $content .= "<span style=\"width:75%; text-align: center\"> " . $lawsProject->comission->name . "</span>";
+            $content .= '<span style="width:75%; text-align: center"> '.$lawsProject->comission->name.'</span>';
         }
-        $content .= "<br><br><br><br>" . $html;
+
+        $content .= '<br><br><br><br>'.$html;
 
         $pdf->writeHTML($content);
 
         if ($tramitacao && $lawsProject->processing()->orderBy('processing_date', 'desc')->count() > 0) {
-
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
 
-            $html1 = "<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css\" rel=\"stylesheet\" >";
+            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
 
-            $html1 .= "<h3 style=\"width:100%; text-align: center;\"> Tramitação </h3>";
-            $html1 .= "<table cellspacing=\"10\" cellpadding=\"10\" style=\" margin-top: 300px; width:100%;  \">";
+            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
+            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
 
-            $html1 .= "<tbody>";
+            $html1 .= '<tbody>';
             foreach ($lawsProject->processing()->orderBy('processing_date', 'desc')->get() as $processing) {
-                $html1 .= "<hr>";
-                $html1 .= "<tr style=\" text-align: left;\">";
-                $html1 .= "<td width=\"100\" style=\" text-align: left;\"><b>Data: </b> <br>" . $processing->processing_date . "</td>";
+                $html1 .= '<hr>';
+                $html1 .= '<tr style=" text-align: left;">';
+                $html1 .= '<td width="100" style=" text-align: left;"><b>Data: </b> <br>'.$processing->processing_date.'</td>';
                 if ($processing->advicePublicationLaw) {
-                    $html1 .= "<td width=\"120\" style=\" text-align: left;\"><b>Publicado no: </b> <br>" . $processing->advicePublicationLaw->name . " </td>";
+                    $html1 .= '<td width="120" style=" text-align: left;"><b>Publicado no: </b> <br>'.$processing->advicePublicationLaw->name.' </td>';
                 }
-                $html1 .= "<td width=\"150\" style=\" text-align: left;\"><b>Situação do projeto: </b> <br>" . $processing->adviceSituationLaw->name . "</td>";
+                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do projeto: </b> <br>'.$processing->adviceSituationLaw->name.'</td>';
                 if ($processing->statusProcessingLaw) {
-                    $html1 .= "<td width=\"150\" style=\" text-align: left;\"><b>Status do tramite: </b> <br>" . $processing->statusProcessingLaw->name . "</td>";
+                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingLaw->name.'</td>';
                 }
-                $html1 .= "</tr>";
+                $html1 .= '</tr>';
                 if (strlen($processing->obsevation) > 0) {
-                    $html1 .= "<tr>";
-                    $html1 .= "<td width=\"650\" style=\" text-align: justify; \"><b>Observação: </b> <br>" . $processing->obsevation . "</td>";
-                    $html1 .= "</tr>";
+                    $html1 .= '<tr>';
+                    $html1 .= '<td width="650" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->obsevation.'</td>';
+                    $html1 .= '</tr>';
                 }
             }
-            $html1 .= "</tbody></table>";
+            $html1 .= '</tbody></table>';
 
             $pdf->writeHTML($html1);
         }
 
-//        if ($tramitacao) {
-        //            $pdf->AddPage();
-        //            $pdf->setListIndentWidth(5);
-        //            $html2 = "<table cellspacing=\"10\" cellpadding=\"10\" style=\" margin-top: 300px; width:100%;  \"><tbody>";
-        //            $html2 .= "<tr style=\"height: 300px\">";
-        //            $html2 .= "<td style=\"width:100%; text-align: center;\"><h3> Detalhes da tramitação </h3></td>";
-        //            $html2 .= "</tr>";
-        //            $html2 .= "</tbody></table>";
-        //            $html2 .= "<table style=\" text-align: left;\">";
-        //            $html2 .= "<tr style=\" text-align: left;\">";
-        //            $html2 .= "<td style=\" text-align: left;\">Publicado: " . $lawsProject->advice_publication_id1 . "</td>";
-        //            $html2 .= "<td style=\" text-align: left;\">Situação do projeto: ". $lawsProject->situation_id1 ."</td>";
-        //            $html2 .= "<td style=\" text-align: left;\">Data ao plenário: ". $lawsProject->date_presentation ."</td>";
-        //            $html2 .= "</tr>";
-        //            $html2 .= "<br>";
-        //            $html2 .= "<tr style=\" text-align: left; \">";
-        //            $html2 .= "<td style=\" text-align: left;\">Parecer: ". $lawsProject->advice_date ." </td>";
-        //            $html2 .= "<td style=\" text-align: left;\">Primeira discussão: ". $lawsProject->first_discussion ." </td>";
-        //            $html2 .= "<td style=\" text-align: left;\">Segunda discussão: ". $lawsProject->second_discussion ." </td>";
-        //            $html2 .= "</tr>";
-        //            $html2 .= "<br>";
-        //            $html2 .= "<tr style=\" text-align: left; \">";
-        //            $html2 .= "<td style=\" text-align: left;\">Terceira discussão: ". $lawsProject->third_discussion ." </td>";
-        //            $html2 .= "<td style=\" text-align: left;\">Única discussão: ". $lawsProject->single_discussion ." </td>";
-        //            $html2 .= "<td style=\" text-align: left;\"> Urgência especial: ". $lawsProject->special_urgency ." </td>";
-        //            $html2 .= "</tr>";
-        //            $html2 .= "<br>";
-        //            $html2 .= "<tr style=\" text-align: left; \">";
-        //            $html2 .= "<td style=\" text-align: left;\">Aprovado: ". $lawsProject->approved ." </td>";
-        //            $html2 .= "<td style=\" text-align: left;\">Sancionado: ". $lawsProject->sanctioned ." </td>";
-        //            $html2 .= "<td style=\" text-align: left;\">Promulgado: ". $lawsProject->Promulgated ." </td>";
-        //            $html2 .= "</tr>";
-        //            $html2 .= "<br>";
-        //            $html2 .= "<tr style=\" text-align: left; \">";
-        //            $html2 .= "<td style=\" text-align: left;\">Rejeitado: ". $lawsProject->Rejected ." </td>";
-        //            $html2 .= "<td style=\" text-align: left;\">Vetado: ". $lawsProject->Vetoed ." </td>";
-        //            $html2 .= "<td style=\" text-align: left;\">Arquivado: ". $lawsProject->Filed ." </td>";
-        //            $html2 .= "</tr>";
-        //            $html2 .= "<br>";
-        //            $html2 .= "<tr style=\" text-align: left; \">";
-        //            $html2 .= "<td style=\" text-align: left;\">Mantido: ". $lawsProject->sustained ." </td>";
-        //            $html2 .= "</tr>";
-        //            $html2 .= "<br>";
-        //            $html2 .= "<tr style=\" text-align: left; width: 100%;\">";
-        //            $html2 .= "<td style=\" text-align: left; width: 100%;\">Observação: " . $lawsProject->observation . " </td>";
-        //
-        //            $html2 .= "</tr>";
-        //
-        //            $html2 .= "</table>";
-        //            $html2 .= "<br>";
-        //            $pdf->writeHTML($html2);
-        //        }
-
         if ($votacao && $lawsProject->voting()->get()->count() > 0) {
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
-            $html2 = "<table cellspacing=\"10\" cellpadding=\"10\" style=\" margin-top: 300px; width:100%;  \"><tbody>";
-            $html2 .= "<tr style=\"height: 300px\">";
-            $html2 .= "<td style=\"width:100%; text-align: center;\"><h3> Votação </h3></td>";
-            $html2 .= "</tr>";
-            $html2 .= "</tbody></table>";
-            $html2 .= "<table style=\" text-align: left;\">";
+            $html2 = '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+            $html2 .= '<tr style="height: 300px">';
+            $html2 .= '<td style="width:100%; text-align: center;"><h3> Votação </h3></td>';
+            $html2 .= '</tr>';
+            $html2 .= '</tbody></table>';
+            $html2 .= '<table style=" text-align: left;">';
             foreach ($lawsProject->voting()->get() as $item) {
-                $html2 .= "<tr style=\" text-align: left;\">";
-                $html2 .= "<td style=\" text-align: left;\">Data da votação: " . date("d/m/Y", strtotime($item->open_at)) . "</td>";
-                $html2 .= "<td style=\" text-align: left;\">Situação: ";
+                $html2 .= '<tr style=" text-align: left;">';
+                $html2 .= '<td style=" text-align: left;">Data da votação: '.date('d/m/Y', strtotime($item->open_at)).'</td>';
+                $html2 .= '<td style=" text-align: left;">Situação: ';
                 if ($item->situation($item)) {
                     $html2 .= 'Votação Aprovada';
                 } else {
                     $html2 .= 'Votação Reprovada';
                 }
-                $html2 .= "</td>";
+                $html2 .= '</td>';
                 $html2 .= '<br>';
-                $html2 .= "</tr>";
+                $html2 .= '</tr>';
             }
 
-            $html2 .= "</table>";
-            $html2 .= "<br>";
+            $html2 .= '</table>';
+            $html2 .= '<br>';
             $pdf->writeHTML($html2);
         }
 
         if ($lawsProject->justify) {
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
-            $content = "<p>" . $lawsProject->justify . "</p>";
+            $content = '<p>'.$lawsProject->justify.'</p>';
 
-            $html = "<table cellspacing=\"10\" cellpadding=\"10\" style=\"width:100%;  \"><tbody>";
-            $html .= "<tr style=\"height: 300px\">";
-            $html .= "<td style=\"width:25%;\"></td>";
-            $html .= "<td style=\"width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top\">" . $list[0][0] . "<br>" . $list[0][1] . "<br><br><br></td>";
-            $html .= "<td style=\"width:25%;\"></td>";
-            $html .= "</tr>";
-            $html .= "</tbody></table>";
+            $html = '<table cellspacing="10" cellpadding="10" style="width:100%;  "><tbody>';
+            $html .= '<tr style="height: 300px">';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '<td style="width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][1].'<br><br><br></td>';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '</tr>';
+            $html .= '</tbody></table>';
 
-            $content .= "<div>" . $html . "</div>";
+            $content .= '<div>'.$html.'</div>';
 
             $pdf->writeHTML($content);
         }
 
         if ($showAdvices) {
             $advices = $this->loadAdvices($pdf, $id);
-
         }
 
         //return $content;
@@ -622,70 +586,68 @@ class LawsProjectController extends AppBaseController
         $pdf->Output('Projeto de lei.pdf', 'I');
 
         die();
+
         return view('lawsProjects.show')->with('lawsProject', $lawsProject);
     }
 
     public function loadAdvices($pdf, $lawsProjectId)
     {
-
         $advices = Advice::where('laws_projects_id', $lawsProjectId)->get();
 
-        if (!$advices) {
+        if (! $advices) {
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
-            $content = "<h4 style=\"text-align: center\">nenhum trâmite para este documento</h4>";
+            $content = '<h4 style="text-align: center">nenhum trâmite para este documento</h4>';
             $pdf->writeHTML($content);
         } else {
             $this->printAdvices($advices, $pdf);
         }
-
     }
 
     protected function printAdvices($advices, $pdf)
     {
         foreach ($advices as $advice) {
-
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
 
-            $return = "<h3 style=\"text-align: center\">" . mb_strtoupper($advice->destination->name, 'UTF-8') . "</h3>";
-            $return .= "<p><strong>Solicitação: </strong>" . $advice->date . "<br><strong>Descrição: </strong>" . $advice->description . "</p>";
+            $return = '<h3 style="text-align: center">'.mb_strtoupper($advice->destination->name, 'UTF-8').'</h3>';
+            $return .= '<p><strong>Solicitação: </strong>'.$advice->date.'<br><strong>Descrição: </strong>'.$advice->description.'</p>';
 
             foreach ($advice->awnser as $resp) {
                 $resp->commission_situation = $resp->commission_situation ? $resp->commission_situation->name : '';
 
-                $return .= "<div style=\"border: 1px solid #000000; padding-left: 10px \">";
-                $return .= "<strong>Data: </strong> " . $resp->date . "<br>";
-                $return .= "<strong>Situação: </strong> " . $resp->commission_situation . "<br>";
+                $return .= '<div style="border: 1px solid #000000; padding-left: 10px ">';
+                $return .= '<strong>Data: </strong> '.$resp->date.'<br>';
+                $return .= '<strong>Situação: </strong> '.$resp->commission_situation.'<br>';
                 $return .= trim($resp->description);
-                $return .= "</div>";
+                $return .= '</div>';
             }
             $pdf->writeHTML($return);
         }
-
     }
 
     private function renderNode($node, $index = 0, $level = 0)
     {
-        $html = "";
+        $html = '';
 
         if ($node->isLeaf()) {
             if ($node->depth > 0) {
-                $html = '<li style="list-style-type:none; list-style: none; line-height: 2"><strong>' .
+                $html = '<li style="list-style-type:none; list-style: none; line-height: 2"><strong>'.
                 (isset($node->type) ? $node->type->showName() : '')
-                . ' '
-                . ($node->number ? $node->number : '')
-                . "</strong> - "
-                . $node->content;
+                .' '
+                .($node->number ? $node->number : '')
+                .'</strong> - '
+                .$node->content;
 
                 $html .= '</li>';
             }
+
             return $html;
         } else {
-            $html = "";
+            $html = '';
             //if($node->depth>0){
-            if (!$node->isRoot()) {
-                $html .= '<li style="list-style-type:none; list-style: none; line-height: 2"><strong>' . (isset($node->type) ? $node->type->showName() : '') . ' ' . ($node->number ? $node->number : '') . "</strong> - " . $node->content;
+            if (! $node->isRoot()) {
+                $html .= '<li style="list-style-type:none; list-style: none; line-height: 2"><strong>'.(isset($node->type) ? $node->type->showName() : '').' '.($node->number ? $node->number : '').'</strong> - '.$node->content;
             }
             //}
 
@@ -701,6 +663,7 @@ class LawsProjectController extends AppBaseController
 
         return $html;
     }
+
     /**
      * Show the form for editing the specified LawsProject.
      *
@@ -710,9 +673,10 @@ class LawsProjectController extends AppBaseController
      */
     public function edit($id)
     {
-        if (!Defender::hasPermission('lawsProjects.edit')) {
+        if (! Defender::hasPermission('lawsProjects.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
         $lawsProject = $this->lawsProjectRepository->findByID($id);
 
@@ -726,22 +690,23 @@ class LawsProjectController extends AppBaseController
 
         $lawsAssemblyman = LawsProjectAssemblyman::where('law_project_id', $id)->pluck('assemblyman_id');
 
-        $law_types              = LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '');
-        $law_places             = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
-        $law_structure          = LawsStructure::pluck('name', 'id')->prepend('Selecione...', '');
-        $situation              = LawSituation::pluck('name', 'id')->prepend('Selecione...', '');
-        $advice_situation_law   = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $law_types = LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '');
+        $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
+        $law_structure = LawsStructure::pluck('name', 'id')->prepend('Selecione...', '');
+        $situation = LawSituation::pluck('name', 'id')->prepend('Selecione...', '');
+        $advice_situation_law = AdviceSituationLaw::pluck('name', 'id')->prepend('Selecione...', '');
         $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
-        $status_processing_law  = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
-        $comission              = Commission::pluck('name', 'id')->prepend('Selecione', 0);
+        $status_processing_law = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
+        $comission = Commission::pluck('name', 'id')->prepend('Selecione', 0);
 
-        $references         = LawsProject::all();
+        $references = LawsProject::all();
         $references_project = [0 => 'Selecione'];
         foreach ($references as $reference) {
-            $references_project[$reference->id] = $reference->project_number . '/' . $reference->getYearLaw($reference->law_date . ' - ' . $reference->law_type->name);
+            $references_project[$reference->id] = $reference->project_number.'/'.$reference->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
         }
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-projetos')->first()->value;
-        $logs       = Log::where('owner_id', $lawsProject->id)->where('owner_type', LawsProject::class)->orderBy('created_at', 'desc')->get();
+        $logs = Log::where('owner_id', $lawsProject->id)->where('owner_type', LawsProject::class)->orderBy('created_at', 'desc')->get();
+
         return view('lawsProjects.edit')->with(compact('logs', 'status_processing_law', 'tramitacao', 'comission', 'situation', 'lawsProject', 'law_types', 'law_places', 'law_structure', 'lawsAssemblyman', 'references_project', 'advice_situation_law', 'advice_publication_law'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1]);
@@ -758,9 +723,10 @@ class LawsProjectController extends AppBaseController
      */
     public function update($id, UpdateLawsProjectRequest $request)
     {
-        if (!Defender::hasPermission('lawsProjects.edit')) {
+        if (! Defender::hasPermission('lawsProjects.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawsProject = $this->lawsProjectRepository->findByID($id);
@@ -780,36 +746,46 @@ class LawsProjectController extends AppBaseController
 
         LawsProjectAssemblyman::where('law_project_id', $id)->delete();
 
-        if (!empty($request['assemblymen'])) {
+        if (! empty($request['assemblymen'])) {
             foreach ($request['assemblymen'] as $assemblyman) {
-                $lawsProjectAssemblyman                 = new LawsProjectAssemblyman();
+                $lawsProjectAssemblyman = new LawsProjectAssemblyman();
                 $lawsProjectAssemblyman->law_project_id = $lawsProject->id;
                 $lawsProjectAssemblyman->assemblyman_id = $assemblyman;
                 $lawsProjectAssemblyman->save();
             }
         }
 
-        if ($request->file('file')) {
-            $extension = $request->file('file')->getClientOriginalExtension();
-            $fileName  = 'law_' . $id . '.' . $extension;
-            if ($request->file('file')->move('laws', $fileName)) {
-                $lawsProject->file = $fileName;
-                $lawsProject->save();
-            }
+        $file = $request->file('file');
+
+        if ($file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
-        if ($request->file('law_file')) {
-            $extension = $request->file('law_file')->getClientOriginalExtension();
-            $fileName  = 'law_file_' . $lawsProject->id . '.' . $extension;
-            if ($request->file('law_file')->move('laws', $fileName)) {
-                $lawsProject->law_file = $fileName;
-                $lawsProject->save();
-            }
+        $law_file = $request->file('law_file');
+
+        if ($law_file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->law_file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
 
-        $law_number                  = new LawProjectsNumber();
+        $law_number = new LawProjectsNumber();
         $law_number->laws_project_id = $lawsProject->id;
-        $law_number->date            = $lawsProject->updated_at;
+        $law_number->date = $lawsProject->updated_at;
         $law_number->save();
 
         flash('Projeto de Leis atualizado com sucesso.')->success();
@@ -828,9 +804,10 @@ class LawsProjectController extends AppBaseController
      */
     public function destroy($id)
     {
-        if (!Defender::hasPermission('lawsProjects.delete')) {
+        if (! Defender::hasPermission('lawsProjects.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/");
+
+            return redirect('/');
         }
 
         $lawsProject = $this->lawsProjectRepository->findByID($id);
@@ -862,12 +839,13 @@ class LawsProjectController extends AppBaseController
      */
     public function toggle($id)
     {
-        if (!Defender::hasPermission('lawsProjects.edit')) {
+        if (! Defender::hasPermission('lawsProjects.edit')) {
             return json_encode(false);
         }
-        $register         = $this->lawsProjectRepository->findByID($id);
+        $register = $this->lawsProjectRepository->findByID($id);
         $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
+
         return json_encode(true);
     }
 
@@ -878,12 +856,13 @@ class LawsProjectController extends AppBaseController
      */
     public function toggleRead($id)
     {
-        if (!Defender::hasPermission('lawsProject.read')) {
+        if (! Defender::hasPermission('lawsProject.read')) {
             return json_encode(false);
         }
-        $register          = $this->lawsProjectRepository->findByID($id);
+        $register = $this->lawsProjectRepository->findByID($id);
         $register->is_read = $register->is_read == 0 ? 1 : 0;
         $register->save();
+
         return json_encode(true);
     }
 
@@ -894,7 +873,7 @@ class LawsProjectController extends AppBaseController
      */
     public function toggleApproved($id)
     {
-        if (!Defender::hasPermission('lawsProject.approved')) {
+        if (! Defender::hasPermission('lawsProject.approved')) {
             return json_encode(false);
         }
         $register = $this->lawsProjectRepository->findByID($id);
@@ -933,11 +912,13 @@ class LawsProjectController extends AppBaseController
 
         if ($last_document) {
             $next_number = $last_document->law_number + 1;
-            $data        = ['law_project_id' => $id, 'next_number' => $next_number, 'year' => $year];
+            $data = ['law_project_id' => $id, 'next_number' => $next_number, 'year' => $year];
+
             return ['success' => 'true', 'data' => $data];
         } else {
             $next_number = 1;
-            $data        = ['law_project_id' => $id, 'next_number' => $next_number, 'year' => $year];
+            $data = ['law_project_id' => $id, 'next_number' => $next_number, 'year' => $year];
+
             return ['success' => 'false', 'data' => $data];
         }
     }
@@ -969,12 +950,13 @@ class LawsProjectController extends AppBaseController
 
         if ($lawProject_verify) {
             $next_number = $lawProject_verify->law_number + 1;
+
             return ['success' => false, 'message' => 'Número já utilizado ou inferior ao último, a sua sugestão foi atualizada!', 'next_number' => $next_number];
         } else {
-            $lawProject->law_number       = $input['law_number'];
+            $lawProject->law_number = $input['law_number'];
             $lawProject->law_date_publish = $input['date_publish'];
-            $lawProject->law_place_id     = $input['law_place_id'];
-            $lawProject->is_ready         = 1;
+            $lawProject->law_place_id = $input['law_place_id'];
+            $lawProject->is_ready = 1;
             $lawProject->save();
 
             return ['success'         => true,
@@ -985,7 +967,6 @@ class LawsProjectController extends AppBaseController
                 'law_number'              => $lawProject->law_number,
                 'year'                    => $year,
             ];
-
         }
     }
 
@@ -1025,7 +1006,7 @@ class LawsProjectController extends AppBaseController
         $year = explode('/', $law_project->law_date);
         $year = $year[2];
 
-        $parameter            = Parameters::where('slug', 'permitir-criar-numero-de-projetos-de-lei-fora-da-sequencia')->first();
+        $parameter = Parameters::where('slug', 'permitir-criar-numero-de-projetos-de-lei-fora-da-sequencia')->first();
         $parameterAssemblyman = Parameters::where('slug', 'permitir-criar-numero-de-projetos-e-documentos-para-mesmo-vereadores')->first();
 
         if ($parameter->value == 0) {
@@ -1054,13 +1035,14 @@ class LawsProjectController extends AppBaseController
 
         if ($verify) {
             $next_number = $verify->project_number + 1;
+
             return ['success' => false, 'message' => 'Número já utilizado ou inferior ao último, a sua sugestão foi atualizada!', 'next_number' => $next_number];
         } else {
-
             $law_project->project_number = $params['project_number'];
-            $law_project->protocol       = $params['protocol'];
-            $law_project->protocoldate   = $params['protocoldate'];
+            $law_project->protocol = $params['protocol'];
+            $law_project->protocoldate = $params['protocoldate'];
             $law_project->save();
+
             return [
                 'success'        => true,
                 'lawProject_id'  => $law_project->id,
@@ -1068,14 +1050,13 @@ class LawsProjectController extends AppBaseController
                 'year'           => $year,
             ];
         }
-
     }
 
     public function lawsProjectStructure($id)
     {
-        $law_project          = LawsProject::find($id);
+        $law_project = LawsProject::find($id);
         $laws_structure_types = LawsStructure::pluck('name', 'id');
-        $structure_laws       = StructureLaws::where('law_id', $id)->isRoot()->get();
+        $structure_laws = StructureLaws::where('law_id', $id)->isRoot()->get();
 
         if (count($structure_laws) == 0) {
             $data = [
@@ -1084,18 +1065,20 @@ class LawsProjectController extends AppBaseController
                 'parent_id'        => null,
                 'order'            => 0,
                 'number'           => 0,
-                'content'          => "Estrutura do projeto de lei",
+                'content'          => 'Estrutura do projeto de lei',
             ];
             $create = StructureLaws::firstOrCreate($data);
             $create->makeRoot();
             $structure_laws = StructureLaws::where('law_id', $id)->isRoot()->get();
         }
 
-        return view('lawsProjects.structure', compact(
-            'law_project',
-            'laws_structure_types',
-            'structure_laws'
-        )
+        return view(
+            'lawsProjects.structure',
+            compact(
+                'law_project',
+                'laws_structure_types',
+                'structure_laws'
+            )
         );
     }
 
@@ -1110,9 +1093,8 @@ class LawsProjectController extends AppBaseController
 
     public function getNumProt(Request $request)
     {
-
         $input = $request->all();
-        $obj   = LawsProject::find($input['id']);
+        $obj = LawsProject::find($input['id']);
         if ($obj) {
             return json_encode($obj);
         }
@@ -1122,9 +1104,8 @@ class LawsProjectController extends AppBaseController
 
     public function saveProtocolNumber(Request $request)
     {
-
         $input = $request->all();
-        $flag  = 0;
+        $flag = 0;
 
         $date = $input['protocoldate'];
 
@@ -1133,14 +1114,13 @@ class LawsProjectController extends AppBaseController
         $law_project = LawsProject::find($input['id']);
 
         $validaProtocolo = LawsProject::where('protocol', $input['protocol'])->whereYear('protocoldate', '=', $ano[2])->get();
-        $validaNumero    = LawsProject::where('project_number', $input['number'])->whereYear('law_date', '=', $ano[2])->where('law_type_id', $law_project->law_type_id)->get();
+        $validaNumero = LawsProject::where('project_number', $input['number'])->whereYear('law_date', '=', $ano[2])->where('law_type_id', $law_project->law_type_id)->get();
 
         if (count($validaProtocolo) == 0) {
-
-            $obj                 = LawsProject::find($input['id']);
+            $obj = LawsProject::find($input['id']);
             $obj->project_number = $input['number'];
-            $obj->protocol       = $input['protocol'];
-            $obj->protocoldate   = $input['protocoldate'];
+            $obj->protocol = $input['protocol'];
+            $obj->protocoldate = $input['protocoldate'];
 
             if ($obj->save()) {
                 $flag = 1;
@@ -1148,11 +1128,10 @@ class LawsProjectController extends AppBaseController
         }
 
         if (count($validaNumero) == 0) {
-
-            $obj                 = LawsProject::find($input['id']);
+            $obj = LawsProject::find($input['id']);
             $obj->project_number = $input['number'];
-            $obj->protocol       = $input['protocol'];
-            $obj->protocoldate   = $input['protocoldate'];
+            $obj->protocol = $input['protocol'];
+            $obj->protocoldate = $input['protocoldate'];
 
             if ($obj->save()) {
                 $flag = 1;
@@ -1168,7 +1147,6 @@ class LawsProjectController extends AppBaseController
 
     public function numberGetApproved(Request $request)
     {
-
         $lawproject = LawsProject::find($request->id);
 
         if ($lawproject) {
@@ -1176,12 +1154,10 @@ class LawsProjectController extends AppBaseController
         }
 
         return json_encode(false);
-
     }
 
     public function numberEditApproved(Request $request)
     {
-
         $input = $request->all();
 
         $lawProject = LawsProject::find($input['law_project_id']);
@@ -1207,9 +1183,10 @@ class LawsProjectController extends AppBaseController
 
         if ($lawProject_verify) {
             $next_number = $lawProject_verify->law_number + 1;
+
             return ['success' => false, 'message' => 'Número já utilizado ou inferior ao último, a sua sugestão foi atualizada!', 'next_number' => $next_number];
         } else {
-            $lawProject->law_number       = $input['law_number'];
+            $lawProject->law_number = $input['law_number'];
             $lawProject->law_date_publish = $input['law_date_publish'];
             $lawProject->save();
 
@@ -1221,13 +1198,11 @@ class LawsProjectController extends AppBaseController
                 'law_number'              => $lawProject->law_number,
                 'year'                    => $year,
             ];
-
         }
     }
 
     public function importNumberLaw()
     {
-
         $laws = LawsProject::all();
 
         if (empty($laws)) {
@@ -1248,46 +1223,47 @@ class LawsProjectController extends AppBaseController
         LawProjectsNumber::insert($data);
 
         flash('Leis migradas com sucesso!')->success();
+
         return redirect(route('lawsProjects.index'));
     }
 
     public function toogleApproved($id, Request $request)
     {
-        $law                = LawsProject::find($id);
-        $input              = $request->all();
-        $input['town_hall'] = ($input['town_hall'] == "true") ? 1 : 0;
+        $law = LawsProject::find($id);
+        $input = $request->all();
+        $input['town_hall'] = ($input['town_hall'] == 'true') ? 1 : 0;
         if ($law) {
             $law->town_hall = $input['town_hall'];
             $law->save();
+
             return json_encode(true);
         }
+
         return json_encode(false);
     }
 
     public function attachamentUpload($id, Request $request)
     {
-        if (!Defender::hasPermission('documents.edit')) {
+        if (! Defender::hasPermission('documents.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-            return redirect("/documents");
+
+            return redirect('/lawproject');
         }
 
         $lawsProject = LawsProject::find($id);
-        $file = $request->file('file');
+        $files = $request->file('file');
 
-        if ($request->file) {
-            foreach ($request->file as $key => $file) {
-                $new_file = new LawFile();
+        if ($files) {
+            foreach ($files as $file) {
                 $filename = static::$uploadService
                     ->inLawProjectsFolder()
                     ->sendFile($file)
                     ->send();
 
-                $file->move(
-                    base_path() . '/public/uploads/law_projects/' . $lawsProject->id . '/files', $filename
-                );
-                $new_file->law_project_id = $lawsProject->id;
-                $new_file->filename       = $filename;
-                $new_file->save();
+                $law_file = new LawFile();
+                $law_file->law_project_id = $lawsProject->id;
+                $law_file->filename = $filename;
+                $law_file->save();
             }
         }
 
@@ -1298,13 +1274,15 @@ class LawsProjectController extends AppBaseController
     {
         $file = LawFile::find($id);
         $file->delete();
+
         return 'true';
     }
 
     public function addFiles($id)
     {
         $lawsProject = LawsProject::find($id);
-        $law_files   = LawFile::where('law_project_id', $lawsProject->id)->get();
+        $law_files = LawFile::where('law_project_id', $lawsProject->id)->get();
+
         return view('lawsProjects.files', compact('lawsProject', 'law_files'));
     }
 
@@ -1312,25 +1290,35 @@ class LawsProjectController extends AppBaseController
     {
         $lawsProject = LawsProject::find($id);
 
-        if ($request->file('file')) {
-            $extension = $request->file('file')->getClientOriginalExtension();
-            $fileName  = 'law_' . $id . '.' . $extension;
+        $file = $request->file('file');
 
-            if ($request->file('file')->move('laws', $fileName)) {
-                $lawsProject->file = $fileName;
-                $lawsProject->save();
-            }
+        if ($file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
-        if ($request->file('law_file')) {
-            $extension = $request->file('law_file')->getClientOriginalExtension();
-            $fileName  = 'law_file_' . $lawsProject->id . '.' . $extension;
-            if ($request->file('law_file')->move('laws', $fileName)) {
-                $lawsProject->law_file = $fileName;
-                $lawsProject->save();
-            }
+        $laws_file = $request->file('law_file');
+
+        if ($laws_file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->law_file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
         flash('Arquivos salvos com sucesso!')->success();
+
         return redirect(route('lawsProjects.index'));
     }
 }

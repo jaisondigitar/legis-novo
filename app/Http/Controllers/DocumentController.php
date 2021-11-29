@@ -25,6 +25,7 @@ use App\Models\ProtocolType;
 use App\Models\StatusProcessingDocument;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
+use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
 use Exception;
@@ -40,6 +41,11 @@ use Illuminate\View\View;
 
 class DocumentController extends AppBaseController
 {
+    /**
+     * @var
+     */
+    private static $uploadService;
+
     /** @var DocumentRepository */
     private $documentRepository;
 
@@ -49,6 +55,8 @@ class DocumentController extends AppBaseController
         date_default_timezone_set('America/Cuiaba');
 
         $this->documentRepository = $documentRepo;
+
+        static::$uploadService = new StorageService();
     }
 
     public function getAssemblymenList()
@@ -354,7 +362,7 @@ class DocumentController extends AppBaseController
         }
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -595,7 +603,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->findByID($id);
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -654,7 +662,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->findByID($id);
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -703,7 +711,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->findByID($id);
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -777,18 +785,19 @@ class DocumentController extends AppBaseController
         }
 
         $document = Document::find($id);
+        $files = $request->file('file');
 
-        if ($request->file) {
-            foreach ($request->file as $key => $file) {
-                $new_file = new DocumentFiles();
-                $fileName = $document->id.$key.time().'.'.$file->getClientOriginalExtension();
-                $file->move(
-                    base_path().'/public/uploads/documents/files',
-                    $fileName
-                );
-                $new_file->document_id = $document->id;
-                $new_file->filename = $fileName;
-                $new_file->save();
+        if ($files) {
+            foreach ($files as $file) {
+                $filename = static::$uploadService
+                    ->inDocumentsFolder()
+                    ->sendFile($file)
+                    ->send();
+
+                $document_files = new DocumentFiles();
+                $document_files->document_id = $document->id;
+                $document_files->filename = $filename;
+                $document_files->save();
             }
         }
 
@@ -1011,7 +1020,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->findByID($documentId);
 
         if (empty($document)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
@@ -1032,7 +1041,7 @@ class DocumentController extends AppBaseController
         $documents = Document::all();
 
         if (empty($documents)) {
-            flash('Document not found')->error();
+            flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }

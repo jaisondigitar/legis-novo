@@ -14,6 +14,14 @@ interface StorageInterface
 
     public function inPeopleFolder();
 
+    public function inAdvicesFolder();
+
+    public function inLawsFolder();
+
+    public function inMeetingsFolder();
+
+    public function inImageProfileFolder();
+
     public function inFolder(string $folder);
 
     public function usingDisk(string $disk);

@@ -127,7 +127,7 @@ class AssemblymanController extends AppBaseController
     }
 
     /**
-     * Store a newly created Assemblyman in storage.
+     * Store a newly created Parlamentar in storage.
      *
      * @param CreateAssemblymanRequest $request
      *
@@ -179,7 +179,7 @@ class AssemblymanController extends AppBaseController
             $responsibility_assemblyman->save();
         }
 
-        flash('Assemblyman saved successfully.')->success();
+        flash('Parlamentar salvo com sucesso.')->success();
 
         return redirect(route('assemblymen.index'));
     }
@@ -203,7 +203,7 @@ class AssemblymanController extends AppBaseController
         $assemblyman = $this->assemblymanRepository->findByID($id);
 
         if (empty($assemblyman)) {
-            flash('Assemblyman not found')->error();
+            flash('Parlamentar não encontrado')->error();
 
             return redirect(route('assemblymen.index'));
         }
@@ -233,7 +233,7 @@ class AssemblymanController extends AppBaseController
             ->load('responsibility_assemblyman');
 
         if (empty($assemblyman)) {
-            flash('Assemblyman not found')->error();
+            flash('Parlamentar não encontrado')->error();
 
             return redirect(route('assemblymen.index'));
         }
@@ -266,7 +266,7 @@ class AssemblymanController extends AppBaseController
     }
 
     /**
-     * Update the specified Assemblyman in storage.
+     * Update the specified Parlamentar in storage.
      *
      * @param int $id
      * @param UpdateAssemblymanRequest $request
@@ -285,7 +285,7 @@ class AssemblymanController extends AppBaseController
         $assemblyman = $this->assemblymanRepository->findByID($id);
 
         if (empty($assemblyman)) {
-            flash('Assemblyman not found')->error();
+            flash('Parlamentar não encontrado')->error();
 
             return redirect(route('assemblymen.index'));
         }
@@ -329,13 +329,13 @@ class AssemblymanController extends AppBaseController
             $responsibility->save();
         }
 
-        flash('Assemblyman updated successfully.')->success();
+        flash('Parlamentar atualizado com sucesso.')->success();
 
         return redirect(route('assemblymen.index'));
     }
 
     /**
-     * Remove the specified Assemblyman from storage.
+     * Remove the specified Parlamentar from storage.
      *
      * @param int $id
      *
@@ -353,20 +353,20 @@ class AssemblymanController extends AppBaseController
         $assemblyman = $this->assemblymanRepository->findByID($id);
 
         if (empty($assemblyman)) {
-            flash('Assemblyman not found')->error();
+            flash('Parlamentar não encontrado')->error();
 
             return redirect(route('assemblymen.index'));
         }
 
         $this->assemblymanRepository->delete($assemblyman);
 
-        flash('Assemblyman deleted successfully.')->success();
+        flash('Parlamentar removido com sucesso.')->success();
 
         return redirect(route('assemblymen.index'));
     }
 
     /**
-     * Update status of specified Assemblyman from storage.
+     * Update status of specified Parlamentar from storage.
      *
      * @param int $id
      * @throws BindingResolutionException

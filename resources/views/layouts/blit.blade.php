@@ -200,6 +200,7 @@
                 }
             ).catch(() => new Error(`Não possível obter dados do CPF ${cpf}`))
             const data = await resp.json()
+
             if (data[0]) {
                 document.querySelector('.phone').value = data[0].celular
                 document.querySelector('.name').value = data[0].name
@@ -207,12 +208,12 @@
                 document.querySelector('.street').value = data[0].street
                 document.querySelector('.number').value = data[0].number
                 document.querySelector('.district').value = data[0].district
-                document.querySelector('.state').value = data[0].state
-                document.querySelector('.city').value = data[0].city
+                document.querySelector('.states').value = data[0].states
+                document.querySelector('.cities').value = data[0].cities
                 document.querySelector('.complement').index = data[0].complement
-                await getCities(data[0].state_id)
+             /*   await getCities(data[0].state_id)
                 document.querySelector('.states').selectedIndex = data[0].state_id-1
-                document.querySelector('.cities').selectedIndex = data[0].city_id
+                document.querySelector('.cities').selectedIndex = data[0].city_id*/
             }
         }
 
@@ -721,7 +722,8 @@ Placed at the end of the document so the pages load faster
             // Limpa valores do formulário de cep.
             $("#street").val("");
             $("#district").val("");
-
+            $("#states").val("");
+            $("#cities").val("");
         }
 
         $("#zipcode").blur(function () {
@@ -741,6 +743,8 @@ Placed at the end of the document so the pages load faster
                     //Preenche os campos com "..." enquanto consulta webservice.
                     $("#street").val('').attr("placeholder",'buscando dados...');
                     $("#district").val('').attr("placeholder",'buscando dados...');
+                    $("#states").val('').attr("placeholder",'buscando dados...');
+                    $("#cities").val('').attr("placeholder",'buscando dados...');
 
                     //Consulta o webservice viacep.com.br/
                     $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
@@ -750,6 +754,8 @@ Placed at the end of the document so the pages load faster
                             $("#street").val(dados.logradouro);
                             $("#district").val(dados.bairro);
                             $("#number").focus();
+                            $("#states").val(dados.uf);
+                            $("#cities").val(dados.localidade);
                         } //end if.
                         else {
                             //CEP pesquisado não foi encontrado.

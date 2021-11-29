@@ -78,7 +78,7 @@ class TestController extends AppBaseController
 
         $test = $this->testRepository->create($input);
 
-        flash('Test saved successfully.')->success();
+        flash('Teste salvo com sucesso.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
     }
@@ -101,7 +101,7 @@ class TestController extends AppBaseController
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            flash('Test not found')->error();
+            flash('Teste não encontrado')->error();
 
             return redirect(route('tests.index'));
         }
@@ -126,7 +126,7 @@ class TestController extends AppBaseController
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            flash('Test not found')->error();
+            flash('Teste não encontrado')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
         }
@@ -153,14 +153,14 @@ class TestController extends AppBaseController
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            flash('Test not found')->error();
+            flash('Teste não encontrado')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
         }
 
         $test = $this->testRepository->update($request->all(), $id);
 
-        flash('Test updated successfully.')->success();
+        flash('Teste atualizado com sucesso.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
     }
@@ -183,14 +183,14 @@ class TestController extends AppBaseController
         $test = $this->testRepository->findWithoutFail($id);
 
         if (empty($test)) {
-            flash('Test not found')->error();
+            flash('Teste não encontrado')->error();
 
             return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
         }
 
         $this->testRepository->delete($id);
 
-        flash('Test deleted successfully.')->success();
+        flash('Teste removido com sucesso.')->success();
 
         return redirect(route('$ROUTES_AS_PREFIX$tests.index'));
     }

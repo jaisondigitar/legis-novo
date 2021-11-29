@@ -11,8 +11,14 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <span class="panel-title text-uppercase" style="font-size: 15px;">
-                <input type="checkbox" name="toDelete" value="{{$lawsProject->id}}" class="checkDelete " />
-                @if(!$lawsProject->law_type) {{ $lawsProject->law_type_id }} @else {!! mb_strtoupper($lawsProject->law_type->name, 'UTF-8') !!} @endif
+                <label>
+                    <input type="checkbox" name="toDelete" value="{{$lawsProject->id}}" class="checkDelete " />
+                </label>
+                @if(!$lawsProject->law_type)
+                    {{ $lawsProject->law_type_id }}
+                @else
+                    {!! mb_strtoupper($lawsProject->law_type->name, 'UTF-8') !!}
+                @endif
 
                 <span id="tdLawProjectNumber{{$lawsProject->id}}">
                     {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!}
@@ -24,129 +30,202 @@
                 <div class="form-group col-sm-2 pull-right">
                     {!! Form::label('town_hall', 'Aprovado pela câmara:') !!}
                     <div class="clearfix"></div>
-                    <input type="checkbox" id ='town_hall{{$lawsProject->id}}' onchange='toogleApproved({{$lawsProject->id }})'
-                           class='form-control switch' data-on-text = 'Sim' data-off-text='Não' data-off-color='danger' data-on-color='success' data-size='normal' @if($lawsProject->town_hall == 1) checked @endif>
+                    <label>
+                        <input
+                            type="checkbox"
+                            id ='town_hall{{$lawsProject->id}}'
+                            onchange='toogleApproved({{$lawsProject->id }})'
+                            class='form-control switch'
+                            data-on-text='Sim'
+                            data-off-text='Não'
+                            data-off-color='danger'
+                            data-on-color='success'
+                            data-size='normal'
+                            @if($lawsProject->town_hall == 1)
+                            checked
+                            @endif
+                        >
+                    </label>
                 </div>
-                COD: {!! $lawsProject->getNumberLaw() == 'false'  ? '-'  : $lawsProject->getNumberLaw() !!}
+                <table>
+                    <tr>
+                        <td>
+                            <strong>COD:</strong>
+                            {!! $lawsProject->getNumberLaw() == 'false'  ? '-'  : $lawsProject->getNumberLaw() !!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Data: </strong> {{$lawsProject->law_date}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Responsável: </strong>
 
-                <br>
-                <strong>Data: </strong> {{$lawsProject->law_date}}
+                            @if($lawsProject->owner)
+                                {{ $lawsProject->owner->short_name }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Comissão: </strong>
 
+                            @if($lawsProject->comission)
+                                {{ $lawsProject->comission->name }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Protocolo: </strong>
+                            <span id="tdLawProtocol{{$lawsProject->id}}" align="center">
+                                @if($lawsProject->project_number > 0)
+                                    {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
+                                @else
+                                    @shield('lawsProject.approved')
+                                        <button type="button" class="btn btn-default btn-xs btn-protocol" value="{!! $lawsProject->id !!}">
+                                            <i class="glyphicon glyphicon-folder-open"></i>
+                                        </button>
+                                    @endshield
+                                @endif
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong> Aprovado: </strong>
 
-                </br>
-                <strong>Responsável: </strong>
-                @if($lawsProject->owner)
-                    {{ $lawsProject->owner->short_name }}
-                @else
-                    -
-                @endif
+                            @if($lawsProject->is_ready === 1)
+                                <span id="tdLawApproved_{{$lawsProject->id}}">
+                                    {{$lawsProject->law_number}} - {{$lawsProject->law_date_publish}}
+                                </span>
 
-                </br>
-                <strong>Comissão: </strong>
-                @if($lawsProject->comission)
-                    {{ $lawsProject->comission->name }}
-                @else
-                    -
-                @endif
+                                @shield('lawProject.approvedEdit')
+                                    <button type="button" class="btn btn-warning btn-xs" onclick="approvedEdit('{{ $lawsProject->id }}')">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                @endshield
+                            @else
+                                @shield('lawsProject.approved')
+                                    <span id="tdLawApproved{{$lawsProject->id}}" align="center">
+                                        <button type="button" class="btn btn-default btn-xs btn-approved" value="{!! $lawsProject->id !!}">
+                                            <i class="glyphicon glyphicon-folder-open"></i>
+                                        </button>
+                                    </span>
+                                @endshield
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Aprovado pela câmara: </strong>
 
-                <br>
-                <strong>Protocolo: </strong>
-                <span id="tdLawProtocol{{$lawsProject->id}}" align="center">
-                @if($lawsProject->project_number > 0)
-                    {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
-                    @else
-                        @shield('lawsProject.approved')
-                        <button type="button" class="btn btn-default btn-xs btn-protocol" value="{!! $lawsProject->id !!}">
-                        <i class="glyphicon glyphicon-folder-open"></i>
-                    </button>
-                    @else
-                        Não
-                        @endshield
-                    @endif
-                </span>
+                            {{ $lawsProject->town_hall ? 'Sim' : 'Não' }}
 
-                </br>
-                <strong> Aprovado: </strong>
-                @if($lawsProject->is_ready == 1)
-                    <span id="tdLawApproved_{{$lawsProject->id}}">
-                    {{$lawsProject->law_number}} - {{$lawsProject->law_date_publish}}
-                </span>
-                    @shield('lawProject.approvedEdit')
-                    <button type="button" class="btn btn-warning btn-xs" onclick="approvedEdit('{{ $lawsProject->id }}')"> <i class="fa fa-pencil"></i> </button>
-                    @endshield
-                @else
-                    @shield('lawsProject.approved')
-                    <span id="tdLawApproved{{$lawsProject->id}}" align="center">
-                        <button type="button" class="btn btn-default btn-xs btn-approved" value="{!! $lawsProject->id !!}">
-                            <i class="glyphicon glyphicon-folder-open"></i>
-                        </button>
-                    </span>
-                    @else
-                        <span align="center">Não</span>
-                        @endshield
-                    @endif
+                            @if($lawsProject->reference_id > 0)
+                                <br>
+                                <strong>Referente à: </strong>
+                                <a href="/lawsProjects/{{$lawsProject->reference_id}}" target="_blank">
+                                    {{--{{ \App\Models\LawsProject::find($lawsProject->reference_id)->project_number}}/--}}
+                                    {{--{{\App\Models\LawsProject::find($lawsProject->reference_id)->getYearLaw($lawsProject->law_date)}} ---}}
+                                    {{--{{ \App\Models\LawsProject::find($lawsProject->reference_id)->law_type->name}}--}}
+                                </a>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Lida:</strong>
 
-                    </br>
-                    <strong>Aprovado pela câmara: </strong>
-                    {{ $lawsProject->town_hall ? 'Sim' : 'Não' }}
-
-                    @if($lawsProject->reference_id > 0)
-                    </br>
-                        <strong>Referente à: </strong>
-                        <a href="/lawsProjects/{{$lawsProject->reference_id}}" target="_blank">
-                            {{--{{ \App\Models\LawsProject::find($lawsProject->reference_id)->project_number}}/--}}
-                            {{--{{\App\Models\LawsProject::find($lawsProject->reference_id)->getYearLaw($lawsProject->law_date)}} ---}}
-                            {{--{{ \App\Models\LawsProject::find($lawsProject->reference_id)->law_type->name}}--}}
-                        </a>
-                    @endif
-                    <br>
-                    Lida:
-                    @shield('lawsProject.read')
-                    <input onchange="changeRead('{!! $lawsProject->id !!}')" type="checkbox" {!! $lawsProject->is_read > 0 ? 'checked' : '' !!}>
-                    @endshield
-                    </br>
-                    <br>
-                    <span style="text-align: justify !important;" class="text-uppercase">
-                        {!! $lawsProject->title !!}
-                    </span>
-                    <br>
+                            @shield('lawsProject.read')
+                                <label>
+                                    <input
+                                        onchange="changeRead('{!! $lawsProject->id !!}')"
+                                        type="checkbox" {!! $lawsProject->is_read > 0 ? 'checked' : '' !!}
+                                    >
+                                </label>
+                            @endshield
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="text-align: justify !important;" class="text-uppercase">
+                                {!! $lawsProject->title !!}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
             </div>
-        </div><!-- /.panel-body -->
-        <div class="panel-footer">
-
-                {!! Form::open(['route' => ['lawsProjects.destroy', $lawsProject->id], 'method' => 'delete']) !!}
-                    <div class='btn-group col-md-12'>
-
-                        @shield('lawsProject.advices')<a href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>HISTÓRICO</a>@endshield
-                        @shield('lawsProjects.edit')<a href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>ESTRUTURA DA LEI</a>@endshield
-
-                        @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
-                            <a href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">ALTERAR NÚMERO/PROTOCOLO</a>
-                        @endshield
-
-
-                        @if($lawsProject->law_file)
-                            <a href="/laws/{{ $lawsProject->law_file }}" target="_blank" class='btn btn-default btn-sm'><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
-                        @endif
-
-                        @shield('lawsProjects.show')<a href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'><i class="fa fa-eye" aria-hidden="true"></i></a>@endshield
-
-                        @if($lawsProject->file)
-                            <a href="/laws/{{ $lawsProject->file }}" target="_blank" class='btn btn-default btn-sm'><i class="fa fa-paperclip"></i></a>
-                        @endif
-                        @if($lawsProject->voting)
-                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">VOTAÇÃO</button>
-                        @endif
-                        @shield('lawsProjects.edit')<a href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-warning btn-sm'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                        @shield('lawsProjects.delete'){!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
-                        <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="pull-right btn btn-info btn-sm"> <i class="fa fa-plus"></i> Anexos </a>
-                    </div>
-                <div class="clearfix"></div>
-                {!! Form::close() !!}
-
-
         </div>
-    </div><!-- /.panel panel-default -->
+        <div class="panel-footer">
+            {!! Form::open(['route' => ['lawsProjects.destroy', $lawsProject->id], 'method' => 'delete']) !!}
+            <div class='btn-group col-md-12'>
+                @shield('lawsProject.advices')
+                    <a href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        HISTÓRICO
+                    </a>
+                @endshield
+
+                @shield('lawsProjects.edit')
+                    <a href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        ESTRUTURA DA LEI
+                    </a>
+                @endshield
+
+                @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
+                    <a href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
+                        ALTERAR NÚMERO/PROTOCOLO
+                    </a>
+                @endshield
+
+                @if($lawsProject->law_file)
+                    <a href="/laws/{{ $lawsProject->law_file }}" target="_blank" class='btn btn-default btn-sm'>
+                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                    </a>
+                @endif
+
+                @shield('lawsProjects.show')
+                    <a href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>
+                @endshield
+
+                @if($lawsProject->file)
+                    <a href="/laws/{{ $lawsProject->file }}" target="_blank" class='btn btn-default btn-sm'>
+                        <i class="fa fa-paperclip"></i>
+                    </a>
+                @endif
+
+                @if($lawsProject->voting)
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
+                        VOTAÇÃO
+                    </button>
+                @endif
+
+                @shield('lawsProjects.edit')
+                    <a href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-warning btn-sm'>
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                @endshield
+
+                @shield('lawsProjects.delete')
+                    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                @endshield
+
+                <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="pull-right btn btn-info btn-sm">
+                    <i class="fa fa-plus"></i> Anexos
+                </a>
+            </div>
+            <div class="clearfix"></div>
+            {!! Form::close() !!}
+        </div>
+    </div>
 </div>
 @if($lawsProject->voting)
 <div class="modal fade" id="votes_{{ $lawsProject->id }}" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
@@ -290,7 +369,6 @@
     </div>
 </div>
 
-
 <div id="modalProtocolEdit" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -343,8 +421,7 @@
 </div>
 
 <script>
-
-    var toogleApproved = function (id) {
+    const toogleApproved = function (id) {
 
         url = '/lawproject/' + id + '/toogleApproved';
 
@@ -354,9 +431,9 @@
         }
 
         $.ajax({
-            url     : url,
-            data    : data,
-            method  : 'POST'
+            url : url,
+            data : data,
+            method : 'POST'
         }).success(function (res) {
             res = JSON.parse(res);
             if(res){
@@ -367,7 +444,7 @@
         })
     }
 
-    var approvedEdit = function(id){
+    const approvedEdit = function(id){
 
         url = '/lawProject-approvedGet';
 
@@ -408,7 +485,7 @@
             method : 'POST',
             dataType : 'json'
         }).success(function(result){
-            if(result.success == true){
+            if(result.success === true){
                 console.log('entro');
                 $('#tdLawNumber'+result.lawProject_id).html(result.law_number + '/' + result.year);
                 $('#tdLawPlace'+result.lawProject_id).html(result.lawProject_place);
@@ -419,15 +496,11 @@
             } else {
                 $('#labelmessageedit').html(result.message);
                 $('#law_number_edit').val(result.next_number);
-                }
+            }
         });
     })
 
-</script>
-
-<script>
-
-    var editNumero = function(id){
+    const editNumero = function(id){
 
         url = '/lawsProject/getNumProt';
 
@@ -457,7 +530,7 @@
 
     };
 
-    var editNumberProtocolSave = function(){
+    const editNumberProtocolSave = function(){
 
         url = '/lawsProject/saveProtocolNumber';
 
@@ -486,25 +559,18 @@
 
         });
     };
-</script>
 
+    const getData = function(){
 
-<script>
+        const data = new Date();
 
-    var getData = function(){
-
-        var data = new Date();
-
-        var dia = data.getDate() <= 9 ? '0' + data.getDate() : data.getDate() ;
-        var mes = data.getMonth() + 1;
-        var ano = data.getFullYear();
+        const dia = data.getDate() <= 9 ? '0' + data.getDate() : data.getDate() ;
+        let mes = data.getMonth() + 1;
+        const ano = data.getFullYear();
 
         mes = mes <= 9 ? '0' + mes : mes;
 
-        dataRes = dia + '/' + mes + '/' + ano;
-
-        return dataRes;
-
+        return dia + '/' + mes + '/' + ano;
     }
 
     $(document).ready(function () {
@@ -512,7 +578,7 @@
 
             data = getData();
 
-            var id = this.value;
+            const id = this.value;
             $.ajax({
                 method: "GET",
                 url: "{{ url('lawProjectProtocol') }}/"+ id,
@@ -530,7 +596,7 @@
 
         $('#btn-save-protocol').on('click', function () {
 
-            var data = {
+            const data = {
                 law_project_id: $('#law_project_protocol_id').val(),
                 project_number: $('#project_number').val(),
                 protocol: $('#protocol').val(),
@@ -542,7 +608,7 @@
                 data: data,
                 dataType: "json"
             }).success(function (result) {
-                if(result.success == true){
+                if(result.success === true){
                     $('#tdLawProjectNumber'+result.lawProject_id).html(result.project_number + '/' + result.year);
                     $('#tdLawProtocol'+result.lawProject_id).html('<label class="label label-success">Sim</label>');
                     $('#modalProtocol').modal('hide');
@@ -554,7 +620,7 @@
         });
 
         $('.btn-approved').on('click', function () {
-            var id = this.value;
+            const id = this.value;
             $.ajax({
                 method: "GET",
                 url: "{{ url('lawProjectApproved') }}/"+ id,
@@ -569,12 +635,12 @@
         });
 
         $('#btn-save-law').on('click', function () {
-            if($('#law_place_id').val() == '') {
+            if($('#law_place_id').val() === '') {
                 $('#labelmessage').html('Selecione um local de publicação de protocolo');
-            }else if ($('#date_publish').val() == ''){
+            }else if ($('#date_publish').val() === ''){
                 $('#labelmessage').html('Inserir a data de publicação');
             } else {
-                var data = {
+                const data = {
                     law_project_id: $('#law_project_id').val(),
                     law_place_id: $('#law_place_id').val(),
                     law_number: $('#law_number').val(),
@@ -586,7 +652,7 @@
                     data: data,
                     dataType: "json"
                 }).success(function (result) {
-                    if(result.success == true){
+                    if(result.success === true){
                         $('#tdLawNumber'+result.lawProject_id).html(result.law_number + '/' + result.year);
                         $('#tdLawPlace'+result.lawProject_id).html(result.lawProject_place);
                         $('#tdLawDate'+result.lawProject_id).html(result.lawProject_date_publish);
@@ -601,8 +667,8 @@
         });
     });
 
-    var changeRead = function(id){
-        var url = '/lawsProjects-read/'+id+'/toggle';
+    const changeRead = function(id){
+        const url = '/lawsProjects-read/'+id+'/toggle';
         $.ajax({
             method: "GET",
             url: url,
@@ -610,13 +676,11 @@
         }).success(function(result) {
         });
     };
-</script>
 
-<script>
-    var deletaBash = function()
+    const deletaBash = function()
     {
-        var ids = getCheckeds();
-        var data_ = {
+        const ids = getCheckeds();
+        const data_ = {
             ids: ids
         }
 
@@ -635,15 +699,15 @@
         })
     };
 
-    var activeDelete = function()
+    const activeDelete = function()
     {
-        var btn = $('.deleteAll');
+        const btn = $('.deleteAll');
         checkSelected(btn);
     }
 
-    var getCheckeds = function()
+    const getCheckeds = function()
     {
-        var searchIDs = [];
+        const searchIDs = [];
 
         $('.checkDelete:checked').map(function(){
 
@@ -654,9 +718,9 @@
         return searchIDs;
     }
 
-    var checkSelected = function(btn)
+    const checkSelected = function(btn)
     {
-        var searchIDs = getCheckeds();
+        const searchIDs = getCheckeds();
 
         if(searchIDs.length > 0)
         {
