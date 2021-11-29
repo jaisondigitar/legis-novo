@@ -7,7 +7,13 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-pills" style="margin-bottom: 10px">
-                    @shield('users.create')<li><a href="{!! route('users.create') !!}">Novo Registro</a></li>@endshield
+                    @shield('users.create')
+                        <li>
+                            <a href="{!! route('users.create') !!}">
+                                Novo Registro
+                            </a>
+                        </li>
+                    @endshield
                 </ul>
             </div>
         </div>

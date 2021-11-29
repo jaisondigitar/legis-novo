@@ -3,7 +3,6 @@
     {!! Breadcrumbs::render('documents.list') !!}
 @endsection
 @section('content')
-
     <div class="the-box rounded">
         <div class="row">
             <div class="col-md-12">
@@ -17,33 +16,35 @@
         <div class="row">
             <br>
             <div class="col-md-12">
-                <table class="table table-responsive" id="lawsProjects-table">
-                    <thead>
-                    <th>id</th>
-                    <th>COD</th>
-                    <th>Numero Projeto de lei</th>
-                    <th>Numero da lei</th>
-                    <th>Tipo</th>
-                    </thead>
-                    <tbody>
-                    @foreach($tramitacao as $item)
-                        @if($item->getNumberLaw() != 'false')
-                        <tr>
-                            <td>{{$item->id}}</td>
-                            <td>{!! $item->getNumberLaw() !!}</td>
-                            <td>{!! $item->project_number !!}</td>
-                            <td>{!! $item->law_number !!}</td>
-                            <td>{!! $item->law_type->name !!}</td>
-                        </tr>
-                        @endif
-                    @endforeach
-                    </tbody>
-                </table>
-
+                @if($tramitacao->isEmpty())
+                    <div class="well text-center">Sem dados. Insira um novo registro.</div>
+                @else
+                    <table class="table table-responsive" id="lawsProjects-table">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>COD</th>
+                                <th>Numero Projeto de lei</th>
+                                <th>Numero da lei</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($tramitacao as $item)
+                                @if($item->getNumberLaw() != 'false')
+                                    <tr>
+                                        <td>{{$item->id}}</td>
+                                        <td>{!! $item->getNumberLaw() !!}</td>
+                                        <td>{!! $item->project_number !!}</td>
+                                        <td>{!! $item->law_number !!}</td>
+                                        <td>{!! $item->law_type->name !!}</td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
             </div>
         </div>
     </div>
-
-
-
 @endsection
