@@ -1,7 +1,7 @@
 @extends('errors/error')
 
 @section('code', '503')
-@section('title', __('Service Unavailable'))
+@section('title', 'Service Unavailable')
 
 @section('name', 'Serviço Indisponível')
 

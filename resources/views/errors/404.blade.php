@@ -1,7 +1,7 @@
 @extends('errors/error')
 
 @section('code', '404')
-@section('title', __('Page Not Found'))
+@section('title', 'Page Not Found')
 
 @section('name', 'Página não Encontrada')
 
