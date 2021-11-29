@@ -47,7 +47,9 @@
                                 <tr id="tr{{$file->id}}">
                                     <td width="80%">{{ $file->filename }}</td>
                                     <td align="center">
-                                        <a href="{{ (new \App\Services\StorageService())->inLawProjectsFolder()->get($file->filename) }}">
+                                        <a
+                                            target="_blank"
+                                            href="{{ (new \App\Services\StorageService())->inLawProjectsFolder()->get($file->filename) }}">
                                             <span class="label label-info">Download</span>
                                         </a>
                                         @shield('lawsProjects.upload')
