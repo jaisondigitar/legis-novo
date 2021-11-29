@@ -31,11 +31,11 @@ class Attendance extends Model
 
     public function people()
     {
-        return $this->hasOne('People::class', 'id', 'people_id');
+        return $this->hasOne(People::class, 'id', 'people_id');
     }
 
     public function type()
     {
-        return $this->hasOne('TypesOfAttendance::class', 'id', 'type_id');
+        return $this->hasOne(TypesOfAttendance::class, 'id', 'type_id');
     }
 }
