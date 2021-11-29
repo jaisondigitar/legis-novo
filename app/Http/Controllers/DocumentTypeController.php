@@ -104,7 +104,7 @@ class DocumentTypeController extends AppBaseController
         $documentType = $this->documentTypeRepository->findById($id);
 
         if (empty($documentType)) {
-            flash('DocumentType not found')->error();
+            flash('Tipo de Documento não encontrado')->error();
 
             return redirect(route('documentTypes.index'));
         }
@@ -129,7 +129,7 @@ class DocumentTypeController extends AppBaseController
         $documentType = $this->documentTypeRepository->findById($id);
 
         if (empty($documentType)) {
-            flash('DocumentType not found')->error();
+            flash('Tipo de Documento não encontrado')->error();
 
             return redirect(route('documentTypes.index'));
         }
@@ -156,7 +156,7 @@ class DocumentTypeController extends AppBaseController
         $documentType = $this->documentTypeRepository->findById($id);
 
         if (empty($documentType)) {
-            flash('DocumentType not found')->error();
+            flash('Tipo de Documento não encontrado')->error();
 
             return redirect(route('documentTypes.index'));
         }
@@ -190,14 +190,14 @@ class DocumentTypeController extends AppBaseController
         $documentType = $this->documentTypeRepository->findById($id);
 
         if (empty($documentType)) {
-            flash('DocumentType not found')->error();
+            flash('Tipo de Documento não encontrado')->error();
 
             return redirect(route('documentTypes.index'));
         }
 
         $this->documentTypeRepository->delete($documentType, $id);
 
-        flash('DocumentType deleted successfully.')->success();
+        flash('Tipo de Documento removido com sucesso.')->success();
 
         return redirect(route('documentTypes.index'));
     }

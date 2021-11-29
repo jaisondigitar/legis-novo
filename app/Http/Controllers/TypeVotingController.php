@@ -65,7 +65,7 @@ class TypeVotingController extends AppBaseController
 
         TypeVoting::create($input);
 
-        flash('Type saved successfully.')->success();
+        flash('Tipo salvo com sucesso.')->success();
 
         return redirect(route('typeVotings.index'));
     }
@@ -87,7 +87,7 @@ class TypeVotingController extends AppBaseController
         $type_voting = TypeVoting::find($id);
 
         if (empty($type_voting)) {
-            flash('Type voting not found')->error();
+            flash('Tipo de votação não encontrado')->error();
 
             return redirect(route('typeVotings.index'));
         }
@@ -111,7 +111,7 @@ class TypeVotingController extends AppBaseController
         $type_voting = TypeVoting::find($id);
 
         if (empty($type_voting)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('typeVotings.index'));
         }
@@ -141,7 +141,7 @@ class TypeVotingController extends AppBaseController
         $input['active'] = isset($input['active']) ? 1 : 0;
 
         if (empty($type_voting)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('typeVotings.index'));
         }
@@ -153,7 +153,7 @@ class TypeVotingController extends AppBaseController
         $type_voting->anonymous = $input['anonymous'];
         $type_voting->save();
 
-        flash('Type updated successfully.')->success();
+        flash('Tipo atualizado com sucesso.')->success();
 
         return redirect(route('typeVotings.index'));
     }
@@ -175,14 +175,14 @@ class TypeVotingController extends AppBaseController
         $type_voting = TypeVoting::find($id);
 
         if (empty($type_voting)) {
-            flash('Type not found')->error();
+            flash('Tipo não encontrado')->error();
 
             return redirect(route('typeVotings.index'));
         }
 
         $type_voting->delete($id);
 
-        flash('Type deleted successfully.')->success();
+        flash('Tipo removido com sucesso.')->success();
 
         return redirect(route('typeVotings.index'));
     }

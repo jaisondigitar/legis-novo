@@ -101,7 +101,7 @@ class VersionPautaController extends Controller
         $version = VersionPauta::find($id);
 
         if (empty($version)) {
-            flash('Version not found')->error();
+            flash('Versão não encontrada')->error();
 
             return redirect(route('version_pauta.index'));
         }
@@ -129,7 +129,7 @@ class VersionPautaController extends Controller
         $version = VersionPauta::find($id);
 
         if (empty($version)) {
-            flash('Version not found')->error();
+            flash('Versão não encontrada')->error();
 
             return redirect(route('version_pauta.index'));
         }
@@ -156,14 +156,14 @@ class VersionPautaController extends Controller
         $version = VersionPauta::find($id);
 
         if (empty($version)) {
-            flash('Version not found')->error();
+            flash('Versão não encontrada')->error();
 
             return redirect(route('version_pauta.index'));
         }
 
         $version->delete($id);
 
-        flash('Version deleted successfully.')->success();
+        flash('Versão removida com sucesso.')->success();
 
         return redirect(route('version_pauta.index'));
     }

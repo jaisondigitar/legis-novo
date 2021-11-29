@@ -63,7 +63,7 @@ class StatusProcessingDocumentController extends AppBaseController
     }
 
     /**
-     * Store a newly created StatusProcessingDocument in storage.
+     * Store a newly created Documento de Processamento de Estado in storage.
      *
      * @param CreateStatusProcessingDocumentRequest $request
      *
@@ -81,7 +81,7 @@ class StatusProcessingDocumentController extends AppBaseController
 
         $this->statusProcessingDocumentRepository->create($input);
 
-        flash('StatusProcessingDocument saved successfully.')->success();
+        flash('Documento de Processamento de Estado salvo com sucesso.')->success();
 
         return redirect(route('statusProcessingDocuments.index'));
     }
@@ -105,7 +105,7 @@ class StatusProcessingDocumentController extends AppBaseController
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
         if (empty($statusProcessingDocument)) {
-            flash('StatusProcessingDocument not found')->error();
+            flash('Documento de Processamento de Estado não encontrado')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
@@ -131,7 +131,7 @@ class StatusProcessingDocumentController extends AppBaseController
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
         if (empty($statusProcessingDocument)) {
-            flash('StatusProcessingDocument not found')->error();
+            flash('Documento de Processamento de Estado não encontrado')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
@@ -140,7 +140,7 @@ class StatusProcessingDocumentController extends AppBaseController
     }
 
     /**
-     * Update the specified StatusProcessingDocument in storage.
+     * Update the specified Documento de Processamento de Estado in storage.
      *
      * @param int $id
      * @param UpdateStatusProcessingDocumentRequest $request
@@ -159,20 +159,20 @@ class StatusProcessingDocumentController extends AppBaseController
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
         if (empty($statusProcessingDocument)) {
-            flash('StatusProcessingDocument not found')->error();
+            flash('Documento de Processamento de Estado não encontrado')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
 
         $this->statusProcessingDocumentRepository->update($statusProcessingDocument, $request->all());
 
-        flash('StatusProcessingDocument updated successfully.')->success();
+        flash('Documento de Processamento de Estado atualizado com sucesso.')->success();
 
         return redirect(route('statusProcessingDocuments.index'));
     }
 
     /**
-     * Remove the specified StatusProcessingDocument from storage.
+     * Remove the specified Documento de Processamento de Estado from storage.
      *
      * @param int $id
      *
@@ -190,20 +190,20 @@ class StatusProcessingDocumentController extends AppBaseController
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
         if (empty($statusProcessingDocument)) {
-            flash('StatusProcessingDocument not found')->error();
+            flash('Documento de Processamento de Estado não encontrado')->error();
 
             return redirect(route('statusProcessingDocuments.index'));
         }
 
         $this->statusProcessingDocumentRepository->delete($statusProcessingDocument);
 
-        flash('StatusProcessingDocument deleted successfully.')->success();
+        flash('Documento de Processamento de Estado removido com sucesso.')->success();
 
         return redirect(route('statusProcessingDocuments.index'));
     }
 
     /**
-     * Update status of specified StatusProcessingDocument from storage.
+     * Update status of specified Documento de Processamento de Estado from storage.
      *
      * @param int $id
      * @return false|string

@@ -66,7 +66,7 @@ class DocumentModelsController extends AppBaseController
     }
 
     /**
-     * Store a newly created DocumentModels in storage.
+     * Store a newly created Modelos de documento in storage.
      *
      * @param CreateDocumentModelsRequest $request
      *
@@ -134,7 +134,7 @@ class DocumentModelsController extends AppBaseController
         $documentModels = $this->documentModelsRepository->findByID($id);
 
         if (empty($documentModels)) {
-            flash('DocumentModels not found')->error();
+            flash('Modelos de documento não encontramos')->error();
 
             return redirect(route('documentModels.index'));
         }
@@ -145,7 +145,7 @@ class DocumentModelsController extends AppBaseController
     }
 
     /**
-     * Update the specified DocumentModels in storage.
+     * Update the specified Modelos de documento in storage.
      *
      * @param int $id
      * @param UpdateDocumentModelsRequest $request
@@ -164,7 +164,7 @@ class DocumentModelsController extends AppBaseController
         $documentModels = $this->documentModelsRepository->findByID($id);
 
         if (empty($documentModels)) {
-            flash('DocumentModels not found')->error();
+            flash('Modelos de documento não encontramos')->error();
 
             return redirect(route('documentModels.index'));
         }
@@ -177,7 +177,7 @@ class DocumentModelsController extends AppBaseController
     }
 
     /**
-     * Remove the specified DocumentModels from storage.
+     * Remove the specified Modelos de documento from storage.
      *
      * @param int $id
      *
@@ -195,20 +195,20 @@ class DocumentModelsController extends AppBaseController
         $documentModels = $this->documentModelsRepository->findByID($id);
 
         if (empty($documentModels)) {
-            flash('DocumentModels not found')->error();
+            flash('Modelos de documento não encontramos')->error();
 
             return redirect(route('documentModels.index'));
         }
 
         $this->documentModelsRepository->delete($documentModels);
 
-        flash('DocumentModels deleted successfully.')->success();
+        flash('Modelos de documento removido com secesso.')->success();
 
         return redirect(route('documentModels.index'));
     }
 
     /**
-     * Update status of specified DocumentModels from storage.
+     * Update status of specified Modelos de documento from storage.
      *
      * @param int $id
      * @throws BindingResolutionException
