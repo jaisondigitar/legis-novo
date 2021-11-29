@@ -12,6 +12,8 @@ interface StorageInterface
 
     public function inLawProjectsFolder();
 
+    public function inPeopleFolder();
+
     public function inFolder(string $folder);
 
     public function usingDisk(string $disk);

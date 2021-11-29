@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\People;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePeopleRequest extends Request
+class TypeVotingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +23,8 @@ class UpdatePeopleRequest extends Request
      */
     public function rules()
     {
-        return People::$rules;
+        return [
+            'name' => 'required',
+        ];
     }
 }

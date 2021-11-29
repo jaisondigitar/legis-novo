@@ -17,6 +17,7 @@ class CreatePeopleTable extends Migration
             $table->string('name');
             $table->string('cpf');
             $table->string('rg')->nullable();
+            $table->string('image')->nullable();
             $table->string('email')->nullable();
             $table->string('telephone')->nullable();
             $table->string('celular');

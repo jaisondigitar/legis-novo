@@ -85,7 +85,10 @@ class Commission extends Model
      * @var array
      */
     public static $rules = [
-
+        'date_start' => 'required',
+        'date_end' => 'required',
+        'name' => 'required',
+        'description' => 'required',
     ];
 
     public function scopeActive($query)
