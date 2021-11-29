@@ -1,8 +1,8 @@
 @extends('errors/error')
 
 @section('code', '422')
-@section('title', __('Too Many Requests'))
+@section('title', __('Unprocessable Entity'))
 
-@section('name', 'Entidade não processável')
+@section('name', 'Dados Inválidos')
 
-@section('message', __('O cliente não deve repetir esta requisição sem modificações.'))
+@section('message', __('Os dados enviados são inválidos.'))

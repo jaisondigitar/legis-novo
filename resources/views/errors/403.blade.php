@@ -3,6 +3,6 @@
 @section('code', '403')
 @section('title', __('Forbidden'))
 
-@section('name', 'Proibido')
+@section('name', 'Acesso Negado')
 
-@section('message', __($exception->getMessage() ?: 'Desculpe, está proibido de aceder a esta página.'))
+@section('message', __($exception->getMessage() ?: 'Página não altorizada.'))
