@@ -238,28 +238,32 @@ class LawsProjectController extends AppBaseController
             }
         }
 
-        if ($request->file('file')) {
-            $extension = $request->file('file')->getClientOriginalExtension();
+        $file = $request->file('file');
 
-            $fileName = 'law_'.$lawsProject->id.'.'.$extension;
+        if ($file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
 
-            if ($request->file('file')->move('laws', $fileName)) {
-                $lawsProject->file = $fileName;
+            $lawsProject->file = $filename;
+            $lawsProject->save();
 
-                $lawsProject->save();
-            }
+//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
-        if ($request->file('law_file')) {
-            $extension = $request->file('law_file')->getClientOriginalExtension();
+        $law_file = $request->file('law_file');
 
-            $fileName = 'law_file_'.$lawsProject->id.'.'.$extension;
+        if ($law_file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
 
-            if ($request->file('law_file')->move('laws', $fileName)) {
-                $lawsProject->law_file = $fileName;
+            $lawsProject->law_file = $filename;
+            $lawsProject->save();
 
-                $lawsProject->save();
-            }
+//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
 
         $law_number = new LawProjectsNumber();
@@ -751,22 +755,32 @@ class LawsProjectController extends AppBaseController
             }
         }
 
-        if ($request->file('file')) {
-            $extension = $request->file('file')->getClientOriginalExtension();
-            $fileName = 'law_'.$id.'.'.$extension;
-            if ($request->file('file')->move('laws', $fileName)) {
-                $lawsProject->file = $fileName;
-                $lawsProject->save();
-            }
+        $file = $request->file('file');
+
+        if ($file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
-        if ($request->file('law_file')) {
-            $extension = $request->file('law_file')->getClientOriginalExtension();
-            $fileName = 'law_file_'.$lawsProject->id.'.'.$extension;
-            if ($request->file('law_file')->move('laws', $fileName)) {
-                $lawsProject->law_file = $fileName;
-                $lawsProject->save();
-            }
+        $law_file = $request->file('law_file');
+
+        if ($law_file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->law_file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
 
         $law_number = new LawProjectsNumber();
@@ -1276,23 +1290,32 @@ class LawsProjectController extends AppBaseController
     {
         $lawsProject = LawsProject::find($id);
 
-        if ($request->file('file')) {
-            $extension = $request->file('file')->getClientOriginalExtension();
-            $fileName = 'law_'.$id.'.'.$extension;
+        $file = $request->file('file');
 
-            if ($request->file('file')->move('laws', $fileName)) {
-                $lawsProject->file = $fileName;
-                $lawsProject->save();
-            }
+        if ($file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
-        if ($request->file('law_file')) {
-            $extension = $request->file('law_file')->getClientOriginalExtension();
-            $fileName = 'law_file_'.$lawsProject->id.'.'.$extension;
-            if ($request->file('law_file')->move('laws', $fileName)) {
-                $lawsProject->law_file = $fileName;
-                $lawsProject->save();
-            }
+        $laws_file = $request->file('law_file');
+
+        if ($laws_file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawsProject->law_file = $filename;
+            $lawsProject->save();
+
+//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
         flash('Arquivos salvos com sucesso!')->success();
 

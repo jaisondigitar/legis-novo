@@ -875,17 +875,24 @@ class MeetingController extends AppBaseController
 
         $meeting = Meeting::find($id);
 
-        if ($request->file) {
-            foreach ($request->file as $key => $file) {
+        $files = $request->file;
+
+        if ($files) {
+            foreach ($files as $file) {
+                $filename = static::$uploadService
+                    ->inMeetingsFolder()
+                    ->sendFile($file)
+                    ->send();
+
                 $new_file = new MeetingFiles();
-                $fileName = $meeting->id.$key.time().'.'.$file->getClientOriginalExtension();
-                $file->move(
+                $new_file->meeting_id = $meeting->id;
+                $new_file->filename = $filename;
+                $new_file->save();
+
+                /*$file->move(
                     base_path().'/public/uploads/meetings/files',
                     $fileName
-                );
-                $new_file->meeting_id = $meeting->id;
-                $new_file->filename = $fileName;
-                $new_file->save();
+                );*/
             }
         }
 

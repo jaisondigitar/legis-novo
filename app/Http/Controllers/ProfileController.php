@@ -119,21 +119,24 @@ class ProfileController extends AppBaseController
             return redirect(route('profiles.index'));
         }
 
-        $profile = $this->profileRepository->updateRich($request->all(), $id);
         $profile = $this->profileRepository->findBy('user_id', Auth::user()->id);
-        $public = '/public';
-        $path = '/uploads/images/profiles/';
-        if (is_file($request->file('image'))) {
-            $imageName = $profile->id.'.'.$request->file('image')->getClientOriginalExtension();
-            if ($request->file('image')->move(base_path().$public.$path, $imageName)) {
-                $profile->image = $path.$imageName;
-                $profile->save();
 
+        $image = $request->file('image');
+        if ($image) {
+            $filename = static::$uploadService
+                ->inImageProfileFolder()
+                ->sendFile($image)
+                ->send();
+
+            /*if ($request->file('image')->move(base_path().$public.$path, $imageName)) {
                 $image = Image::make(base_path().$public.$path.$imageName);
                 $image->resize(100, null, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save();
-            }
+            }*/
+
+            $profile->image = $filename;
+            $profile->save();
         }
         flash('Registro editado com sucesso!')->success();
 
