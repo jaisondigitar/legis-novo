@@ -57,15 +57,15 @@
 
 <script>
     function deleteFile(id) {
-        var r = confirm('Deseja realmente apagar?');
-        if (r == true) {
-            var url = "{{ url('law-file-delete') }}/" + id;
+        const r = confirm('Deseja realmente apagar?');
+        if (r === true) {
+            const url = "{{ url('law-file-delete') }}/" + id;
             $.ajax({
                 method: "GET",
                 url: url,
                 dataType: "json"
             }).success(function (result) {
-                if (result == true)
+                if (result === true)
                     $('#tr' + id).remove();
             });
         }

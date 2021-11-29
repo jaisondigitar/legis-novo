@@ -39,15 +39,15 @@
 
         <!-- Photo Field -->
         <div class="form-group col-sm-6">
-            @if(isset($assemblyman) && is_file(base_path()."/public".$assemblyman->image))
+            @if(isset($people) && !empty($people->image))
                 <div class="logo-inst">
-                    <img src="{{ $assemblyman->image }}" class="img-thumbnail img-rounded">
+                    <img src="{{ (new \App\Services\StorageService())->inPeopleFolder()->get($people->image) }}" width="150px" class="img-thumbnail img-rounded">
                     <div style="width: 100px;padding: 5px;font-family: monospace;">
                         <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
                     </div>
                 </div>
             @endif
-            <div class="upload" @if(isset($assemblyman) && is_file(base_path()."/public".$assemblyman->image)) style="display: none;" @endif >
+            <div class="upload" @if(isset($people) &&  !empty($people->image)) style="display: none;" @endif >
                 <i class="fa fa-image"></i>
                 {!! Form::label('image', " Foto:") !!}
                 {!! Form::file('image', ['class' => 'form-control']) !!}
@@ -105,15 +105,15 @@
     <a href="{!! route('people.index') !!}" class="btn btn-default">Cancelar</a>
 </div>
 
-@if(isset($assemblyman) && is_file(base_path()."/public".$assemblyman->image))
+@if(isset($people) && !empty($people->image))
     <script>
-        var removeImage = function(){
-            var url = '/people/{{ $assemblyman->id }}/delimage';
+        const removeImage = function(){
+            const url = '/people/{{ $people->id }}/delimage';
             $.ajax({
                 method: "GET",
                 url: url,
                 dataType: "json"
-            }).success(function(result,textStatus,jqXHR) {
+            }).success(function(result) {
                 if(result){
                     $(".logo-inst").fadeOut(300,function(){
                         $(".upload").fadeIn(300);
