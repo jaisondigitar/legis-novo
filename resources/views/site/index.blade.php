@@ -113,7 +113,8 @@
                                     <input type="hidden" name="projects" value="true">
                                     <div class="form-group col-md-4">
                                         {!! Form::label('owner_id', 'Tipo:') !!}
-                                        {!! Form::select('type', App\Models\LawsType::lists('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                                        {!! Form::select('type', App\Models\LawsType::pluck('name',
+                                        'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
                                     </div>
                                     <div class="form-group col-md-2">
                                         {!! Form::label('date', 'Número:') !!}
@@ -154,7 +155,7 @@
                                     <input type="hidden" name="atas" value="true">
                                     <div class="form-group col-md-offset-4 col-md-3">
                                         {!! Form::label('type', 'Tipo:') !!}
-                                        {!! Form::select('type', App\Models\SessionType::lists('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                                        {!! Form::select('type', App\Models\SessionType::pluck('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
                                     </div>
                                     <div class="form-group col-md-2">
                                         {!! Form::label('date', 'Data:') !!}
