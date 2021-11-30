@@ -790,7 +790,10 @@ Placed at the end of the document so the pages load faster
                 </div>
                 <div class="modal-body">
 
-                    {!! Form::select('assemblyman_id', \App\Models\Assemblyman::whereIn('id', \App\Models\UserAssemblyman::where('users_id', Auth::user()->id)->lists('assemblyman_id')->toArray())->lists('short_name', 'id')->prepend('Selecione', 0), null,['id'=>'assemblyman_id','class' => 'form-control', 'onchange'=>'select_assemblyman()']) !!}
+                    {!! Form::select('assemblyman_id', \App\Models\Assemblyman::whereIn('id',
+                    \App\Models\UserAssemblyman::where('users_id', Auth::user()->id)->pluck
+                    ('assemblyman_id')->toArray())->pluck('short_name', 'id')->prepend('Selecione',
+                     0), null,['id'=>'assemblyman_id','class' => 'form-control', 'onchange'=>'select_assemblyman()']) !!}
 
                 </div>
                 <div class="modal-footer">

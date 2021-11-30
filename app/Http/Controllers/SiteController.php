@@ -146,7 +146,7 @@ class SiteController extends Controller
 
     public function getDocumentTypes()
     {
-        $documentType = DocumentType::where('parent_id', 0)->lists('name', 'id')->prepend('Selecione...', 0);
+        $documentType = DocumentType::where('parent_id', 0)->pluck('name', 'id')->prepend('Selecione...', 0);
 
         $novo = [];
         foreach ($documentType as $key => $doc) {
