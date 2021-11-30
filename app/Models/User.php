@@ -18,8 +18,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public $table = 'users';
 
-    protected $dates = ['deleted_at'];
-
     public $fillable = [
         'id',
         'company_id',
@@ -28,30 +26,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'email',
         'password',
         'active',
-        'roles',
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'id' => 'integer',
-        'company_id' => 'integer',
-        'sector_id' => 'integer',
-        'name' => 'string',
-        'email' => 'string',
-        'password' => 'string',
-        'active' => 'boolean',
-    ];
-
-    public static $rules = [
-        'sector_id' => 'required',
-        'name' => 'required',
-        'email' => 'exists:users,email',
-        'password' => 'required',
-        'roles' => 'required',
     ];
 
     protected $hidden = ['password', 'remember_token', 'created_at', 'updated_at', 'deleted_at'];
