@@ -21,6 +21,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class UserController extends AppBaseController
@@ -99,14 +101,16 @@ class UserController extends AppBaseController
 
             return redirect('/');
         }
-        $input = $request->all();
 
-        $user = $this->userRepository->create($input);
+        $validated = $request->validated();
+
+        $user = $this->userRepository->create($validated);
+
         $user->password = bcrypt($request->password);
         $user->active = isset($request->active) ? 1 : 0;
         $user->save();
 
-        $user->syncRoles($input['roles']);
+        $user->syncRoles($validated['roles']);
 
         $profile = $this->profileRepository->newQuery()->where('user_id', $user->id)->get();
 
@@ -214,7 +218,7 @@ class UserController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws BindingResolutionException
      */
-    public function update($id, UpdateUserRequest $request)
+    public function update(int $id, UpdateUserRequest $request)
     {
         if (! Defender::hasPermission('users.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -222,7 +226,8 @@ class UserController extends AppBaseController
             return redirect('/');
         }
         $user = $this->userRepository->findByID($id);
-        $input = $request->all();
+
+        $validated = $request->validated();
 
         if (empty($user)) {
             flash('Registro não existe.')->error();
@@ -230,15 +235,15 @@ class UserController extends AppBaseController
             return redirect(route('users.index'));
         }
 
-        ! empty($input['password']) ? $input['password'] = bcrypt($input['password']) : $input['password'] = $user->password;
-        $this->userRepository->update($user, $input);
+        ! empty($validated['password']) ? $validated['password'] = bcrypt($validated['password']) : $validated['password'] = $user->password;
+        $this->userRepository->update($user, $validated);
 
         $new = $this->userRepository->findByID($id);
         $new->active = isset($request->active) ? 1 : 0;
         $new->save();
 
         $this->clearRoles($new, $user);
-        $new->syncRoles($input['roles']);
+        $new->syncRoles($validated['roles']);
 
         if (isset($request['assemblyman'])) {
             DB::delete('delete from user_assemblyman where users_id = '.$user->id);
