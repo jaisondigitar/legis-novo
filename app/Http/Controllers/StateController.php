@@ -172,8 +172,8 @@ class StateController extends AppBaseController
         return State::lists('name', 'id');
     }
 
-    public function stateByName(Request $request)
+    public function stateByUf(Request $request)
     {
-        return State::where('uf', '=', $request->get('uf'))->get();
+        return State::where('uf', $request->get('uf'))->get();
     }
 }

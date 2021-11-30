@@ -176,15 +176,4 @@ class CityController extends AppBaseController
 
         return json_encode($cities);
     }
-
-    public function citiesByName(Request $request)
-    {
-        $cities = City::where('name', '=', $request->get('city'))->get();
-
-        if (! $cities) {
-            throw new Exception('Estado não encontrado');
-        }
-
-        return $cities;
-    }
 }

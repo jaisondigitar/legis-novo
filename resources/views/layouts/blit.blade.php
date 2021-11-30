@@ -180,9 +180,9 @@
             return await resp.json();
         }
 
-        const getStates = async (uf, city) => {
+        const getStates = async (uf) => {
             const resp = await fetch(
-                `/get-states?uf=${uf}`, {
+                `/get-state?uf=${uf}`, {
                     headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
                     method: 'POST',
                 }
@@ -190,18 +190,16 @@
 
             const state = await resp.json();
 
-            await getCities(state[0].id, city);
-
-            $(".cities").val(await getCitiesName(city));
             return state[0].id;
         }
 
         const getCities = async function(id, city) {
+
             const state  = $("#"+id).val() || id;
-            const url = "/getcities/"+state;
+
             $.ajax({
                 method: "POST",
-                url: url,
+                url: `/getcities/${state}`,
                 data: {
                     _token: "{!! csrf_token() !!}",
                     state: state
@@ -209,26 +207,18 @@
                 dataType: "json"
             }).success(function(result) {
                 const cities = $('.cities');
+
                 cities.empty();
+
                 $.each(result, function(i, item) {
-                    const tmp = '<option value="' + item.id + '">' + item.name + '</option>';
-                    cities.append(tmp);
+                    if (item.name.toLowerCase() === city.toLowerCase()) {
+                        cities.append('<option value="' + item.id + '" selected>' + item.name +
+                            '</option>');
+                    } else {
+                        cities.append('<option value="' + item.id + '">' + item.name + '</option>');
+                    }
                 });
             });
-            $(".cities").val(await getCitiesName(city));
-        }
-
-        const getCitiesName = async (city) => {
-            const resp = await fetch(
-                `/get-cities?city=${city.toUpperCase()}`, {
-                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
-                    method: 'POST',
-                }
-            ).catch(() => new Error(`Cidade inválido`))
-
-            const cities = await resp.json();
-
-            return cities[0].id;
         }
 
         const getPeople = async cpf => {
@@ -779,10 +769,14 @@ Placed at the end of the document so the pages load faster
                     const data = await viaCep(cep);
 
                     if (!("erro" in data)) {
+                        const stateId = await getStates(data.uf)
+
                         //Atualiza os campos com os valores da consulta.
                         $("#street").val(data.logradouro);
                         $("#district").val(data.bairro);
-                        $(".states").val(await getStates(data.uf, data.localidade));
+                        $(".states").val(stateId);
+
+                        await getCities(stateId, data.localidade)
 
                         $("#number").focus();
                     } //end if.
