@@ -102,12 +102,14 @@ Route::middleware([
 
         Route::group(['prefix' => '', ['middleware' => 'needsRole', 'is' => 'root']], function () {
             Route::resource('states', 'StateController');
+            Route::post('get-states', 'StateController@stateByName');
             Route::get('states/{id}/delete', [
                 'as' => 'states.delete',
                 'uses' => 'StateController@destroy',
             ]);
 
             Route::resource('cities', 'CityController');
+            Route::post('get-cities', 'CityController@citiesByName');
             Route::post('/getcities/{uf}', 'CityController@getByUf');
             Route::get('cities/{id}/delete', [
                 'as' => 'cities.delete',

@@ -9,6 +9,8 @@ use App\Libraries\Repositories\CityRepository;
 use App\Models\City;
 use App\Models\State;
 use Flash;
+use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
 use Response;
 
 class CityController extends AppBaseController
@@ -173,5 +175,16 @@ class CityController extends AppBaseController
         $cities = City::where('state', '=', $state->uf)->get();
 
         return json_encode($cities);
+    }
+
+    public function citiesByName(Request $request)
+    {
+        $cities = City::where('name', '=', $request->get('city'))->get();
+
+        if (! $cities) {
+            throw new Exception('Estado não encontrado');
+        }
+
+        return $cities;
     }
 }

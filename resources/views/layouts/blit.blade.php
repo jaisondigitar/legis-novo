@@ -171,7 +171,32 @@
             "hideMethod": "fadeOut"
         };
 
-        const getCities = function(id) {
+        const viaCep = async cep => {
+            const resp = await fetch(
+                `http://viacep.com.br/ws/${cep}/json/`, {
+                    method: 'GET',
+                }
+            ).catch(() => new Error(`Estado inválido`))
+            return await resp.json();
+        }
+
+        const getStates = async (uf, city) => {
+            const resp = await fetch(
+                `/get-states?uf=${uf}`, {
+                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
+                    method: 'POST',
+                }
+            ).catch(() => new Error(`Estado inválido`))
+
+            const state = await resp.json();
+
+            await getCities(state[0].id);
+
+            $(".cities").val(await getCitiesName(city));
+            return state[0].id;
+        }
+
+        const getCities = async function(id) {
             const state  = $("#"+id).val() || id;
             const url = "/getcities/"+state;
             $.ajax({
@@ -183,13 +208,26 @@
                 },
                 dataType: "json"
             }).success(function(result) {
-                const cities  = $('.cities');
+                const cities = $('.cities');
                 cities.empty();
                 $.each(result, function(i, item) {
                     const tmp = '<option value="' + item.id + '">' + item.name + '</option>';
                     cities.append(tmp);
                 });
             });
+        }
+
+        const getCitiesName = async (city) => {
+            const resp = await fetch(
+                `/get-cities?city=${city.toUpperCase()}`, {
+                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
+                    method: 'POST',
+                }
+            ).catch(() => new Error(`Cidade inválido`))
+
+            const cities = await resp.json();
+
+            return cities[0].id;
         }
 
         const getPeople = async cpf => {
@@ -211,9 +249,6 @@
                 document.querySelector('.states').value = data[0].states
                 document.querySelector('.cities').value = data[0].cities
                 document.querySelector('.complement').index = data[0].complement
-             /*   await getCities(data[0].state_id)
-                document.querySelector('.states').selectedIndex = data[0].state_id-1
-                document.querySelector('.cities').selectedIndex = data[0].city_id*/
             }
         }
 
@@ -707,25 +742,13 @@ Placed at the end of the document so the pages load faster
                 pos = 9;
         }
         resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-        if (resultado != digitos.charAt(1))
+        if (resultado !== digitos.charAt(1))
             return false;
 
         return true;
     }
 
     $(document).ready(function() {
-        const states = (dados) => {
-            const state_id = '';
-            const city_id = '';
-
-            console.log(dados);
-
-            return (
-                $(".states").val(12),
-                $(".cities").val(dados.localidade)
-            );
-        }
-
         const clear_form = () => {
             // Limpa valores do formulário de cep.
             $("#street").val("");
@@ -734,7 +757,7 @@ Placed at the end of the document so the pages load faster
             $(".cities").val("");
         }
 
-        $("#zipcode").blur(function () {
+        $("#zipcode").blur(async function () {
 
             //Nova variável "cep" somente com dígitos.
             var cep = $(this).val().replace(/\D/g, '');
@@ -751,27 +774,22 @@ Placed at the end of the document so the pages load faster
                     //Preenche os campos com "..." enquanto consulta webservice.
                     $("#street").val('').attr("placeholder",'buscando dados...');
                     $("#district").val('').attr("placeholder",'buscando dados...');
-                    $(".states").val('').attr("placeholder",'buscando dados...');
-                    $(".cities").val('').attr("placeholder",'buscando dados...');
 
-                    //Consulta o webservice viacep.com.br/
-                    $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+                    const data = await viaCep(cep);
 
-                        if (!("erro" in dados)) {
-                            //Atualiza os campos com os valores da consulta.
-                            $("#street").val(dados.logradouro);
-                            $("#district").val(dados.bairro);
-                            $("#number").focus();
+                    if (!("erro" in data)) {
+                        //Atualiza os campos com os valores da consulta.
+                        $("#street").val(data.logradouro);
+                        $("#district").val(data.bairro);
+                        $(".states").val(await getStates(data.uf, data.localidade));
 
-                            states(dados);
-
-                        } //end if.
-                        else {
-                            //CEP pesquisado não foi encontrado.
-                            clear_form();
-                            alert("CEP não encontrado.");
-                        }
-                    });
+                        $("#number").focus();
+                    } //end if.
+                    else {
+                        //CEP pesquisado não foi encontrado.
+                        clear_form();
+                        alert("CEP não encontrado.");
+                    }
                 } //end if.
                 else {
                     //cep é inválido.
