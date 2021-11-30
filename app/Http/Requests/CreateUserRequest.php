@@ -2,28 +2,36 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class CreateUserRequest extends Request
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
+     * @return string[]
      */
-    public function rules()
+    public function rules(): array
     {
-        return User::$rules;
+        return [
+            'sector_id' => 'required|integer|exists:companies,id',
+            'company_id' => 'required|integer|exists:sectors,id',
+            'name' => 'required|string',
+            'email' => [
+                'required',
+                'string',
+                Rule::unique('users', 'email')->whereNull('deleted_at'),
+            ],
+            'password' => 'required|string',
+            'roles' => 'required|array',
+            'roles.*' => 'nullable|integer|exists:roles,id',
+            'active' => ['nullable', Rule::in('on')],
+        ];
     }
 }
