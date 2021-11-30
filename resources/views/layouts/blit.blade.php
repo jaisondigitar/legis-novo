@@ -713,17 +713,25 @@ Placed at the end of the document so the pages load faster
         return true;
     }
 
-
-
-</script>
-<script>
     $(document).ready(function() {
-        function limpa_formulário_cep() {
+        const states = (dados) => {
+            const state_id = '';
+            const city_id = '';
+
+            console.log(dados);
+
+            return (
+                $(".states").val(12),
+                $(".cities").val(dados.localidade)
+            );
+        }
+
+        const clear_form = () => {
             // Limpa valores do formulário de cep.
             $("#street").val("");
             $("#district").val("");
-            $("#states").val("");
-            $("#cities").val("");
+            $(".states").val("");
+            $(".cities").val("");
         }
 
         $("#zipcode").blur(function () {
@@ -732,7 +740,7 @@ Placed at the end of the document so the pages load faster
             var cep = $(this).val().replace(/\D/g, '');
 
             //Verifica se campo cep possui valor informado.
-            if (cep != "") {
+            if (cep !== "") {
 
                 //Expressão regular para validar o CEP.
                 var validacep = /^[0-9]{8}$/;
@@ -743,8 +751,8 @@ Placed at the end of the document so the pages load faster
                     //Preenche os campos com "..." enquanto consulta webservice.
                     $("#street").val('').attr("placeholder",'buscando dados...');
                     $("#district").val('').attr("placeholder",'buscando dados...');
-                    $("#states").val('').attr("placeholder",'buscando dados...');
-                    $("#cities").val('').attr("placeholder",'buscando dados...');
+                    $(".states").val('').attr("placeholder",'buscando dados...');
+                    $(".cities").val('').attr("placeholder",'buscando dados...');
 
                     //Consulta o webservice viacep.com.br/
                     $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
@@ -754,25 +762,26 @@ Placed at the end of the document so the pages load faster
                             $("#street").val(dados.logradouro);
                             $("#district").val(dados.bairro);
                             $("#number").focus();
-                            $("#states").val(dados.uf);
-                            $("#cities").val(dados.localidade);
+
+                            states(dados);
+
                         } //end if.
                         else {
                             //CEP pesquisado não foi encontrado.
-                            limpa_formulário_cep();
+                            clear_form();
                             alert("CEP não encontrado.");
                         }
                     });
                 } //end if.
                 else {
                     //cep é inválido.
-                    limpa_formulário_cep();
+                    clear_form();
                     alert("Formato de CEP inválido.");
                 }
             } //end if.
             else {
                 //cep sem valor, limpa formulário.
-                limpa_formulário_cep();
+                clear_form();
             }
         });
     });
