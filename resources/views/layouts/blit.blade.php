@@ -221,6 +221,20 @@
             });
         }
 
+        const getCityById = async cityId => {
+            console.log(cityId);
+            const resp = await fetch(
+                `/get-city-by-id?city_id=${cityId}`, {
+                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
+                    method: 'POST',
+                }
+            ).catch(() => new Error(`Cidade inválido`))
+
+            const city = await resp.json();
+
+            return city[0].name;
+        }
+
         const getPeople = async cpf => {
             const resp = await fetch(
                 `/people/search-by-cpf?cpf=${cpf}`, {
@@ -233,12 +247,17 @@
             if (data[0]) {
                 document.querySelector('.phone').value = data[0].celular
                 document.querySelector('.name').value = data[0].name
-                document.querySelector('.cep').value = data[0].zipcode
+
                 document.querySelector('.street').value = data[0].street
                 document.querySelector('.number').value = data[0].number
+
+                document.querySelector('.cep').value = data[0].zipcode
+
                 document.querySelector('.district').value = data[0].district
-                document.querySelector('.states').value = data[0].states
-                document.querySelector('.cities').value = data[0].cities
+                document.querySelector('.states').value = data[0].state_id
+
+                await getCities(data[0].state_id, await getCityById(data[0].city_id))
+
                 document.querySelector('.complement').index = data[0].complement
             }
         }

@@ -176,4 +176,9 @@ class CityController extends AppBaseController
 
         return json_encode($cities);
     }
+
+    public function getById(Request $request)
+    {
+        return City::find($request->get('city_id'))->get();
+    }
 }
