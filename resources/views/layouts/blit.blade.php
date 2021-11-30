@@ -190,13 +190,13 @@
 
             const state = await resp.json();
 
-            await getCities(state[0].id);
+            await getCities(state[0].id, city);
 
             $(".cities").val(await getCitiesName(city));
             return state[0].id;
         }
 
-        const getCities = async function(id) {
+        const getCities = async function(id, city) {
             const state  = $("#"+id).val() || id;
             const url = "/getcities/"+state;
             $.ajax({
@@ -215,6 +215,7 @@
                     cities.append(tmp);
                 });
             });
+            $(".cities").val(await getCitiesName(city));
         }
 
         const getCitiesName = async (city) => {
