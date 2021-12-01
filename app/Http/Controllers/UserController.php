@@ -150,6 +150,12 @@ class UserController extends AppBaseController
         }
         $user = $this->userRepository->findByID($id);
 
+        if (Defender::hasRole('root')) {
+            $levels = Role::all();
+        } else {
+            $levels = Role::where('name', '!=', 'root')->get();
+        }
+
         if (empty($user)) {
             flash('Registro não existe.')->error();
 
@@ -159,7 +165,8 @@ class UserController extends AppBaseController
         $permCompany = Role::all();
 
         return view('users.show', compact(
-            'permCompany'
+            'permCompany',
+            'levels'
         ))->with('user', $user);
     }
 
