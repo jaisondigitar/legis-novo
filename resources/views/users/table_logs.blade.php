@@ -42,6 +42,17 @@
                 echo '<br><p><strong>NOVO VALOR</strong></p>'.filter_var($log->new_value, FILTER_SANITIZE_STRING);
             }
         ?>
+        {{--
+
+        @if ($log->type == "updated")
+            @yield('old_log')
+        @endif
+
+        @if ($log->type == "updated" || $log->type == "created")
+            @yield('new_log')
+        @endif
+
+        --}}
     </div>
 @endforeach
 
