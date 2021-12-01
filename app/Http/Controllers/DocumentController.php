@@ -1033,7 +1033,14 @@ class DocumentController extends AppBaseController
         $advice_situation_document = AdviceSituationDocuments::pluck('name', 'id')->prepend('Selecione...', '');
         $advice_publication_document = AdvicePublicationDocuments::pluck('name', 'id')->prepend('Selecione...', '');
         $status_processing_document = StatusProcessingDocument::pluck('name', 'id')->prepend('Selecione...', '');
-        $destinations = User::pluck('name', 'id')->prepend('Selecione...', '');
+
+        $destinations = User::query()
+            ->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'root');
+            })
+            ->get()
+            ->pluck('name', 'id')
+            ->prepend('Selecione...', '');
 
         return view(
             'documents.advices',
