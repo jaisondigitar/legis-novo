@@ -23,6 +23,7 @@ use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
 use App\Models\ProtocolType;
 use App\Models\StatusProcessingDocument;
+use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
 use App\Services\StorageService;
@@ -1032,8 +1033,21 @@ class DocumentController extends AppBaseController
         $advice_situation_document = AdviceSituationDocuments::pluck('name', 'id')->prepend('Selecione...', '');
         $advice_publication_document = AdvicePublicationDocuments::pluck('name', 'id')->prepend('Selecione...', '');
         $status_processing_document = StatusProcessingDocument::pluck('name', 'id')->prepend('Selecione...', '');
+        $destinations = User::pluck('name', 'id')->prepend('Selecione...', '');
 
-        return view('documents.advices', compact('document_situation', 'comission', 'tramitacao', 'advice_situation_document', 'advice_publication_document', 'status_processing_document'))->with(compact('document'));
+        return view(
+            'documents.advices',
+            compact(
+                'document_situation',
+                'comission',
+                'tramitacao',
+                'advice_situation_document',
+                'advice_publication_document',
+                'status_processing_document',
+                'destinations'
+            )
+        )
+            ->with(compact('document'));
     }
 
     public function importNumber()

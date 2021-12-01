@@ -74,7 +74,7 @@
 
                             <div class="form-group col-sm-3">
                                 {!! Form::label('destination_id', 'Destinatário:') !!}
-                                {!! Form::select('destination_id', [], null, ['class' => 'form-control']) !!}
+                                {!! Form::select('destination_id', $destinations, null, ['class' => 'form-control']) !!}
                             </div>
 
                             <div class="form-group col-sm-2">
@@ -120,8 +120,8 @@
                                         <tr id="line_{{ $processing->id }}">
                                             <td > {{ $processing->processing_document_date }}</td>
                                             <td > {{ $processing->documentSituation->name }}</td>
-                                            <td > {{ $processing->statusProcessingDocument->name ?: '' }}</td>
-                                            <td > {{ '' }}</td>
+                                            <td > {{ $processing->statusProcessingDocument->name ?? '' }}</td>
+                                            <td > {{ $processing->destination->name ?? '' }}</td>
                                             <td style="text-align: justify;"> {!! $processing->observation !!}</td>
                                             <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
                                         </tr>
@@ -245,6 +245,7 @@
                         document_situation_id: $('#new_document_situation_id').val(),
                         status_processing_document_id: $('#new_status_processing_document_id').val(),
                         processing_document_date: $('#new_processing_document_date').val(),
+                        destination_id: $('#destination_id').val(),
                         observation: CKEDITOR.instances.new_document_observation.getData()
                     };
 
@@ -253,27 +254,30 @@
                         data: data,
                         method: 'post'
                     }).success(function (data) {
-
                         data = JSON.parse(data);
 
                         table = $('#table_processing').empty();
 
-                        data.forEach(function (valor, chave) {
-                            console.log(valor);
+                        data.forEach(function (valor) {
                             str = '<tr id="line_' + valor.id + '"> ';
-                            str += "<td>";
-                            str += valor.document_situation.name;
-                            str += "</td>";
-                            str += "<td>";
-                            if(valor.status_processing_document_id > 0) {
-                                str += valor.status_processing_document.name;
-                            }
-                            str += "</td>";
                             str += "<td>";
                             str += valor.processing_document_date;
                             str += "</td>";
                             str += "<td>";
-                            str += valor.observation;
+                            str += valor.document_situation.name;
+                            str += "</td>";
+                            str += "<td>";
+                            if (valor.status_processing_document_id > 0) {
+                                str += valor.status_processing_document.name;
+                            }
+                            str += "</td>";
+                            str += "<td>";
+                            if (valor.destination) {
+                                str += valor.destination.name;
+                            }
+                            str += "</td>";
+                            str += "<td>";
+                            str += valor.observation || '';
                             str += "</td>";
                             str += "<td>";
                             str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
