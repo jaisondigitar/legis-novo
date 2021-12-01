@@ -45,17 +45,26 @@
             </div>
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#permissions" data-toggle="tab" aria-expanded="true"><i class="fa fa-newspaper-o"></i> Permissões</a></li>
-                <li class=""><a href="#panel-profile-2" data-toggle="tab" aria-expanded="false"><i class="fa fa-dollar"></i> Financeiro</a></li>
+{{--                <li class=""><a href="#panel-profile-2" data-toggle="tab" aria-expanded="false"><i class="fa fa-dollar"></i> Financeiro</a></li>--}}
             </ul>
         </div>
         <div id="panel-collapse-2" class="collapse in">
             <div class="panel-body">
                 <div class="tab-content">
                     <div class="tab-pane fade active in" id="permissions">
-                        @foreach($permCompany as $perm)
-                        <div class="col-sm-3">
-                            <input  type="checkbox" @if($user->hasPermission($perm->id))checked @endif> {{ $perm->name }}
-                        </div>
+                        @foreach($levels as $value)
+                            <?php
+                                $teste = false;
+                                if (isset($user)) {
+                                    $teste = $user->hasRole($value->name);
+                                }
+                            ?>
+                            <div class="col-sm-3">
+                                <label>
+                                    {!! Form::checkbox('roles[]', $value->id, $teste, ['class' => 'required', 'disabled']) !!}
+                                    {!! $value->name !!}
+                                </label>
+                            </div>
                         @endforeach
                     </div>
                     <div class="tab-pane fade" id="panel-profile-2">
