@@ -104,6 +104,9 @@
                                         <th width="150">
                                             Status do trâmite
                                         </th>
+                                        <th width="150">
+                                            Destinatário
+                                        </th>
                                         <th width="500">
                                             Observação
                                         </th>
@@ -114,10 +117,11 @@
                                     </thead>
                                     <tbody id="table_processing">
                                     @forelse($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing)
-                                        <tr id="line_{{$processing->id}}">
-                                            <td > {{$processing->documentSituation->name}}</td>
-                                            <td > {{$processing->statusProcessingDocument ? $processing->statusProcessingDocument->name : ''}}</td>
-                                            <td > {{$processing->processing_document_date}}</td>
+                                        <tr id="line_{{ $processing->id }}">
+                                            <td > {{ $processing->processing_document_date }}</td>
+                                            <td > {{ $processing->documentSituation->name }}</td>
+                                            <td > {{ $processing->statusProcessingDocument->name ?: '' }}</td>
+                                            <td > {{ '' }}</td>
                                             <td style="text-align: justify;"> {!! $processing->observation !!}</td>
                                             <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
                                         </tr>
