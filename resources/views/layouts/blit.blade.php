@@ -171,7 +171,9 @@
             "hideMethod": "fadeOut"
         };
 
-        const viaCep = async cep => {
+        const viaCep = async value => {
+            const cep = parseInt(value.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''));
+
             const resp = await fetch(
                 `http://viacep.com.br/ws/${cep}/json/`, {
                     method: 'GET',
@@ -212,27 +214,12 @@
 
                 $.each(result, function(i, item) {
                     if (item.name.toLowerCase() === city.toLowerCase()) {
-                        cities.append('<option value="' + item.id + '" selected>' + item.name +
-                            '</option>');
+                        cities.append('<option value="' + item.id + '" selected>' + item.name + '</option>');
                     } else {
                         cities.append('<option value="' + item.id + '">' + item.name + '</option>');
                     }
                 });
             });
-        }
-
-        const getCityById = async cityId => {
-            console.log(cityId);
-            const resp = await fetch(
-                `/get-city-by-id?city_id=${cityId}`, {
-                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
-                    method: 'POST',
-                }
-            ).catch(() => new Error(`Cidade inválido`))
-
-            const city = await resp.json();
-
-            return city[0].name;
         }
 
         const getPeople = async cpf => {
@@ -247,23 +234,37 @@
             if (data[0]) {
                 document.querySelector('.phone').value = data[0].celular
                 document.querySelector('.name').value = data[0].name
-
                 document.querySelector('.street').value = data[0].street
                 document.querySelector('.number').value = data[0].number
-
                 document.querySelector('.cep').value = data[0].zipcode
-
-                document.querySelector('.district').value = data[0].district
                 document.querySelector('.states').value = data[0].state_id
-
-                await getCities(data[0].state_id, await getCityById(data[0].city_id))
-
                 document.querySelector('.complement').index = data[0].complement
+                document.querySelector('.district').value = data[0].district
+
+                const dataCep = await viaCep(data[0].zipcode);
+                await getCities(data[0].state_id, dataCep.localidade)
+            } else {
+                clear_form()
             }
         }
 
         const showMessage = function(data){
             toastr[data.type](data.message,data.title);
+        }
+
+        const clear_form = () => {
+            $("#street").val("");
+            $("#district").val("");
+            $("#number").val("");
+            $(".states").val("");
+            $(".cities").val("");
+            $(".phone").val("");
+            $(".name").val("");
+            $(".street").val("");
+            $(".complement").val("");
+            $(".district").val("");
+            $(".number").val("");
+            $(".cep").val("");
         }
     </script>
 </head>
@@ -759,14 +760,6 @@ Placed at the end of the document so the pages load faster
     }
 
     $(document).ready(function() {
-        const clear_form = () => {
-            // Limpa valores do formulário de cep.
-            $("#street").val("");
-            $("#district").val("");
-            $(".states").val("");
-            $(".cities").val("");
-        }
-
         $("#zipcode").blur(async function () {
 
             //Nova variável "cep" somente com dígitos.
@@ -780,10 +773,6 @@ Placed at the end of the document so the pages load faster
 
                 //Valida o formato do CEP.
                 if (validacep.test(cep)) {
-
-                    //Preenche os campos com "..." enquanto consulta webservice.
-                    $("#street").val('').attr("placeholder",'buscando dados...');
-                    $("#district").val('').attr("placeholder",'buscando dados...');
 
                     const data = await viaCep(cep);
 

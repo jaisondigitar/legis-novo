@@ -110,7 +110,6 @@ Route::middleware([
 
             Route::resource('cities', 'CityController');
             Route::post('/getcities/{uf}', 'CityController@getByUf');
-            Route::post('/get-city-by-id', 'CityController@getById');
             Route::get('cities/{id}/delete', [
                 'as' => 'cities.delete',
                 'uses' => 'CityController@destroy',
