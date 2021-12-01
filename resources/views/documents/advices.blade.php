@@ -69,7 +69,12 @@
 
                             <div class="form-group col-sm-3">
                                 {!! Form::label('new_status_processing_document_id', 'Status do trâmite:') !!}
-                                {!! Form::select('new_status_processing_document_id', $status_processing_document ,null, ['class' => 'form-control']) !!}
+                                {!! Form::select('new_status_processing_document_id', $status_processing_document, null, ['class' => 'form-control']) !!}
+                            </div>
+
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('destination_id', 'Destinatário:') !!}
+                                {!! Form::select('destination_id', [], null, ['class' => 'form-control']) !!}
                             </div>
 
                             <div class="form-group col-sm-2">
