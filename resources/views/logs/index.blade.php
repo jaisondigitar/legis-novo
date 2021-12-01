@@ -7,23 +7,23 @@
         <div class="row">
             <div class="col-md-12">
                 <form method="GET">
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-4">
                         {!! Form::label('user_id', 'Usuário:') !!}
                         {!! Form::select('user_id', App\Models\User::where('company_id',
                         \Illuminate\Support\Facades\Auth::user()->company_id)->pluck('name', 'id')
                         ->prepend('Selecione...', '') ,$form->input('user_id'), ['class' => 'form-control']) !!}
                     </div>
-                    <div class="form-group col-md-1">
+                    <div class="form-group col-md-4">
                         {!! Form::label('owner_type', 'Tabela:') !!}
                         {!! Form::select('owner_type', $models ,$form->input('owner_type'), ['class' => 'form-control']) !!}
                     </div>
 
-                    <div class="form-group col-md-1">
+                    <div class="form-group col-md-2">
                         {!! Form::label('type', 'Ação:') !!}
                         {!! Form::select('type', $type ,$form->input('type'), ['class' => 'form-control']) !!}
                     </div>
 
-                    <div class="form-group col-md-1">
+                    <div class="form-group col-md-2">
                         {!! Form::label('date', 'Ano:') !!}
                         {!! Form::text('year', $form->input('year'), ['class' => 'form-control']) !!}
                     </div>

@@ -22,34 +22,35 @@
     {!! Form::number('owner_id', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Old Value Field -->
-<div class="form-group col-sm-12 col-lg-12">
-    {!! Form::label('old_value', 'Old Value:') !!}
-    {!! Form::textarea('old_value', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- New Value Field -->
-<div class="form-group col-sm-12 col-lg-12">
-    {!! Form::label('new_value', 'New Value:') !!}
-    {!! Form::textarea('new_value', null, ['class' => 'form-control']) !!}
-</div>
-
 <!-- Type Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-4">
     {!! Form::label('type', 'Type:') !!}
     {!! Form::text('type', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Created At Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-4">
     {!! Form::label('created_at', 'Created At:') !!}
     {!! Form::date('created_at', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Updated At Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-4">
     {!! Form::label('updated_at', 'Updated At:') !!}
     {!! Form::date('updated_at', null, ['class' => 'form-control']) !!}
+</div>
+
+
+<!-- Old Value Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('old_value', 'Old Value:') !!}
+    {!! Form::textarea('old_value', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- New Value Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('new_value', 'New Value:') !!}
+    {!! Form::textarea('new_value', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->
