@@ -181,7 +181,7 @@
                                             {!! $documentModel->document_type->name !!}
                                             {!! $documentModel->number . '/' . $documentModel->getYear($documentModel->date) !!}
                                             -
-{{--                                            {!! $documentModel->owner->short_name !!}--}}
+                                            {!! $documentModel->owner->short_name !!}
                                         </strong><br>
                                         @if(strlen($documentModel->content)>=600)
                                             {!! substr(strip_tags($documentModel->content), 0, strrpos(substr(strip_tags($documentModel->content), 0, 600), ' ')) . '...'; !!}
