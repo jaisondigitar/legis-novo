@@ -62,31 +62,29 @@
                     </div>
                     <div class="panel-body">
                         <div class=" col-md-12 col-sm-12">
-                            {{--<form id="processing_form" method="post" enctype="multipart/form-data">--}}
-                            <div class="form-group col-sm-3"> 
-                                {!! Form::label('new_document_situation_id', 'Situação do documento:') !!} 
-                                {!! Form::select('new_document_situation_id', $document_situation ,null, ['class' => 'form-control']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('new_document_situation_id', 'Situação do documento:') !!}
+                                {!! Form::select('new_document_situation_id', $document_situation ,null, ['class' => 'form-control']) !!}
+                            </div>
 
-                            <div class="form-group col-sm-3"> 
-                                {!! Form::label('new_status_processing_document_id', 'Status do tramite:') !!} 
-                                {!! Form::select('new_status_processing_document_id', $status_processing_document ,null, ['class' => 'form-control']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('new_status_processing_document_id', 'Status do trâmite:') !!}
+                                {!! Form::select('new_status_processing_document_id', $status_processing_document ,null, ['class' => 'form-control']) !!}
+                            </div>
 
-                            <div class="form-group col-sm-2"> 
-                                {!! Form::label('new_processing_document_date', 'Data:') !!} 
-                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datepicker']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-2">
+                                {!! Form::label('new_processing_document_date', 'Data:') !!}
+                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datepicker']) !!}
+                            </div>
 
-                            <div class="form-group col-sm-12"> 
-                                {!! Form::label('new_document_observation', ' Observações:') !!} 
-                                {!! Form::textarea('new_document_observation', null, ['class' => 'form-control ckeditor']) !!} 
-                            </div> 
+                            <div class="form-group col-sm-12">
+                                {!! Form::label('new_document_observation', ' Observações:') !!}
+                                {!! Form::textarea('new_document_observation', null, ['class' => 'form-control ckeditor']) !!}
+                            </div>
 
                             <div class="form-group col-sm-12">
                                 <button class="btn btn-info pull-right" type="button" onclick="save_processing()"> Salvar </button>
                             </div>
-                            {{--</form>--}}
 
                             <div class="col-md-12">
                                 <table class="table table-th-block table-dark">
@@ -99,7 +97,7 @@
                                             Situação do documento
                                         </th>
                                         <th width="150">
-                                            Status do tramite
+                                            Status do trâmite
                                         </th>
                                         <th width="500">
                                             Observação
@@ -130,7 +128,7 @@
                             </div>
 
                         </div>
-                    </div><!-- /.panel-body -->
+                    </div>
                 </div>
             </div>
         @endif
