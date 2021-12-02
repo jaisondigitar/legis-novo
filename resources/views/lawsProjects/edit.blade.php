@@ -54,16 +54,26 @@
                         $object = json_decode($log->old_values);
 
                         foreach ($object as $key=>$value) {
-                            echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                            if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
+                                $newDate = date('d/m/Y', strtotime($value));
+                                echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
+                            } else {
+                                echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                            }
                         }
                     }
 
-                    if ($log->event == 'updated' || $log->event == 'created') {
+                    if ($log->event == 'create' || $log->event == 'created') {
                         echo '<br><p><strong>NOVO VALOR</strong></p>';
                         $object = json_decode($log->new_values);
 
                         foreach ($object as $key=>$value) {
-                            echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                            if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
+                                $newDate = date('d/m/Y', strtotime($value));
+                                echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
+                            } else {
+                                echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                            }
                         }
                     }
 
