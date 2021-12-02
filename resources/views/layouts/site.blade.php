@@ -23,6 +23,17 @@
     <style>
         @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700,900);
 
+        .header {
+            padding: 20px;
+            margin-bottom: 10px;
+            text-align: end;
+            background: #2F2F2F;
+        }
+
+        .login {
+            margin-right: 10px;
+        }
+
         body {
             background: url('/bck.png') no-repeat fixed;
             background-size: 100% 100%;
@@ -37,7 +48,7 @@
 
         footer {
             position: absolute;
-            height: 15rem;
+            height: 9rem;
             bottom: 0;
             width: 100%;
             margin-top: 50px;
@@ -72,6 +83,7 @@
         h1 {
             font-family: 'Lato', sans-serif;
             font-weight: 600;
+            color: #286090;
         }
 
 
@@ -102,13 +114,14 @@
             padding: 0;
             margin: 0;
             text-decoration: none;
-            color: #1abc9c;
+            color: #696E74;
         }
         a:hover,
         a:focus {
             text-decoration: none;
-            color:#696E74;
+            color:#1abc9c;
         }
+
 
         /* FORM CONFIGURATION */
 
@@ -137,8 +150,8 @@
 <footer>
     <div class="container">
         <div class="row centered">
-            <h2>Gênesis</h2>
-            <h5>
+{{--            <h2>Gênesis</h2>--}}
+            <h5 style="margin: 20px 0">
                 <a href="tel: 3423-0055">(67) 3423-0055</a> |
                 <a href="tel: 99978-1420">(67) 99978-1420</a> |
                 <a href="mailto: comercial@genesis.tec.br">comercial@genesis.tec.br</a>

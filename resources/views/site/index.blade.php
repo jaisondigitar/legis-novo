@@ -1,6 +1,9 @@
 @extends('layouts.site')
 @section('content')
     <div class="wrapper">
+        <div class="header">
+            <a class="login" href="/login">LOGIN</a>
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-md-12 centered">
@@ -42,23 +45,45 @@
                                     <input type="hidden" name="documents" value="true">
                                     <div class="form-group col-md-4">
                                         {!! Form::label('owner_id', 'Tipo:') !!}
-                                        {!! Form::select('type', $doctypes ,(($form->input('type')) !== null ? $form->input('type'): null), ['class' => 'form-control']) !!}
+                                        {!! Form::select(
+                                            'type',
+                                            $doctypes,
+                                            (($form->input('type')) !== null ? $form->input('type'): null),
+                                            ['class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-2">
                                         {!! Form::label('date', 'Número:') !!}
-                                        {!! Form::text('number', (($form->input('number')) !== null ? $form->input('number'): null), ['class' => 'form-control']) !!}
+                                        {!! Form::text(
+                                            'number',
+                                            (($form->input('number')) !== null ? $form->input('number'): null),
+                                            ['class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-2">
                                         {!! Form::label('date', 'Ano:') !!}
-                                        {!! Form::text('year', (($form->input('year')) !== null ? $form->input('year'): null), ['class' => 'form-control']) !!}
+                                        {!! Form::text(
+                                            'year',
+                                            (($form->input('year')) !== null ? $form->input('year'): null),
+                                            ['class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-4">
                                         {!! Form::label('owner_id', 'Responsável') !!}
-                                        {!! Form::select('owner', $assemblymensList ,(($form->input('owner')) !== null ? $form->input('owner'): null), ['class' => 'form-control']) !!}
+                                        {!! Form::select(
+                                            'owner',
+                                            $assemblymensList,
+                                            (($form->input('owner')) !== null ? $form->input('owner'): null),
+                                            ['class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-10">
                                         {!! Form::label('date', 'Que contenha (texto):') !!}
-                                        {!! Form::text('text', (($form->input('text')) !== null ? $form->input('text'): null), ['id'=>'texto', 'class' => 'form-control']) !!}
+                                        {!! Form::text(
+                                            'text',
+                                            (($form->input('text')) !== null ? $form->input('text'): null),
+                                            ['id'=>'texto', 'class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-2">
                                         {!! Form::label('frase', 'Frase completa:') !!}
@@ -87,24 +112,45 @@
                                     <input type="hidden" name="projects" value="true">
                                     <div class="form-group col-md-4">
                                         {!! Form::label('owner_id', 'Tipo:') !!}
-                                        {!! Form::select('type', App\Models\LawsType::pluck('name',
-                                        'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                                        {!! Form::select(
+                                            'type',
+                                            App\Models\LawsType::pluck('name','id')->prepend('Selecione...', ''),
+                                            $form->input('type'),
+                                            ['class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-2">
                                         {!! Form::label('date', 'Número:') !!}
-                                        {!! Form::text('number', (($form->input('number')) !== null ? $form->input('number'): null), ['class' => 'form-control']) !!}
+                                        {!! Form::text(
+                                            'number',
+                                            (($form->input('number')) !== null ? $form->input('number'): null),
+                                            ['class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-2">
                                         {!! Form::label('date', 'Ano:') !!}
-                                        {!! Form::text('year', (($form->input('year')) !== null ? $form->input('year'): null), ['class' => 'form-control']) !!}
+                                        {!! Form::text(
+                                            'year',
+                                            (($form->input('year')) !== null ? $form->input('year'): null),
+                                            ['class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-4">
                                         {!! Form::label('owner_id', 'Responsável') !!}
-                                        {!! Form::select('owner', $assemblymensList ,(($form->input('owner')) !== null ? $form->input('owner'): null), ['class' => 'form-control']) !!}
+                                        {!! Form::select(
+                                            'owner',
+                                            $assemblymensList,
+                                            (($form->input('owner')) !== null ? $form->input('owner'): null),
+                                            ['class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-10">
                                         {!! Form::label('date', 'Que contenha (texto):') !!}
-                                        {!! Form::text('text', (($form->input('text')) !== null ? $form->input('text'): null), ['id'=>'texto', 'class' => 'form-control']) !!}
+                                        {!! Form::text(
+                                            'text',
+                                            (($form->input('text')) !== null ? $form->input('text'): null),
+                                            ['id'=>'texto', 'class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-2">
                                         {!! Form::label('frase', 'Frase completa:') !!}
@@ -133,11 +179,20 @@
                                     <input type="hidden" name="atas" value="true">
                                     <div class="form-group col-md-offset-4 col-md-3">
                                         {!! Form::label('type', 'Tipo:') !!}
-                                        {!! Form::select('type', App\Models\SessionType::pluck('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                                        {!! Form::select(
+                                            'type',
+                                            App\Models\SessionType::pluck('name', 'id')->prepend('Selecione...', '') ,
+                                            $form->input('type'),
+                                            ['class' => 'form-control']
+                                        ) !!}
                                     </div>
                                     <div class="form-group col-md-2">
                                         {!! Form::label('date', 'Data:') !!}
-                                        {!! Form::text('data', (($form->input('data')) !== null ? $form->input('data'): null), ['class' => 'form-control datepicker']) !!}
+                                        {!! Form::text(
+                                            'data',
+                                            (($form->input('data')) !== null ? $form->input('data'): null),
+                                            ['class' => 'form-control datepicker']
+                                        ) !!}
                                     </div>
                                     <div class="clearfix"></div>
                                     <div class="form-group col-md-2">
@@ -166,11 +221,13 @@
                     <div class="col-md-12">
                         <table class="table table-responsive" id="documentModels-table">
                             <thead>
-                                <th>Data</th>
-                                <th>Descrição</th>
-                                {{--<th>Lido</th>--}}
-                                {{--<th>Aprovado</th>--}}
-                                <th colspan="3">Visualizar</th>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    {{--<th>Lido</th>--}}
+                                    {{--<th>Aprovado</th>--}}
+                                    <th colspan="3">Visualizar</th>
+                                </tr>
                             </thead>
                             <tbody>
                             @foreach($documents as $documentModel)
@@ -179,12 +236,14 @@
                                     <td>
                                         <strong style="text-transform: uppercase;">
                                             {!! $documentModel->document_type->name !!}
-                                            {!! $documentModel->number . '/' . $documentModel->getYear($documentModel->date) !!}
+                                            {!! $documentModel->number . '/' .
+                                                $documentModel->getYear($documentModel->date) !!}
                                             -
                                             {!! $documentModel->owner->short_name !!}
                                         </strong><br>
                                         @if(strlen($documentModel->content)>=600)
-                                            {!! substr(strip_tags($documentModel->content), 0, strrpos(substr(strip_tags($documentModel->content), 0, 600), ' ')) . '...'; !!}
+                                            {!! substr(strip_tags($documentModel->content), 0, strrpos(substr(
+                                                strip_tags($documentModel->content), 0, 600), ' ')) . '...'; !!}
                                         @else
                                             {{ strip_tags($documentModel->content) }}
                                         @endif
@@ -198,14 +257,19 @@
                                                     @if($doc->filename)
                                                         <div class="col-md-3" style="    width: auto !important;">
                                                             <a
-                                                                href="{{ (new \App\Services\StorageService())->inDocumentsFolder()->get($doc->filename) }}"
-                                                                target="_blank" class="btn btn-xs btn-success">
+                                                                href="{{ (new \App\Services\StorageService())
+                                                                    ->inDocumentsFolder()->get($doc->filename) }}"
+                                                                target="_blank" class="btn btn-xs btn-success"
+                                                            >
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
                                                             <a
-                                                                href="{{ (new \App\Services\StorageService())->inDocumentsFolder()->get($doc->filename) }}">
-                                                                <button
-                                                                    class="btn btn-xs btn-info">{{ $doc->filename }}</button>
+                                                                href="{{ (new \App\Services\StorageService())
+                                                                    ->inDocumentsFolder()->get($doc->filename) }}"
+                                                            >
+                                                                <button class="btn btn-xs btn-info">
+                                                                    {{ $doc->filename }}
+                                                                </button>
                                                             </a>
                                                         </div>
                                                     @endif
@@ -239,19 +303,23 @@
                     <div class="col-md-12">
                         <table class="table table-responsive" id="documentModels-table">
                             <thead>
-                                <th>Descrição</th>
-                                <th>Download</th>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Download</th>
+                                </tr>
                             </thead>
                             <tbody>
                             @foreach($documents as $lawsProject)
                                 <tr class="line">
                                     <td>
                                         <strong>
-                                            {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!}
+                                            {!! $lawsProject->project_number . '/' .
+                                                $lawsProject->getYearLawPublish($lawsProject->law_date) !!}
                                             -
                                             @if(!$lawsProject->law_type)
                                                 {{ $lawsProject->law_type_id }}
-                                            @else {{ mb_strtoupper($lawsProject->law_type->name, 'UTF-8') }}
+                                            @else
+                                                {{ mb_strtoupper($lawsProject->law_type->name, 'UTF-8') }}
                                             @endif
                                         </strong><br>
                                         {!! $lawsProject->title !!}
@@ -286,13 +354,18 @@
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    &times;
+                                                </button>
                                                 <h3 class="modal-title">Anexos</h3>
                                             </div>
                                             <div class="modal-body">
                                                 <h4> Clique no link para download</h4>
                                                 <ul class="list-group">
-                                                    @foreach($lawsProject->advices()->where('laws_projects_id', $lawsProject->id)->get() as $advices)
+                                                    @foreach(
+                                                        $lawsProject->advices()
+                                                            ->where('laws_projects_id',
+                                                            $lawsProject->id)->get() as $advices)
                                                         @foreach($advices->awnser()->get() as $awnser)
                                                             @if($awnser->file != '')
                                                                 <li class="list-group-item">
@@ -300,7 +373,8 @@
                                                                         href="/uploads/advice_awnser/{{$awnser->file}}"
                                                                         target="_blank"
                                                                     >
-                                                                        {{$awnser->file}} - <i class="fa fa-download"></i>
+                                                                        {{$awnser->file}} - <i
+                                                                            class="fa fa-download"></i>
                                                                     </a>
                                                                 </li>
                                                             @endif
@@ -309,7 +383,8 @@
                                                     @foreach($lawsProject->lawFiles as $file)
                                                         <li class="list-group-item">
                                                             <a
-                                                                href="{{ (new \App\Services\StorageService())->inLawProjectsFolder()->get($file->filename) }}"
+                                                                href="{{ (new \App\Services\StorageService())
+                                                                    ->inLawProjectsFolder()->get($file->filename) }}"
                                                                 target="_blank">{{$file->filename}} - <i
                                                                     class="fa fa-download"></i>
                                                             </a>
@@ -339,11 +414,13 @@
                     <div class="col-md-12">
                         <table class="table table-responsive" id="documentModels-table">
                             <thead>
+                            <tr>
                                 <th>Data</th>
                                 <th>Tipo</th>
                                 <th>Numero</th>
                                 <th>Local</th>
                                 <th colspan="3">Visualizar</th>
+                            </tr>
                             </thead>
                             <tbody>
                             @foreach($documents as $meeting)
@@ -391,13 +468,16 @@
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    &times;
+                                                </button>
                                                 <h3 class="modal-title">Anexos</h3>
                                             </div>
                                             <div class="modal-body">
                                                 <h4> Clique no link para download</h4>
                                                 <ul class="list-group">
-                                                    @foreach($meeting->files()->where('meeting_id', $meeting->id)->get() as $files)
+                                                    @foreach($meeting->files()
+                                                        ->where('meeting_id', $meeting->id)->get() as $files)
                                                         @if($files->filename != '')
                                                             <li class="list-group-item">
                                                                 <a
