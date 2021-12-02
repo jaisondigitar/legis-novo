@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Profile extends Model
+class Profile extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'profiles';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'user_id',

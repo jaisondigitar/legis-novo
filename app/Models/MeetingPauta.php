@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class MeetingPauta extends Model
+class MeetingPauta extends BaseModel
 {
     public $table = 'meeting_pauta';
 

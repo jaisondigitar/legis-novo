@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -42,13 +41,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class ResponsibilityAssemblyman extends Model
+class ResponsibilityAssemblyman extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'responsibility_assemblymen';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'responsibility_id',

@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Votes extends Model
+class Votes extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'votes';
-
-    protected $dates = ['deleted_at'];
 
     protected $fillable = [
 

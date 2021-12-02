@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -51,8 +50,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Log extends Model
 {
-//    use SoftDeletes;
-
     public $table = 'audits';
 
     const CREATED_AT = 'created_at';

@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\DocumentNumber;
 use Carbon\Carbon;
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -69,13 +67,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Document extends Model
+class Document extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'documents';
-
-    protected $dates = ['session_date', 'deleted_at', 'created_at', 'date'];
 
     public $fillable = [
         'document_type_id',

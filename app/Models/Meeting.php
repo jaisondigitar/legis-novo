@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -42,13 +41,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Meeting extends Model
+class Meeting extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'meetings';
-
-    protected $dates = ['deleted_at', 'date_start', 'date_end'];
 
     public $fillable = [
         'session_type_id',

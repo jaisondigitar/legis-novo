@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -39,13 +38,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class SessionType extends Model
+class SessionType extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'session_types';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'name',

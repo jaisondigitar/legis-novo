@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -52,13 +51,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Commission extends Model
+class Commission extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'commissions';
-
-    protected $dates = ['deleted_at', 'date_start', 'date_end'];
 
     public $fillable = [
         'date_start',

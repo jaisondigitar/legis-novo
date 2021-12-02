@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -34,13 +33,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class StatusProcessingLaw extends Model
+class StatusProcessingLaw extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'status_processing_laws';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'name',

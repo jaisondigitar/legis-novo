@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class LawFile extends Model
+class LawFile extends BaseModel
 {
     protected $fillable = [
         'laws_project_id',
