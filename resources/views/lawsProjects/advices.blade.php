@@ -84,7 +84,7 @@
 
                             <div class="form-group col-sm-3">
                                 {!! Form::label('destination_id', 'Destinatários:') !!}
-                                {!! Form::select('destination_id', [], null, ['class' =>
+                                {!! Form::select('destination_id', $destinations, null, ['class' =>
                                 'form-control']) !!}
                             </div>
 

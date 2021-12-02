@@ -41,7 +41,15 @@ class ProcessingController extends Controller
         $processing = Processing::create($request->all());
 
         if ($processing) {
-            $processing = Processing::where('law_projects_id', $input['law_projects_id'])->orderBy('processing_date', 'desc')->with('AdviceSituationLaw')->with('AdvicePublicationLaw')->with('StatusProcessingLaw')->get();
+            $processing = Processing::where('law_projects_id', $input['law_projects_id'])
+                ->orderBy('processing_date', 'desc')
+                ->with([
+                    'AdviceSituationLaw',
+                    'AdvicePublicationLaw',
+                    'StatusProcessingLaw',
+                    'destination',
+                ])
+                ->get();
 
             return json_encode($processing);
         }

@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Eloquent as Model;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Processing extends Model
 {
     use SoftDeletes;
-    protected $dates = ['deleted_at'];
 
     public $table = 'processings';
 
@@ -21,34 +21,62 @@ class Processing extends Model
         'processing_date',
         'obsevation',
         'processing_file',
+        'destination_id',
     ];
 
-    public function lawsProject()
+    /**
+     * @return BelongsTo
+     */
+    public function lawsProject(): BelongsTo
     {
         return $this->belongsTo(LawsProject::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
+    public function destination(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @param $processing_date
+     */
     public function setProcessingDateAttribute($processing_date)
     {
         $this->attributes['processing_date'] = Carbon::createFromFormat('d/m/Y', $processing_date);
     }
 
-    public function getProcessingDateAttribute($processing_date)
+    /**
+     * @param $processing_date
+     * @return string
+     */
+    public function getProcessingDateAttribute($processing_date): string
     {
         return $this->asDateTime($processing_date)->format('d/m/Y');
     }
 
-    public function adviceSituationLaw()
+    /**
+     * @return BelongsTo
+     */
+    public function adviceSituationLaw(): BelongsTo
     {
         return $this->belongsTo('App\Models\AdviceSituationLaw', 'advice_situation_id');
     }
 
-    public function advicePublicationLaw()
+    /**
+     * @return BelongsTo
+     */
+    public function advicePublicationLaw(): BelongsTo
     {
         return $this->belongsTo('App\Models\AdvicePublicationLaw', 'advice_publication_id');
     }
 
-    public function statusProcessingLaw()
+    /**
+     * @return BelongsTo
+     */
+    public function statusProcessingLaw(): BelongsTo
     {
         return $this->belongsTo('App\Models\StatusProcessingLaw', 'status_processing_law_id');
     }
