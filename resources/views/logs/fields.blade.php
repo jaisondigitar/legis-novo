@@ -12,20 +12,20 @@
 
 <!-- Owner Type Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('owner_type', 'Owner Type:') !!}
-    {!! Form::text('owner_type', null, ['class' => 'form-control']) !!}
+    {!! Form::label('auditable_type', 'Owner Type:') !!}
+    {!! Form::text('auditable_type', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Owner Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('owner_id', 'Owner Id:') !!}
-    {!! Form::number('owner_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('auditable_id', 'Owner Id:') !!}
+    {!! Form::number('auditable_id', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Type Field -->
 <div class="form-group col-sm-4">
-    {!! Form::label('type', 'Type:') !!}
-    {!! Form::text('type', null, ['class' => 'form-control']) !!}
+    {!! Form::label('event', 'Type:') !!}
+    {!! Form::text('event', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Created At Field -->
@@ -40,17 +40,16 @@
     {!! Form::date('updated_at', null, ['class' => 'form-control']) !!}
 </div>
 
-
 <!-- Old Value Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('old_value', 'Old Value:') !!}
-    {!! Form::textarea('old_value', null, ['class' => 'form-control']) !!}
+    {!! Form::label('old_values', 'Old Value:') !!}
+    {!! Form::textarea('old_values', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- New Value Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('new_value', 'New Value:') !!}
-    {!! Form::textarea('new_value', null, ['class' => 'form-control']) !!}
+    {!! Form::label('new_values', 'New Value:') !!}
+    {!! Form::textarea('new_values', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->

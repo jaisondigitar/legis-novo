@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model as Model;
-
-class Role extends Model
+class Role extends BaseModel
 {
     public $table = 'roles';
 

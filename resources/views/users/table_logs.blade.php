@@ -4,7 +4,7 @@
         font-size: 12px;
     }
 </style>
-@foreach($logs as $log)
+@foreach($logs as $key => $log)
     <div
         class="col-lg-12 log"
         @if($key%2==0)
@@ -16,7 +16,7 @@
         <?php
             echo date('d/m/Y H:i:s', strtotime($log->created_at)).'<br><br>';
 
-            switch ($log->type) {
+            switch ($log->event) {
                 case 'created':
                     echo " <label class='badge badge-success'>CRIOU</label>";
                     break;
@@ -28,18 +28,17 @@
                     break;
             }
 
-            $model = explode('\\', $log->owner_type);
-            echo '<br><b>MODEL: </b>'.strtoupper($model[2]).' <br>';
-            echo '<b>ID:</b> '.strtoupper($log->owner_id).'<br>';
-            echo '<b>Rota:</b> '.$log->route.'<br>';
-            echo '<b>IP:</b> '.$log->ip.'<br>';
+            $model = explode('\\', $log->auditable_type);
+            echo '<br><b>MODEL: </b>'.strtoupper($model[2]).' <br><b>ID:</b> '.strtoupper($log->auditable_id).'<br><br>';
+            echo '<b>Rota:</b> '.$log->url.'<br>';
+            echo '<b>IP:</b> '.$log->ip_address.'<br>';
 
-            if ($log->type == 'updated') {
-                echo '<br><p><strong>VALOR ANTIGO</strong></p>'.filter_var($log->old_value, FILTER_SANITIZE_STRING);
+            if ($log->event == 'updated') {
+                echo '<br><p><strong>VALOR ANTIGO</strong></p>'.filter_var($log->old_values, FILTER_SANITIZE_STRING);
             }
 
-            if ($log->type == 'updated' || $log->type == 'created') {
-                echo '<br><p><strong>NOVO VALOR</strong></p>'.filter_var($log->new_value, FILTER_SANITIZE_STRING);
+            if ($log->event == 'updated' || $log->event == 'created') {
+                echo '<br><p><strong>NOVO VALOR</strong></p>'.filter_var($log->new_values, FILTER_SANITIZE_STRING);
             }
         ?>
         {{--

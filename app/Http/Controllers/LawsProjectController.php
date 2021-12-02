@@ -705,7 +705,11 @@ class LawsProjectController extends AppBaseController
             $references_project[$reference->id] = $reference->project_number.'/'.$reference->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
         }
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-projetos')->first()->value;
-        $logs = Log::where('owner_id', $lawsProject->id)->where('owner_type', LawsProject::class)->orderBy('created_at', 'desc')->get();
+
+        $logs = Log::where('auditable_id', $lawsProject->id)
+            ->where('auditable_type', LawsProject::class)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('lawsProjects.edit')->with(compact('logs', 'status_processing_law', 'tramitacao', 'comission', 'situation', 'lawsProject', 'law_types', 'law_places', 'law_structure', 'lawsAssemblyman', 'references_project', 'advice_situation_law', 'advice_publication_law'))
             ->with('assemblymen', $assemblymensList[0])

@@ -64,14 +64,14 @@ class LogController extends AppBaseController
         $models = $this->getModels($path);
         $type = ['Selecione', 'created', 'updated', 'deleted'];
 
-        $logs = Log::orderBy('created_at');
+        $logs = Log::orderBy('created_at', 'desc');
 
         if (count($request->all())) {
-            $model = str_replace(' ', '', 'App\Models\ '.$models[$request->owner_type]);
+            $model = str_replace(' ', '', 'App\Models\ '.$models[$request->auditable_type]);
 
             ! empty($request->user_id) ? $logs->where('user_id', $request->user_id) : null;
-            ! empty($request->owner_type) ? $logs->where('owner_type', $model) : null;
-            ! empty($request->type) ? $logs->where('type', $type[$request->type]) : null;
+            ! empty($request->auditable_type) ? $logs->where('owner_type', $model) : null;
+            ! empty($request->event) ? $logs->where('type', $type[$request->type]) : null;
             ! empty($request->year) ? $logs->where('created_at', 'like', $request->year.'%') : null;
         }
 

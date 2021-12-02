@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -50,13 +49,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Parameters extends Model
+class Parameters extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'parameters';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'name',

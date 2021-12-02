@@ -3,14 +3,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProcessingDocument extends Model
+class ProcessingDocument extends BaseModel
 {
     use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
 
     public $table = 'processing_documents';
 

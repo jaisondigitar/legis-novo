@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @SWG\Definition(
@@ -51,22 +50,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Log extends Model
 {
-    use SoftDeletes;
-
-    public $table = 'logs';
+    public $table = 'audits';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-    protected $dates = ['deleted_at'];
-
     public $fillable = [
         'user_id',
-        'owner_type',
-        'owner_id',
-        'old_value',
-        'new_value',
-        'type',
+        'auditable_type',
+        'auditable_id',
+        'old_values',
+        'new_values',
+        'event',
     ];
 
     /**
@@ -77,11 +72,11 @@ class Log extends Model
     protected $casts = [
         'id' => 'integer',
         'user_id' => 'integer',
-        'owner_type' => 'string',
-        'owner_id' => 'integer',
-        'old_value' => 'string',
-        'new_value' => 'string',
-        'type' => 'string',
+        'auditable_type' => 'string',
+        'auditable_id' => 'integer',
+        'old_values' => 'string',
+        'new_values' => 'string',
+        'event' => 'string',
     ];
 
     /**

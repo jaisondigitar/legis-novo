@@ -2,10 +2,7 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Eloquent as Model;
-
-class LawsProjectAssemblyman extends Model
+class LawsProjectAssemblyman extends BaseModel
 {
     public $table = 'law_project_assemblyman';
 

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -34,13 +33,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class LawsStructure extends Model
+class LawsStructure extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'laws_structures';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'name',

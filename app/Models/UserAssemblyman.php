@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 /**
  * @SWG\Definition(
  *      definition="ResponsibilityAssemblyman",
@@ -42,11 +38,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class UserAssemblyman extends Model
+class UserAssemblyman extends BaseModel
 {
     public $table = 'user_assemblyman';
-
-//    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'users_id',
