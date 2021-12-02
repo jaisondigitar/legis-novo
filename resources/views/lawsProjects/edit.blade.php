@@ -50,13 +50,22 @@
                     echo '<b>Rota:</b> '.$log->url.'<br>';
 
                     if ($log->event == 'updated') {
-                        echo '<br><p><strong>VALOR ANTIGO</strong></p>'.filter_var($log->old_values, FILTER_SANITIZE_STRING);
+                        echo '<br><p><strong>VALOR ANTIGO</strong></p>';
+                        $object = json_decode($log->old_values);
+
+                        foreach ($object as $key=>$value) {
+                            echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                        }
                     }
 
                     if ($log->event == 'updated' || $log->event == 'created') {
-                        echo '<br><br><p><strong>NOVO VALOR</strong></p>'.filter_var($log->new_values, FILTER_SANITIZE_STRING);
-                    }
+                        echo '<br><p><strong>NOVO VALOR</strong></p>';
+                        $object = json_decode($log->new_values);
 
+                        foreach ($object as $key=>$value) {
+                            echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                        }
+                    }
 
                     ?>
 
