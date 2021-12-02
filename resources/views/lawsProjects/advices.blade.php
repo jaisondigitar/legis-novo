@@ -114,6 +114,9 @@
                                         <th width="100">
                                             Data
                                         </th>
+                                        <th width="150">
+                                            Destinatário
+                                        </th>
                                         <th width="500">
                                             Observação
                                         </th>
@@ -130,6 +133,7 @@
                                             <td > {{$processing->adviceSituationLaw->name}}</td>
                                             <td > @if($processing->statusProcessingLaw) {{$processing->statusProcessingLaw->name}} @endif</td>
                                             <td > {{$processing->processing_date}}</td>
+                                            <td > {{ $processing->destination->name ?? '' }}</td>
                                             <td style="text-align: justify;"> {!! $processing->obsevation !!}</td>
                                             <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
                                         </tr>
@@ -145,7 +149,7 @@
                             </div>
 
                         </div>
-                    </div><!-- /.panel-body -->
+                    </div>
                 </div>
             </div>
 @endif
@@ -250,6 +254,7 @@
                         advice_situation_id: $('#new_advice_situation_id').val(),
                         status_processing_law_id: $('#new_status_processing_law_id').val(),
                         processing_date: $('#new_date_processing').val(),
+                        destination_id: $('#destination_id').val(),
                         processing_file: $('#processing_file').val(),
                         obsevation: CKEDITOR.instances.new_observation.getData()
                     };
@@ -282,6 +287,11 @@
                         str += "</td>";
                         str += "<td>";
                         str += valor.processing_date;
+                        str += "</td>";
+                        str += "<td>";
+                        if (valor.destination) {
+                            str += valor.destination.name;
+                        }
                         str += "</td>";
                         str += "<td>";
                         str += valor.obsevation;
