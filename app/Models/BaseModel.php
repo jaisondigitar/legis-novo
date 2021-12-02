@@ -9,4 +9,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 class BaseModel extends Model implements Auditable
 {
     use AuditableTrait;
+
+    protected $dates = ['deleted_at', 'updated_at', 'created-at'];
 }

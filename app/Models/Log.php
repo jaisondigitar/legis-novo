@@ -57,11 +57,11 @@ class Log extends Model
 
     public $fillable = [
         'user_id',
-        'owner_type',
-        'owner_id',
-        'old_value',
-        'new_value',
-        'type',
+        'auditable_type',
+        'auditable_id',
+        'old_values',
+        'new_values',
+        'event',
     ];
 
     /**
@@ -72,11 +72,11 @@ class Log extends Model
     protected $casts = [
         'id' => 'integer',
         'user_id' => 'integer',
-        'owner_type' => 'string',
-        'owner_id' => 'integer',
-        'old_value' => 'string',
-        'new_value' => 'string',
-        'type' => 'string',
+        'auditable_type' => 'string',
+        'auditable_id' => 'integer',
+        'old_values' => 'string',
+        'new_values' => 'string',
+        'event' => 'string',
     ];
 
     /**

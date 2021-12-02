@@ -11,9 +11,9 @@
         <tr>
             <td><span class="badge badge-primary">{!! $log->user['name'] !!}</span></td>
             <td>
-                <span class="badge badge-{!! $log->getColor() !!}">{!! $log->type !!}</span>
+                <span class="badge badge-{!! $log->getColor() !!}">{!! $log->event !!}</span>
             </td>
-            <td>{!! $log->owner_type !!}</td>
+            <td>{!! $log->auditable_type !!}</td>
             <td>{!! $log->created_at !!}</td>
             <td>
                 {!! Form::open(['route' => ['logs.destroy', $log->id], 'method' => 'delete']) !!}
@@ -65,31 +65,33 @@
 
                         <!-- Owner Type Field -->
                         <div class="form-group col-md-6">
-                            {!! Form::label('owner_type', 'Tabela:', ['class'=>'text-uppercase']) !!}
+                            {!! Form::label('auditable_type', 'Tabela:', ['class'=>'text-uppercase']) !!}
                             <p id="log_owner_type"></p>
                         </div>
 
                         <!-- Owner Id Field -->
                         <div class="form-group col-md-6">
-                            {!! Form::label('owner_id', 'Id do registro:', ['class'=>'text-uppercase']) !!}
+                            {!! Form::label('auditable_id', 'Id do registro:', ['class'=>'text-uppercase']) !!}
                             <p id="log_owner_id"></p>
                         </div>
 
                         <!-- Type Field -->
                         <div class="form-group col-md-6">
-                            {!! Form::label('type', 'Tipo:', ['class'=>'text-uppercase']) !!}
+                            {!! Form::label('event', 'Tipo:', ['class'=>'text-uppercase']) !!}
                             <p id="log_type"></p>
                         </div>
 
                         <!-- Old Value Field -->
                         <div class="form-group col-md-12">
-                            {!! Form::label('old_value', 'Valor antigo:', ['class'=>'text-uppercase']) !!}
+                            {!! Form::label('old_values', 'Valor antigo:',
+                            ['class'=>'text-uppercase']) !!}
                             <p id="log_old_value"></p>
                         </div>
 
                         <!-- New Value Field -->
                         <div class="form-group col-md-12">
-                            {!! Form::label('new_value', 'Valor novo:', ['class'=>'text-uppercase']) !!}
+                            {!! Form::label('new_values', 'Valor novo:',
+                            ['class'=>'text-uppercase']) !!}
                             <p id="log_new_value"></p>
                         </div>
                     </div>
@@ -109,11 +111,11 @@
         // $('#log_id').html(log.id);
         $('#log_user').html(log.user.name);
         $('#log_email').html(log.user.email);
-        $('#log_owner_type').html(log.owner_type);
-        $('#log_owner_id').html(log.owner_id);
-        $('#log_old_value').html(log.old_value);
-        $('#log_new_value').html(log.new_value);
-        $('#log_type').html(log.type);
+        $('#log_owner_type').html(log.auditable_type);
+        $('#log_owner_id').html(log.auditable_id);
+        $('#log_old_value').html(log.old_values);
+        $('#log_new_value').html(log.new_values);
+        $('#log_type').html(log.event);
         $('#log_created_at').html(log.created_at);
         $('#log_updated_at').html(log.updated_at);
     }
