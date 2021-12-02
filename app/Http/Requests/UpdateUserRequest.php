@@ -28,7 +28,7 @@ class UpdateUserRequest extends Request
                 'string',
                 Rule::exists('users', 'email')->whereNull('deleted_at'),
             ],
-            'password' => 'required|string',
+            'password' => 'nullable|string',
             'roles' => 'required|array',
             'roles.*' => 'nullable|integer|exists:roles,id',
             'active' => ['nullable', Rule::in('on')],

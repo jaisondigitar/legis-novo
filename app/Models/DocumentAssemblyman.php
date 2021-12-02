@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-
 /**
  * @SWG\Definition(
  *      definition="Document",
@@ -66,7 +64,7 @@ use Eloquent as Model;
  *      )
  * )
  */
-class DocumentAssemblyman extends Model
+class DocumentAssemblyman extends BaseModel
 {
     public $table = 'document_assemblyman';
 

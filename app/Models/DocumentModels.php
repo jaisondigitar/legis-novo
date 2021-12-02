@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -45,13 +44,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class DocumentModels extends Model
+class DocumentModels extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'document_models';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'document_type_id',

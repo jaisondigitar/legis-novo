@@ -11,10 +11,12 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
+use OwenIt\Auditing\Auditable as AuditTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, Auditable
 {
-    use SoftDeletes, Authenticatable, CanResetPassword, Messagable, HasDefender;
+    use SoftDeletes, Authenticatable, CanResetPassword, Messagable, HasDefender, AuditTrait;
 
     public $table = 'users';
 

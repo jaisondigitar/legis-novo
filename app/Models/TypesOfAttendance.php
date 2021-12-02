@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class TypesOfAttendance extends Model
+class TypesOfAttendance extends BaseModel
 {
     protected $table = 'types_of_attendance';
 

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -42,13 +41,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class PartiesAssemblyman extends Model
+class PartiesAssemblyman extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'parties_assemblymen';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'party_id',

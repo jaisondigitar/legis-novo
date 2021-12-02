@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -52,11 +50,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class CommissionAssemblyman extends Model
+class CommissionAssemblyman extends BaseModel
 {
     public $table = 'commission_assemblyman';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'commission_id',

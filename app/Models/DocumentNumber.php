@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class DocumentNumber extends Model
+class DocumentNumber extends BaseModel
 {
     protected $fillable = [
 

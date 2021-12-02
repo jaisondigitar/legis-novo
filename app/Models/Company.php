@@ -2,14 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
-class Company extends Model
+class Company extends BaseModel
 {
     public $table = 'companies';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'image',
