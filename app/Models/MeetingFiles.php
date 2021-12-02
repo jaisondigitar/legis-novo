@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -40,13 +39,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class MeetingFiles extends Model
+class MeetingFiles extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'meeting_files';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'meeting_id',

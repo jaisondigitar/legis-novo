@@ -14,13 +14,14 @@
                         ->prepend('Selecione...', '') ,$form->input('user_id'), ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group col-md-1">
-                        {!! Form::label('owner_type', 'Tabela:') !!}
-                        {!! Form::select('owner_type', $models ,$form->input('owner_type'), ['class' => 'form-control']) !!}
+                        {!! Form::label('auditable_type', 'Tabela:') !!}
+                        {!! Form::select('auditable_type', $models ,$form->input('auditable_type'), ['class' => 'form-control']) !!}
                     </div>
 
                     <div class="form-group col-md-1">
-                        {!! Form::label('type', 'Ação:') !!}
-                        {!! Form::select('type', $type ,$form->input('type'), ['class' => 'form-control']) !!}
+                        {!! Form::label('event', 'Ação:') !!}
+                        {!! Form::select('event', $type ,$form->input('type'), ['class' =>
+                        'form-control']) !!}
                     </div>
 
                     <div class="form-group col-md-1">

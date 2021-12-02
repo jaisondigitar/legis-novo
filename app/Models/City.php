@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model as Model;
-
-class City extends Model
+class City extends BaseModel
 {
     public $table = 'cities';
 

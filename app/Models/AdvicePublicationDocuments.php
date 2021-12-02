@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -34,13 +33,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class AdvicePublicationDocuments extends Model
+class AdvicePublicationDocuments extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'advice_publication_documents';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'name',
