@@ -64,7 +64,7 @@
                         }
                     }
 
-                    if ($log->event == 'create' || $log->event == 'created') {
+                    if ($log->event == 'updated' || $log->event == 'created') {
                         echo '<br><p><strong>NOVO VALOR</strong></p>';
                         $object = json_decode($log->new_values);
 
