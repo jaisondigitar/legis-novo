@@ -114,7 +114,11 @@
             padding: 0;
             margin: 0;
             text-decoration: none;
-            color: #696E74;
+            color: #bbb7b7;
+        }
+        .menu {
+            font-weight: 600;
+            color: #424242;
         }
         a:hover,
         a:focus {

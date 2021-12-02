@@ -17,18 +17,18 @@
                     <div class="mtb">
                         <div>
                             <ul class="nav nav-tabs centered" role="tablist">
-                                <li role="presentation" class="@if(isset($_GET['documents'])) in active @endif">
-                                    <a href="#docs" aria-controls="docs" role="tab" data-toggle="tab">
+                                <li role="presentation" class=" @if(isset($_GET['documents'])) in active @endif">
+                                    <a class="menu" href="#docs" aria-controls="docs" role="tab" data-toggle="tab">
                                         DOCUMENTOS
                                     </a>
                                 </li>
-                                <li role="presentation" class="@if(isset($_GET['projects'])) in active @endif">
-                                    <a href="#projects" aria-controls="projects" role="tab" data-toggle="tab">
+                                <li role="presentation" class=" @if(isset($_GET['projects'])) in active @endif">
+                                    <a class="menu" href="#projects" aria-controls="projects" role="tab" data-toggle="tab">
                                         PROJETOS DE LEI
                                     </a>
                                 </li>
-                                <li role="presentation" class="@if(isset($_GET['atas'])) in active @endif">
-                                    <a href="#atas" aria-controls="atas" role="tab" data-toggle="tab">
+                                <li role="presentation" class=" @if(isset($_GET['atas'])) in active @endif">
+                                    <a class="menu" href="#atas" aria-controls="atas" role="tab" data-toggle="tab">
                                         ATAS/PAUTAS
                                     </a>
                                 </li>
