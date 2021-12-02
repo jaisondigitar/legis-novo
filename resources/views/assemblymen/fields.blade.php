@@ -31,7 +31,7 @@
 
 <!-- Phone2 Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('phone2', 'Telefone 2:', ['class' => 'required']) !!}
+    {!! Form::label('phone2', 'Telefone:') !!}
     {!! Form::text('phone2', null, ['class' => 'form-control phone']) !!}
 </div>
 
@@ -96,7 +96,7 @@
 
             <!-- Complement Field -->
             <div class="form-group col-sm-3">
-                {!! Form::label('complement', 'Complemento:', ['class' => 'required']) !!}
+                {!! Form::label('complement', 'Complemento:') !!}
                 {!! Form::text('complement', null, ['class' => 'form-control']) !!}
             </div>
 

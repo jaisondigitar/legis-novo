@@ -171,7 +171,6 @@ class Assemblyman extends BaseModel
         'short_name' => 'required',
         'email' => 'required',
         'phone1' => 'required',
-        'phone2' => 'required',
         'zipcode' => 'required',
         'state_id' => 'required',
         'city_id' => 'required',
@@ -179,7 +178,6 @@ class Assemblyman extends BaseModel
         'official_document' => 'required',
         'general_register' => 'required',
         'number' => 'required',
-        'complement' => 'required',
     ];
 
     public function company()
