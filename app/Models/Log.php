@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -51,14 +51,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Log extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
-    public $table = 'logs';
+    public $table = 'audits';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'user_id',
