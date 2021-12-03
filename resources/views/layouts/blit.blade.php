@@ -232,7 +232,7 @@
             const data = await resp.json()
 
             if (data[0]) {
-                document.querySelector('.phone').value = data[0].celular
+                document.querySelector('.phone1').value = data[0].celular
                 document.querySelector('.name').value = data[0].name
                 document.querySelector('.street').value = data[0].street
                 document.querySelector('.number').value = data[0].number
@@ -240,6 +240,10 @@
                 document.querySelector('.states').value = data[0].state_id
                 document.querySelector('.complement').index = data[0].complement
                 document.querySelector('.district').value = data[0].district
+                document.querySelector('.rg').value = data[0].rg
+                document.querySelector('.email').value = data[0].email
+                document.querySelector('.phone2').value = data[0].telephone
+                document.querySelector('.image').value = data[0].image
 
                 const dataCep = await viaCep(data[0].zipcode);
                 await getCities(data[0].state_id, dataCep.localidade)

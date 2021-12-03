@@ -7,16 +7,51 @@
             {!! Form::text('cpf', null, ['class' => 'form-control cpf', 'onChange' => 'getPeople(cpf.value)']) !!}
         </div>
 
-        <!-- Celular Field -->
+        <!-- Rg Field -->
         <div class="form-group col-sm-6">
-            {!! Form::label('celular', 'Celular:', ['class' => 'required']) !!}
-            {!! Form::text('celular', null, ['class' => 'form-control phone']) !!}
+            {!! Form::label('rg', 'RG:') !!}
+            {!! Form::number('rg', null, ['class' => 'form-control rg', 'min' => 1000000, 'max' => 999999999]) !!}
         </div>
 
         <!-- Name Field -->
         <div class="form-group col-sm-12">
             {!! Form::label('name', 'Nome:', ['class' => 'required']) !!}
             {!! Form::text('name', null, ['class' => 'form-control name']) !!}
+        </div>
+
+        <!-- Celular Field -->
+        <div class="form-group col-sm-6">
+            {!! Form::label('celular', 'Celular:', ['class' => 'required']) !!}
+            {!! Form::text('celular', null, ['class' => 'form-control phone phone1']) !!}
+        </div>
+
+        <!-- Phone2 Field -->
+        <div class="form-group col-sm-6">
+            {!! Form::label('telephone', 'Telefone:') !!}
+            {!! Form::text('telephone', null, ['class' => 'form-control phone phone2']) !!}
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group col-sm-6">
+            {!! Form::label('email', 'E-mail:') !!}
+            {!! Form::email('email', null, ['class' => 'form-control email']) !!}
+        </div>
+
+        <!-- Photo Field -->
+        <div class="form-group col-sm-6">
+            @if(isset($people) && !empty($people->image))
+                <div class="logo-inst">
+                    <img src="{{ (new \App\Services\StorageService())->inPeopleFolder()->get($people->image) }}" width="150px" class="img-thumbnail img-rounded image">
+                    <div style="width: 100px;padding: 5px;font-family: monospace;">
+                        <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
+                    </div>
+                </div>
+            @endif
+            <div class="upload" @if(isset($people) &&  !empty($people->image)) style="display: none;" @endif >
+                <i class="fa fa-image"></i>
+                {!! Form::label('image', " Foto:") !!}
+                {!! Form::file('image', ['class' => 'form-control']) !!}
+            </div>
         </div>
     </div>
 
