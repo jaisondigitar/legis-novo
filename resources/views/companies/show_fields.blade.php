@@ -2,7 +2,7 @@
     {!! Form::label('image', 'Image:') !!}
     <p>
         @if(isset($company) && !empty($company->image))
-            <img src="{{ url('uploads/company/'. $company->image) }}" width="100px">
+            <img src="{{ (new \App\Services\StorageService())->inCompanyFolder()->get($company->image) }}" height="150">
         @else
             <i class="fa fa-image"></i>
         @endif

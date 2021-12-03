@@ -12,14 +12,12 @@
                 <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
             </div>
         </div>
-    @else
-        <div class="upload">
-            <i class="fa fa-image"></i>
-            {!! Form::label('image', " Logo:") !!}
-            {!! Form::file('image') !!}
-        </div>
     @endif
-
+    <div class="upload" @if(isset($company) &&  !empty($company->image)) style="display: none;" @endif >
+        <i class="fa fa-image"></i>
+        {!! Form::label('image', " Logo:") !!}
+        {!! Form::file('image') !!}
+    </div>
 </div>
 
 <!--- Shortname Field --->
