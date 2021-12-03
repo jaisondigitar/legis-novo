@@ -65,12 +65,12 @@
                             echo '<strong>VALOR ANTIGO</strong><br><br>';
                             $object = json_decode($log->old_values);
 
-                            foreach ($object as $key=>$value) {
+                            foreach ($object as $key => $value) {
                                 if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
                                     $newDate = date('d/m/Y', strtotime($value));
                                     echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                                 } else {
-                                    echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$key.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                                 }
                             }
                             echo '</div>';
@@ -81,12 +81,12 @@
                             echo '<strong>NOVO VALOR</strong><br><br>';
                             $object = json_decode($log->new_values);
 
-                            foreach ($object as $key=>$value) {
+                            foreach ($object as $key => $value) {
                                 if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
                                     $newDate = date('d/m/Y', strtotime($value));
                                     echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                                 } else {
-                                    echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$key.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                                 }
                             }
                             echo '</div>';

@@ -123,7 +123,7 @@
                     @yield('message')
                 </p>
 
-                <a href="{{ app('router')->has('home') ? route('home') : url('/') }}">
+                <a href="{{ app('router')->has('home') ? route('home') : url('/admin') }}">
                     <button>
                         {{ __('Voltar') }}
                     </button>

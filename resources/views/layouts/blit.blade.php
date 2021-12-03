@@ -245,20 +245,31 @@
                     method: 'POST',
                 }
             ).catch(() => new Error(`Não possível obter dados do CPF ${cpf}`))
+
             const data = await resp.json()
 
-            if (data[0]) {
-                document.querySelector('.phone').value = data[0].celular
-                document.querySelector('.name').value = data[0].name
-                document.querySelector('.street').value = data[0].street
-                document.querySelector('.number').value = data[0].number
-                document.querySelector('.cep').value = data[0].zipcode
-                document.querySelector('.states').value = data[0].state_id
-                document.querySelector('.complement').index = data[0].complement
-                document.querySelector('.district').value = data[0].district
+            if (data) {
+                document.querySelector('.phone1').value = data.celular
+                document.querySelector('.name').value = data.name
+                document.querySelector('.street').value = data.street
+                document.querySelector('.number').value = data.number
+                document.querySelector('.cep').value = data.zipcode
+                document.querySelector('.states').value = data.state_id
+                document.querySelector('.complement').index = data.complement
+                document.querySelector('.district').value = data.district
+                document.querySelector('.rg').value = data.rg
+                document.querySelector('.email').value = data.email
+                document.querySelector('.phone2').value = data.telephone
 
-                const dataCep = await viaCep(data[0].zipcode);
-                await getCities(data[0].state_id, dataCep.localidade)
+                if (data.image) {
+                    document.querySelector('.logo-inst').style.display = 'block'
+                    document.querySelector('.upload').style.display = 'none'
+                    document.querySelector('.logo-inst img').setAttribute('src', data.image)
+                    document.querySelector('.logo-inst img').setAttribute('id', data.id)
+                }
+
+                const dataCep = await viaCep(data.zipcode);
+                await getCities(data.state_id, dataCep.localidade)
             } else {
                 clear_form()
             }
@@ -299,7 +310,7 @@ BEGIN PAGE
         <div class="top-navbar-inner">
 
             <!-- Begin Logo brand -->
-            <a href="/">
+            <a href="/admin">
                 <div class="logo-brand" style="padding: 5px 0">
                     <img
                         src="/assets/images/not-name.png"
@@ -365,7 +376,7 @@ BEGIN PAGE
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">MakerLegis</a>
+                    <a class="navbar-brand" href="/admin">MakerLegis</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->

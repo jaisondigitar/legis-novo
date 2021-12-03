@@ -35,9 +35,6 @@ class People extends BaseModel
     public static $rules = [
         'name' => 'required',
         'cpf' => 'required',
-        'zipcode' => 'required',
-        'number' => 'required',
-        'state_id' => 'required',
-        'city_id' => 'required',
+        'celular' => 'required',
     ];
 }
