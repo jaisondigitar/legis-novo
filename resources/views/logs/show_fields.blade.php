@@ -12,32 +12,32 @@
 
 <!-- Owner Type Field -->
 <div class="form-group">
-    {!! Form::label('owner_type', 'Owner Type:') !!}
-    <p>{!! $log->owner_type !!}</p>
+    {!! Form::label('auditable_type', 'Owner Type:') !!}
+    <p>{!! $log->auditable_type !!}</p>
 </div>
 
 <!-- Owner Id Field -->
 <div class="form-group">
     {!! Form::label('owner_id', 'Owner Id:') !!}
-    <p>{!! $log->owner_id !!}</p>
+    <p>{!! $log->auditable_id !!}</p>
 </div>
 
 <!-- Old Value Field -->
 <div class="form-group">
     {!! Form::label('old_value', 'Old Value:') !!}
-    <p>{!! $log->old_value !!}</p>
+    <p>{!! $log->old_values !!}</p>
 </div>
 
 <!-- New Value Field -->
 <div class="form-group">
     {!! Form::label('new_value', 'New Value:') !!}
-    <p>{!! $log->new_value !!}</p>
+    <p>{!! $log->new_values !!}</p>
 </div>
 
 <!-- Type Field -->
 <div class="form-group">
     {!! Form::label('type', 'Type:') !!}
-    <p>{!! $log->type !!}</p>
+    <p>{!! $log->event !!}</p>
 </div>
 
 <!-- Created At Field -->

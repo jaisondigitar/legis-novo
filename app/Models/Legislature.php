@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -48,13 +47,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Legislature extends Model
+class Legislature extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'legislatures';
-
-    protected $dates = ['deleted_at', 'from', 'to'];
 
     public $fillable = [
         'companies_id',

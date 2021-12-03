@@ -9,6 +9,7 @@ use App\Libraries\Repositories\CityRepository;
 use App\Models\City;
 use App\Models\State;
 use Flash;
+use Illuminate\Http\Request;
 use Response;
 
 class CityController extends AppBaseController

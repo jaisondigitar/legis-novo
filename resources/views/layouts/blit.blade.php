@@ -59,6 +59,22 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <style>
+        .log {
+            padding: 5px;
+            font-size: 12px;
+        }
+        .created {
+            padding: 10px;
+            background: #8CC152;
+        }
+        .updated {
+            padding: 10px;
+            background: #F6BB42;
+        }
+        .deleted {
+            padding: 10px;
+            background: #E9573F;
+        }
         .busy * {
             cursor: wait !important;
         }
@@ -171,23 +187,53 @@
             "hideMethod": "fadeOut"
         };
 
-        const getCities = function(id) {
+        const viaCep = async value => {
+            const cep = parseInt(value.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''));
+
+            const resp = await fetch(
+                `http://viacep.com.br/ws/${cep}/json/`, {
+                    method: 'GET',
+                }
+            ).catch(() => new Error(`Estado inválido`))
+            return await resp.json();
+        }
+
+        const getStates = async (uf) => {
+            const resp = await fetch(
+                `/get-state?uf=${uf}`, {
+                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
+                    method: 'POST',
+                }
+            ).catch(() => new Error(`Estado inválido`))
+
+            const state = await resp.json();
+
+            return state[0].id;
+        }
+
+        const getCities = async function(id, city) {
+
             const state  = $("#"+id).val() || id;
-            const url = "/getcities/"+state;
+
             $.ajax({
                 method: "POST",
-                url: url,
+                url: `/getcities/${state}`,
                 data: {
                     _token: "{!! csrf_token() !!}",
                     state: state
                 },
                 dataType: "json"
             }).success(function(result) {
-                const cities  = $('.cities');
+                const cities = $('.cities');
+
                 cities.empty();
+
                 $.each(result, function(i, item) {
-                    const tmp = '<option value="' + item.id + '">' + item.name + '</option>';
-                    cities.append(tmp);
+                    if (item.name.toLowerCase() === city.toLowerCase()) {
+                        cities.append('<option value="' + item.id + '" selected>' + item.name + '</option>');
+                    } else {
+                        cities.append('<option value="' + item.id + '">' + item.name + '</option>');
+                    }
                 });
             });
         }
@@ -204,21 +250,37 @@
             if (data[0]) {
                 document.querySelector('.phone').value = data[0].celular
                 document.querySelector('.name').value = data[0].name
-                document.querySelector('.cep').value = data[0].zipcode
                 document.querySelector('.street').value = data[0].street
                 document.querySelector('.number').value = data[0].number
-                document.querySelector('.district').value = data[0].district
-                document.querySelector('.states').value = data[0].states
-                document.querySelector('.cities').value = data[0].cities
+                document.querySelector('.cep').value = data[0].zipcode
+                document.querySelector('.states').value = data[0].state_id
                 document.querySelector('.complement').index = data[0].complement
-             /*   await getCities(data[0].state_id)
-                document.querySelector('.states').selectedIndex = data[0].state_id-1
-                document.querySelector('.cities').selectedIndex = data[0].city_id*/
+                document.querySelector('.district').value = data[0].district
+
+                const dataCep = await viaCep(data[0].zipcode);
+                await getCities(data[0].state_id, dataCep.localidade)
+            } else {
+                clear_form()
             }
         }
 
         const showMessage = function(data){
             toastr[data.type](data.message,data.title);
+        }
+
+        const clear_form = () => {
+            $("#street").val("");
+            $("#district").val("");
+            $("#number").val("");
+            $(".states").val("");
+            $(".cities").val("");
+            $(".phone").val("");
+            $(".name").val("");
+            $(".street").val("");
+            $(".complement").val("");
+            $(".district").val("");
+            $(".number").val("");
+            $(".cep").val("");
         }
     </script>
 </head>
@@ -707,32 +769,20 @@ Placed at the end of the document so the pages load faster
                 pos = 9;
         }
         resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-        if (resultado != digitos.charAt(1))
+        if (resultado !== digitos.charAt(1))
             return false;
 
         return true;
     }
 
-
-
-</script>
-<script>
     $(document).ready(function() {
-        function limpa_formulário_cep() {
-            // Limpa valores do formulário de cep.
-            $("#street").val("");
-            $("#district").val("");
-            $("#states").val("");
-            $("#cities").val("");
-        }
-
-        $("#zipcode").blur(function () {
+        $("#zipcode").blur(async function () {
 
             //Nova variável "cep" somente com dígitos.
             var cep = $(this).val().replace(/\D/g, '');
 
             //Verifica se campo cep possui valor informado.
-            if (cep != "") {
+            if (cep !== "") {
 
                 //Expressão regular para validar o CEP.
                 var validacep = /^[0-9]{8}$/;
@@ -740,39 +790,35 @@ Placed at the end of the document so the pages load faster
                 //Valida o formato do CEP.
                 if (validacep.test(cep)) {
 
-                    //Preenche os campos com "..." enquanto consulta webservice.
-                    $("#street").val('').attr("placeholder",'buscando dados...');
-                    $("#district").val('').attr("placeholder",'buscando dados...');
-                    $("#states").val('').attr("placeholder",'buscando dados...');
-                    $("#cities").val('').attr("placeholder",'buscando dados...');
+                    const data = await viaCep(cep);
 
-                    //Consulta o webservice viacep.com.br/
-                    $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+                    if (!("erro" in data)) {
+                        const stateId = await getStates(data.uf)
 
-                        if (!("erro" in dados)) {
-                            //Atualiza os campos com os valores da consulta.
-                            $("#street").val(dados.logradouro);
-                            $("#district").val(dados.bairro);
-                            $("#number").focus();
-                            $("#states").val(dados.uf);
-                            $("#cities").val(dados.localidade);
-                        } //end if.
-                        else {
-                            //CEP pesquisado não foi encontrado.
-                            limpa_formulário_cep();
-                            alert("CEP não encontrado.");
-                        }
-                    });
+                        //Atualiza os campos com os valores da consulta.
+                        $("#street").val(data.logradouro);
+                        $("#district").val(data.bairro);
+                        $(".states").val(stateId);
+
+                        await getCities(stateId, data.localidade)
+
+                        $("#number").focus();
+                    } //end if.
+                    else {
+                        //CEP pesquisado não foi encontrado.
+                        clear_form();
+                        alert("CEP não encontrado.");
+                    }
                 } //end if.
                 else {
                     //cep é inválido.
-                    limpa_formulário_cep();
+                    clear_form();
                     alert("Formato de CEP inválido.");
                 }
             } //end if.
             else {
                 //cep sem valor, limpa formulário.
-                limpa_formulário_cep();
+                clear_form();
             }
         });
     });

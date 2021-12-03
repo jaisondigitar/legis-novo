@@ -21,8 +21,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class UserController extends AppBaseController
@@ -150,6 +148,14 @@ class UserController extends AppBaseController
         }
         $user = $this->userRepository->findByID($id);
 
+        if (Defender::hasRole('root')) {
+            $levels = Role::all();
+        } else {
+            $levels = Role::where('name', '!=', 'root')->get();
+        }
+
+        $assemblyman = Assemblyman::where('active', 1)->get();
+
         if (empty($user)) {
             flash('Registro não existe.')->error();
 
@@ -158,9 +164,12 @@ class UserController extends AppBaseController
 
         $permCompany = Role::all();
 
-        return view('users.show', compact(
-            'permCompany'
-        ))->with('user', $user);
+        return view(
+            'users.show',
+            compact('permCompany', 'levels')
+        )
+            ->with('user', $user)
+            ->with('assemblyman', $assemblyman);
     }
 
     /**

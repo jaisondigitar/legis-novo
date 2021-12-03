@@ -31,7 +31,7 @@
 
 <!--- Password Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('password', 'Senha:', ['class' => 'required']) !!}
+    {!! Form::label('password', 'Senha:') !!}
 	{!! Form::password('password', ['class' => 'form-control']) !!}
 </div>
 
@@ -87,11 +87,17 @@
                 </th>
             </tr>
             @foreach($assemblyman as $value)
+                <?php
+                    $teste = false;
+                    if (isset($user)) {
+                        $teste = $user->hasRole($value->name);
+                    }
+                ?>
                 <tr>
                     <td>
                         <label>
-                            {!! Form::checkbox('assemblyman[]',$value->id, in_array($value->id, $user_assemblyman) ? true : false) !!}
-                            {{ $value->short_name }}
+                            {!! Form::checkbox('assemblyman[]', $value->id, $teste) !!}
+                            {!! $value->short_name !!}
                         </label>
                     </td>
                 </tr>

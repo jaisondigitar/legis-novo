@@ -102,6 +102,7 @@ Route::middleware([
 
         Route::group(['prefix' => '', ['middleware' => 'needsRole', 'is' => 'root']], function () {
             Route::resource('states', 'StateController');
+            Route::post('get-state', 'StateController@stateByUf');
             Route::get('states/{id}/delete', [
                 'as' => 'states.delete',
                 'uses' => 'StateController@destroy',

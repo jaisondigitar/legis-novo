@@ -6,7 +6,9 @@ use App\Http\Requests;
 use App\Http\Requests\CreateStateRequest;
 use App\Http\Requests\UpdateStateRequest;
 use App\Libraries\Repositories\StateRepository;
+use App\Models\State;
 use Flash;
+use Illuminate\Http\Request;
 use Response;
 
 class StateController extends AppBaseController
@@ -168,5 +170,10 @@ class StateController extends AppBaseController
     public function statesList()
     {
         return State::lists('name', 'id');
+    }
+
+    public function stateByUf(Request $request)
+    {
+        return State::where('uf', $request->get('uf'))->get();
     }
 }

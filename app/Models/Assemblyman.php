@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -112,13 +111,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Assemblyman extends Model
+class Assemblyman extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'assemblymen';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'companies_id',
@@ -174,7 +171,6 @@ class Assemblyman extends Model
         'short_name' => 'required',
         'email' => 'required',
         'phone1' => 'required',
-        'phone2' => 'required',
         'zipcode' => 'required',
         'state_id' => 'required',
         'city_id' => 'required',
@@ -182,7 +178,6 @@ class Assemblyman extends Model
         'official_document' => 'required',
         'general_register' => 'required',
         'number' => 'required',
-        'complement' => 'required',
     ];
 
     public function company()

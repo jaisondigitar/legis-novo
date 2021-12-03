@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -40,13 +39,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Responsibility extends Model
+class Responsibility extends BaseModel
 {
     use SoftDeletes;
 
     public $table = 'responsibilities';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'companies_id',
