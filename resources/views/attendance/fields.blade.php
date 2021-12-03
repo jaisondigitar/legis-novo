@@ -24,7 +24,7 @@
         <h2 style="margin: 0">Endereço</h2><hr style="margin: 20px 0">
         <!-- Zipcode Field -->
         <div class="form-group col-sm-3">
-            {!! Form::label('zipcode', 'CEP:', ['class' => 'required']) !!}
+            {!! Form::label('zipcode', 'CEP:') !!}
             {!! Form::text('zipcode', null, ['class' => 'form-control cep']) !!}
         </div>
         <!-- Street Field -->
@@ -35,7 +35,7 @@
 
         <!-- Number Field -->
         <div class="form-group col-sm-3">
-            {!! Form::label('number', 'Número:', ['class' => 'required']) !!}
+            {!! Form::label('number', 'Número:') !!}
             {!! Form::text('number', null, ['class' => 'form-control number']) !!}
         </div>
 
@@ -53,13 +53,13 @@
 
         <!-- State Id Field -->
         <div class="form-group col-sm-4">
-            {!! Form::label('state_id', 'Estado:', ['class' => 'required']) !!}
+            {!! Form::label('state_id', 'Estado:') !!}
             {!! Form::select('state_id', $states, null, ['class' => 'form-control states', 'onChange'=>'getCities(\'state_id\')']) !!}
         </div>
 
         <!-- City Id Field -->
         <div class="form-group col-sm-8">
-            {!! Form::label('city_id', 'Cidade:', ['class' => 'required']) !!}
+            {!! Form::label('city_id', 'Cidade:') !!}
             {!! Form::select('city_id', $cities, null, ['class' => 'form-control cities']) !!}
         </div>
     </div>
