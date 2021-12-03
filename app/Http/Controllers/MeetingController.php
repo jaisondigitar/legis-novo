@@ -19,11 +19,13 @@ use App\Models\SessionPlace;
 use App\Models\SessionType;
 use App\Models\Structurepautum;
 use App\Models\TypeVoting;
+use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Models\VersionPauta;
 use App\Models\Votes;
 use App\Models\Voting;
 use App\Repositories\MeetingRepository;
+use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
 use Exception;
@@ -39,6 +41,11 @@ use Illuminate\View\View;
 
 class MeetingController extends AppBaseController
 {
+    /**
+     * @var StorageService
+     */
+    private static $storageService;
+
     /** @var MeetingRepository */
     private $meetingRepository;
 
@@ -46,8 +53,7 @@ class MeetingController extends AppBaseController
     {
         $this->meetingRepository = $meetingRepo;
 
-        view()->share('session_type_list', SessionType::pluck('name', 'id')->prepend('Selecione', ''));
-        view()->share('session_place_list', SessionPlace::pluck('name', 'id')->prepend('Selecione', ''));
+        static::$storageService = new StorageService();
     }
 
     /**
@@ -57,11 +63,14 @@ class MeetingController extends AppBaseController
      */
     public function index()
     {
+        self::initSessions();
+
         if (! Defender::hasPermission('meetings.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
             return redirect('/');
         }
+
         $assemblyman_list = Assemblyman::whereIn('id', UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')->toArray())->pluck('short_name', 'id')->prepend('Selecione', 0);
         $meetings = Meeting::orderBy('date_start', 'desc')->paginate(20);
 
@@ -76,6 +85,8 @@ class MeetingController extends AppBaseController
      */
     public function create()
     {
+        self::initSessions();
+
         if (! Defender::hasPermission('meetings.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
@@ -149,6 +160,8 @@ class MeetingController extends AppBaseController
      */
     public function edit(int $id)
     {
+        self::initSessions();
+
         if (! Defender::hasPermission('meetings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
@@ -879,7 +892,7 @@ class MeetingController extends AppBaseController
 
         if ($files) {
             foreach ($files as $file) {
-                $filename = static::$uploadService
+                $filename = static::$storageService
                     ->inMeetingsFolder()
                     ->sendFile($file)
                     ->send();
@@ -888,11 +901,6 @@ class MeetingController extends AppBaseController
                 $new_file->meeting_id = $meeting->id;
                 $new_file->filename = $filename;
                 $new_file->save();
-
-                /*$file->move(
-                    base_path().'/public/uploads/meetings/files',
-                    $fileName
-                );*/
             }
         }
 
@@ -1532,5 +1540,11 @@ class MeetingController extends AppBaseController
         $company = Auth::user()->company;
 
         return view('panelVoting.discourse', compact('company'));
+    }
+
+    private function initSessions()
+    {
+        view()->share('session_type_list', SessionType::pluck('name', 'id')->prepend('Selecione', ''));
+        view()->share('session_place_list', SessionPlace::pluck('name', 'id')->prepend('Selecione', ''));
     }
 }
