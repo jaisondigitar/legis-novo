@@ -1,21 +1,3 @@
-<style>
-    .log {
-        padding: 5px;
-        font-size: 12px;
-    }
-    .created {
-        padding: 10px;
-        background: #8CC152;
-    }
-    .updated {
-        padding: 10px;
-        background: #F6BB42;
-    }
-    .deleted {
-        padding: 10px;
-        background: #E9573F;
-    }
-</style>
 @foreach($logs as $key => $log)
     <div class="col-sm-12" style="display: flex; margin: 20px 0;">
         <div class="<?php echo $log->event; ?>"></div>
@@ -58,12 +40,12 @@
                     echo '<strong>VALOR ANTIGO</strong><br><br>';
                     $object = json_decode($log->old_values);
 
-                    foreach ($object as $key=>$value) {
+                    foreach ($object as $key => $value) {
                         if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
                             $newDate = date('d/m/Y', strtotime($value));
                             echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                         } else {
-                            echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                            echo '<strong>'.$key.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                         }
                     }
                     echo '</div>';
@@ -74,12 +56,12 @@
                     echo '<strong>NOVO VALOR</strong><br><br>';
                     $object = json_decode($log->new_values);
 
-                    foreach ($object as $key=>$value) {
+                    foreach ($object as $key => $value) {
                         if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
                             $newDate = date('d/m/Y', strtotime($value));
                             echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                         } else {
-                            echo '<strong>'.$key.'</strong>: '.$value.'<br style="margin-bottom: 3px">';
+                            echo '<strong>'.$key.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                         }
                     }
                     echo '</div>';
