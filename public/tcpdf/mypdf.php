@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Company;
+use App\Services\StorageService;
+
 require_once public_path().'/tcpdf/tcpdf.php';
 
 
@@ -9,24 +12,25 @@ class MYPDF extends TCPDF
     //Page header
     public function Header()
     {
-        $image_file = (new \App\Services\StorageService())->inAssemblymanFolder()->get(\App\Models\Company::first()->image);
-        $this->Image($image_file, $this->lMargin, $this->header_margin, 32, 0, '', '', 'T', true, 300, '', false, false, 0, false, false, false);
+        $image_file = (new StorageService())->inCompanyFolder()
+            ->get(Company::first()->image);
+        $this->Image($image_file, $this->lMargin, $this->header_margin, 25, 0, '', '', 'T', true, 300, '', false, false, 0, false, false, false);
 
         $this->SetXY($this->lMargin + 34, $this->header_margin);
         $this->SetFont('helvetica', 'B', 15);
-        $title = mb_strtoupper(\App\Models\Company::first()->shortName, 'UTF-8');
+        $title = mb_strtoupper(Company::first()->shortName, 'UTF-8');
 
         $this->Cell(100, 0, $title, 0, 0, 'L');
         $this->SetFont('helvetica', '', 10);
         $this->SetXY($this->lMargin + 34, $this->header_margin + 6);
-        $this->Cell(100, 0, 'ESTADO DE '.mb_strtoupper(\App\Models\Company::first()->getState->name, 'UTF-8'), 0, 0, 'L');
+        $this->Cell(100, 0, 'ESTADO DE '.mb_strtoupper(Company::first()->getState->name, 'UTF-8'), 0, 0, 'L');
         $this->SetFont('helvetica', '', 9);
         $this->SetXY($this->lMargin + 34, $this->header_margin + 13);
-        $this->Cell(100, 0, mb_strtoupper(\App\Models\Company::first()->address, 'UTF-8'), 0, 0, 'L');
+        $this->Cell(100, 0, mb_strtoupper(Company::first()->address, 'UTF-8'), 0, 0, 'L');
         $this->SetXY($this->lMargin + 34, $this->header_margin + 18);
-        $this->Cell(100, 0, 'CNPJ: '.mb_strtoupper(\App\Models\Company::first()->cnpjCpf, 'UTF-8'), 0, 0, 'L');
+        $this->Cell(100, 0, 'CNPJ: '.mb_strtoupper(Company::first()->cnpjCpf, 'UTF-8'), 0, 0, 'L');
         $this->SetXY($this->lMargin + 34, $this->header_margin + 23);
-        $this->Cell(100, 0, 'FONE: '.mb_strtoupper(\App\Models\Company::first()->phone1, 'UTF-8'), 0, 0, 'L');
+        $this->Cell(100, 0, 'FONE: '.mb_strtoupper(Company::first()->phone1, 'UTF-8'), 0, 0, 'L');
     }
 
     // Page footer
