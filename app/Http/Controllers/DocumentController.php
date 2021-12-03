@@ -301,7 +301,7 @@ class DocumentController extends AppBaseController
 
         $pdf->SetPrintHeader($showHeader);
 
-        $subHeader = $company->phone1.' - '.$company->email."\n";
+        $company->phone1.' - '.$company->email."\n";
 
         $pdf->setFooterData($document->getNumber(), [0, 64, 0], [0, 64, 128]);
         $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
