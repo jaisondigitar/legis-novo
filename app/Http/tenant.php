@@ -32,7 +32,7 @@ Route::middleware([
     /*
      *  ROTAS DE FRONT-END DE CONSULTAS PÚBLICAS
      */
-    Route::get('/arquivo', 'SiteController@index');
+    Route::get('/', 'SiteController@index');
     Route::get('/documentPdf/{id}', 'DocumentController@show');
     Route::get('/lawPdf/{id}', 'LawsProjectController@show');
 
@@ -93,9 +93,9 @@ Route::middleware([
      *  -------------------------------------------------*/
     Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
         Route::group(['prefix' => 'messages'], function () {
-            Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
+            Route::get('/admin', ['as' => 'messages', 'uses' => 'MessagesController@index']);
             Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);
-            Route::post('/', ['as' => 'messages.store', 'uses' => 'MessagesController@store']);
+            Route::post('/admin', ['as' => 'messages.store', 'uses' => 'MessagesController@store']);
             Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessagesController@show']);
             Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
         });
@@ -116,7 +116,7 @@ Route::middleware([
             ]);
         });
 
-        Route::get('/', 'AdminController@dashboard');
+        Route::get('/admin', 'AdminController@dashboard');
         Route::post('/admin/findAdvice', 'AdminController@findAdvice');
         Route::post('/admin/saveAdvice', 'AdminController@saveAdvice');
         Route::get('/admin/commissions', 'AdminController@commissions');

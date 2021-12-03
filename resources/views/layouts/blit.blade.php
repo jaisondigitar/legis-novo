@@ -299,7 +299,7 @@ BEGIN PAGE
         <div class="top-navbar-inner">
 
             <!-- Begin Logo brand -->
-            <a href="/">
+            <a href="/admin">
                 <div class="logo-brand" style="padding: 5px 0">
                     <img
                         src="/assets/images/not-name.png"
@@ -365,7 +365,7 @@ BEGIN PAGE
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">MakerLegis</a>
+                    <a class="navbar-brand" href="/admin">MakerLegis</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
