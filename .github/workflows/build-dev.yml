@@ -2,7 +2,7 @@ name: Dev build and dependencies
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ homolog ]
 
 defaults:
   run:
