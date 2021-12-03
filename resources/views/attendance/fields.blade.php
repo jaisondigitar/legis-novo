@@ -39,15 +39,13 @@
 
         <!-- Photo Field -->
         <div class="form-group col-sm-6">
-            @if(isset($people) && !empty($people->image))
-                <div class="logo-inst">
-                    <img src="{{ (new \App\Services\StorageService())->inPeopleFolder()->get($people->image) }}" width="150px" class="img-thumbnail img-rounded image">
-                    <div style="width: 100px;padding: 5px;font-family: monospace;">
-                        <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
-                    </div>
+            <div class="logo-inst" @if(!isset($people)) style="display: none;" @endif>
+                <img src="{{ !empty($people->image) && (new \App\Services\StorageService())->inPeopleFolder()->get($people->image) }}" width="150px" class="img-thumbnail img-rounded image">
+                <div style="width: 100px;padding: 5px;font-family: monospace;">
+                    <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
                 </div>
-            @endif
-            <div class="upload" @if(isset($people) &&  !empty($people->image)) style="display: none;" @endif >
+            </div>
+            <div class="upload" @if(isset($people) && !empty($people->image)) style="display: none;" @endif >
                 <i class="fa fa-image"></i>
                 {!! Form::label('image', " Foto:") !!}
                 {!! Form::file('image', ['class' => 'form-control']) !!}
@@ -147,4 +145,18 @@
     let TimeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
     document.querySelector('.date').value = dateForm
     document.querySelector('.time').value = TimeForm
+
+    const removeImage = async () => {
+        const peopleId = document.querySelector('.logo-inst img').getAttribute('id')
+        const resp = await fetch(`/people/remove-image?people_id=${peopleId}`, {
+            headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
+            method: 'POST'
+        })
+        console.log(resp)
+        if (resp.status === 200) {
+            $(".logo-inst").fadeOut(300, () => $(".upload").fadeIn(300))
+        } else {
+            toastr["warning"]("Falha ao apagar imagem.", "Ops!");
+        }
+    }
 </script>
