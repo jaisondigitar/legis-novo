@@ -68,7 +68,7 @@
                         </a>
                     </li>
                 @endis
-                @shield('destinations.index')
+                @shield('destination.index')
                 <li>
                     <a href="{{ url('/destinations', $parameters = [], $secure = null) }}">
                         <i class="glyphicon glyphicon-user space"></i>Destinatários
@@ -78,7 +78,7 @@
                 @shield('users.index')
                     <li>
                         <a href="{{url('/users', $parameters = [], $secure = null)}}">
-                            <i class="fa fa-users space"></i>Usuarios
+                            <i class="fa fa-users space"></i>Usuários
                         </a>
                     </li>
                 @endshield

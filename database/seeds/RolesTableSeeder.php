@@ -70,6 +70,12 @@ class RolesTableSeeder extends Seeder
         $perm['company'][] = Defender::permissionExists('typesOfAttendance.delete') ? Defender::findPermission('typesOfAttendance.delete') : Defender::createPermission('typesOfAttendance.delete', 'Exclui tipo de atendimento');
         $perm['company'][] = Defender::permissionExists('typesOfAttendance.show') ? Defender::findPermission('typesOfAttendance.show') : Defender::createPermission('typesOfAttendance.show', 'Detalhes de tipo de atendimento');
 
+        $perm['company'][] = Defender::permissionExists('destination.create') ? Defender::findPermission('destination.create') : Defender::createPermission('destination.create', 'Cria destinatários');
+        $perm['company'][] = Defender::permissionExists('destination.index') ? Defender::findPermission('destination.index') : Defender::createPermission('destination.index', 'Visualiza destinatários');
+        $perm['company'][] = Defender::permissionExists('destination.edit') ? Defender::findPermission('destination.edit') : Defender::createPermission('destination.edit', 'Edita destinatários');
+        $perm['company'][] = Defender::permissionExists('destination.delete') ? Defender::findPermission('destination.delete') : Defender::createPermission('destination.delete', 'Exclui destinatários');
+        $perm['company'][] = Defender::permissionExists('destination.show') ? Defender::findPermission('destination.show') : Defender::createPermission('destination.show', 'Detalhes de destinatários');
+
         $perm['company'][] = Defender::permissionExists('attendance.create') ? Defender::findPermission('attendance.create') : Defender::createPermission('attendance.create', 'Cria visitante');
         $perm['company'][] = Defender::permissionExists('attendance.index') ? Defender::findPermission('attendance.index') : Defender::createPermission('attendance.index', 'Visualizar visitante');
         $perm['company'][] = Defender::permissionExists('attendance.edit') ? Defender::findPermission('attendance.edit') : Defender::createPermission('attendance.edit', 'Edita visitante');

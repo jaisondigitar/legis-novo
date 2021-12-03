@@ -17,7 +17,7 @@
 
 <!-- Fullname Field -->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('fullName', 'Rasão Social:') !!}
+    {!! Form::label('fullName', 'Razão Social:') !!}
     <p>{!! $company->fullName !!}</p>
 </div>
 
