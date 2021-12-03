@@ -23,7 +23,7 @@
                         <tr id="tr{{$file->id}}">
                             <td width="80%">{{ $file->filename }}</td>
                             <td align="center">
-                                <a target="_blank" href="/uploads/meetings/files/{{$file->filename}}">
+                                <a target="_blank" href="{{ (new \App\Services\StorageService())->inMeetingsFolder()->get($file->filename) }}">
                                     <span class="label label-info">Download</span>
                                 </a>
                                 <a style="text-decoration: none" id="delFile" onclick="deleteFile({{$file->id}})">
