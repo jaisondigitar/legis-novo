@@ -160,11 +160,10 @@ Route::middleware([
 
 
         Route::resource('people', 'PeopleController');
-
         Route::post('people/search-by-cpf', 'PeopleController@searchByCpf');
+        Route::post('/people/remove-image', 'PeopleController@removeImage');
 
         Route::resource('attendance', 'AttendanceController');
-
         Route::resource('types-of-attendance', 'TypesOfAttendanceController', [
             'names' => [
                 'index' => 'typesOfAttendance.index',
