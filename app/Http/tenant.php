@@ -32,7 +32,7 @@ Route::middleware([
     /*
      *  ROTAS DE FRONT-END DE CONSULTAS PÚBLICAS
      */
-    Route::get('/arquivo', 'SiteController@index');
+    Route::get('/', 'SiteController@index');
     Route::get('/documentPdf/{id}', 'DocumentController@show');
     Route::get('/lawPdf/{id}', 'LawsProjectController@show');
 
@@ -116,7 +116,7 @@ Route::middleware([
             ]);
         });
 
-        Route::get('/', 'AdminController@dashboard');
+        Route::get('/admin', 'AdminController@dashboard');
         Route::post('/admin/findAdvice', 'AdminController@findAdvice');
         Route::post('/admin/saveAdvice', 'AdminController@saveAdvice');
         Route::get('/admin/commissions', 'AdminController@commissions');
