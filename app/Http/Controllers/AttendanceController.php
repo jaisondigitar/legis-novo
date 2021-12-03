@@ -9,6 +9,7 @@ use App\Models\People;
 use App\Models\State;
 use App\Models\TypesOfAttendance;
 use App\Repositories\AttendanceRepository;
+use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -22,12 +23,16 @@ use Illuminate\View\View;
 
 class AttendanceController extends Controller
 {
+    private static $storageService;
+
     /** @var AttendanceRepository */
     private $attendanceRepository;
 
     public function __construct(AttendanceRepository $attendanceRepo)
     {
         $this->attendanceRepository = $attendanceRepo;
+
+        static::$storageService = new StorageService();
     }
 
     /**
@@ -88,6 +93,9 @@ class AttendanceController extends Controller
             return redirect('/');
         }
 
+        $image = $request->file('image');
+        $attendance_data = $request->only(['date', 'time', 'description', 'type_id']);
+
         $people = People::firstOrCreate(
             ['cpf' => $request->cpf],
             ['name' => $request->name,
@@ -102,16 +110,19 @@ class AttendanceController extends Controller
                 'city_id' => $request->city_id, ]
         );
 
-        $input = $request->only([
-            'date',
-            'time',
-            'description',
-            'type_id',
-        ]);
+        if ($image) {
+            $filename = static::$storageService
+                ->inPeopleFolder()
+                ->sendFile($image)
+                ->send();
 
-        $input['people_id'] = $people->id;
+            $people->image = $filename;
+            $people->save();
+        }
 
-        $attendance = $this->attendanceRepository->create($input);
+        $attendance_data['people_id'] = $people->id;
+
+        $this->attendanceRepository->create($attendance_data);
 
         flash('Atendimento salvo com sucesso.')->success();
 
