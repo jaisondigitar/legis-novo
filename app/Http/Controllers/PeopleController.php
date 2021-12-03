@@ -189,11 +189,11 @@ class PeopleController extends AppBaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! Defender::hasPermission('people.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -210,7 +210,26 @@ class PeopleController extends AppBaseController
 
     public function searchByCpf(Request $request)
     {
-        return response()
-            ->json(People::where('cpf', $request->get('cpf') ?? '')->get());
+        $people = People::where('cpf', $request->get('cpf') ?? '')->first();
+
+        if ($people->image) {
+            $people->image = (new StorageService())->inPeopleFolder()->get($people->image);
+        }
+
+        return response()->json($people);
+    }
+
+    public function removeImage(Request $request)
+    {
+        $people_id = $request->get('people_id');
+
+        if ($people = People::find($people_id)) {
+            $people->image = null;
+            $people->save();
+
+            return json_encode(true);
+        }
+
+        return json_encode(false);
     }
 }
