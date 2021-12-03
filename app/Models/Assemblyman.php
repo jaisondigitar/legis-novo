@@ -167,17 +167,8 @@ class Assemblyman extends BaseModel
      * @var array
      */
     public static $rules = [
-        'companies_id' => 'required',
         'short_name' => 'required',
         'email' => 'required',
-        'phone1' => 'required',
-        'zipcode' => 'required',
-        'state_id' => 'required',
-        'city_id' => 'required',
-        'full_name' => 'required',
-        'official_document' => 'required',
-        'general_register' => 'required',
-        'number' => 'required',
     ];
 
     public function company()

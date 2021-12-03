@@ -13,7 +13,7 @@
 
 <!-- Full Name Field -->
 <div class="form-group col-sm-8">
-    {!! Form::label('full_name', 'Nome Completo:', ['class' => 'required']) !!}
+    {!! Form::label('full_name', 'Nome Completo:') !!}
     {!! Form::text('full_name', null, ['class' => 'form-control']) !!}
 </div>
 
@@ -25,7 +25,7 @@
 
 <!-- Phone1 Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('phone1', 'Celular:', ['class' => 'required']) !!}
+    {!! Form::label('phone1', 'Celular:') !!}
     {!! Form::text('phone1', null, ['class' => 'form-control phone']) !!}
 </div>
 
@@ -37,13 +37,13 @@
 
 <!-- Official Document Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('official_document', 'CPF:', ['class' => 'required']) !!}
+    {!! Form::label('official_document', 'CPF:') !!}
     {!! Form::text('official_document', null, ['class' => 'form-control cpf']) !!}
 </div>
 
 <!-- General Register Field -->
 <div class="form-group col-sm-2">
-    {!! Form::label('general_register', 'RG:', ['class' => 'required']) !!}
+    {!! Form::label('general_register', 'RG:') !!}
     {!! Form::number('general_register', null, ['class' => 'form-control', 'min' => 1000000, 'max' => 999999999]) !!}
 </div>
 <div class="form-group col-sm-12">
@@ -79,7 +79,7 @@
         <div class="form-group col-sm-12">
             <!-- Zipcode Field -->
             <div class="form-group col-sm-2">
-                {!! Form::label('zipcode', 'Código Postal:', ['class' => 'required']) !!}
+                {!! Form::label('zipcode', 'CEP:') !!}
                 {!! Form::text('zipcode', null, ['class' => 'form-control cep']) !!}
             </div>
             <!-- Street Field -->
@@ -90,7 +90,7 @@
 
             <!-- Number Field -->
             <div class="form-group col-sm-2">
-                {!! Form::label('number', 'Número:', ['class' => 'required']) !!}
+                {!! Form::label('number', 'Número:') !!}
                 {!! Form::text('number', null, ['class' => 'form-control']) !!}
             </div>
 
@@ -107,13 +107,13 @@
             </div>
             <!-- State Id Field -->
             <div class="form-group col-sm-2">
-                {!! Form::label('state_id', 'Estado', ['class' => 'required']) !!}
+                {!! Form::label('state_id', 'Estado') !!}
                 {!! Form::select('state_id', $states, null, ['class' => 'form-control states', 'onChange'=>'getCities(\'state_id\')']) !!}
             </div>
 
             <!-- City Id Field -->
             <div class="form-group col-sm-4">
-                {!! Form::label('city_id', 'Cidade:', ['class' => 'required']) !!}
+                {!! Form::label('city_id', 'Cidade:') !!}
                 {!! Form::select('city_id', $cities, null, ['class' => 'form-control cities']) !!}
             </div>
             <div class="form-group col-sm-4 col-lg-4">
