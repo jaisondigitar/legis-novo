@@ -27,8 +27,8 @@ class UpdateColumnsAssemblymen extends Migration
     public function down()
     {
         Schema::table('assemblymen', function (Blueprint $table) {
-            $table->dropColumn('complement');
-            $table->dropColumn('phone2');
+            $table->string('complement')->change();
+            $table->string('phone2')->change();
         });
     }
 }
