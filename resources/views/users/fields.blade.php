@@ -87,11 +87,17 @@
                 </th>
             </tr>
             @foreach($assemblyman as $value)
+                <?php
+                    $teste = false;
+                    if (isset($user)) {
+                        $teste = $user->hasRole($value->name);
+                    }
+                ?>
                 <tr>
                     <td>
                         <label>
-                            {!! Form::checkbox('assemblyman[]',$value->id, in_array($value->id, $user_assemblyman) ? true : false) !!}
-                            {{ $value->short_name }}
+                            {!! Form::checkbox('assemblyman[]', $value->id, $teste) !!}
+                            {!! $value->short_name !!}
                         </label>
                     </td>
                 </tr>

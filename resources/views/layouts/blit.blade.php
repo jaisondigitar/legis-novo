@@ -59,6 +59,22 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <style>
+        .log {
+            padding: 5px;
+            font-size: 12px;
+        }
+        .created {
+            padding: 10px;
+            background: #8CC152;
+        }
+        .updated {
+            padding: 10px;
+            background: #F6BB42;
+        }
+        .deleted {
+            padding: 10px;
+            background: #E9573F;
+        }
         .busy * {
             cursor: wait !important;
         }
