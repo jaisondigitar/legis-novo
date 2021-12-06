@@ -62,31 +62,34 @@
                     </div>
                     <div class="panel-body">
                         <div class=" col-md-12 col-sm-12">
-                            {{--<form id="processing_form" method="post" enctype="multipart/form-data">--}}
-                            <div class="form-group col-sm-3"> 
-                                {!! Form::label('new_document_situation_id', 'Situação do documento:') !!} 
-                                {!! Form::select('new_document_situation_id', $document_situation ,null, ['class' => 'form-control']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('new_document_situation_id', 'Situação do documento:') !!}
+                                {!! Form::select('new_document_situation_id', $document_situation ,null, ['class' => 'form-control']) !!}
+                            </div>
 
-                            <div class="form-group col-sm-3"> 
-                                {!! Form::label('new_status_processing_document_id', 'Status do tramite:') !!} 
-                                {!! Form::select('new_status_processing_document_id', $status_processing_document ,null, ['class' => 'form-control']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('new_status_processing_document_id', 'Status do trâmite:') !!}
+                                {!! Form::select('new_status_processing_document_id', $status_processing_document, null, ['class' => 'form-control']) !!}
+                            </div>
 
-                            <div class="form-group col-sm-2"> 
-                                {!! Form::label('new_processing_document_date', 'Data:') !!} 
-                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datepicker']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('destination_id', 'Destinatário:') !!}
+                                {!! Form::select('destination_id', $destinations, null, ['class' => 'form-control']) !!}
+                            </div>
 
-                            <div class="form-group col-sm-12"> 
-                                {!! Form::label('new_document_observation', ' Observações:') !!} 
-                                {!! Form::textarea('new_document_observation', null, ['class' => 'form-control ckeditor']) !!} 
-                            </div> 
+                            <div class="form-group col-sm-2">
+                                {!! Form::label('new_processing_document_date', 'Data:') !!}
+                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datepicker']) !!}
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                {!! Form::label('new_document_observation', ' Observações:') !!}
+                                {!! Form::textarea('new_document_observation', null, ['class' => 'form-control ckeditor']) !!}
+                            </div>
 
                             <div class="form-group col-sm-12">
                                 <button class="btn btn-info pull-right" type="button" onclick="save_processing()"> Salvar </button>
                             </div>
-                            {{--</form>--}}
 
                             <div class="col-md-12">
                                 <table class="table table-th-block table-dark">
@@ -99,7 +102,10 @@
                                             Situação do documento
                                         </th>
                                         <th width="150">
-                                            Status do tramite
+                                            Status do trâmite
+                                        </th>
+                                        <th width="150">
+                                            Destinatário
                                         </th>
                                         <th width="500">
                                             Observação
@@ -111,10 +117,11 @@
                                     </thead>
                                     <tbody id="table_processing">
                                     @forelse($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing)
-                                        <tr id="line_{{$processing->id}}">
-                                            <td > {{$processing->documentSituation->name}}</td>
-                                            <td > {{$processing->statusProcessingDocument ? $processing->statusProcessingDocument->name : ''}}</td>
-                                            <td > {{$processing->processing_document_date}}</td>
+                                        <tr id="line_{{ $processing->id }}">
+                                            <td > {{ $processing->processing_document_date }}</td>
+                                            <td > {{ $processing->documentSituation->name }}</td>
+                                            <td > {{ $processing->statusProcessingDocument->name ?? '' }}</td>
+                                            <td > {{ $processing->destination->name ?? '' }}</td>
                                             <td style="text-align: justify;"> {!! $processing->observation !!}</td>
                                             <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
                                         </tr>
@@ -130,7 +137,7 @@
                             </div>
 
                         </div>
-                    </div><!-- /.panel-body -->
+                    </div>
                 </div>
             </div>
         @endif
@@ -238,6 +245,7 @@
                         document_situation_id: $('#new_document_situation_id').val(),
                         status_processing_document_id: $('#new_status_processing_document_id').val(),
                         processing_document_date: $('#new_processing_document_date').val(),
+                        destination_id: $('#destination_id').val(),
                         observation: CKEDITOR.instances.new_document_observation.getData()
                     };
 
@@ -246,27 +254,30 @@
                         data: data,
                         method: 'post'
                     }).success(function (data) {
-
                         data = JSON.parse(data);
 
                         table = $('#table_processing').empty();
 
-                        data.forEach(function (valor, chave) {
-                            console.log(valor);
+                        data.forEach(function (valor) {
                             str = '<tr id="line_' + valor.id + '"> ';
-                            str += "<td>";
-                            str += valor.document_situation.name;
-                            str += "</td>";
-                            str += "<td>";
-                            if(valor.status_processing_document_id > 0) {
-                                str += valor.status_processing_document.name;
-                            }
-                            str += "</td>";
                             str += "<td>";
                             str += valor.processing_document_date;
                             str += "</td>";
                             str += "<td>";
-                            str += valor.observation;
+                            str += valor.document_situation.name;
+                            str += "</td>";
+                            str += "<td>";
+                            if (valor.status_processing_document_id > 0) {
+                                str += valor.status_processing_document.name;
+                            }
+                            str += "</td>";
+                            str += "<td>";
+                            if (valor.destination) {
+                                str += valor.destination.name;
+                            }
+                            str += "</td>";
+                            str += "<td>";
+                            str += valor.observation || '';
                             str += "</td>";
                             str += "<td>";
                             str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';

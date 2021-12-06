@@ -28,7 +28,7 @@
 
 <!--- Fullname Field --->
 <div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('fullName', 'Rasão Social:', ['class' => 'required']) !!}
+    {!! Form::label('fullName', 'Razão Social:', ['class' => 'required']) !!}
 	{!! Form::text('fullName', null, ['class' => 'form-control']) !!}
 </div>
 

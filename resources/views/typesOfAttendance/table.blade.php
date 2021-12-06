@@ -21,7 +21,12 @@
                     </a>
                     @endshield
                     @shield('typesOfAttendance.delete')
-                    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [
+                        'type' => 'submit',
+                        'class' => 'btn btn-danger btn-xs',
+                        'onclick' => "return confirm('Deseja realmente remover esse registro?')"
+                        ])
+                    !!}
                     @endshield
                 </div>
                 {!! Form::close() !!}
