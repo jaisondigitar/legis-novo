@@ -9,11 +9,12 @@ class AddColumnDestinationIdToProcessingsTable extends Migration
     public function up()
     {
         Schema::table('processings', function (Blueprint $table) {
-            $table->integer('destination_id')->unsigned()->nullable();
+            $table->bigInteger('destination_id')->unsigned()->nullable();
         });
 
         Schema::table('processings', function (Blueprint $table) {
-            $table->foreign('destination_id')->references('id')->on('users');
+            $table->foreign('destination_id')->references('id')
+                ->on('destinations');
         });
     }
 
