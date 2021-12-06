@@ -217,7 +217,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         if (! Defender::hasPermission('adviceSituationDocuments.edit')) {
             return json_encode(false);
         }
-        $register = $this->adviceSadminituationDocumentsRepository->findByID($id);
+        $register = $this->adviceSituationDocumentsRepository->findByID($id);
         $register->active = $register->active > 0 ? 0 : 1;
         $register->save();
 
