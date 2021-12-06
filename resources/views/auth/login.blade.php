@@ -4,9 +4,10 @@
     <title>MakerLegis</title>
     <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
 
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" />
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/structure.css') }}">
     <style>
@@ -17,15 +18,83 @@
             -o-background-size: cover;
             background-size: cover;
         }
+
+        form {
+            width: 23rem;
+        }
+
+        label {
+            color: white;
+            font-size: 25px;
+        }
+
+        input {
+            margin-top: 10px;
+            margin-bottom: 3rem;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 10px;
+            line-height: 20px;
+            padding: 10px;
+            border: 1px solid #b9b9af;
+            background-color: #fff;
+            opacity: 0.9;
+            -webkit-transition: background-color 0.2s;
+            transition: background-color 0.2s;
+        }
+
+        input:invalid {
+            margin-top: 10px;
+            margin-bottom: 3rem;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 10px;
+            line-height: 20px;
+            padding: 10px;
+            border: 1px solid #b9b9af;
+            background-color: #fff;
+            opacity: 0.9;
+            -webkit-transition: background-color 0.2s;
+            transition: background-color 0.2s;
+        }
+
+        button {
+            border-radius: 5px;
+            background: rgb(47, 47, 47);
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 15px;
+        }
+
+        button:hover,
+        button:focus,
+        button:active {
+            background:#1abc9c;
+            color: #000000;
+        }
+
+        .align {
+            position: absolute;
+            width: min-content;
+            top: 33%;
+            left: 70%;
+        }
+
         #main {
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(47, 47, 47, 1);
             margin-bottom: -10px !important;
             padding: 10px;
             color: white;
         }
+
         .banner {
             z-index: 5;
         }
+
+        .bg {
+            display: flex;
+        }
+
         .banner .bg {
             position: absolute;
             z-index: -1;
@@ -33,60 +102,76 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: url('{{ asset('/assets/images/pixels.jpg')}}') no-repeat center center fixed;
+            background: url('/bck.png') no-repeat fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-            /*filter: blur(1px);*/
         }
-        .button-submit {
-            border-radius: 5px;
-            background: rgba(0, 0, 0, 0.6);
-            color:#fff;
-            margin-left:12px;
-            float:right;
-            padding:7px 21px;
+
+        .test {
+            border-bottom: 100vh solid #2f2f2f;
+            border-left: 35rem solid transparent;
+            width: 100vh;
         }
-        .button-submit:hover,
-        .button-submit:focus,
-        .button-submit:active{
-            background: rgba(0, 0, 0, 0.4);
+
+        .forgot {
+            display: flex;
+            justify-content: space-between;
         }
-        .box.login {
-            height: auto;
+
+        .forgot a {
+            font-size: 16px;
         }
     </style>
 </head>
 
 <body class="banner">
-<div class="bg"></div>
-<form class="box login banner" action="login" method="post">
+<div class="bg">
     <div class="logo">
-        <img src="/assets/images/genesis-black.png" style="max-width: 250px;" class="img-responsive" alt="Logo">
+        <img
+            src="/assets/images/genesis-black.png"
+            class="img-responsive"
+            alt="Logo"
+            style="
+                width: 500px;
+                padding: 50px;
+            "
+        >
     </div>
-    <fieldset class="boxBody">
-        @if($errors->any())
-            <ul class="alert alert-danger" style="list-style-type: none">
+    <div class="align">
+        <form action="login" method="post">
+            @if($errors->any())
                 @foreach($errors->all() as $error)
                     <li>{!! $error !!}</li>
                 @endforeach
-            </ul>
-        @endif
-        @csrf
-        <label>E-mail:</label>
-        <input type="text" name="email" tabindex="1" placeholder="email" required>
-        <label><a href="#" class="rLink" tabindex="5">Esqueci a senha?</a>Senha:</label>
-        <input type="password" name="password" placeholder="senha" tabindex="2" required>
-    </fieldset>
-    <footer>
-        <button type="submit" class="button-submit"> ENTRAR </button>
-    </footer>
-</form>
+            @endif
+            @csrf
+
+            <label>
+                E-mail
+                <input type="text" name="email" tabindex="1" placeholder="email" required>
+            </label>
+
+            <label>
+                Senha
+                <input type="password" name="password" placeholder="senha" tabindex="2" required>
+            </label>
+
+            <div class="forgot">
+                <button type="submit"> ENTRAR</button>
+
+                <a href="#" tabindex="5">Esqueci a senha?</a>
+            </div>
+        </form>
+    </div>
+    <div class="test"></div>
+</div>
+
 <footer id="main">
     &copy; {{Date('Y')}}
     <a href="https://www.genesis.tec.br/"
-       onMouseOver="this.style.color='red'"
+       onMouseOver="this.style.color='#1abc9c'"
        onMouseOut="this.style.color='white'"
        style="color: white;"
     >
