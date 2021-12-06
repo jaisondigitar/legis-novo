@@ -77,7 +77,7 @@
             position: absolute;
             width: min-content;
             top: 33%;
-            left: 70%;
+            left: 60%;
         }
 
         #main {
@@ -91,12 +91,14 @@
             z-index: 5;
         }
 
-        .bg {
+        .backLogin {
+            width: 100vw;
+            height: 100vh;
             display: flex;
         }
 
-        .banner .bg {
-            position: absolute;
+        .banner .backLogin {
+            /*position: absolute;*/
             z-index: -1;
             top: 0;
             bottom: 0;
@@ -109,10 +111,17 @@
             background-size: cover;
         }
 
-        .test {
+        .logoType {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+        }
+
+        .backFormat {
             border-bottom: 100vh solid #2f2f2f;
             border-left: 35rem solid transparent;
-            width: 100vh;
+            margin-left: 15rem;
+            width: 100vw;
         }
 
         .forgot {
@@ -127,45 +136,42 @@
 </head>
 
 <body class="banner">
-<div class="bg">
-    <div class="logo">
+<div class="backLogin">
+    <div class="logoType">
         <img
             src="/assets/images/genesis-black.png"
             class="img-responsive"
             alt="Logo"
-            style="
-                width: 500px;
-                padding: 50px;
-            "
         >
     </div>
-    <div class="align">
-        <form action="login" method="post">
-            @if($errors->any())
-                @foreach($errors->all() as $error)
-                    <li>{!! $error !!}</li>
-                @endforeach
-            @endif
-            @csrf
+    <div class="backFormat">
+        <div class="align">
+            <form action="login" method="post">
+                @if($errors->any())
+                    @foreach($errors->all() as $error)
+                        <li>{!! $error !!}</li>
+                    @endforeach
+                @endif
+                @csrf
 
-            <label>
-                E-mail
-                <input type="text" name="email" tabindex="1" placeholder="email" required>
-            </label>
+                <label>
+                    E-mail
+                    <input type="text" name="email" tabindex="1" placeholder="email" required>
+                </label>
 
-            <label>
-                Senha
-                <input type="password" name="password" placeholder="senha" tabindex="2" required>
-            </label>
+                <label>
+                    Senha
+                    <input type="password" name="password" placeholder="senha" tabindex="2" required>
+                </label>
 
-            <div class="forgot">
-                <button type="submit"> ENTRAR</button>
+                <div class="forgot">
+                    <button type="submit"> ENTRAR</button>
 
-                <a href="#" tabindex="5">Esqueci a senha?</a>
-            </div>
-        </form>
+                    <a href="#" tabindex="5">Esqueci a senha?</a>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="test"></div>
 </div>
 
 <footer id="main">
