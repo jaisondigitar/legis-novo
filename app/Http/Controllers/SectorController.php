@@ -38,7 +38,7 @@ class SectorController extends AppBaseController
         if (! Defender::hasPermission('sectors.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sectors = $this->sectorRepository->getAll(0);
@@ -57,7 +57,7 @@ class SectorController extends AppBaseController
         if (! Defender::hasPermission('sectors.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('sectors.create');
@@ -76,7 +76,7 @@ class SectorController extends AppBaseController
         if (! Defender::hasPermission('sectors.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $input = $request->all();
@@ -103,7 +103,7 @@ class SectorController extends AppBaseController
         if (! Defender::hasPermission('sectors.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sector = $this->sectorRepository->findByID($id);
@@ -130,7 +130,7 @@ class SectorController extends AppBaseController
         if (! Defender::hasPermission('sectors.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $sector = $this->sectorRepository->findByID($id);
 
@@ -157,7 +157,7 @@ class SectorController extends AppBaseController
         if (! Defender::hasPermission('sectors.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sector = $this->sectorRepository->findByID($id);
@@ -192,7 +192,7 @@ class SectorController extends AppBaseController
         if (! Defender::hasPermission('sectors.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sector = $this->sectorRepository->findByID($id);

@@ -34,7 +34,7 @@ class LawsTagController extends AppBaseController
         if (! Defender::hasPermission('lawsTags.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsTags = $this->lawsTagRepository->getAll(0);
@@ -53,7 +53,7 @@ class LawsTagController extends AppBaseController
         if (! Defender::hasPermission('lawsTags.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('lawsTags.create');
@@ -71,7 +71,7 @@ class LawsTagController extends AppBaseController
         if (! Defender::hasPermission('lawsTags.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -94,7 +94,7 @@ class LawsTagController extends AppBaseController
         if (! Defender::hasPermission('lawsTags.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsTag = $this->lawsTagRepository->findById($id);
@@ -120,7 +120,7 @@ class LawsTagController extends AppBaseController
         if (! Defender::hasPermission('lawsTags.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $lawsTag = $this->lawsTagRepository->findById($id);
 
@@ -146,7 +146,7 @@ class LawsTagController extends AppBaseController
         if (! Defender::hasPermission('lawsTags.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsTag = $this->lawsTagRepository->findById($id);
@@ -176,7 +176,7 @@ class LawsTagController extends AppBaseController
         if (! Defender::hasPermission('lawsTags.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsTag = $this->lawsTagRepository->findById($id);

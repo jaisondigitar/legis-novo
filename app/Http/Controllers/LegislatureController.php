@@ -39,7 +39,7 @@ class LegislatureController extends AppBaseController
         if (! Defender::hasPermission('legislatures.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $legislatures = $this->legislatureRepository->getAll(0);
@@ -61,7 +61,7 @@ class LegislatureController extends AppBaseController
         if (! Defender::hasPermission('legislatures.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('legislatures.create');
@@ -79,7 +79,7 @@ class LegislatureController extends AppBaseController
         if (! Defender::hasPermission('legislatures.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -103,7 +103,7 @@ class LegislatureController extends AppBaseController
         if (! Defender::hasPermission('legislatures.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $legislature = $this->legislatureRepository->findByID($id);
@@ -141,7 +141,7 @@ class LegislatureController extends AppBaseController
         if (! Defender::hasPermission('legislatures.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $legislature = $this->legislatureRepository->findByID($id);
 
@@ -168,7 +168,7 @@ class LegislatureController extends AppBaseController
         if (! Defender::hasPermission('legislatures.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $legislature = $this->legislatureRepository->findByID($id);
@@ -199,7 +199,7 @@ class LegislatureController extends AppBaseController
         if (! Defender::hasPermission('legislatures.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $legislature = $this->legislatureRepository->findByID($id);

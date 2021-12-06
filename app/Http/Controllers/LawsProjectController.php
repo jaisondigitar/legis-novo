@@ -105,7 +105,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $parameters = Parameters::where('slug', 'sempre-usa-protocolo-externo')->first();
@@ -181,7 +181,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $assemblymensList = $this->getAssemblymenList();
@@ -220,7 +220,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $input = $request->all();
@@ -676,7 +676,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $lawsProject = $this->lawsProjectRepository->findByID($id);
 
@@ -730,7 +730,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsProject = $this->lawsProjectRepository->findByID($id);
@@ -811,7 +811,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsProject = $this->lawsProjectRepository->findByID($id);

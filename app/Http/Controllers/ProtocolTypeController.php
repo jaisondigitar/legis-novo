@@ -29,7 +29,7 @@ class ProtocolTypeController extends AppBaseController
         if (! Defender::hasPermission('protocolTypes.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         // $this->protocolTypeRepository->pushCriteria(new RequestCriteria($request));
@@ -49,7 +49,7 @@ class ProtocolTypeController extends AppBaseController
         if (! Defender::hasPermission('protocolTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('protocolTypes.create');
@@ -67,7 +67,7 @@ class ProtocolTypeController extends AppBaseController
         if (! Defender::hasPermission('protocolTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
         $input['slug'] = str_slug($input['name']);
@@ -91,7 +91,7 @@ class ProtocolTypeController extends AppBaseController
         if (! Defender::hasPermission('protocolTypes.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
@@ -117,7 +117,7 @@ class ProtocolTypeController extends AppBaseController
         if (! Defender::hasPermission('protocolTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
 
@@ -143,7 +143,7 @@ class ProtocolTypeController extends AppBaseController
         if (! Defender::hasPermission('protocolTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);
@@ -175,7 +175,7 @@ class ProtocolTypeController extends AppBaseController
         if (! Defender::hasPermission('protocolTypes.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $protocolType = $this->protocolTypeRepository->findWithoutFail($id);

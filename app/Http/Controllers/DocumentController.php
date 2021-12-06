@@ -99,7 +99,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         if (count($request->all())) {
@@ -153,7 +153,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentType = DocumentType::where('parent_id', 0)->pluck('name', 'id')->prepend('Selecione...', 0);
@@ -198,7 +198,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $request['users_id'] = Auth::user()->id;
 
@@ -598,7 +598,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $document = $this->documentRepository->findByID($id);
 
@@ -659,7 +659,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $document = $this->documentRepository->findByID($id);
@@ -708,7 +708,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $document = $this->documentRepository->findByID($id);

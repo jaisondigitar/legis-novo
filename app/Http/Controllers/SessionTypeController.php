@@ -38,7 +38,7 @@ class SessionTypeController extends AppBaseController
         if (! Defender::hasPermission('sessionTypes.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sessionTypes = $this->sessionTypeRepository->getAll(0);
@@ -57,7 +57,7 @@ class SessionTypeController extends AppBaseController
         if (! Defender::hasPermission('sessionTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('sessionTypes.create');
@@ -76,7 +76,7 @@ class SessionTypeController extends AppBaseController
         if (! Defender::hasPermission('sessionTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -102,7 +102,7 @@ class SessionTypeController extends AppBaseController
         if (! Defender::hasPermission('sessionTypes.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sessionType = $this->sessionTypeRepository->findById($id);
@@ -129,7 +129,7 @@ class SessionTypeController extends AppBaseController
         if (! Defender::hasPermission('sessionTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $sessionType = $this->sessionTypeRepository->findById($id);
 
@@ -156,7 +156,7 @@ class SessionTypeController extends AppBaseController
         if (! Defender::hasPermission('sessionTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sessionType = $this->sessionTypeRepository->findById($id);
@@ -190,7 +190,7 @@ class SessionTypeController extends AppBaseController
         if (! Defender::hasPermission('sessionTypes.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sessionType = $this->sessionTypeRepository->findById($id);

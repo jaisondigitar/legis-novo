@@ -52,7 +52,7 @@ class CompanyController extends AppBaseController
         if (! Defender::hasPermission('companies.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $companies = $this->companyRepository->newQuery()->paginate(10);
@@ -71,7 +71,7 @@ class CompanyController extends AppBaseController
         if (! Defender::hasPermission('companies.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $states = $this->statesList();
@@ -94,7 +94,7 @@ class CompanyController extends AppBaseController
         if (! Defender::hasPermission('companies.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $input = $request->all();
@@ -130,7 +130,7 @@ class CompanyController extends AppBaseController
         if (! Defender::hasPermission('companies.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $company = $this->companyRepository->findByID($id);
@@ -159,7 +159,7 @@ class CompanyController extends AppBaseController
         if (! Defender::hasPermission('companies.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $company = $this->companyRepository->findByID($id);
@@ -188,7 +188,7 @@ class CompanyController extends AppBaseController
         if (! Defender::hasPermission('companies.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $company = $this->companyRepository->findByID($id);
@@ -233,7 +233,7 @@ class CompanyController extends AppBaseController
         if (! Defender::hasPermission('companies.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $company = $this->companyRepository->findByID($id);

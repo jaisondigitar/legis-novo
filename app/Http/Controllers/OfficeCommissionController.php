@@ -35,7 +35,7 @@ class OfficeCommissionController extends AppBaseController
         if (! Defender::hasPermission('officeCommissions.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $officeCommissions = $this->officeCommissionRepository->getAll(0);
@@ -54,7 +54,7 @@ class OfficeCommissionController extends AppBaseController
         if (! Defender::hasPermission('officeCommissions.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('officeCommissions.create');
@@ -72,7 +72,7 @@ class OfficeCommissionController extends AppBaseController
         if (! Defender::hasPermission('officeCommissions.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -97,7 +97,7 @@ class OfficeCommissionController extends AppBaseController
         if (! Defender::hasPermission('officeCommissions.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $officeCommission = $this->officeCommissionRepository->findById($id);
@@ -123,7 +123,7 @@ class OfficeCommissionController extends AppBaseController
         if (! Defender::hasPermission('officeCommissions.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $officeCommission = $this->officeCommissionRepository->findById($id);
 
@@ -149,7 +149,7 @@ class OfficeCommissionController extends AppBaseController
         if (! Defender::hasPermission('officeCommissions.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $officeCommission = $this->officeCommissionRepository->findById($id);
@@ -181,7 +181,7 @@ class OfficeCommissionController extends AppBaseController
         if (! Defender::hasPermission('officeCommissions.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $officeCommission = $this->officeCommissionRepository->findById($id);

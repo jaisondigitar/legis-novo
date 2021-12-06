@@ -34,7 +34,7 @@ class TypeController extends AppBaseController
         if (! Defender::hasPermission('types.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $this->typeRepository->pushCriteria(new RequestCriteria($request));
@@ -54,7 +54,7 @@ class TypeController extends AppBaseController
         if (! Defender::hasPermission('types.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('types.create');
@@ -72,7 +72,7 @@ class TypeController extends AppBaseController
         if (! Defender::hasPermission('types.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -95,7 +95,7 @@ class TypeController extends AppBaseController
         if (! Defender::hasPermission('types.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $type = $this->typeRepository->findWithoutFail($id);
@@ -121,7 +121,7 @@ class TypeController extends AppBaseController
         if (! Defender::hasPermission('types.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $type = $this->typeRepository->findWithoutFail($id);
 
@@ -147,7 +147,7 @@ class TypeController extends AppBaseController
         if (! Defender::hasPermission('types.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $type = $this->typeRepository->findWithoutFail($id);
@@ -177,7 +177,7 @@ class TypeController extends AppBaseController
         if (! Defender::hasPermission('types.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $type = $this->typeRepository->findWithoutFail($id);

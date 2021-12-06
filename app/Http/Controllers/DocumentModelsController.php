@@ -38,7 +38,7 @@ class DocumentModelsController extends AppBaseController
         if (! Defender::hasPermission('documentModels.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentModels = $this->documentModelsRepository->getAll(0);
@@ -57,7 +57,7 @@ class DocumentModelsController extends AppBaseController
         if (! Defender::hasPermission('documentModels.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $document_type = DocumentType::pluck('name', 'id')->prepend('Selecione...', '');
@@ -78,7 +78,7 @@ class DocumentModelsController extends AppBaseController
         if (! Defender::hasPermission('documentModels.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -129,7 +129,7 @@ class DocumentModelsController extends AppBaseController
         if (! Defender::hasPermission('documentModels.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $documentModels = $this->documentModelsRepository->findByID($id);
 
@@ -158,7 +158,7 @@ class DocumentModelsController extends AppBaseController
         if (! Defender::hasPermission('documentModels.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentModels = $this->documentModelsRepository->findByID($id);
@@ -189,7 +189,7 @@ class DocumentModelsController extends AppBaseController
         if (! Defender::hasPermission('documentModels.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentModels = $this->documentModelsRepository->findByID($id);

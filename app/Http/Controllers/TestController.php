@@ -34,7 +34,7 @@ class TestController extends AppBaseController
         if (! Defender::hasPermission('tests.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $this->testRepository->pushCriteria(new RequestCriteria($request));
@@ -54,7 +54,7 @@ class TestController extends AppBaseController
         if (! Defender::hasPermission('tests.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('$ROUTES_AS_PREFIX$tests.create');
@@ -72,7 +72,7 @@ class TestController extends AppBaseController
         if (! Defender::hasPermission('tests.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -95,7 +95,7 @@ class TestController extends AppBaseController
         if (! Defender::hasPermission('tests.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $test = $this->testRepository->findWithoutFail($id);
@@ -121,7 +121,7 @@ class TestController extends AppBaseController
         if (! Defender::hasPermission('tests.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $test = $this->testRepository->findWithoutFail($id);
 
@@ -147,7 +147,7 @@ class TestController extends AppBaseController
         if (! Defender::hasPermission('tests.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $test = $this->testRepository->findWithoutFail($id);
@@ -177,7 +177,7 @@ class TestController extends AppBaseController
         if (! Defender::hasPermission('tests.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $test = $this->testRepository->findWithoutFail($id);
