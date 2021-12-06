@@ -9,6 +9,7 @@ use App\Models\AdviceSituationDocuments;
 use App\Models\Assemblyman;
 use App\Models\Commission;
 use App\Models\Company;
+use App\Models\Destination;
 use App\Models\Document;
 use App\Models\DocumentAssemblyman;
 use App\Models\DocumentFiles;
@@ -1040,13 +1041,7 @@ class DocumentController extends AppBaseController
         $advice_publication_document = AdvicePublicationDocuments::pluck('name', 'id')->prepend('Selecione...', '');
         $status_processing_document = StatusProcessingDocument::pluck('name', 'id')->prepend('Selecione...', '');
 
-        $destinations = User::query()
-            ->whereDoesntHave('roles', function ($query) {
-                $query->where('name', 'root');
-            })
-            ->get()
-            ->pluck('name', 'id')
-            ->prepend('Selecione...', '');
+        $destinations = Destination::pluck('name', 'id')->prepend('Selecione...', '');
 
         return view(
             'documents.advices',

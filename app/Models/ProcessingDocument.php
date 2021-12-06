@@ -28,7 +28,7 @@ class ProcessingDocument extends BaseModel
      */
     public function destination(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Destination::class);
     }
 
     /**

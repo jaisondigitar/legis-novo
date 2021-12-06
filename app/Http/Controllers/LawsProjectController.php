@@ -10,6 +10,7 @@ use App\Models\AdviceSituationLaw;
 use App\Models\Assemblyman;
 use App\Models\Commission;
 use App\Models\Company;
+use App\Models\Destination;
 use App\Models\LawFile;
 use App\Models\LawProjectsNumber;
 use App\Models\LawSituation;
@@ -304,13 +305,7 @@ class LawsProjectController extends AppBaseController
         $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
         $status_processing_law = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
 
-        $destinations = User::query()
-            ->whereDoesntHave('roles', function ($query) {
-                $query->where('name', 'root');
-            })
-            ->get()
-            ->pluck('name', 'id')
-            ->prepend('Selecione...', '');
+        $destinations = Destination::pluck('name', 'id')->prepend('Selecione...', '');
 
         return view(
             'lawsProjects.advices',

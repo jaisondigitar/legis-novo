@@ -630,3 +630,24 @@ Breadcrumbs::for('typesOfAttendance.show', function ($breadcrumbs) {
     $breadcrumbs->parent('typesOfAttendance.list');
     $breadcrumbs->push('Tipo de Atendimento', null);
 });
+
+/*
+ * DESTINATION
+ */
+Breadcrumbs::for('destination.list', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Cadastro', null);
+    $breadcrumbs->push('Destinatários', '/destinations');
+});
+Breadcrumbs::for('destination.new', function ($breadcrumbs) {
+    $breadcrumbs->parent('destination.list');
+    $breadcrumbs->push('Novo Destinatários', '/destinations/create');
+});
+Breadcrumbs::for('destination.edit', function ($breadcrumbs) {
+    $breadcrumbs->parent('destination.list');
+    $breadcrumbs->push('Editar Destinatários', null);
+});
+Breadcrumbs::for('destination.show', function ($breadcrumbs) {
+    $breadcrumbs->parent('destination.list');
+    $breadcrumbs->push('Destinatários', null);
+});
