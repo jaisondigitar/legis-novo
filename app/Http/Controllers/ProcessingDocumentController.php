@@ -39,11 +39,16 @@ class ProcessingDocumentController extends Controller
         $input = $request->all();
 
         $processing = ProcessingDocument::create($request->all());
+
         $processing->observation = $request->observation;
+
         $processing->save();
 
         if ($processing) {
-            $processing = ProcessingDocument::where('document_id', $input['document_id'])->orderBy('processing_document_date', 'desc')->with('DocumentSituation')->with('StatusProcessingDocument')->get();
+            $processing = ProcessingDocument::where('document_id', $input['document_id'])
+                ->orderBy('processing_document_date', 'desc')
+                ->with(['DocumentSituation', 'StatusProcessingDocument', 'destination'])
+                ->get();
 
             return json_encode($processing);
         }
