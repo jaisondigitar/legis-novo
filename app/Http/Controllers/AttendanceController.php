@@ -48,7 +48,7 @@ class AttendanceController extends Controller
         if (! Defender::hasPermission('attendance.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $attendance = $this->attendanceRepository->getAll(0);
@@ -66,7 +66,7 @@ class AttendanceController extends Controller
         if (! Defender::hasPermission('attendance.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
@@ -90,7 +90,7 @@ class AttendanceController extends Controller
         if (! Defender::hasPermission('attendance.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $image = $request->file('image');
@@ -141,7 +141,7 @@ class AttendanceController extends Controller
         if (! Defender::hasPermission('attendance.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $attendance = $this->attendanceRepository->findById($id);
@@ -200,7 +200,7 @@ class AttendanceController extends Controller
         if (! Defender::hasPermission('attendance.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $attendance = $this->attendanceRepository->findById($id);

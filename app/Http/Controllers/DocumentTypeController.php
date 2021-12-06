@@ -36,7 +36,7 @@ class DocumentTypeController extends AppBaseController
         if (! Defender::hasPermission('documentTypes.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentTypes = DocumentType::where('parent_id', 0)->get();
@@ -55,7 +55,7 @@ class DocumentTypeController extends AppBaseController
         if (! Defender::hasPermission('documentTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('documentTypes.create');
@@ -73,7 +73,7 @@ class DocumentTypeController extends AppBaseController
         if (! Defender::hasPermission('documentTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -98,7 +98,7 @@ class DocumentTypeController extends AppBaseController
         if (! Defender::hasPermission('documentTypes.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentType = $this->documentTypeRepository->findById($id);
@@ -124,7 +124,7 @@ class DocumentTypeController extends AppBaseController
         if (! Defender::hasPermission('documentTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $documentType = $this->documentTypeRepository->findById($id);
 
@@ -150,7 +150,7 @@ class DocumentTypeController extends AppBaseController
         if (! Defender::hasPermission('documentTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentType = $this->documentTypeRepository->findById($id);
@@ -184,7 +184,7 @@ class DocumentTypeController extends AppBaseController
         if (! Defender::hasPermission('documentTypes.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentType = $this->documentTypeRepository->findById($id);

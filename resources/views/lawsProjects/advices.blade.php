@@ -62,48 +62,40 @@
                     </div>
                     <div class="panel-body">
                         <div class=" col-md-12 col-sm-12">
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('new_advice_publication_id', ' Publicado no:') !!}
+                                {!! Form::select('new_advice_publication_id', $advice_publication_law ,null, ['class' => 'form-control ']) !!}
+                            </div>
 
-                            {{--<form id="processing_form" method="post" enctype="multipart/form-data">--}}
-                            <div class="form-group col-sm-3"> 
-                                {!! Form::label('new_advice_publication_id', ' Publicado no:') !!} 
-                                {!! Form::select('new_advice_publication_id', $advice_publication_law ,null, ['class' => 'form-control ']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('new_advice_situation_id', 'Situação do projeto:') !!}
+                                {!! Form::select('new_advice_situation_id', $advice_situation_law ,null, ['class' => 'form-control']) !!}
+                            </div>
 
-                            <div class="form-group col-sm-3"> 
-                                {!! Form::label('new_advice_situation_id', 'Situação do projeto:') !!} 
-                                {!! Form::select('new_advice_situation_id', $advice_situation_law ,null, ['class' => 'form-control']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('new_status_processing_law_id', 'Status do trâmite:') !!}
+                                {!! Form::select('new_status_processing_law_id', $status_processing_law ,null, ['class' => 'form-control']) !!}
+                            </div>
 
-                            <div class="form-group col-sm-3"> 
-                                {!! Form::label('new_status_processing_law_id', 'Status do tramite:') !!} 
-                                {!! Form::select('new_status_processing_law_id', $status_processing_law ,null, ['class' => 'form-control']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-2">
+                                {!! Form::label('new_date_processing', 'Data:') !!}
+                                {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!}
+                            </div>
 
-                            <div class="form-group col-sm-2"> 
-                                {!! Form::label('new_date_processing', 'Data:') !!} 
-                                {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!} 
-                            </div>  
+                            <div class="form-group col-sm-3">
+                                {!! Form::label('destination_id', 'Destinatários:') !!}
+                                {!! Form::select('destination_id', $destinations, null, ['class' =>
+                                'form-control']) !!}
+                            </div>
 
-
-                            {{--<div class="form-group col-sm-3">--}}
-                            {{--<label for=""> Anexar documento: </label>--}}
-                            {{--<input type="file" id="processing_file" name="processing_file" value="" class="form-control">--}}
-
-
-                            {{--@if(isset($lawsProject) && isset($lawsProject->processing->processing_file))--}}
-                            {{--<a href="/laws/{{ $lawsProject->processing->processing_file }}" target="_blank"><i class="fa fa-download"></i> {{ $lawsProject->law_file }}</a>--}}
-                            {{--@endif--}}
-                            {{--</div>--}}
-
-                            <div class="form-group col-sm-12"> 
-                                {!! Form::label('new_observation', ' Observações:') !!} 
-                                {!! Form::textarea('new_observation', null, ['class' => 'form-control ckeditor']) !!} 
-                            </div> 
+                            <div class="form-group col-sm-12">
+                                {!! Form::label('new_observation', ' Observações:') !!}
+                                {!! Form::textarea('new_observation', null, ['class' => 'form-control ckeditor']) !!}
+                            </div>
 
                             <div class="form-group col-sm-12">
                                 <button class="btn btn-info pull-right" type="button" onclick="save_processing()"> Salvar </button>
                             </div>
-                            {{--</form>--}}
 
                             <div class="col-md-12">
 
@@ -117,14 +109,14 @@
                                             Situação do projeto
                                         </th>
                                         <th width="150">
-                                            Status do tramite
+                                            Status do trâmite
                                         </th>
                                         <th width="100">
                                             Data
                                         </th>
-                                        {{--<th width="20">--}}
-                                        {{--Anexo--}}
-                                        {{--</th>--}}
+                                        <th width="150">
+                                            Destinatário
+                                        </th>
                                         <th width="500">
                                             Observação
                                         </th>
@@ -141,7 +133,7 @@
                                             <td > {{$processing->adviceSituationLaw->name}}</td>
                                             <td > @if($processing->statusProcessingLaw) {{$processing->statusProcessingLaw->name}} @endif</td>
                                             <td > {{$processing->processing_date}}</td>
-                                            {{--<td > {{$processing->processing_file}}</td>--}}
+                                            <td > {{ $processing->destination->name ?? '' }}</td>
                                             <td style="text-align: justify;"> {!! $processing->obsevation !!}</td>
                                             <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
                                         </tr>
@@ -157,7 +149,7 @@
                             </div>
 
                         </div>
-                    </div><!-- /.panel-body -->
+                    </div>
                 </div>
             </div>
 @endif
@@ -262,6 +254,7 @@
                         advice_situation_id: $('#new_advice_situation_id').val(),
                         status_processing_law_id: $('#new_status_processing_law_id').val(),
                         processing_date: $('#new_date_processing').val(),
+                        destination_id: $('#destination_id').val(),
                         processing_file: $('#processing_file').val(),
                         obsevation: CKEDITOR.instances.new_observation.getData()
                     };
@@ -294,6 +287,11 @@
                         str += "</td>";
                         str += "<td>";
                         str += valor.processing_date;
+                        str += "</td>";
+                        str += "<td>";
+                        if (valor.destination) {
+                            str += valor.destination.name;
+                        }
                         str += "</td>";
                         str += "<td>";
                         str += valor.obsevation;

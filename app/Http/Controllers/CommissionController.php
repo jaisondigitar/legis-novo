@@ -39,7 +39,7 @@ class CommissionController extends AppBaseController
         if (! Defender::hasPermission('commissions.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $commissions = $this->commissionRepository->getAll(0);
@@ -58,7 +58,7 @@ class CommissionController extends AppBaseController
         if (! Defender::hasPermission('commissions.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $assemblymen = Assemblyman::pluck('full_name', 'id')->prepend('Selecione', '');
@@ -81,7 +81,7 @@ class CommissionController extends AppBaseController
         if (! Defender::hasPermission('commissions.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -117,7 +117,7 @@ class CommissionController extends AppBaseController
         if (! Defender::hasPermission('commissions.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $commission = $this->commissionRepository->findByID($id);
@@ -144,7 +144,7 @@ class CommissionController extends AppBaseController
         if (! Defender::hasPermission('commissions.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $commission = $this->commissionRepository->findByID($id);
 
@@ -177,7 +177,7 @@ class CommissionController extends AppBaseController
         if (! Defender::hasPermission('commissions.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $commission = $this->commissionRepository->findByID($id);
@@ -222,7 +222,7 @@ class CommissionController extends AppBaseController
         if (! Defender::hasPermission('commissions.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $commission = $this->commissionRepository->findByID($id);

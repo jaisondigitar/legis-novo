@@ -37,7 +37,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         if (! Defender::hasPermission('adviceSituationDocuments.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->getAll(0);
@@ -56,7 +56,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         if (! Defender::hasPermission('adviceSituationDocuments.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('adviceSituationDocuments.create');
@@ -75,7 +75,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         if (! Defender::hasPermission('adviceSituationDocuments.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -99,7 +99,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         if (! Defender::hasPermission('adviceSituationDocuments.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
@@ -126,7 +126,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         if (! Defender::hasPermission('adviceSituationDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
 
@@ -153,7 +153,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         if (! Defender::hasPermission('adviceSituationDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);
@@ -187,7 +187,7 @@ class AdviceSituationDocumentsController extends AppBaseController
         if (! Defender::hasPermission('adviceSituationDocuments.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $adviceSituationDocuments = $this->adviceSituationDocumentsRepository->findByID($id);

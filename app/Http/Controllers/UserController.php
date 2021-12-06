@@ -45,7 +45,7 @@ class UserController extends AppBaseController
         if (! Defender::hasPermission('users.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $users = User::where('company_id', '=', Auth::user()->company->id)
@@ -65,7 +65,7 @@ class UserController extends AppBaseController
         if (! Defender::hasPermission('users.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         if (Defender::hasRole('root')) {
@@ -97,7 +97,7 @@ class UserController extends AppBaseController
         if (! Defender::hasPermission('users.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $validated = $request->validated();
@@ -144,7 +144,7 @@ class UserController extends AppBaseController
         if (! Defender::hasPermission('users.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $user = $this->userRepository->findByID($id);
 
@@ -185,7 +185,7 @@ class UserController extends AppBaseController
         if (! Defender::hasPermission('users.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $user = $this->userRepository->findByID($id);
 
@@ -232,7 +232,7 @@ class UserController extends AppBaseController
         if (! Defender::hasPermission('users.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $user = $this->userRepository->findByID($id);
 
@@ -296,7 +296,7 @@ class UserController extends AppBaseController
         if (! Defender::hasPermission('users.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $user = $this->userRepository->findByID($id);

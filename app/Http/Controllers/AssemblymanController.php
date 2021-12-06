@@ -53,7 +53,7 @@ class AssemblymanController extends AppBaseController
         if (! Defender::hasPermission('assemblymen.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $assemblymen = $this->assemblymanRepository->newQuery()->orderBy('short_name', 'ASC')->get()
@@ -104,7 +104,7 @@ class AssemblymanController extends AppBaseController
         if (! Defender::hasPermission('assemblymen.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $states = $this->statesList();
@@ -139,7 +139,7 @@ class AssemblymanController extends AppBaseController
         if (! Defender::hasPermission('assemblymen.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -197,7 +197,7 @@ class AssemblymanController extends AppBaseController
         if (! Defender::hasPermission('assemblymen.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $assemblyman = $this->assemblymanRepository->findByID($id);
@@ -224,7 +224,7 @@ class AssemblymanController extends AppBaseController
         if (! Defender::hasPermission('assemblymen.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $assemblyman = $this->assemblymanRepository
             ->findByID($id)
@@ -279,7 +279,7 @@ class AssemblymanController extends AppBaseController
         if (! Defender::hasPermission('assemblymen.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $assemblyman = $this->assemblymanRepository->findByID($id);
@@ -347,7 +347,7 @@ class AssemblymanController extends AppBaseController
         if (! Defender::hasPermission('assemblymen.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $assemblyman = $this->assemblymanRepository->findByID($id);

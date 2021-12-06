@@ -176,6 +176,8 @@ Route::middleware([
             ],
         ]);
 
+        Route::resource('destinations', 'DestinationController');
+
         Route::resource('profiles', 'ProfileController');
         Route::get('/profiles/{id}/toggle', 'ProfileController@toggle');
         Route::get('profiles/{id}/delete', [

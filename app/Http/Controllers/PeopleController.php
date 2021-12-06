@@ -44,7 +44,7 @@ class PeopleController extends AppBaseController
         if (! Defender::hasPermission('people.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $people = $this->peopleRepository->getAll(0);
@@ -62,7 +62,7 @@ class PeopleController extends AppBaseController
         if (! Defender::hasPermission('people.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $states = $this->statesList();
@@ -83,7 +83,7 @@ class PeopleController extends AppBaseController
         if (! Defender::hasPermission('people.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $input = $request->all();
@@ -119,7 +119,7 @@ class PeopleController extends AppBaseController
         if (! Defender::hasPermission('people.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $people = $this->peopleRepository->findById($id);
@@ -138,7 +138,7 @@ class PeopleController extends AppBaseController
         if (! Defender::hasPermission('people.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $people = $this->peopleRepository->findById($id);
@@ -164,7 +164,7 @@ class PeopleController extends AppBaseController
         if (! Defender::hasPermission('people.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $people = $this->peopleRepository->findById($id);
@@ -198,7 +198,7 @@ class PeopleController extends AppBaseController
         if (! Defender::hasPermission('people.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $people = $this->peopleRepository->findById($id);

@@ -21,7 +21,7 @@ class TypeVotingController extends AppBaseController
         if (! Defender::hasPermission('typeVotings.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $type_voting = TypeVoting::all();
@@ -39,7 +39,7 @@ class TypeVotingController extends AppBaseController
         if (! Defender::hasPermission('typeVotings.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('typeVotings.create');
@@ -56,7 +56,7 @@ class TypeVotingController extends AppBaseController
         if (! Defender::hasPermission('typeVotings.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $input = $request->all();
@@ -81,7 +81,7 @@ class TypeVotingController extends AppBaseController
         if (! Defender::hasPermission('typeVotings.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $type_voting = TypeVoting::find($id);
@@ -106,7 +106,7 @@ class TypeVotingController extends AppBaseController
         if (! Defender::hasPermission('typeVotings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $type_voting = TypeVoting::find($id);
 
@@ -131,7 +131,7 @@ class TypeVotingController extends AppBaseController
         if (! Defender::hasPermission('typeVotings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $type_voting = TypeVoting::find($id);
@@ -169,7 +169,7 @@ class TypeVotingController extends AppBaseController
         if (! Defender::hasPermission('typeVotings.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $type_voting = TypeVoting::find($id);

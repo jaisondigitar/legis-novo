@@ -34,7 +34,7 @@ class StatusProcessingLawController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingLaws.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         // $this->statusProcessingLawRepository->pushCriteria(new RequestCriteria($request));
@@ -54,7 +54,7 @@ class StatusProcessingLawController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingLaws.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('statusProcessingLaws.create');
@@ -72,7 +72,7 @@ class StatusProcessingLawController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingLaws.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -95,7 +95,7 @@ class StatusProcessingLawController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingLaws.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
@@ -121,7 +121,7 @@ class StatusProcessingLawController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingLaws.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
 
@@ -147,7 +147,7 @@ class StatusProcessingLawController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingLaws.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);
@@ -177,7 +177,7 @@ class StatusProcessingLawController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingLaws.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $statusProcessingLaw = $this->statusProcessingLawRepository->findById($id);

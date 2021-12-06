@@ -34,7 +34,7 @@ class SessionPlaceController extends AppBaseController
         if (! Defender::hasPermission('sessionPlaces.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $this->sessionPlaceRepository->pushCriteria(new RequestCriteria($request));
@@ -54,7 +54,7 @@ class SessionPlaceController extends AppBaseController
         if (! Defender::hasPermission('sessionPlaces.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('sessionPlaces.create');
@@ -72,7 +72,7 @@ class SessionPlaceController extends AppBaseController
         if (! Defender::hasPermission('sessionPlaces.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -97,7 +97,7 @@ class SessionPlaceController extends AppBaseController
         if (! Defender::hasPermission('sessionPlaces.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
@@ -123,7 +123,7 @@ class SessionPlaceController extends AppBaseController
         if (! Defender::hasPermission('sessionPlaces.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
 
@@ -149,7 +149,7 @@ class SessionPlaceController extends AppBaseController
         if (! Defender::hasPermission('sessionPlaces.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);
@@ -181,7 +181,7 @@ class SessionPlaceController extends AppBaseController
         if (! Defender::hasPermission('sessionPlaces.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $sessionPlace = $this->sessionPlaceRepository->findWithoutFail($id);

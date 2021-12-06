@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProcessingDocument extends BaseModel
@@ -18,39 +20,70 @@ class ProcessingDocument extends BaseModel
         'processing_document_date',
         'obsevation',
         'processing_document_file',
+        'destination_id',
     ];
 
-    public function document()
+    /**
+     * @return BelongsTo
+     */
+    public function destination(): BelongsTo
+    {
+        return $this->belongsTo(Destination::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
     }
 
-    public function documentSituation()
+    /**
+     * @return BelongsTo
+     */
+    public function documentSituation(): BelongsTo
     {
         return $this->belongsTo('App\Models\DocumentSituation', 'document_situation_id');
     }
 
-    public function statusProcessingDocument()
+    /**
+     * @return BelongsTo
+     */
+    public function statusProcessingDocument(): BelongsTo
     {
         return $this->belongsTo('App\Models\StatusProcessingDocument', 'status_processing_document_id');
     }
 
+    /**
+     * @param $processing_document_date
+     */
     public function setProcessingDocumentDateAttribute($processing_document_date)
     {
         $this->attributes['processing_document_date'] = Carbon::createFromFormat('d/m/Y', $processing_document_date);
     }
 
-    public function getProcessingDocumentDateAttribute($processing_document_date)
+    /**
+     * @param $processing_document_date
+     * @return string
+     */
+    public function getProcessingDocumentDateAttribute($processing_document_date): string
     {
         return $this->asDateTime($processing_document_date)->format('d/m/Y');
     }
 
-    public function adviceSituationDocument()
+    /**
+     * @return BelongsTo
+     */
+    public function adviceSituationDocument(): BelongsTo
     {
         return $this->belongsTo('App\Models\AdviceSituationDocuments', 'advice_situation_documents_id');
     }
 
-    public function advicePublicationDocument()
+    /**
+     * @return BelongsTo
+     */
+    public function advicePublicationDocument(): BelongsTo
     {
         return $this->belongsTo('App\Models\AdvicePublicationDocuments', 'advice_publication_documents_id');
     }

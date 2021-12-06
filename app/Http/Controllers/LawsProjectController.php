@@ -10,6 +10,7 @@ use App\Models\AdviceSituationLaw;
 use App\Models\Assemblyman;
 use App\Models\Commission;
 use App\Models\Company;
+use App\Models\Destination;
 use App\Models\LawFile;
 use App\Models\LawProjectsNumber;
 use App\Models\LawSituation;
@@ -24,6 +25,7 @@ use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
 use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
+use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
 use App\Services\StorageService;
@@ -105,7 +107,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $parameters = Parameters::where('slug', 'sempre-usa-protocolo-externo')->first();
@@ -181,7 +183,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $assemblymensList = $this->getAssemblymenList();
@@ -220,7 +222,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $input = $request->all();
@@ -303,7 +305,19 @@ class LawsProjectController extends AppBaseController
         $advice_publication_law = AdvicePublicationLaw::pluck('name', 'id')->prepend('Selecione...', '');
         $status_processing_law = StatusProcessingLaw::pluck('name', 'id')->prepend('Selecione...', '');
 
-        return view('lawsProjects.advices', compact('comission', 'tramitacao', 'advice_situation_law', 'advice_publication_law', 'status_processing_law'))->with(compact('lawsProject'));
+        $destinations = Destination::pluck('name', 'id')->prepend('Selecione...', '');
+
+        return view(
+            'lawsProjects.advices',
+            compact(
+                'comission',
+                'tramitacao',
+                'advice_situation_law',
+                'advice_publication_law',
+                'status_processing_law',
+                'destinations'
+            )
+        )->with(compact('lawsProject'));
     }
 
     /**
@@ -676,7 +690,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $lawsProject = $this->lawsProjectRepository->findByID($id);
 
@@ -730,7 +744,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsProject = $this->lawsProjectRepository->findByID($id);
@@ -811,7 +825,7 @@ class LawsProjectController extends AppBaseController
         if (! Defender::hasPermission('lawsProjects.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsProject = $this->lawsProjectRepository->findByID($id);

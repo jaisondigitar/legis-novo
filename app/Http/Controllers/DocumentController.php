@@ -9,6 +9,7 @@ use App\Models\AdviceSituationDocuments;
 use App\Models\Assemblyman;
 use App\Models\Commission;
 use App\Models\Company;
+use App\Models\Destination;
 use App\Models\Document;
 use App\Models\DocumentAssemblyman;
 use App\Models\DocumentFiles;
@@ -23,6 +24,7 @@ use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
 use App\Models\ProtocolType;
 use App\Models\StatusProcessingDocument;
+use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
 use App\Services\StorageService;
@@ -99,7 +101,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         if (count($request->all())) {
@@ -153,7 +155,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentType = DocumentType::where('parent_id', 0)->pluck('name', 'id')->prepend('Selecione...', 0);
@@ -198,7 +200,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $request['users_id'] = Auth::user()->id;
 
@@ -598,7 +600,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $document = $this->documentRepository->findByID($id);
 
@@ -659,7 +661,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $document = $this->documentRepository->findByID($id);
@@ -708,7 +710,7 @@ class DocumentController extends AppBaseController
         if (! Defender::hasPermission('documents.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $document = $this->documentRepository->findByID($id);
@@ -1039,7 +1041,21 @@ class DocumentController extends AppBaseController
         $advice_publication_document = AdvicePublicationDocuments::pluck('name', 'id')->prepend('Selecione...', '');
         $status_processing_document = StatusProcessingDocument::pluck('name', 'id')->prepend('Selecione...', '');
 
-        return view('documents.advices', compact('document_situation', 'comission', 'tramitacao', 'advice_situation_document', 'advice_publication_document', 'status_processing_document'))->with(compact('document'));
+        $destinations = Destination::pluck('name', 'id')->prepend('Selecione...', '');
+
+        return view(
+            'documents.advices',
+            compact(
+                'document_situation',
+                'comission',
+                'tramitacao',
+                'advice_situation_document',
+                'advice_publication_document',
+                'status_processing_document',
+                'destinations'
+            )
+        )
+            ->with(compact('document'));
     }
 
     public function importNumber()

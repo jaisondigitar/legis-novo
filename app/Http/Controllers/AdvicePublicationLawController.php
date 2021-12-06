@@ -34,7 +34,7 @@ class AdvicePublicationLawController extends AppBaseController
         if (! Defender::hasPermission('advicePublicationLaws.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         // $this->advicePublicationLawRepository->pushCriteria(new RequestCriteria($request));
@@ -54,7 +54,7 @@ class AdvicePublicationLawController extends AppBaseController
         if (! Defender::hasPermission('advicePublicationLaws.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('advicePublicationLaws.create');
@@ -72,7 +72,7 @@ class AdvicePublicationLawController extends AppBaseController
         if (! Defender::hasPermission('advicePublicationLaws.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -95,7 +95,7 @@ class AdvicePublicationLawController extends AppBaseController
         if (! Defender::hasPermission('advicePublicationLaws.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $advicePublicationLaw = $this->advicePublicationLawRepository->findById($id);
@@ -121,7 +121,7 @@ class AdvicePublicationLawController extends AppBaseController
         if (! Defender::hasPermission('advicePublicationLaws.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $advicePublicationLaw = $this->advicePublicationLawRepository->findById($id);
 
@@ -147,7 +147,7 @@ class AdvicePublicationLawController extends AppBaseController
         if (! Defender::hasPermission('advicePublicationLaws.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $advicePublicationLaw = $this->advicePublicationLawRepository->findById($id);
@@ -177,7 +177,7 @@ class AdvicePublicationLawController extends AppBaseController
         if (! Defender::hasPermission('advicePublicationLaws.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $advicePublicationLaw = $this->advicePublicationLawRepository->findById($id);

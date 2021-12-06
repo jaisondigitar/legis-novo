@@ -68,7 +68,7 @@ class MeetingController extends AppBaseController
         if (! Defender::hasPermission('meetings.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $assemblyman_list = Assemblyman::whereIn('id', UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')->toArray())->pluck('short_name', 'id')->prepend('Selecione', 0);
@@ -90,7 +90,7 @@ class MeetingController extends AppBaseController
         if (! Defender::hasPermission('meetings.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $version_pautas = VersionPauta::pluck('name', 'id');
@@ -111,7 +111,7 @@ class MeetingController extends AppBaseController
         if (! Defender::hasPermission('meetings.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -135,7 +135,7 @@ class MeetingController extends AppBaseController
         if (! Defender::hasPermission('meetings.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $meeting = $this->meetingRepository->findById($id);
@@ -165,7 +165,7 @@ class MeetingController extends AppBaseController
         if (! Defender::hasPermission('meetings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $meeting = $this->meetingRepository->findById($id);
 
@@ -194,7 +194,7 @@ class MeetingController extends AppBaseController
         if (! Defender::hasPermission('meetings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $meeting = $this->meetingRepository->findById($id);
@@ -227,7 +227,7 @@ class MeetingController extends AppBaseController
         if (! Defender::hasPermission('meetings.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $meeting = $this->meetingRepository->findById($id);
@@ -320,7 +320,7 @@ class MeetingController extends AppBaseController
         if (! Defender::hasPermission('meetings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $meeting = $this->meetingRepository->findById($meeting_id);
 
@@ -704,7 +704,7 @@ class MeetingController extends AppBaseController
         if (! Defender::hasPermission('meetings.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $pautas = MeetingPauta::where('meeting_id', $meeting_id)->whereNull('description')->orderBy('created_at')->get();

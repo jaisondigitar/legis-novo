@@ -34,7 +34,7 @@ class AdviceAwnserController extends AppBaseController
         if (! Defender::hasPermission('adviceAwnsers.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $this->adviceAwnserRepository->pushCriteria(new RequestCriteria($request));
@@ -54,7 +54,7 @@ class AdviceAwnserController extends AppBaseController
         if (! Defender::hasPermission('adviceAwnsers.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('$ROUTES_AS_PREFIX$adviceAwnsers.create');
@@ -95,7 +95,7 @@ class AdviceAwnserController extends AppBaseController
         if (! Defender::hasPermission('adviceAwnsers.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
@@ -121,7 +121,7 @@ class AdviceAwnserController extends AppBaseController
         if (! Defender::hasPermission('adviceAwnsers.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
 
@@ -147,7 +147,7 @@ class AdviceAwnserController extends AppBaseController
         if (! Defender::hasPermission('adviceAwnsers.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
@@ -177,7 +177,7 @@ class AdviceAwnserController extends AppBaseController
         if (! Defender::hasPermission('adviceAwnsers.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $adviceAwnser = $this->adviceAwnserRepository->findWithoutFail($id);
