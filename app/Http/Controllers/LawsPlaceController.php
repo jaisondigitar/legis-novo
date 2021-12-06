@@ -36,7 +36,7 @@ class LawsPlaceController extends AppBaseController
         if (! Defender::hasPermission('lawsPlaces.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsPlaces = $this->lawsPlaceRepository->getAll(0);
@@ -55,7 +55,7 @@ class LawsPlaceController extends AppBaseController
         if (! Defender::hasPermission('lawsPlaces.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('lawsPlaces.create');
@@ -74,7 +74,7 @@ class LawsPlaceController extends AppBaseController
         if (! Defender::hasPermission('lawsPlaces.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -98,7 +98,7 @@ class LawsPlaceController extends AppBaseController
         if (! Defender::hasPermission('lawsPlaces.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsPlace = $this->lawsPlaceRepository->findByID($id);
@@ -125,7 +125,7 @@ class LawsPlaceController extends AppBaseController
         if (! Defender::hasPermission('lawsPlaces.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $lawsPlace = $this->lawsPlaceRepository->findByID($id);
 
@@ -152,7 +152,7 @@ class LawsPlaceController extends AppBaseController
         if (! Defender::hasPermission('lawsPlaces.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsPlace = $this->lawsPlaceRepository->findByID($id);
@@ -183,7 +183,7 @@ class LawsPlaceController extends AppBaseController
         if (! Defender::hasPermission('lawsPlaces.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsPlace = $this->lawsPlaceRepository->findByID($id);

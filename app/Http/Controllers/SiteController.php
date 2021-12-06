@@ -93,13 +93,15 @@ class SiteController extends Controller
                                   ->orWhere('justify', 'like', '%'.$request->text.'%');
                         } else {
                             foreach ($key_word as $key => $value) {
-                                $key == 0 ? $query->where('title', 'like', '%'.$value.'%')
-                                                  ->orWhere('sub_title', 'like', '%'.$key_word[$key].'%')
-                                                  ->orWhere('sufix', 'like', '%'.$key_word[$key].'%')
-                                                  ->orWhere('justify', 'like', '%'.$key_word[$key].'%') : $query->orWhere('title', 'like', '%'.$value.'%')
-                                                                                                                    ->orWhere('sub_title', 'like', '%'.$key_word[$key].'%')
-                                                                                                                    ->orWhere('sufix', 'like', '%'.$key_word[$key].'%')
-                                                                                                                    ->orWhere('justify', 'like', '%'.$key_word[$key].'%');
+                                $key == 0 ?
+                                    $query->where('title', 'like', '%'.$value.'%')
+                                        ->orWhere('sub_title', 'like', '%'.$key_word[$key].'%')
+                                        ->orWhere('sufix', 'like', '%'.$key_word[$key].'%')
+                                        ->orWhere('justify', 'like', '%'.$key_word[$key].'%') :
+                                    $query->orWhere('title', 'like', '%'.$value.'%')
+                                        ->orWhere('sub_title', 'like', '%'.$key_word[$key].'%')
+                                        ->orWhere('sufix', 'like', '%'.$key_word[$key].'%')
+                                        ->orWhere('justify', 'like', '%'.$key_word[$key].'%');
                             }
                         }
                     });

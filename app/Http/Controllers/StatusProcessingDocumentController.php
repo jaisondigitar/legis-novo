@@ -37,7 +37,7 @@ class StatusProcessingDocumentController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingDocuments.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $statusProcessingDocuments = $this->statusProcessingDocumentRepository->getAll(0);
@@ -56,7 +56,7 @@ class StatusProcessingDocumentController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingDocuments.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('statusProcessingDocuments.create');
@@ -75,7 +75,7 @@ class StatusProcessingDocumentController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingDocuments.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -99,7 +99,7 @@ class StatusProcessingDocumentController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingDocuments.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
@@ -126,7 +126,7 @@ class StatusProcessingDocumentController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
 
@@ -153,7 +153,7 @@ class StatusProcessingDocumentController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingDocuments.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);
@@ -184,7 +184,7 @@ class StatusProcessingDocumentController extends AppBaseController
         if (! Defender::hasPermission('statusProcessingDocuments.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $statusProcessingDocument = $this->statusProcessingDocumentRepository->findByID($id);

@@ -26,7 +26,7 @@ class StructurepautaController extends AppBaseController
         if (! Defender::hasPermission('structurepautas.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $structurepautas = Structurepautum::whereNull('parent_id')->get();
@@ -45,7 +45,7 @@ class StructurepautaController extends AppBaseController
         if (! Defender::hasPermission('structurepautas.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('$ROUTES_AS_PREFIX$structurepautas.create');
@@ -63,7 +63,7 @@ class StructurepautaController extends AppBaseController
         if (! Defender::hasPermission('structurepautas.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $input = $request->all();
@@ -89,7 +89,7 @@ class StructurepautaController extends AppBaseController
         if (! Defender::hasPermission('structurepautas.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
     }
 
@@ -105,7 +105,7 @@ class StructurepautaController extends AppBaseController
         if (! Defender::hasPermission('structurepautas.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
     }
 

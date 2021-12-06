@@ -34,7 +34,7 @@ class LawsTypeController extends AppBaseController
         if (! Defender::hasPermission('lawsTypes.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         // $this->lawsTypeRepository->pushCriteria(new RequestCriteria($request));
@@ -54,7 +54,7 @@ class LawsTypeController extends AppBaseController
         if (! Defender::hasPermission('lawsTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('lawsTypes.create');
@@ -72,7 +72,7 @@ class LawsTypeController extends AppBaseController
         if (! Defender::hasPermission('lawsTypes.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -95,7 +95,7 @@ class LawsTypeController extends AppBaseController
         if (! Defender::hasPermission('lawsTypes.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsType = $this->lawsTypeRepository->findById($id);
@@ -121,7 +121,7 @@ class LawsTypeController extends AppBaseController
         if (! Defender::hasPermission('lawsTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $lawsType = $this->lawsTypeRepository->findById($id);
 
@@ -147,7 +147,7 @@ class LawsTypeController extends AppBaseController
         if (! Defender::hasPermission('lawsTypes.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsType = $this->lawsTypeRepository->findById($id);
@@ -177,7 +177,7 @@ class LawsTypeController extends AppBaseController
         if (! Defender::hasPermission('lawsTypes.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $lawsType = $this->lawsTypeRepository->findById($id);

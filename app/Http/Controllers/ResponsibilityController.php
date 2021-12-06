@@ -36,7 +36,7 @@ class ResponsibilityController extends AppBaseController
         if (! Defender::hasPermission('responsibilities.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $responsibilities = $this->responsibilityRepository->getAll(0);
@@ -55,7 +55,7 @@ class ResponsibilityController extends AppBaseController
         if (! Defender::hasPermission('responsibilities.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('responsibilities.create');
@@ -74,7 +74,7 @@ class ResponsibilityController extends AppBaseController
         if (! Defender::hasPermission('responsibilities.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -98,7 +98,7 @@ class ResponsibilityController extends AppBaseController
         if (! Defender::hasPermission('responsibilities.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $responsibility = $this->responsibilityRepository->findByID($id);
@@ -125,7 +125,7 @@ class ResponsibilityController extends AppBaseController
         if (! Defender::hasPermission('responsibilities.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $responsibility = $this->responsibilityRepository->findByID($id);
@@ -152,7 +152,7 @@ class ResponsibilityController extends AppBaseController
         if (! Defender::hasPermission('responsibilities.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $responsibility = $this->responsibilityRepository->findByID($id);
@@ -185,7 +185,7 @@ class ResponsibilityController extends AppBaseController
         if (! Defender::hasPermission('responsibilities.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $responsibility = $this->responsibilityRepository->findByID($id);

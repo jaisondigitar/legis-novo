@@ -22,7 +22,7 @@ class TypesOfAttendanceController extends Controller
         if (! Defender::hasPermission('typesOfAttendance.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $typesOfAttendance = $this->typesOfAttendanceRepository->getAll(0);
@@ -35,7 +35,7 @@ class TypesOfAttendanceController extends Controller
         if (! Defender::hasPermission('typesOfAttendance.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('typesOfAttendance.create');
@@ -46,7 +46,7 @@ class TypesOfAttendanceController extends Controller
         if (! Defender::hasPermission('typesOfAttendance.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $input = $request->all();
@@ -63,7 +63,7 @@ class TypesOfAttendanceController extends Controller
         if (! Defender::hasPermission('typesOfAttendance.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $types_of_attendance = $this->typesOfAttendanceRepository->findById($id);
@@ -76,7 +76,7 @@ class TypesOfAttendanceController extends Controller
         if (! Defender::hasPermission('parties.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $types_of_attendance = $this->typesOfAttendanceRepository->findById($id);
@@ -89,7 +89,7 @@ class TypesOfAttendanceController extends Controller
         if (! Defender::hasPermission('parties.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $types_of_attendance = $this->typesOfAttendanceRepository->findById($id);
@@ -104,7 +104,7 @@ class TypesOfAttendanceController extends Controller
         if (! Defender::hasPermission('parties.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $types_of_attendance = $this->typesOfAttendanceRepository->findById($id);

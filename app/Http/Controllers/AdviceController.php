@@ -48,7 +48,7 @@ class AdviceController extends AppBaseController
         if (! Defender::hasPermission('advices.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $this->adviceRepository->pushCriteria(new RequestCriteria($request));
@@ -68,7 +68,7 @@ class AdviceController extends AppBaseController
         if (! Defender::hasPermission('advices.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('$ROUTES_AS_PREFIX$advices.create');
@@ -130,7 +130,7 @@ class AdviceController extends AppBaseController
         if (! Defender::hasPermission('advices.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $advice = $this->adviceRepository->findWithoutFail($id);
@@ -156,7 +156,7 @@ class AdviceController extends AppBaseController
         if (! Defender::hasPermission('advices.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $advice = $this->adviceRepository->findWithoutFail($id);
 
@@ -182,7 +182,7 @@ class AdviceController extends AppBaseController
         if (! Defender::hasPermission('advices.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $advice = $this->adviceRepository->findWithoutFail($id);
@@ -337,7 +337,7 @@ class AdviceController extends AppBaseController
         if (! Defender::hasPermission('lawsProject.advicesEdit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $input = $request->all();

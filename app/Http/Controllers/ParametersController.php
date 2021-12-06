@@ -39,7 +39,7 @@ class ParametersController extends AppBaseController
         if (! Defender::hasPermission('parameters.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $parameters = $this->parametersRepository->getAll(0);
@@ -58,7 +58,7 @@ class ParametersController extends AppBaseController
         if (! Defender::hasPermission('parameters.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('parameters.create');
@@ -77,7 +77,7 @@ class ParametersController extends AppBaseController
         if (! Defender::hasPermission('parameters.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
         $input['slug'] = Str::slug($input['name']);
@@ -106,7 +106,7 @@ class ParametersController extends AppBaseController
         if (! Defender::hasPermission('parameters.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $parameters = $this->parametersRepository->findByID($id);
@@ -133,7 +133,7 @@ class ParametersController extends AppBaseController
         if (! Defender::hasPermission('parameters.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $parameters = $this->parametersRepository->findByID($id);
 
@@ -160,7 +160,7 @@ class ParametersController extends AppBaseController
         if (! Defender::hasPermission('parameters.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $parameters = $this->parametersRepository->findByID($id);
@@ -198,7 +198,7 @@ class ParametersController extends AppBaseController
         if (! Defender::hasPermission('parameters.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $parameters = $this->parametersRepository->findByID($id);

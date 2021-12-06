@@ -58,7 +58,7 @@ class LogController extends AppBaseController
         if (! Defender::hasPermission('logs.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $path = app_path().'/Models';
         $models = $this->getModels($path);
@@ -94,7 +94,7 @@ class LogController extends AppBaseController
         if (! Defender::hasPermission('logs.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('logs.create');
@@ -113,7 +113,7 @@ class LogController extends AppBaseController
         if (! Defender::hasPermission('logs.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -137,7 +137,7 @@ class LogController extends AppBaseController
         if (! Defender::hasPermission('logs.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $log = $this->logRepository->findByID($id);
@@ -164,7 +164,7 @@ class LogController extends AppBaseController
         if (! Defender::hasPermission('logs.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $log = $this->logRepository->findByID($id);
 
@@ -191,7 +191,7 @@ class LogController extends AppBaseController
         if (! Defender::hasPermission('logs.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $log = $this->logRepository->findByID($id);
@@ -222,7 +222,7 @@ class LogController extends AppBaseController
         if (! Defender::hasPermission('logs.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $log = $this->logRepository->findByID($id);

@@ -37,7 +37,7 @@ class PartyController extends AppBaseController
         if (! Defender::hasPermission('parties.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $parties = $this->partyRepository->getAll(0);
@@ -56,7 +56,7 @@ class PartyController extends AppBaseController
         if (! Defender::hasPermission('parties.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('parties.create');
@@ -75,7 +75,7 @@ class PartyController extends AppBaseController
         if (! Defender::hasPermission('parties.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -99,7 +99,7 @@ class PartyController extends AppBaseController
         if (! Defender::hasPermission('parties.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $party = $this->partyRepository->findByID($id);
@@ -126,7 +126,7 @@ class PartyController extends AppBaseController
         if (! Defender::hasPermission('parties.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $party = $this->partyRepository->findByID($id);
@@ -154,7 +154,7 @@ class PartyController extends AppBaseController
         if (! Defender::hasPermission('parties.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $party = $this->partyRepository->findByID($id);
@@ -185,7 +185,7 @@ class PartyController extends AppBaseController
         if (! Defender::hasPermission('parties.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $party = $this->partyRepository->findByID($id);

@@ -37,7 +37,7 @@ class DocumentSituationController extends AppBaseController
         if (! Defender::hasPermission('documentSituations.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentSituations = $this->documentSituationRepository->getAll(0);
@@ -56,7 +56,7 @@ class DocumentSituationController extends AppBaseController
         if (! Defender::hasPermission('documentSituations.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         return view('documentSituations.create');
@@ -75,7 +75,7 @@ class DocumentSituationController extends AppBaseController
         if (! Defender::hasPermission('documentSituations.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $input = $request->all();
 
@@ -99,7 +99,7 @@ class DocumentSituationController extends AppBaseController
         if (! Defender::hasPermission('documentSituations.show')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentSituation = $this->documentSituationRepository->findByID($id);
@@ -126,7 +126,7 @@ class DocumentSituationController extends AppBaseController
         if (! Defender::hasPermission('documentSituations.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
         $documentSituation = $this->documentSituationRepository->findByID($id);
 
@@ -153,7 +153,7 @@ class DocumentSituationController extends AppBaseController
         if (! Defender::hasPermission('documentSituations.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentSituation = $this->documentSituationRepository->findByID($id);
@@ -188,7 +188,7 @@ class DocumentSituationController extends AppBaseController
         if (! Defender::hasPermission('documentSituations.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-            return redirect('/');
+            return redirect('/admin');
         }
 
         $documentSituation = $this->documentSituationRepository->findByID($id);
