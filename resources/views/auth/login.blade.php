@@ -117,11 +117,22 @@
             left: 5%;
         }
 
-        .backFormat {
-            border-bottom: 100vh solid #2f2f2f;
-            border-left: 35rem solid transparent;
-            margin-left: 15rem;
-            width: 100vw;
+        @media screen and (min-width: 1100px) {
+            .backFormat {
+                border-bottom: 100vh solid #2f2f2f;
+                border-left: 35rem solid transparent;
+                margin-left: 15rem;
+                width: 100vw;
+            }
+        }
+
+
+        @media screen and (max-width: 1100px) {
+            .backFormat {
+                border-bottom: 100vh solid #2f2f2f;
+                border-left: 45rem solid transparent;
+                width: 100vw;
+            }
         }
 
         .forgot {
