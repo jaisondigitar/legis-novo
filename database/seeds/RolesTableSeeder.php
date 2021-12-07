@@ -368,6 +368,12 @@ class RolesTableSeeder extends Seeder
             $rolePodePedirParecer->attachPermission($item);
         }
 
+        foreach ($perm['solicitaParecerDocumento'] as $item) {
+            $roleRoot->attachPermission($item);
+            $roleAdmin->attachPermission($item);
+            $rolePodePedirParecer->attachPermission($item);
+        }
+
         foreach ($perm['editaProtocoloDocumento'] as $item) {
             $roleRoot->attachPermission($item);
             $roleAdmin->attachPermission($item);

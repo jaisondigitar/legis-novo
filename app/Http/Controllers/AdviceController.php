@@ -276,7 +276,7 @@ class AdviceController extends AppBaseController
     public function findAwnser(Request $request, $id)
     {
         $obj = Advice::find($id);
-        $commissions_situation = ComissionSituation::lists('name', 'id')->prepend('Selecione', 0);
+        $commissions_situation = ComissionSituation::pluck('name', 'id')->prepend('Selecione', 0);
 //        dd($obj->project);
 
         return view('advices.advice_awnser', compact('commissions_situation'))->with('advice', $obj);
