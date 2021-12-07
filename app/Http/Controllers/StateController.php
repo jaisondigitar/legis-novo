@@ -169,7 +169,7 @@ class StateController extends AppBaseController
 
     public function statesList()
     {
-        return State::lists('name', 'id');
+        return State::pluck('name', 'id');
     }
 
     public function stateByUf(Request $request)
