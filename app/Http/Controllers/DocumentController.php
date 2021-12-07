@@ -22,6 +22,7 @@ use App\Models\Log;
 use App\Models\MeetingPauta;
 use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
+use App\Models\ProcessingDocument;
 use App\Models\ProtocolType;
 use App\Models\StatusProcessingDocument;
 use App\Models\User;
@@ -104,10 +105,9 @@ class DocumentController extends AppBaseController
             return redirect('/admin');
         }
 
-        if (count($request->all())) {
-            $documents = Document::byDateDesc();
+        $documents = Document::byDateDesc();
 
-//            !empty($request->reg) ? $documents->where('updated_at', date('Y-m-d H:i:s', $request->reg)) : null;
+        if (count($request->all())) {
             ! empty($request->reg) ? $documents->join('document_numbers', 'documents.id', '=', 'document_numbers.document_id')
                 ->select('documents.*')->where('document_numbers.date', date('Y-m-d H:i:s', $request->reg)) : null;
             ! empty($request->type) ? $documents->where('document_type_id', $request->type) : null;
@@ -116,24 +116,27 @@ class DocumentController extends AppBaseController
             ! empty($request->owner) ? $documents->where('owner_id', $request->owner) : null;
             ! empty($request->text) ? $documents->where('content', 'like', '%'.$request->text.'%') : null;
 
-//            dd($documents->get(),$request->all());1534794829
-
-            if (Auth::user()->sector->slug != 'gabinete') {
-                $documents = $documents->paginate(20);
-            } else {
+            if (Auth::user()->sector->slug == 'gabinete') {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
                 $gabIds = $this->getAssembbyIds($gabs);
-                $documents = $documents->whereIN('owner_id', $gabIds)->paginate(20);
+                $documents = $documents->whereIN('owner_id', $gabIds);
             }
         } else {
-            if (Auth::user()->sector->slug != 'gabinete') {
-                $documents = Document::byDateDesc()->paginate(20);
-            } else {
+            if (Auth::user()->sector->slug == 'gabinete') {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
                 $gabIds = $this->getAssembbyIds($gabs);
-                $documents = Document::whereIN('owner_id', $gabIds)->byDateDesc()->paginate(20);
+                $documents = Document::whereIN('owner_id', $gabIds)->byDateDesc();
             }
         }
+
+        $documents = $documents->with([
+            'processingDocument' => function ($query) {
+                return $query->orderByDesc('created_at')->first();
+            },
+            'processingDocument.statusProcessingDocument',
+            'processingDocument.destination',
+        ])
+            ->paginate(20);
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();
