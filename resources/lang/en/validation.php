@@ -207,5 +207,9 @@ return [
 
         'sector_id' => 'Setor',
         'password' => 'Senha',
+
+        'legislature_id' => 'Legislatura',
+        'party_id' => 'Partidos',
+        'responsibility_id' => 'Responsabilidade',
     ],
 ];
