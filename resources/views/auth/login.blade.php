@@ -142,6 +142,12 @@
         .forgot a {
             font-size: 16px;
         }
+
+        .errorLogin {
+            padding-bottom: 3rem;
+            font-size: 15px;
+            color: #de0101;
+        }
     </style>
 </head>
 
@@ -157,12 +163,14 @@
     <div class="backFormat">
         <div class="align">
             <form action="login" method="post">
-                @if($errors->any())
-                    @foreach($errors->all() as $error)
-                        <li>{!! $error !!}</li>
-                    @endforeach
-                @endif
-                @csrf
+                <div class="errorLogin">
+                    @if($errors->any())
+                        @foreach($errors->all() as $error)
+                            <li>{!! $error !!}</li>
+                        @endforeach
+                    @endif
+                    @csrf
+                </div>
 
                 <label>
                     E-mail
