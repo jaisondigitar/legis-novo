@@ -56,7 +56,10 @@
                 <h3 class="panel-title">COMISSÕES</h3>
             </div>
             <div class="panel-body">
-                <h1 class="bolded tiles-number text-primary">{{ count($commissions) > 0  ? count($commissions) : '0' }}</h1>
+                <h1
+                    class="bolded tiles-number text-primary">
+                        {{ isset($commissions)  ? count($commissions) : '0' }}
+                </h1>
                 <p class="text-muted">
                     <small>LISTA DAS COMISSÕES ATIVAS</small>
                 </p>
