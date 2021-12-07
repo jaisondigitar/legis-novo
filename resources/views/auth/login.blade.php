@@ -98,7 +98,6 @@
         }
 
         .banner .backLogin {
-            /*position: absolute;*/
             z-index: -1;
             top: 0;
             bottom: 0;
