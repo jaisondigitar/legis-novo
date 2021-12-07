@@ -9,10 +9,6 @@
         margin-right: 4px;
     }
 </style>
-{{--{{ dd(
-    $document->processingDocument->first()->statusProcessingDocument->name,
-    $document->processingDocument->first()->destination->name
-    ) }}--}}
 <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading">
