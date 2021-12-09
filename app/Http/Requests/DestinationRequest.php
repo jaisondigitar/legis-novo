@@ -22,6 +22,7 @@ class DestinationRequest extends FormRequest
         return [
             'name' => 'required|string|max:100',
             'email' => 'nullable|email|max:100',
+            'resume' => 'required|string|max:680',
         ];
     }
 }

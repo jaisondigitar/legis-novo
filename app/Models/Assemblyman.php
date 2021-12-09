@@ -169,6 +169,9 @@ class Assemblyman extends BaseModel
     public static $rules = [
         'short_name' => 'required',
         'email' => 'required',
+        'legislature_id' => 'required',
+        'party_id' => 'required',
+        'responsibility_id' => 'required',
     ];
 
     public function company()
