@@ -1,18 +1,13 @@
-
-@foreach($documents as $document)
-
 <style>
-    .acao{
+    .action{
         float: right;
     }
-    .acao a {
+    .action a {
         margin-right: 4px;
     }
 </style>
-{{--{{ dd(
-    $document->processingDocument->first()->statusProcessingDocument->name,
-    $document->processingDocument->first()->destination->name
-    ) }}--}}
+
+@foreach($documents as $document)
 <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -176,7 +171,7 @@
             @endif
             {!! Form::open(['route' => ['documents.destroy', $document->id], 'method' => 'delete']) !!}
 
-            <div class='btn-group acao' id="tdoptions{{$document->id}}">
+            <div class='btn-group action' id="tdoptions{{$document->id}}">
                 @shield('documents.show')
                     <a href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
                         <i class="glyphicon glyphicon-eye-open"></i>
@@ -210,7 +205,6 @@
         </div>
     </div>
 </div>
-
 @endforeach
 
 <div class="clearfix"></div>
