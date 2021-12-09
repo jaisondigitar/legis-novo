@@ -5,40 +5,52 @@
     .action a {
         margin-right: 4px;
     }
+    .resume {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        margin: 0;
+    }
 </style>
 
 @foreach($documents as $document)
 <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading" style="text-align: center;">
             <span class="panel-title text-uppercase" style="font-size: 15px; margin-bottom: 0;">
                 <span class="panel-title text-uppercase" style="font-size: 15px; margin-bottom: 0;">
                     <label class="pull-right">
                         <input type="checkbox" name="toDelete" value="{{$document->id}}" class="checkDelete"/>
                     </label>
 
-                    <i class="fa fa-file" style="margin-right: 5px;"></i>
+                    <label class="pull-left">
+                        <i class="fa fa-file" style="margin-right: 5px;"></i>
 
-                    @if($document->document_type->parent_id)
-                            {{ $document->document_type->parent->name }} ::
-                    @endif
-                    {!! $document->document_type->name !!} -
-                    @if($document->number==0)
+                        @if($document->document_type->parent_id)
+                                {{ $document->document_type->parent->name }} ::
+                            @endif
+                            {!! $document->document_type->name !!} -
+                        @if($document->number==0)
                             -
-                    @elseif($document->number!=0)
-                        @shield('document.editnumero')
+                        @elseif($document->number!=0)
+                            @shield('document.editnumero')
                             <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
                                 {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
                             </a>
-                        @endshield
-                    @else
-                        @shield('document.editnumero')
+                            @endshield
+                        @else
+                            @shield('document.editnumero')
                             {!! $document->number . '/' . $document->getYear($document->date) !!}
-                        @endshield
-                    @endif
-                    <span style="margin-left: 7rem">
-                        {!! $document->date !!}
-                    </span>
+                            @endshield
+                        @endif
+                    </label>
+
+                    <label>
+                        <span>
+                            {!! $document->date !!}
+                        </span>
+                    </label>
                 </span>
             </span>
         </div>
@@ -157,6 +169,20 @@
                                 -
                             @else
                                 {!! $document->processingDocument->first()->destination->name !!}
+                            @endif
+                        </span>
+                    </label>
+                </div>
+                <div class="col-md-12", style="padding-bottom: 0">
+                    <label style="margin-top: 10px; min-height: 8rem">
+                        <strong>Ementa:</strong>
+                        <span>
+                            @if($document->resume==='')
+                                -
+                            @else
+                                <p class="resume">
+                                    {!! $document->resume !!}
+                                </p>
                             @endif
                         </span>
                     </label>
