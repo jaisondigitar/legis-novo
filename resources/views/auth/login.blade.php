@@ -20,7 +20,7 @@
         }
 
         form {
-            width: 23rem;
+            width: 20rem;
         }
 
         label {
@@ -131,6 +131,27 @@
                 border-bottom: 100vh solid #2f2f2f;
                 border-left: 45rem solid transparent;
                 width: 100vw;
+            }
+        }
+
+        @media screen and (max-width: 750px) {
+            .align {
+                position: absolute;
+                width: min-content;
+                top: 30%;
+                left: 25%;
+            }
+
+            .logoType {
+                position: absolute;
+                top: auto;
+                left: 25%;
+            }
+
+            .backFormat {
+                border-bottom: 70vh solid #2f2f2f;
+                border-left: 0 solid transparent;
+                /*width: 100vw;*/
             }
         }
 
