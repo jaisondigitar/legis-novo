@@ -5,6 +5,12 @@
     .action a {
         margin-right: 4px;
     }
+    .resume {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
 </style>
 
 @foreach($documents as $document)
@@ -157,6 +163,22 @@
                                 -
                             @else
                                 {!! $document->processingDocument->first()->destination->name !!}
+                            @endif
+                        </span>
+                    </label>
+                </div>
+                <div class="col-md-12">
+                    <label style="min-height: 10rem">
+                        <br>
+                        <strong>Resumo:</strong>
+                        <br>
+                        <span>
+                            @if($document->resume==='')
+                                -
+                            @else
+                                <p class="resume">
+                                    {!! $document->resume !!}
+                                </p>
                             @endif
                         </span>
                     </label>
