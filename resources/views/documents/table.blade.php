@@ -50,54 +50,67 @@
             <span class="col-md-12" style="padding: 0; font-size: 13px;">
                 <div class="col-md-6">
                     <span class="text-uppercase">
-                        <i class="fa fa-user"></i> @if($document->owner) {!! $document->owner->short_name !!} @else - @endif <br>
-                    </span>
-                    <span id="tdnumber{{$document->id}}">
-                        <strong>Número:</strong>
-
-                        @if($document->number==0)
-                            -
-                        @else
-                            @shield('document.editnumero')
-                            <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
-                                {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
-                            </a>
-                            @else
-                                {!! $document->number . '/' . $document->getYear($document->date) !!}
-                                @endshield
-                            @endif
+                        <label>
+                            <i class="fa fa-user"></i> @if($document->owner) {!! $document->owner->short_name !!} @else - @endif <br>
+                        </label>
                     </span>
                     <br>
-                    <span id="tdprotocol{{$document->id}}">
-                        <strong>Protocolo: </strong>
+                    <span>
+                        <label>
+                            <span id="tdnumber{{$document->id}}">
+                                <strong>Número:</strong>
 
-                        @if(!$document->document_protocol && Auth::user()->sector->slug!="secretaria")
-                            -
-                        @elseif(!$document->document_protocol && Auth::user()->sector->slug=="secretaria")
-                            <button type="button" class='btn btn-default btn-xs btn-protocol' value="{!! $document->id !!}">
-                                <i class="glyphicon glyphicon-folder-open"></i>
-                            </button>
-                        @else
-                            @shield('document.editprotocol')
-                            <a href="javascript:void(0)" id='linkProtocolo{{$document->id}}' onclick="alteraProtocolo('{!!$document->id!!}', '{{date('d/m/Y H:i:s', strtotime($document->document_protocol->created_at))}}');">
-                                @if($document->document_protocol)
-                                    {{$document->document_protocol->number}}
+                                @if($document->number==0)
+                                    -
+                                @else
+                                    @shield('document.editnumero')
+                                    <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
+                                        {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
+                                    </a>
+                                @else
+                                    {!! $document->number . '/' . $document->getYear($document->date) !!}
+                                    @endshield
                                 @endif
-                            </a>
-                            @else
-                                @if($document->document_protocol)
-                                    {{$document->document_protocol->number}}
-                                @endif
-                                @endshield
-                            @endif
+                            </span>
+                        </label>
                     </span>
                     <br>
-                    <span id="tddate{{$document->id}}">
+                    <span>
+                        <label>
+                            <span id="tdprotocol{{$document->id}}">
+                                <strong>Protocolo: </strong>
+
+                                @if(!$document->document_protocol && Auth::user()->sector->slug!="secretaria")
+                                    -
+                                @elseif(!$document->document_protocol && Auth::user()->sector->slug=="secretaria")
+                                <button type="button" class='btn btn-default btn-xs btn-protocol' value="{!! $document->id !!}">
+                                    <i class="glyphicon glyphicon-folder-open"></i>
+                                </button>
+                                    @else
+                                        @shield('document.editprotocol')
+                                        <a href="javascript:void(0)" id='linkProtocolo{{$document->id}}' onclick="alteraProtocolo('{!!$document->id!!}', '{{date('d/m/Y H:i:s', strtotime($document->document_protocol->created_at))}}');">
+                                    @if($document->document_protocol)
+                                        {{$document->document_protocol->number}}
+                                    @endif
+                                </a>
+                                @else
+                                    @if($document->document_protocol)
+                                        {{$document->document_protocol->number}}
+                                    @endif
+                                    @endshield
+                                @endif
+                            </span>
+                        </label>
+                    </span>
+                    <br>
+                    <label>
+                        <span id="tddate{{$document->id}}">
                         <strong class="">Data Prot.:</strong>
                         @if($document->document_protocol)
-                            {{date('d/m/Y', strtotime($document->document_protocol->created_at))}}
-                        @endif
+                                {{date('d/m/Y', strtotime($document->document_protocol->created_at))}}
+                            @endif
                     </span>
+                    </label>
                 </div>
 
                 <div class="col-md-6">
