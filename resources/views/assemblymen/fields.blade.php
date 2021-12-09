@@ -50,12 +50,12 @@
     <div class="form-group col-sm-4">
         <h2>Associações</h2><hr>
         <div class="col-sm-12 table-bordered bg-color-showcase" style="padding: 10px 10px; margin-top: 15px">
-            {!! Form::label('legislature_id', 'Legislatura:', ['class' => 'small-title', 'required']) !!}
+            {!! Form::label('legislature_id', 'Legislatura:', ['class' => 'small-title required']) !!}
             {!! Form::select('legislature_id', $selectLegislature, null, ['class' => 'form-control']) !!}
         </div>
         <div class="col-sm-12 table-bordered" style="padding: 10px 10px; margin-top: 15px">
             <div class="col-sm-6">
-            {!! Form::label('party_id', 'Partidos:', ['class' => 'small-title', 'required']) !!}
+            {!! Form::label('party_id', 'Partidos:', ['class' => 'small-title required']) !!}
             {!! Form::select('party_id', $parties, null, ['class' => 'form-control']) !!}
             </div>
             <div class="col-sm-6">
@@ -65,7 +65,7 @@
         </div>
         <div class="col-sm-12 table-bordered" style="padding: 10px 10px; margin-top: 15px">
             <div class="col-sm-6">
-                {!! Form::label('responsibility_id', 'Responsabilidade:', ['class' => 'small-title', 'required']) !!}
+                {!! Form::label('responsibility_id', 'Responsabilidade:', ['class' => 'small-title required']) !!}
                 {!! Form::select('responsibility_id', $responsibility, null, ['class' => 'form-control']) !!}
             </div>
             <div class="col-sm-6">
