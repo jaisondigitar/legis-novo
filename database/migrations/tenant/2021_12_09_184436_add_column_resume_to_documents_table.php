@@ -9,7 +9,7 @@ class AddColumnResumeToDocumentsTable extends Migration
     public function up()
     {
         Schema::table('documents', function (Blueprint $table) {
-            $table->string('resume', 100);
+            $table->text('resume');
         });
     }
 
