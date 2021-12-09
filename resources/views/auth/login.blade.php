@@ -20,7 +20,7 @@
         }
 
         form {
-            width: 23rem;
+            width: 20rem;
         }
 
         label {
@@ -77,7 +77,7 @@
             position: absolute;
             width: min-content;
             top: 33%;
-            left: 70%;
+            left: 60%;
         }
 
         #main {
@@ -91,12 +91,13 @@
             z-index: 5;
         }
 
-        .bg {
+        .backLogin {
+            width: 100vw;
+            height: 100vh;
             display: flex;
         }
 
-        .banner .bg {
-            position: absolute;
+        .banner .backLogin {
             z-index: -1;
             top: 0;
             bottom: 0;
@@ -109,10 +110,49 @@
             background-size: cover;
         }
 
-        .test {
-            border-bottom: 100vh solid #2f2f2f;
-            border-left: 35rem solid transparent;
-            width: 100vh;
+        .logoType {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+        }
+
+        @media screen and (min-width: 1100px) {
+            .backFormat {
+                border-bottom: 100vh solid #2f2f2f;
+                border-left: 35rem solid transparent;
+                margin-left: 15rem;
+                width: 100vw;
+            }
+        }
+
+
+        @media screen and (max-width: 1100px) {
+            .backFormat {
+                border-bottom: 100vh solid #2f2f2f;
+                border-left: 45rem solid transparent;
+                width: 100vw;
+            }
+        }
+
+        @media screen and (max-width: 750px) {
+            .align {
+                position: absolute;
+                width: min-content;
+                top: 30%;
+                left: 25%;
+            }
+
+            .logoType {
+                position: absolute;
+                top: auto;
+                left: 25%;
+            }
+
+            .backFormat {
+                border-bottom: 70vh solid #2f2f2f;
+                border-left: 0 solid transparent;
+                /*width: 100vw;*/
+            }
         }
 
         .forgot {
@@ -123,49 +163,54 @@
         .forgot a {
             font-size: 16px;
         }
+
+        .errorLogin {
+            padding-bottom: 3rem;
+            font-size: 15px;
+            color: #de0101;
+        }
     </style>
 </head>
 
 <body class="banner">
-<div class="bg">
-    <div class="logo">
+<div class="backLogin">
+    <div class="logoType">
         <img
             src="/assets/images/genesis-black.png"
             class="img-responsive"
             alt="Logo"
-            style="
-                width: 500px;
-                padding: 50px;
-            "
         >
     </div>
-    <div class="align">
-        <form action="login" method="post">
-            @if($errors->any())
-                @foreach($errors->all() as $error)
-                    <li>{!! $error !!}</li>
-                @endforeach
-            @endif
-            @csrf
+    <div class="backFormat">
+        <div class="align">
+            <form action="login" method="post">
+                <div class="errorLogin">
+                    @if($errors->any())
+                        @foreach($errors->all() as $error)
+                            <li>{!! $error !!}</li>
+                        @endforeach
+                    @endif
+                    @csrf
+                </div>
 
-            <label>
-                E-mail
-                <input type="text" name="email" tabindex="1" placeholder="email" required>
-            </label>
+                <label>
+                    E-mail
+                    <input type="text" name="email" tabindex="1" placeholder="email" required>
+                </label>
 
-            <label>
-                Senha
-                <input type="password" name="password" placeholder="senha" tabindex="2" required>
-            </label>
+                <label>
+                    Senha
+                    <input type="password" name="password" placeholder="senha" tabindex="2" required>
+                </label>
 
-            <div class="forgot">
-                <button type="submit"> ENTRAR</button>
+                <div class="forgot">
+                    <button type="submit"> ENTRAR</button>
 
-                <a href="#" tabindex="5">Esqueci a senha?</a>
-            </div>
-        </form>
+                    <a href="#" tabindex="5">Esqueci a senha?</a>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="test"></div>
 </div>
 
 <footer id="main">
