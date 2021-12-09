@@ -1,3 +1,12 @@
+<style>
+    .resume {
+        height: 10vh;
+        max-height: 10vh;
+        max-width: 100%;
+        min-width: 100%;
+    }
+</style>
+
 <!-- Document Type Id Field -->
 <div class="form-group col-sm-5">
     {!! Form::label('document_type_id', 'Tipo de documento', ['class' => 'required']) !!}
@@ -17,6 +26,15 @@
     {!! Form::text('date', null, ['class' => 'form-control datepicker', 'minlength' => '10']) !!}
 </div>
 
+<!-- Resume Field -->
+<div class="form-group col-sm-12">
+    {!! Form::label('resume', 'Ementa', ['class' => 'required']) !!}
+    {!! Form::textarea('resume', null, [
+            'class' => 'form-control resume',
+            'rows' => 3,
+            'maxlength' => 680
+    ]) !!}
+</div>
 
 <!-- Content Field -->
 <div class="form-group col-sm-12">

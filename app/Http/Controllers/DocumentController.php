@@ -105,37 +105,40 @@ class DocumentController extends AppBaseController
             return redirect('/admin');
         }
 
-        $documents = Document::byDateDesc();
+        $documents_query = Document::query();
 
-        if (count($request->all())) {
-            ! empty($request->reg) ? $documents->join('document_numbers', 'documents.id', '=', 'document_numbers.document_id')
-                ->select('documents.*')->where('document_numbers.date', date('Y-m-d H:i:s', $request->reg)) : null;
-            ! empty($request->type) ? $documents->where('document_type_id', $request->type) : null;
-            ! empty($request->number) ? $documents->where('number', $request->number) : null;
-            ! empty($request->year) ? $documents->where('date', 'like', $request->year.'%') : null;
-            ! empty($request->owner) ? $documents->where('owner_id', $request->owner) : null;
-            ! empty($request->text) ? $documents->where('content', 'like', '%'.$request->text.'%') : null;
-
-            if (Auth::user()->sector->slug == 'gabinete') {
-                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds = $this->getAssembbyIds($gabs);
-                $documents = $documents->whereIN('owner_id', $gabIds);
-            }
-        } else {
-            if (Auth::user()->sector->slug == 'gabinete') {
-                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds = $this->getAssembbyIds($gabs);
-                $documents = Document::whereIN('owner_id', $gabIds)->byDateDesc();
-            }
+        if (Auth::user()->sector->slug === 'gabinete') {
+            $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
+            $gabIds = $this->getAssembbyIds($gabs);
+            $documents_query->whereIN('owner_id', $gabIds);
         }
 
-        $documents = $documents->with([
+        if (count($request->all())) {
+            ! empty($request->reg) ?
+                $documents_query
+                    ->join('document_numbers', 'documents.id', '=', 'document_numbers.document_id')
+                    ->select('documents.*')
+                    ->where('document_numbers.date', date('Y-m-d H:i:s', $request->reg)) :
+                null;
+            ! empty($request->type) ? $documents_query->where('document_type_id', $request->type) : null;
+            ! empty($request->number) ? $documents_query->where('number', $request->number) : null;
+            ! empty($request->year) ? $documents_query->where('date', 'like', $request->year.'%') : null;
+            ! empty($request->owner) ? $documents_query->where('owner_id', $request->owner) : null;
+            ! empty($request->text) ?
+                $documents_query->where('content', 'like', '%'.$request->text.'%') :
+                null;
+        }
+
+        $documents = $documents_query->with([
             'processingDocument' => function ($query) {
                 return $query->orderByDesc('created_at')->first();
             },
             'processingDocument.statusProcessingDocument',
             'processingDocument.destination',
         ])
+            ->orWhere('users_id', Auth::user()->id)
+            ->orWhereHas('document_protocol')
+            ->orderByDesc('created_at')
             ->paginate(20);
 
         $protocol_types = ProtocolType::pluck('name', 'id');
