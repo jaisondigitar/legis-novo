@@ -118,37 +118,38 @@ class LawsProjectController extends AppBaseController
             $externo = '';
         }
 
+        $lawsProjects_query = LawsProject::query();
+
         if (count($request->all())) {
             if ($request->parecer) {
-                $lawsProjects = LawsProject::join('advices', 'laws_projects_id', '=', 'laws_projects.id')->byDateDesc();
-            } else {
-                $lawsProjects = LawsProject::byDateDesc();
+                $lawsProjects_query->join(
+                    'advices',
+                    'laws_projects_id',
+                    '=',
+                    'laws_projects.id'
+                );
             }
 
-            ! empty($request->reg) ? $lawsProjects->where('updated_at', date('Y-m-d H:i:s', $request->reg)) : null;
-            ! empty($request->type) ? $lawsProjects->where('law_type_id', $request->type) : null;
-            ! empty($request->number) ? $lawsProjects->where('project_number', $request->number) : null;
-            ! empty($request->year) ? $lawsProjects->where('law_date', 'like', $request->year.'%') : null;
-            ! empty($request->owner) ? $lawsProjects->where('assemblyman_id', $request->owner) : null;
+            ! empty($request->reg) ? $lawsProjects_query->where('updated_at', date('Y-m-d H:i:s', $request->reg)) : null;
+            ! empty($request->type) ? $lawsProjects_query->where('law_type_id', $request->type) : null;
+            ! empty($request->number) ? $lawsProjects_query->where('project_number', $request->number) : null;
+            ! empty($request->year) ? $lawsProjects_query->where('law_date', 'like', $request->year.'%') : null;
+            ! empty($request->owner) ? $lawsProjects_query->where('assemblyman_id', $request->owner) : null;
 
-            if (Auth::user()->sector->slug != 'gabinete') {
-                $lawsProjects = $lawsProjects->paginate(20);
-            } else {
+            if (Auth::user()->sector->slug === 'gabinete') {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
                 $gabIds = $this->getAssembbyIds($gabs);
 
-                $lawsProjects = $lawsProjects->whereIN('assemblyman_id', $gabIds)->paginate(20);
+                $lawsProjects_query->whereIN('assemblyman_id', $gabIds)->paginate(20);
             }
         } else {
-            if (Auth::user()->sector->slug != 'gabinete') {
-                $lawsProjects = LawsProject::byDateDesc()->paginate(20);
-            } else {
+            if (Auth::user()->sector->slug === 'gabinete') {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
                 $gabIds = $this->getAssembbyIds($gabs);
 
-                $lawsProjects = LawsProject::whereIN('assemblyman_id', $gabIds)->byDateDesc()->paginate(20);
+                $lawsProjects_query->whereIn('assemblyman_id', $gabIds);
             }
         }
 
@@ -164,7 +165,11 @@ class LawsProjectController extends AppBaseController
             $references_project[$reference->id] = $reference->project_number.'/'.$reference->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
         }
 
-        $lawsProjects->parecer = $request->parecer;
+        $lawsProjects_query->parecer = $request->parecer;
+
+        $lawsProjects = $lawsProjects_query
+            ->orderByDesc('created_at')
+            ->paginate(20);
 
         return view('lawsProjects.index', compact('externo'))
             ->with('assemblymensList', $assemblymensList[1])
