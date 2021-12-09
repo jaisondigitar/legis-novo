@@ -15,7 +15,6 @@
     ) }}--}}
 <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="panel panel-default">
-
         <div class="panel-heading">
             <span class="panel-title text-uppercase" style="font-size: 15px; margin-bottom: 0;">
                 <span class="panel-title text-uppercase" style="font-size: 15px; margin-bottom: 0;">
@@ -27,20 +26,22 @@
 
                     @if($document->document_type->parent_id)
                             {{ $document->document_type->parent->name }} ::
-                        @endif
-                        {!! $document->document_type->name !!} -
+                    @endif
+                    {!! $document->document_type->name !!} -
                     @if($document->number==0)
                             -
-                        @else
-                            @shield('document.editnumero')
+                    @elseif($document->number!=0)
+                        @shield('document.editnumero')
                             <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
-                            {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
-                        </a>
-                            @else
-                                {!! $document->number . '/' . $document->getYear($document->date) !!}
-                                @endshield
-                            @endif
-                            <span style="margin-left: 7rem">
+                                {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
+                            </a>
+                        @endshield
+                    @else
+                        @shield('document.editnumero')
+                            {!! $document->number . '/' . $document->getYear($document->date) !!}
+                        @endshield
+                    @endif
+                    <span style="margin-left: 7rem">
                         {!! $document->date !!}
                     </span>
                 </span>
@@ -57,18 +58,19 @@
                     <br>
                     <span>
                         <label>
+                            <strong>Número:</strong>
                             <span id="tdnumber{{$document->id}}">
-                                <strong>Número:</strong>
-
                                 @if($document->number==0)
                                     -
+                                @elseif($document->number != 0)
+                                    @shield('document.editnumero')
+                                        <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
+                                            {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
+                                        </a>
+                                    @endshield
                                 @else
                                     @shield('document.editnumero')
-                                    <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
-                                        {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
-                                    </a>
-                                @else
-                                    {!! $document->number . '/' . $document->getYear($document->date) !!}
+                                        {!! $document->number . '/' . $document->getYear($document->date) !!}
                                     @endshield
                                 @endif
                             </span>
@@ -77,26 +79,22 @@
                     <br>
                     <span>
                         <label>
+                            <strong>Protocolo: </strong>
                             <span id="tdprotocol{{$document->id}}">
-                                <strong>Protocolo: </strong>
 
                                 @if(!$document->document_protocol && Auth::user()->sector->slug!="secretaria")
                                     -
                                 @elseif(!$document->document_protocol && Auth::user()->sector->slug=="secretaria")
-                                <button type="button" class='btn btn-default btn-xs btn-protocol' value="{!! $document->id !!}">
-                                    <i class="glyphicon glyphicon-folder-open"></i>
-                                </button>
-                                    @else
-                                        @shield('document.editprotocol')
-                                        <a href="javascript:void(0)" id='linkProtocolo{{$document->id}}' onclick="alteraProtocolo('{!!$document->id!!}', '{{date('d/m/Y H:i:s', strtotime($document->document_protocol->created_at))}}');">
-                                    @if($document->document_protocol)
-                                        {{$document->document_protocol->number}}
-                                    @endif
-                                </a>
+                                    <button type="button" class='btn btn-default btn-xs btn-protocol' value="{!! $document->id !!}">
+                                        <i class="glyphicon glyphicon-folder-open"></i>
+                                    </button>
                                 @else
-                                    @if($document->document_protocol)
-                                        {{$document->document_protocol->number}}
-                                    @endif
+                                    @shield('document.editprotocol')
+                                        <a href="javascript:void(0)" id='linkProtocolo{{$document->id}}' onclick="alteraProtocolo('{!!$document->id!!}', '{{date('d/m/Y H:i:s', strtotime($document->document_protocol->created_at))}}');">
+                                            @if($document->document_protocol)
+                                                {{$document->document_protocol->number}}
+                                            @endif
+                                        </a>
                                     @endshield
                                 @endif
                             </span>
@@ -104,8 +102,8 @@
                     </span>
                     <br>
                     <label>
+                        <strong class="">Data Prot.:</strong>
                         <span id="tddate{{$document->id}}">
-                            <strong class="">Data Prot.:</strong>
                             @if($document->document_protocol)
                                 {{date('d/m/Y', strtotime($document->document_protocol->created_at))}}
                             @else
@@ -135,10 +133,10 @@
                         <label>
                             <strong>Data Tram.:</strong>
                             <span>
-                                @if($document->processingDocument===0)
+                                @if(count($document->processingDocument)===0)
                                     -
                                 @else
-{{--                                    {!! $document->processingDocument->first()->processing_document_date !!}--}}
+                                    {!! $document->processingDocument->first()->processing_document_date !!}
                                 @endif
                             </span>
                         </label>
@@ -148,10 +146,10 @@
                         <label>
                             <strong>Status:</strong>
                             <span>
-                                @if($document->processingDocument===0)
+                                @if(count($document->processingDocument)===0)
                                     -
                                 @else
-{{--                                    {!! $document->processingDocument->first()->statusProcessingDocument->name !!}--}}
+                                    {!! $document->processingDocument->first()->statusProcessingDocument->name !!}
                                 @endif
                             </span>
                         </label>
@@ -160,10 +158,10 @@
                     <label for="lido_{{$document->id}}">
                         <strong>Destinatário:</strong>
                         <span>
-                            @if($document->processingDocument===0)
+                            @if(count($document->processingDocument)===0)
                                 -
                             @else
-{{--                                {!! $document->processingDocument->first()->destination->name !!}--}}
+                                {!! $document->processingDocument->first()->destination->name !!}
                             @endif
                         </span>
                     </label>
