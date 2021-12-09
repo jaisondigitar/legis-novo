@@ -105,11 +105,13 @@
                     <br>
                     <label>
                         <span id="tddate{{$document->id}}">
-                        <strong class="">Data Prot.:</strong>
-                        @if($document->document_protocol)
+                            <strong class="">Data Prot.:</strong>
+                            @if($document->document_protocol)
                                 {{date('d/m/Y', strtotime($document->document_protocol->created_at))}}
+                            @else
+                                -
                             @endif
-                    </span>
+                        </span>
                     </label>
                 </div>
 
@@ -136,7 +138,7 @@
                                 @if($document->processingDocument===0)
                                     -
                                 @else
-                                    {!! $document->processingDocument->first()->processing_document_date !!}
+{{--                                    {!! $document->processingDocument->first()->processing_document_date !!}--}}
                                 @endif
                             </span>
                         </label>
@@ -149,7 +151,7 @@
                                 @if($document->processingDocument===0)
                                     -
                                 @else
-                                    {!! $document->processingDocument->first()->statusProcessingDocument->name !!}
+{{--                                    {!! $document->processingDocument->first()->statusProcessingDocument->name !!}--}}
                                 @endif
                             </span>
                         </label>
@@ -161,7 +163,7 @@
                             @if($document->processingDocument===0)
                                 -
                             @else
-                                {!! $document->processingDocument->first()->destination->name !!}
+{{--                                {!! $document->processingDocument->first()->destination->name !!}--}}
                             @endif
                         </span>
                     </label>
