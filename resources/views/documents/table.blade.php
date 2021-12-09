@@ -1,141 +1,114 @@
-
-@foreach($documents as $document)
-
 <style>
-    .acao{
+    .action{
         float: right;
     }
-    .acao a {
+    .action a {
         margin-right: 4px;
     }
 </style>
+
+@foreach($documents as $document)
 <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="panel panel-default">
         <div class="panel-heading">
             <span class="panel-title text-uppercase" style="font-size: 15px; margin-bottom: 0;">
-                <label class="pull-right">
-                    <input type="checkbox" name="toDelete" value="{{$document->id}}" class="checkDelete"/>
-                </label>
-
-                <div class="col-md-4 text-uppercase">
-                    <i class="fa fa-user"></i> @if($document->owner) {!! $document->owner->short_name !!} @else - @endif <br>
-                </div>
-
-                <i class="fa fa-file" style="margin-right: 5px;"></i>
-
-                @if($document->document_type->parent_id)
-                    {{ $document->document_type->parent->name }} ::
-                @endif
-                    {!! $document->document_type->name !!} -
-                @if($document->number==0)
-                    -
-                @else
-                @shield('document.editnumero')
-                    <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
-                        {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
-                    </a>
-                @else
-                    {!! $document->number . '/' . $document->getYear($document->date) !!}
-                    @endshield
-                @endif
-
-                {{--@if($document->document_type->parent_id) {{ $document->document_type->parent->name }} ::  @endif {!! $document->document_type->name !!}--}}
-            </span>
-        </div>
-        <div class="panel-body">
-            <div class="col-md-12" style="padding: 0; font-size: 13px;">
-                <div class="col-md-6">
-                    @shield('document.approved')
-                        <span>
-                            <label>
-                                <strong>Status:</strong>
-                                <span id="tdnumber{{$document->id}}" style="text-align: center">
-                                    @if($document->number==0)
-                                        -
-                                    @else
-                                        @shield('document.editnumero')
-                                        <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
-                                               {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
-                                            </a>
-                                        @endshield
-                                    @endif
-                                </span>
-                            </label>
-                        </span>
-                    @endshield
-                    <br>
-                    @shield('document.read')
-                    <label for="lido_{{$document->id}}">
-                        <strong>Destinatário:</strong>
-                        <span id="tdnumber{{$document->id}}" style="text-align: center">
-                            @if($document->number==0)
-                                -
-                            @else
-                                @shield('document.editnumero')
-                                    <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
-                                       {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
-                                    </a>
-                                @endshield
-                            @endif
-                        </span>
+                <span class="panel-title text-uppercase" style="font-size: 15px; margin-bottom: 0;">
+                    <label class="pull-right">
+                        <input type="checkbox" name="toDelete" value="{{$document->id}}" class="checkDelete"/>
                     </label>
-                    @endshield
-                </div>
 
-                <div class="col-md-6" style="margin-bottom: 30px">
-                    <strong>Número:</strong>
-                    <span id="tdnumber{{$document->id}}" style="text-align: center">
-                        @if($document->number==0)
+                    <i class="fa fa-file" style="margin-right: 5px;"></i>
+
+                    @if($document->document_type->parent_id)
+                            {{ $document->document_type->parent->name }} ::
+                    @endif
+                    {!! $document->document_type->name !!} -
+                    @if($document->number==0)
                             -
-                        @else
-                            @shield('document.editnumero')
+                    @elseif($document->number!=0)
+                        @shield('document.editnumero')
                             <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
                                 {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
                             </a>
-                        @else
+                        @endshield
+                    @else
+                        @shield('document.editnumero')
                             {!! $document->number . '/' . $document->getYear($document->date) !!}
-                            @endshield
-                        @endif
-                    </span><br>
-                    <span align="center" id="tdprotocol{{$document->id}}">
-                        <strong>Protocolo: </strong>
-
-                        @if(!$document->document_protocol && Auth::user()->sector->slug!="secretaria")
-                            -
-                        @elseif(!$document->document_protocol && Auth::user()->sector->slug=="secretaria")
-                            <button type="button" class='btn btn-default btn-xs btn-protocol' value="{!! $document->id !!}">
-                                <i class="glyphicon glyphicon-folder-open"></i>
-                            </button>
-                        @else
-                            @shield('document.editprotocol')
-                            <a href="javascript:void(0)" id='linkProtocolo{{$document->id}}' onclick="alteraProtocolo('{!!$document->id!!}', '{{date('d/m/Y H:i:s', strtotime($document->document_protocol->created_at))}}');">
-                                @if($document->document_protocol)
-                                        {{$document->document_protocol->number}}
-                                    @endif
-                            </a>
-                        @else
-                            @if($document->document_protocol)
-                                {{$document->document_protocol->number}}
-                            @endif
-                            @endshield
-                        @endif
+                        @endshield
+                    @endif
+                    <span style="margin-left: 7rem">
+                        {!! $document->date !!}
                     </span>
-                </div>
-
+                </span>
+            </span>
+        </div>
+        <div class="panel-body">
+            <span class="col-md-12" style="padding: 0; font-size: 13px;">
                 <div class="col-md-6">
-                    <strong>COD:</strong>
-                    {!! $document->getNumber() == 'false'  ? '-'  : $document->getNumber() !!} <br>
-                    <span style="font-weight: bold !important;">Data:</span> {!! $document->date !!}
-                </div>
-
-                <div class="col-md-6">
-                    <span id="tddate{{$document->id}}">
-                        <strong class="">Data Prot.:</strong>
-                        @if($document->document_protocol)
-                            {{date('d/m/Y H:i:s', strtotime($document->document_protocol->created_at))}}
-                        @endif
+                    <span class="text-uppercase">
+                        <label>
+                            <i class="fa fa-user"></i> @if($document->owner) {!! $document->owner->short_name !!} @else - @endif <br>
+                        </label>
                     </span>
                     <br>
+                    <span>
+                        <label>
+                            <strong>Número:</strong>
+                            <span id="tdnumber{{$document->id}}">
+                                @if($document->number==0)
+                                    -
+                                @elseif($document->number != 0)
+                                    @shield('document.editnumero')
+                                        <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
+                                            {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
+                                        </a>
+                                    @endshield
+                                @else
+                                    @shield('document.editnumero')
+                                        {!! $document->number . '/' . $document->getYear($document->date) !!}
+                                    @endshield
+                                @endif
+                            </span>
+                        </label>
+                    </span>
+                    <br>
+                    <span>
+                        <label>
+                            <strong>Protocolo: </strong>
+                            <span id="tdprotocol{{$document->id}}">
+
+                                @if(!$document->document_protocol && Auth::user()->sector->slug!="secretaria")
+                                    -
+                                @elseif(!$document->document_protocol && Auth::user()->sector->slug=="secretaria")
+                                    <button type="button" class='btn btn-default btn-xs btn-protocol' value="{!! $document->id !!}">
+                                        <i class="glyphicon glyphicon-folder-open"></i>
+                                    </button>
+                                @else
+                                    @shield('document.editprotocol')
+                                        <a href="javascript:void(0)" id='linkProtocolo{{$document->id}}' onclick="alteraProtocolo('{!!$document->id!!}', '{{date('d/m/Y H:i:s', strtotime($document->document_protocol->created_at))}}');">
+                                            @if($document->document_protocol)
+                                                {{$document->document_protocol->number}}
+                                            @endif
+                                        </a>
+                                    @endshield
+                                @endif
+                            </span>
+                        </label>
+                    </span>
+                    <br>
+                    <label>
+                        <strong class="">Data Prot.:</strong>
+                        <span id="tddate{{$document->id}}">
+                            @if($document->document_protocol)
+                                {{date('d/m/Y', strtotime($document->document_protocol->created_at))}}
+                            @else
+                                -
+                            @endif
+                        </span>
+                    </label>
+                </div>
+
+                <div class="col-md-6">
                     @shield('document.read')
                         <label for="lido_{{$document->id}}">
                             <strong>Lido:</strong>
@@ -150,8 +123,45 @@
                             </label>
                         </span>
                     @endshield
+                    <br>
+                    <span>
+                        <label>
+                            <strong>Data Tram.:</strong>
+                            <span>
+                                @if(count($document->processingDocument)===0)
+                                    -
+                                @else
+                                    {!! $document->processingDocument->first()->processing_document_date !!}
+                                @endif
+                            </span>
+                        </label>
+                    </span>
+                    <br>
+                    <span>
+                        <label>
+                            <strong>Status:</strong>
+                            <span>
+                                @if(count($document->processingDocument)===0)
+                                    -
+                                @else
+                                    {!! $document->processingDocument->first()->statusProcessingDocument->name !!}
+                                @endif
+                            </span>
+                        </label>
+                    </span>
+                    <br>
+                    <label for="lido_{{$document->id}}">
+                        <strong>Destinatário:</strong>
+                        <span>
+                            @if(count($document->processingDocument)===0)
+                                -
+                            @else
+                                {!! $document->processingDocument->first()->destination->name !!}
+                            @endif
+                        </span>
+                    </label>
                 </div>
-            </div>
+            </span>
         </div>
         <div class="panel-footer">
             @if(!$document->document_protocol)
@@ -161,7 +171,7 @@
             @endif
             {!! Form::open(['route' => ['documents.destroy', $document->id], 'method' => 'delete']) !!}
 
-            <div class='btn-group acao' id="tdoptions{{$document->id}}">
+            <div class='btn-group action' id="tdoptions{{$document->id}}">
                 @shield('documents.show')
                     <a href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
                         <i class="glyphicon glyphicon-eye-open"></i>
@@ -195,7 +205,6 @@
         </div>
     </div>
 </div>
-
 @endforeach
 
 <div class="clearfix"></div>
