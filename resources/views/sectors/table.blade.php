@@ -10,7 +10,7 @@
         <tr>
             <td>{!! $sector->name !!}</td>
             <td>
-                @if($sector->external == true)
+                @if($sector->external)
                     Sim
                 @else
                     Não
