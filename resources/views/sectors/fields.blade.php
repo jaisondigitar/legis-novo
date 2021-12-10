@@ -20,8 +20,6 @@
             type="checkbox"
             @if(isset($sector))
                 {!! $sector->external> 0 ? 'checked' : '' !!}
-            @else
-                checked
             @endif
         >
     </label>

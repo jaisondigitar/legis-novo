@@ -5,7 +5,7 @@
 @section('content')
 <div class="the-box rounded">
   <div class="form-group">
-         <a href="{!! route('documents.index') !!}" class="btn btn-default">Back</a>
+         <a href="{!! route('documents.index') !!}" class="btn btn-default">Voltar</a>
   </div>
 
   @if(isset($document))
@@ -88,6 +88,7 @@
                             </div>
 
                             <div class="form-group col-sm-12">
+                                <a href="{!! route('documents.index') !!}" class="btn btn-default pull-right">Voltar</a>
                                 <button class="btn btn-info pull-right" type="button" onclick="save_processing()"> Salvar </button>
                             </div>
 
@@ -145,7 +146,7 @@
 
 
     <script>
-      
+
       $(document).ready(function () {
          setTimeout(function () {
              $('#comissao').addClass('chosen-select')
