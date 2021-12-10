@@ -24,6 +24,7 @@ use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
 use App\Models\ProcessingDocument;
 use App\Models\ProtocolType;
+use App\Models\Sector;
 use App\Models\StatusProcessingDocument;
 use App\Models\User;
 use App\Models\UserAssemblyman;
@@ -135,6 +136,7 @@ class DocumentController extends AppBaseController
             },
             'processingDocument.statusProcessingDocument',
             'processingDocument.destination',
+            'externalSector',
         ])
             ->orWhere('users_id', Auth::user()->id)
             ->orWhereHas('document_protocol')
@@ -143,6 +145,7 @@ class DocumentController extends AppBaseController
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();
+
 
         return view('documents.index')
             ->with('assemblymensList', $assemblymensList[1])
@@ -181,6 +184,8 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
+        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+
         $assemblymensList = $this->getAssemblymenList();
 
         $document = new Document();
@@ -190,6 +195,7 @@ class DocumentController extends AppBaseController
         return view('documents.create', compact('document', 'tramitacao'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])
+            ->with(compact('sector'))
             ->with(compact('documentType'));
     }
 
@@ -633,6 +639,8 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
+        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+
         $assemblymensList = $this->getAssemblymenList();
         $documentAssemblyman = DocumentAssemblyman::where('document_id', $id)->pluck('assemblyman_id');
         $document_situation = DocumentSituation::pluck('name', 'id')->prepend('Selecione... ', 0);
@@ -650,6 +658,7 @@ class DocumentController extends AppBaseController
             ->with('document', $document)
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])
+            ->with(compact('sector'))
             ->with(compact('documentType', 'documentAssemblyman'));
     }
 
@@ -1087,5 +1096,10 @@ class DocumentController extends AppBaseController
         flash('Documentos migrados com sucesso!')->success();
 
         return redirect(route('documents.index'));
+    }
+
+    private function getSector($sector)
+    {
+        return Sector::where('id', $sector)->get();
     }
 }
