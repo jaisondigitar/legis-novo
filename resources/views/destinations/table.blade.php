@@ -9,8 +9,8 @@
     <tbody>
         @foreach($destinations as $destination)
             <tr>
-                <td>#{!! str_pad($destination->id, 4, "0", STR_PAD_LEFT) !!}</td>
-                <td>{!! $destination->name !!}</td>
+                <td>{!! str_pad($destination->name, 4, "0", STR_PAD_LEFT) !!}</td>
+                <td>{!! $destination->email !!}</td>
                 <td>
                     {!! Form::open([
                         'route' => ['destinations.destroy', $destination->id],

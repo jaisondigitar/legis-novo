@@ -1,6 +1,7 @@
 <table class="table table-responsive" id="sectors-table">
     <thead>
         <th>Nome</th>
+        <th>Externo</th>
         <th>Slug</th>
         <th colspan="3">Manutenção</th>
     </thead>
@@ -8,6 +9,13 @@
     @foreach($sectors as $sector)
         <tr>
             <td>{!! $sector->name !!}</td>
+            <td>
+                @if($sector->external)
+                    Sim
+                @else
+                    Não
+                @endif
+            </td>
             <td>{!! $sector->slug !!}</td>
             <td>
                 {!! Form::open(['route' => ['sectors.destroy', $sector->id], 'method' => 'delete']) !!}

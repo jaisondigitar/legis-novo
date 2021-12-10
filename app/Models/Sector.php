@@ -46,6 +46,7 @@ class Sector extends BaseModel
 
     public $fillable = [
         'name',
+        'external',
         'slug',
     ];
 
@@ -65,7 +66,7 @@ class Sector extends BaseModel
      * @var array
      */
     public static $rules = [
-        'nome' => 'required',
+        'name' => 'required',
     ];
 
     public function user()

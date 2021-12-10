@@ -4,6 +4,29 @@
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- External Field -->
+<div class="form-group col-sm-6">
+    <span>Externo</span><br>
+    <label for="external">
+        <input
+            name="external"
+            id="external"
+            class="switch"
+            data-on-text="Sim"
+            data-off-text="Não"
+            data-off-color="danger"
+            data-on-color="success"
+            data-size="normal"
+            type="checkbox"
+            @if(isset($sector))
+                {!! $sector->external> 0 ? 'checked' : '' !!}
+            @else
+                checked
+            @endif
+        >
+    </label>
+</div>
+
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
