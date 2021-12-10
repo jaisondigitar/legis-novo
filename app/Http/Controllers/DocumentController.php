@@ -218,6 +218,10 @@ class DocumentController extends AppBaseController
 
         $input = $request->all();
 
+        if (! $input['sector_id']) {
+            $input['sector_id'] = null;
+        }
+
         $document = $this->documentRepository->create($input);
 
         if (! empty($input['assemblymen'])) {
@@ -681,20 +685,27 @@ class DocumentController extends AppBaseController
 
         $document = $this->documentRepository->findByID($id);
 
+        $document_data = $request->validated();
+
+        if (! $document_data['sector_id']) {
+            $document_data['sector_id'] = null;
+        }
+
         if (empty($document)) {
             flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
 
-        $request['users_id'] = Auth::user()->id;
+        $document_data['users_id'] = Auth::user()->id;
 
-        $document = $this->documentRepository->update($document, $request->all());
+        $document = $this->documentRepository->update($document, $document_data);
+
 
         $document_asseblyman_delete = DocumentAssemblyman::where('document_id', $id)->delete();
 
-        if (! empty($request['assemblymen'])) {
-            foreach ($request['assemblymen'] as $assemblyman) {
+        if (! empty($document_data['assemblymen'])) {
+            foreach ($document_data['assemblymen'] as $assemblyman) {
                 $document_asseblyman = new DocumentAssemblyman();
                 $document_asseblyman->document_id = $document->id;
                 $document_asseblyman->assemblyman_id = $assemblyman;
