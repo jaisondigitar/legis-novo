@@ -112,6 +112,7 @@ class Document extends BaseModel
     public static $rules = [
       'date' => 'required',
       'document_type_id' => 'required',
+      'sector_id' => 'nullable|integer',
       'owner_id' => 'required',
       'content' => 'required',
     ];
