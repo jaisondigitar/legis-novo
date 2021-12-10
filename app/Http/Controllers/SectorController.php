@@ -83,7 +83,9 @@ class SectorController extends AppBaseController
 
         $input['slug'] = Str::slug($request->name);
 
-        $sector = $this->sectorRepository->create($input);
+        $input['external'] = isset($request->external);
+
+        $this->sectorRepository->create($input);
 
         flash('Setor salvo com sucesso.')->success();
 
@@ -171,6 +173,8 @@ class SectorController extends AppBaseController
         $input = $request->all();
 
         $input['slug'] = Str::slug($request->name);
+
+        $input['external'] = isset($request->external);
 
         $this->sectorRepository->update($sector, $input);
 
