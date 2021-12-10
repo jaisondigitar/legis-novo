@@ -40,6 +40,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Jurosh\PDFMerge\PDFMerger;
 
 class LawsProjectController extends AppBaseController
 {
@@ -255,8 +256,6 @@ class LawsProjectController extends AppBaseController
 
             $lawsProject->file = $filename;
             $lawsProject->save();
-
-//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
         $law_file = $request->file('law_file');
@@ -269,8 +268,6 @@ class LawsProjectController extends AppBaseController
 
             $lawsProject->law_file = $filename;
             $lawsProject->save();
-
-//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
 
         $law_number = new LawProjectsNumber();
@@ -597,16 +594,28 @@ class LawsProjectController extends AppBaseController
         }
 
         if ($showAdvices) {
-            $advices = $this->loadAdvices($pdf, $id);
+            $this->loadAdvices($pdf, $id);
         }
 
-        //return $content;
+        $pdfMerger = new PDFMerger;
 
-        $pdf->Output('Projeto de lei.pdf', 'I');
+        $lawsProject->lawFiles->each(function ($lawFile) use ($pdfMerger) {
+//            dump((new StorageService())->inLawProjectsFolder()->download($lawFile->filename));
+            $pdfMerger->addPDF(
+                (new StorageService())->inLawProjectsFolder()->download($lawFile->filename)
+            );
+        });
+
+        $pdfMerger->merge(
+            'file',
+            $pdf->Output('Projeto de lei.pdf', 'S')
+        );
+
+//        $pdf->Output('Projeto de lei.pdf', 'I');
 
         die();
 
-        return view('lawsProjects.show')->with('lawsProject', $lawsProject);
+//        return view('lawsProjects.show')->with('lawsProject', $lawsProject);
     }
 
     public function loadAdvices($pdf, $lawsProjectId)

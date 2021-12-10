@@ -167,4 +167,9 @@ class StorageService implements StorageInterface
     {
         return Storage::disk(self::$disk)->url("{$this->folder}/{$filename}");
     }
+
+    public function download(string $filename)
+    {
+        return Storage::disk(self::$disk)->get("{$this->folder}/{$filename}");
+    }
 }
