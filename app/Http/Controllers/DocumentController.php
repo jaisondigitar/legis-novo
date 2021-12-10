@@ -1097,9 +1097,4 @@ class DocumentController extends AppBaseController
 
         return redirect(route('documents.index'));
     }
-
-    private function getSector($sector)
-    {
-        return Sector::where('id', $sector)->get();
-    }
 }
