@@ -8,22 +8,27 @@
 </style>
 
 <!-- Document Type Id Field -->
-<div class="form-group col-sm-5">
+<div class="form-group col-sm-4">
     {!! Form::label('document_type_id', 'Tipo de documento', ['class' => 'required']) !!}
     {!! Form::select('document_type_id', $documentType, null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Owner Id Field -->
-<div class="form-group col-sm-5">
+<div class="form-group col-sm-4">
     {!! Form::label('owner_id', 'Parlamentar responsável', ['class' => 'required']) !!}
     {!! Form::select('owner_id', $assemblymensList, null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Owner Id Field -->
 <!-- From Field -->
 <div class="form-group col-sm-2">
     {!! Form::label('date', 'Data', ['class' => 'required']) !!}
     {!! Form::text('date', null, ['class' => 'form-control datepicker', 'minlength' => '10']) !!}
+</div>
+
+<!-- Sector Field -->
+<div class="form-group col-sm-2">
+    {!! Form::label('sector_id', 'Setor') !!}
+    {!! Form::select('sector_id', $sector, null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Resume Field -->

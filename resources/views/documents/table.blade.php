@@ -15,7 +15,7 @@
 </style>
 
 @foreach($documents as $document)
-<div class="col-lg-4 col-md-6 col-sm-12">
+<div class="col-md-4">
     <div class="panel panel-default">
         <div class="panel-heading" style="text-align: center;">
             <span class="panel-title text-uppercase" style="font-size: 15px; margin-bottom: 0;">
@@ -107,17 +107,6 @@
                             </span>
                         </label>
                     </span>
-                    <br>
-                    <label>
-                        <strong class="">Data Prot.:</strong>
-                        <span id="tddate{{$document->id}}">
-                            @if($document->document_protocol)
-                                {{date('d/m/Y', strtotime($document->document_protocol->created_at))}}
-                            @else
-                                -
-                            @endif
-                        </span>
-                    </label>
                 </div>
 
                 <div class="col-md-6">
@@ -136,6 +125,43 @@
                         </span>
                     @endshield
                     <br>
+                    <label>
+                        <strong>Data Prot.:</strong>
+                        <span>
+                            @if($document->document_protocol)
+                                {{date('d/m/Y', strtotime($document->document_protocol->created_at))}}
+                            @else
+                                -
+                            @endif
+                        </span>
+                    </label>
+                    <br>
+                    <label>
+                        <strong>Setor:</strong>
+                        <span>
+                            @if($document->externalSector)
+                                {{$document->externalSector->name}}
+                            @else
+                                -
+                            @endif
+                        </span>
+                    </label>
+                </div>
+                <div class="col-md-12" style="padding-bottom: 0">
+                    <label style="margin-top: 10px; min-height: 8rem">
+                        <strong>Ementa:</strong>
+                        <span>
+                            @if($document->resume==='')
+                                -
+                            @else
+                                <p class="resume">
+                                    {!! $document->resume !!}
+                                </p>
+                            @endif
+                        </span>
+                    </label>
+                </div>
+                <div class="col-md-12" style="padding-bottom: 0">
                     <span>
                         <label>
                             <strong>Data Tram.:</strong>
@@ -169,20 +195,6 @@
                                 -
                             @else
                                 {!! $document->processingDocument->first()->destination->name !!}
-                            @endif
-                        </span>
-                    </label>
-                </div>
-                <div class="col-md-12", style="padding-bottom: 0">
-                    <label style="margin-top: 10px; min-height: 8rem">
-                        <strong>Ementa:</strong>
-                        <span>
-                            @if($document->resume==='')
-                                -
-                            @else
-                                <p class="resume">
-                                    {!! $document->resume !!}
-                                </p>
                             @endif
                         </span>
                     </label>

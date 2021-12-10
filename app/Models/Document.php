@@ -77,6 +77,7 @@ class Document extends BaseModel
         'document_type_id',
         'users_id',
         'owner_id',
+        'sector_id',
         'number',
         'content',
         'date',
@@ -114,6 +115,11 @@ class Document extends BaseModel
       'owner_id' => 'required',
       'content' => 'required',
     ];
+
+    public function externalSector()
+    {
+        return $this->belongsTo(Sector::class, 'sector_id');
+    }
 
     public function user()
     {
