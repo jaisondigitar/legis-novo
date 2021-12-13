@@ -155,7 +155,7 @@
                             </span>
                         </label>
                     </div>
-                    <div style="padding-bottom: 0">
+                    <div class="col-sm-12" style="padding: 0">
                         <label style="margin-top: 10px; min-height: 8rem">
                             <strong>Ementa:</strong>
                             <span>
@@ -169,7 +169,7 @@
                             </span>
                         </label>
                     </div>
-                    <div style="padding-bottom: 0">
+                    <div class="col-sm-12" style="padding: 0">
                         <span>
                             <label>
                                 <strong>Data Tram.:</strong>
