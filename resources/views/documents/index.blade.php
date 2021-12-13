@@ -22,14 +22,19 @@
                 {!! Form::label('date', 'Ano:') !!}
                 {!! Form::input('number', 'year', $form->input('year'), ['class' => 'form-control', 'min' => 1000, 'max' => 9999]) !!}
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 {!! Form::label('owner_id', 'Responsável:') !!}
-                {!! Form::select('owner', $assemblymensList ,$form->input('owner'), ['class' => 'form-control']) !!}
+                {!! Form::select('owner', $assemblymensList, $form->input('owner'), ['class' => 'form-control']) !!}
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 {!! Form::label('date', 'Que contenha (texto):') !!}
                 {!! Form::text('text', $form->input('text'), ['class' => 'form-control']) !!}
             </div>
+            <div class="form-group col-md-2">
+                {!! Form::label('states', 'Status:') !!}
+                {!! Form::select('states', [0 => 'Selecione...', 1 => 'Aberto', 2 => 'Protocolado'], $form->input('text'), ['class' => 'form-control']) !!}
+            </div>
+
             <div class="form-group col-md-10">
                 <button class="btn btn-block btn-primary"><i class="fa fa-search"></i> Pesquisar</button>
             </div>
