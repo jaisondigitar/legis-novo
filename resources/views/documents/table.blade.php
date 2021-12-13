@@ -259,7 +259,7 @@
     @endforeach
 </div>
 
-<h1>Protovolados:</h1>
+<h1>Protocolados:</h1>
 <div class="container">
     @foreach($documents as $document)
         @if($document->document_protocol)
