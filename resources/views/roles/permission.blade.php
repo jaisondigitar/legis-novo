@@ -17,16 +17,16 @@
     </div>
     <hr class="hr">
 
-    <h2>Permissões de <b>{{ strtoupper($roles->name) }}</b></h2>
+    <h2>Permissões de <b>{{ $roles->name }}</b></h2>
 
-    <div class="row">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 10px">
         @foreach($list as $reg)
-            <div class="col-md-4">
+            <div>
                 <?php $count = 0; ?>
-                @foreach($perms as $key=>$perm)
+                @foreach($perms as $key => $perm)
                     <?php
                         $check = '';
-                        foreach ($roles->permissions as $key2=>$value2) {
+                        foreach ($roles->permissions as $key2 => $value2) {
                             if ($value2->name == $perm->name) {
                                 $check = 'checked';
                             }
@@ -38,8 +38,12 @@
                             if ($count === 0) {
                                 echo '<ul class="list-group">';
                                 echo '<li class="list-group-item active">
-                                    <i class="fa fa-check-square-o" aria-hidden="true"></i> '.strtoupper(substr($perm->readable_name, 6)).'
-                                </li>';
+                                        <i
+                                            style="margin-right: 10px"
+                                            class="fa fa-check-square-o"
+                                            aria-hidden="true"
+                                        ></i>'.$perm->readable_name.'
+                                    </li>';
                             }
 
                             echo '<li class="list-group-item ">
