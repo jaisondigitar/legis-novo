@@ -120,7 +120,8 @@
                 @if(isset($assemblyman) && !empty($assemblyman->image))
                     <div class="logo-inst">
                         <img
-                            src="{{ (new \App\Services\StorageService())->inAssemblymanFolder()->get($assemblyman->image) }}"
+                            src="{{ (new \App\Services\StorageService())->inAssemblymanFolder()
+                            ->getPath($assemblyman->image) }}"
                             class="img-thumbnail img-rounded"
                         >
                         <div style="width: 100px;padding: 5px;font-family: monospace;">

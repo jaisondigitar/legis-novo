@@ -304,7 +304,7 @@
 BEGIN PAGE
 ===========================================================
 -->
-<div class="wrapper">
+<div class="wrapper open-loading">
     <!-- BEGIN TOP NAV -->
     <div class="top-navbar dark-color">
         <div class="top-navbar-inner">

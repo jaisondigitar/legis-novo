@@ -213,7 +213,7 @@ class PeopleController extends AppBaseController
         $people = People::where('cpf', $request->get('cpf') ?? '')->first();
 
         if ($people->image) {
-            $people->image = (new StorageService())->inPeopleFolder()->get($people->image);
+            $people->image = (new StorageService())->inPeopleFolder()->getPath($people->image);
         }
 
         return response()->json($people);

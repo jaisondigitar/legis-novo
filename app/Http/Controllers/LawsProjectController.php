@@ -39,8 +39,12 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
+use setasign\Fpdi\Fpdi;
+use setasign\Fpdi\PdfReader\PageBoundaries;
 
 class LawsProjectController extends AppBaseController
 {
@@ -597,25 +601,62 @@ class LawsProjectController extends AppBaseController
             $this->loadAdvices($pdf, $id);
         }
 
+        $this->createTenantDirectoryIfNotExists();
+
+        $pdf->Output(storage_path().'/app/law-projects/doc.pdf', 'F');
+
+        $this->attachFilesToSavedDoc($lawsProject);
+
+        $files_to_remove = $lawsProject->lawFiles->pluck('filename')->toArray();
+
+        $files_to_remove[] = 'doc.pdf';
+
+        $this->removeUnusedLocalFiles($files_to_remove);
+    }
+
+    private function attachFilesToSavedDoc(LawsProject $law_project)
+    {
         $pdfMerger = new PDFMerger;
 
-        $lawsProject->lawFiles->each(function ($lawFile) use ($pdfMerger) {
-//            dump((new StorageService())->inLawProjectsFolder()->download($lawFile->filename));
-            $pdfMerger->addPDF(
-                (new StorageService())->inLawProjectsFolder()->download($lawFile->filename)
-            );
-        });
+        $pdfMerger->addPDF(storage_path().'/app/law-projects/doc.pdf');
+
+        $law_project->lawFiles
+            ->each(function ($law_file) use ($pdfMerger) {
+                $file_content = (new StorageService())->usingDisk('digitalocean')
+                    ->inLawProjectsFolder()
+                    ->getFile($law_file->filename);
+
+                (new StorageService())->usingDisk('local')
+                    ->usingDisk('local')->inLawProjectsFolder()
+                    ->sendContent($file_content)
+                    ->send(false, $law_file->filename);
+
+                $pdfMerger->addPDF(
+                    storage_path().'/app/law-projects/'.$law_file->filename
+                );
+            });
 
         $pdfMerger->merge(
-            'file',
-            $pdf->Output('Projeto de lei.pdf', 'S')
+            'browser',
+            storage_path().'/app/law-projects/law-project.pdf'
         );
+    }
 
-//        $pdf->Output('Projeto de lei.pdf', 'I');
+    public function removeUnusedLocalFiles(array $filenames)
+    {
+        (new StorageService())->usingDisk('local')
+            ->inLawProjectsFolder()
+            ->removeMany($filenames);
+    }
 
-        die();
-
-//        return view('lawsProjects.show')->with('lawsProject', $lawsProject);
+    /**
+     * @return void
+     */
+    private function createTenantDirectoryIfNotExists()
+    {
+        if (! Storage::exists(storage_path().'/app/law-projects')) {
+            Storage::makeDirectory('law-projects');
+        }
     }
 
     public function loadAdvices($pdf, $lawsProjectId)
