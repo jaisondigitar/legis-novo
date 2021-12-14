@@ -2,6 +2,11 @@
     h1 {
         margin-left: 50px;
     }
+
+    .panel {
+        width: 45rem;
+    }
+
     .container {
         width: 100%;
         display: grid;
@@ -11,6 +16,7 @@
     .container:before {
         display: none;
     }
+
     .action{
         float: right;
     }
@@ -70,7 +76,7 @@
                 </div>
                 <div class="panel-body">
                 <span style="padding: 0; font-size: 13px;">
-                    <div class="col-sm-6" style="padding: 0">
+                    <div class="col-md-6" style="padding: 0">
                         <span class="text-uppercase">
                             <label>
                                 <i class="fa fa-user"></i> @if($document->owner) {!! $document->owner->short_name !!} @else - @endif <br>
@@ -526,7 +532,7 @@
                     {!! Form::text('protocol_number', null, ['class' => 'form-control', 'id' => 'protocol_number']) !!}
                 </div>
                 <div class="form-group col-sm-4">
-                    {!! Form::label('next_number', 'Nº documento oficial:') !!}
+                    {!! Form::label('next_number', 'Nº doc. oficial:') !!}
                     {!! Form::number('next_number', null, ['class' => 'form-control', 'id' => 'next_number']) !!}
                     <label class="label label-danger" id="labelmessage"></label>
                 </div>
@@ -536,7 +542,7 @@
                     {{--<label class="label label-danger" id="labelmessage"></label>--}}
                 {{--</div>--}}
                 <div class="form-group col-sm-4">
-                    {!! Form::label('year_document', 'Ano documento oficial:') !!}
+                    {!! Form::label('year_document', 'Ano doc. oficial:') !!}
                     {!! Form::text('year_document', null, ['class' => 'form-control', 'id' => 'year_document', 'readonly']) !!}
                     <label class="label label-info">*Campo não pode ser alterado.</label>
                 </div>
@@ -917,6 +923,7 @@
                         $('#tdnumber'+result.document_id).html(result.protocol_number);
                         $('#tddate'+result.document_id).html(result.protocol_date);
                         $('#tdprotocol'+result.document_id).html(result.protocol_code);
+                        location.reload();
                     } else {
                         $('#next_number').val(result.next_number);
                         $('#labelmessage').html(result.message);
