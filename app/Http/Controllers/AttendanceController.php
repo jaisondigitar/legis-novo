@@ -6,6 +6,7 @@ use App\Http\Requests\CreateAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
 use App\Models\City;
 use App\Models\People;
+use App\Models\Sector;
 use App\Models\State;
 use App\Models\TypesOfAttendance;
 use App\Repositories\AttendanceRepository;
@@ -70,11 +71,13 @@ class AttendanceController extends Controller
         }
 
         $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
+        $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
 
         $states = $this->statesList();
-        $cities = City::where('state', '=', $states[1])->pluck('name', 'id');
+        $state = State::find(12);
+        $cities = City::where('state', '=', $state->uf)->pluck('name', 'id');
 
-        return view('attendance.create', compact('states', 'cities', 'type'));
+        return view('attendance.create', compact('states', 'cities', 'type', 'sector'));
     }
 
     /**
@@ -94,7 +97,7 @@ class AttendanceController extends Controller
         }
 
         $image = $request->file('image');
-        $attendance_data = $request->only(['date', 'time', 'description', 'type_id']);
+        $attendance_data = $request->only(['date', 'time', 'sector_id', 'description', 'type_id']);
 
         $people = People::firstOrCreate(
             ['cpf' => $request->cpf],
@@ -155,18 +158,28 @@ class AttendanceController extends Controller
      * @return Application|Factory|Redirector|RedirectResponse|View
      * @throws BindingResolutionException
      */
-    /*public function edit($id)
+    public function edit($id)
     {
         if (! Defender::hasPermission('attendance.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
             return redirect('/');
         }
         $attendance = $this->attendanceRepository->findById($id);
+
+        $people = People::find($attendance->people_id);
+
         $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
+        $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
+
         $states = $this->statesList();
-        $cities = City::where('state', '=', $states[1])->pluck('name', 'id');
-        return view('attendance.edit', compact('states', 'cities', 'type'))->with('attendance', $attendance);
-    }*/
+        $state = State::find(12);
+        $cities = City::where('state', '=', $state->uf)->pluck('name', 'id');
+
+        return view('attendance.edit', compact('states', 'cities', 'type', 'sector'))
+            ->with('attendance', $attendance)
+            ->with('people', $people);
+    }
 
     /**
      * Update the specified resource in storage.

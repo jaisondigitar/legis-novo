@@ -75,7 +75,8 @@ class CompanyController extends AppBaseController
         }
 
         $states = $this->statesList();
-        $cities = City::where('state', '=', $states[1])->pluck('name', 'id');
+        $state = State::find(12);
+        $cities = City::where('state', '=', $state->uf)->pluck('name', 'id');
 
         return view('companies.create', compact('states', 'cities'));
     }

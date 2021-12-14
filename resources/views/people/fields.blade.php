@@ -1,6 +1,6 @@
 <div class="form-group col-sm-12">
     <div class="form-group col-sm-6">
-        <h2>Dados Pessoais</h2><hr>
+        <h2 style="margin: 0">Dados Pessoais</h2><hr style="margin: 20px 0">
         <!-- Cpf Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('cpf', 'CPF:', ['class' => 'required']) !!}
@@ -56,7 +56,7 @@
     </div>
 
     <div class="form-group col-sm-6">
-        <h2>Endereço</h2><hr>
+        <h2 style="margin: 0">Endereço</h2><hr style="margin: 20px 0">
         <!-- Zipcode Field -->
         <div class="form-group col-sm-3">
             {!! Form::label('zipcode', 'CEP:') !!}
