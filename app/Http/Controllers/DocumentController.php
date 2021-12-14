@@ -317,10 +317,7 @@ class DocumentController extends AppBaseController
         $pdf->SetAutoPageBreak(true, $margemInferior + 5);
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
         $pdf->setFontSubsetting(true);
-//        $font_ubuntu = \TCPDF_FONTS::addTTFfont(public_path() . ‘/front/ubuntu/Ubuntu-regular.ttf’, 'TrueTypeUnicode', '', 32);
         $pdf->SetFont('times', '', 12, '', true);
-        // set header and footer fonts
-
         $pdf->SetTitle($type->name);
 
         $pdf->AddPage();
