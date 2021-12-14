@@ -25,7 +25,6 @@ use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
 use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
-use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
 use App\Services\StorageService;
@@ -39,12 +38,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
-use setasign\Fpdi\Fpdi;
-use setasign\Fpdi\PdfReader\PageBoundaries;
 
 class LawsProjectController extends AppBaseController
 {
