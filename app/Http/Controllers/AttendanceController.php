@@ -54,7 +54,13 @@ class AttendanceController extends Controller
 
         $attendance = $this->attendanceRepository->getAll(0);
 
-        return view('attendance.index')->with('attendance', $attendance);
+        $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
+        $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
+        $people = People::pluck('name', 'id')->prepend('Selecione..', '');
+
+        return view('attendance.index', compact('type', 'sector', 'people'))
+            ->with('form', $request)
+            ->with('attendance', $attendance);
     }
 
     /**
