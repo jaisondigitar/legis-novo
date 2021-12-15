@@ -13,7 +13,7 @@ class MYPDF extends TCPDF
     public function Header()
     {
         $image_file = (new StorageService())->inCompanyFolder()
-            ->get(Company::first()->image);
+            ->getPath(Company::first()->image);
         $this->Image($image_file, $this->lMargin, $this->header_margin, 25, 0, '', '', 'T', true, 300, '', false, false, 0, false, false, false);
 
         $this->SetXY($this->lMargin + 34, $this->header_margin);

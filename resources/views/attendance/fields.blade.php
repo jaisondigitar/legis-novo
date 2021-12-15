@@ -40,7 +40,9 @@
         <!-- Photo Field -->
         <div class="form-group col-sm-6">
             @if(isset($people) && !empty($people->image))
-                <img src="{{ !empty($people->image) && (new \App\Services\StorageService())->inPeopleFolder()->get($people->image) }}" width="150px" class="img-thumbnail img-rounded image">
+                <img src="{{ !empty($people->image) && (new \App\Services\StorageService())
+                ->inPeopleFolder()->getPath($people->image) }}" width="150px" class="img-thumbnail
+                img-rounded image">
                 <div style="width: 100px;padding: 5px;font-family: monospace;">
                     <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
                 </div>

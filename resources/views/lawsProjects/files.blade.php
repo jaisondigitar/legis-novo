@@ -49,7 +49,8 @@
                                     <td align="center">
                                         <a
                                             target="_blank"
-                                            href="{{ (new \App\Services\StorageService())->inLawProjectsFolder()->get($file->filename) }}">
+                                            href="{{ (new \App\Services\StorageService())
+                                            ->inLawProjectsFolder()->getPath($file->filename) }}">
                                             <span class="label label-info">Download</span>
                                         </a>
                                         @shield('lawsProjects.upload')

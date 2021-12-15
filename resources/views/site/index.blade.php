@@ -256,14 +256,16 @@
                                                         <div class="col-md-3" style="    width: auto !important;">
                                                             <a
                                                                 href="{{ (new \App\Services\StorageService())
-                                                                    ->inDocumentsFolder()->get($doc->filename) }}"
+                                                                    ->inDocumentsFolder()->getPath
+                                                                    ($doc->filename) }}"
                                                                 target="_blank" class="btn btn-xs btn-success"
                                                             >
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
                                                             <a
                                                                 href="{{ (new \App\Services\StorageService())
-                                                                    ->inDocumentsFolder()->get($doc->filename) }}"
+                                                                    ->inDocumentsFolder()->getPath
+                                                                    ($doc->filename) }}"
                                                             >
                                                                 <button class="btn btn-xs btn-info">
                                                                     {{ $doc->filename }}
@@ -382,7 +384,8 @@
                                                         <li class="list-group-item">
                                                             <a
                                                                 href="{{ (new \App\Services\StorageService())
-                                                                    ->inLawProjectsFolder()->get($file->filename) }}"
+                                                                    ->inLawProjectsFolder()->getPath
+                                                                    ($file->filename) }}"
                                                                 target="_blank">{{$file->filename}} - <i
                                                                     class="fa fa-download"></i>
                                                             </a>

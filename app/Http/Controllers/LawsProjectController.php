@@ -25,7 +25,6 @@ use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
 use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
-use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
 use App\Services\StorageService;
@@ -39,7 +38,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Jurosh\PDFMerge\PDFMerger;
 
 class LawsProjectController extends AppBaseController
 {
@@ -246,8 +247,6 @@ class LawsProjectController extends AppBaseController
 
             $lawsProject->file = $filename;
             $lawsProject->save();
-
-//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
         $law_file = $request->file('law_file');
@@ -260,8 +259,6 @@ class LawsProjectController extends AppBaseController
 
             $lawsProject->law_file = $filename;
             $lawsProject->save();
-
-//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
 
         $law_number = new LawProjectsNumber();
@@ -588,16 +585,65 @@ class LawsProjectController extends AppBaseController
         }
 
         if ($showAdvices) {
-            $advices = $this->loadAdvices($pdf, $id);
+            $this->loadAdvices($pdf, $id);
         }
 
-        //return $content;
+        $this->createTenantDirectoryIfNotExists();
 
-        $pdf->Output('Projeto de lei.pdf', 'I');
+        $pdf->Output(storage_path().'/app/law-projects/doc.pdf', 'F');
 
-        die();
+        $this->attachFilesToSavedDoc($lawsProject);
 
-        return view('lawsProjects.show')->with('lawsProject', $lawsProject);
+        $files_to_remove = $lawsProject->lawFiles->pluck('filename')->toArray();
+
+        $files_to_remove[] = 'doc.pdf';
+
+        $this->removeUnusedLocalFiles($files_to_remove);
+    }
+
+    private function attachFilesToSavedDoc(LawsProject $law_project)
+    {
+        $pdfMerger = new PDFMerger;
+
+        $pdfMerger->addPDF(storage_path().'/app/law-projects/doc.pdf');
+
+        $law_project->lawFiles
+            ->each(function ($law_file) use ($pdfMerger) {
+                $file_content = (new StorageService())->usingDisk('digitalocean')
+                    ->inLawProjectsFolder()
+                    ->getFile($law_file->filename);
+
+                (new StorageService())->usingDisk('local')
+                    ->usingDisk('local')->inLawProjectsFolder()
+                    ->sendContent($file_content)
+                    ->send(false, $law_file->filename);
+
+                $pdfMerger->addPDF(
+                    storage_path().'/app/law-projects/'.$law_file->filename
+                );
+            });
+
+        $pdfMerger->merge(
+            'browser',
+            storage_path().'/app/law-projects/law-project.pdf'
+        );
+    }
+
+    public function removeUnusedLocalFiles(array $filenames)
+    {
+        (new StorageService())->usingDisk('local')
+            ->inLawProjectsFolder()
+            ->removeMany($filenames);
+    }
+
+    /**
+     * @return void
+     */
+    private function createTenantDirectoryIfNotExists()
+    {
+        if (! Storage::exists(storage_path().'/app/law-projects')) {
+            Storage::makeDirectory('law-projects');
+        }
     }
 
     public function loadAdvices($pdf, $lawsProjectId)

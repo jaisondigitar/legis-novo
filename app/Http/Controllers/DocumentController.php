@@ -22,11 +22,9 @@ use App\Models\Log;
 use App\Models\MeetingPauta;
 use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
-use App\Models\ProcessingDocument;
 use App\Models\ProtocolType;
 use App\Models\Sector;
 use App\Models\StatusProcessingDocument;
-use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
 use App\Services\StorageService;
@@ -41,7 +39,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Jurosh\PDFMerge\PDFMerger;
 
 class DocumentController extends AppBaseController
 {
@@ -255,21 +255,8 @@ class DocumentController extends AppBaseController
         return $resp;
     }
 
-    /**
-     * Display the specified Document.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
     public function show($id)
     {
-
-//        if(!Defender::hasPermission('documents.show'))
-//        {
-//            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
-//            return redirect("/");
-//        }
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 
         $company = Company::first();
@@ -312,10 +299,7 @@ class DocumentController extends AppBaseController
         $pdf->SetAutoPageBreak(true, $margemInferior + 5);
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
         $pdf->setFontSubsetting(true);
-//        $font_ubuntu = \TCPDF_FONTS::addTTFfont(public_path() . ‘/front/ubuntu/Ubuntu-regular.ttf’, 'TrueTypeUnicode', '', 32);
         $pdf->SetFont('times', '', 12, '', true);
-        // set header and footer fonts
-
         $pdf->SetTitle($type->name);
 
         $pdf->AddPage();
@@ -521,10 +505,6 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($conteudo);
         }
 
-        //return $content;
-
-        //$pdf->writeHTMLCell(0, 0, '', '', $content, 0, 1, 0, true, '', true);
-
         if ($tramitacao) {
             $pdf->AddPage();
             $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
@@ -582,7 +562,62 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($html2);
         }
 
-        $pdf->Output($type->name.'.pdf', 'I');
+        $this->createTenantDirectoryIfNotExists();
+
+        $pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
+
+        $this->attachFilesToSavedDoc($document);
+
+        $files_to_remove = $document->documents->pluck('filename')->toArray();
+
+        $files_to_remove[] = 'doc.pdf';
+
+        $this->removeUnusedLocalFiles($files_to_remove);
+    }
+
+    private function attachFilesToSavedDoc(Document $document)
+    {
+        $pdfMerger = new PDFMerger;
+
+        $pdfMerger->addPDF(storage_path().'/app/documents/doc.pdf');
+
+        $document->documents
+            ->each(function ($doc) use ($pdfMerger) {
+                $file_content = (new StorageService())->usingDisk('digitalocean')
+                    ->inDocumentsFolder()
+                    ->getFile($doc->filename);
+
+                (new StorageService())->usingDisk('local')
+                    ->usingDisk('local')->inDocumentsFolder()
+                    ->sendContent($file_content)
+                    ->send(false, $doc->filename);
+
+                $pdfMerger->addPDF(
+                    storage_path().'/app/documents/'.$doc->filename
+                );
+            });
+
+        $pdfMerger->merge(
+            'browser',
+            storage_path().'/app/documents/law-project.pdf'
+        );
+    }
+
+    public function removeUnusedLocalFiles(array $filenames)
+    {
+        (new StorageService())->usingDisk('local')
+            ->inDocumentsFolder()
+            ->removeMany($filenames);
+    }
+
+    /**
+     * @return void
+     */
+    private function createTenantDirectoryIfNotExists()
+    {
+        if (! Storage::exists(storage_path().'/app/documents')) {
+            Storage::makeDirectory('documents');
+        }
     }
 
     /**
