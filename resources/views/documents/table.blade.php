@@ -90,18 +90,12 @@
                             <span id="tdprotocol{{$document->id}}">
                                 @if (
                                     !$document->document_protocol &&
-                                    Auth::user()->sector->slug !== 'secretaria' &&
-                                    !Auth::user()->roles->pluck('name')
-                                        ->contains('Aprovação documento')
+                                    !Auth::user()->roleHasPermission('document.createProtocolNumber')
                                 )
                                     -
                                 @elseif (
                                     !$document->document_protocol &&
-                                    (
-                                        Auth::user()->sector->slug === 'secretaria' ||
-                                        Auth::user()->roles->pluck('name')
-                                            ->contains('Aprovação documento')
-                                    )
+                                    Auth::user()->roleHasPermission('document.createProtocolNumber')
                                 )
                                     <button
                                         type="button"

@@ -87,12 +87,17 @@
                             <span id="tdLawProtocol{{$lawsProject->id}}" align="center">
                                 @if($lawsProject->project_number > 0)
                                     {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
-                                @else
-                                    @shield('lawsProject.approved')
-                                        <button type="button" class="btn btn-default btn-xs btn-protocol" value="{!! $lawsProject->id !!}">
-                                            <i class="glyphicon glyphicon-folder-open"></i>
-                                        </button>
-                                    @endshield
+                                @elseif(
+                                    Auth::user()
+                                        ->roleHasPermission('lawsProject.createLawProjectNumber')
+                                )
+                                    <button
+                                        type="button"
+                                        class="btn btn-default btn-xs btn-protocol"
+                                        value="{!! $lawsProject->id !!}"
+                                    >
+                                        <i class="glyphicon glyphicon-folder-open"></i>
+                                    </button>
                                 @endif
                             </span>
                         </td>
