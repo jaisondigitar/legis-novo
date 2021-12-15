@@ -119,38 +119,29 @@ class LawsProjectController extends AppBaseController
             $externo = '';
         }
 
-        $lawsProjects_query = LawsProject::query();
+        $lawsProjects_query = LawsProject::ByDateDesc();
 
         if (count($request->all())) {
-            if ($request->parecer) {
-                $lawsProjects_query->join(
-                    'advices',
-                    'laws_projects_id',
-                    '=',
-                    'laws_projects.id'
-                );
-            }
-
             ! empty($request->reg) ? $lawsProjects_query->where('updated_at', date('Y-m-d H:i:s', $request->reg)) : null;
             ! empty($request->type) ? $lawsProjects_query->where('law_type_id', $request->type) : null;
             ! empty($request->number) ? $lawsProjects_query->where('project_number', $request->number) : null;
             ! empty($request->year) ? $lawsProjects_query->where('law_date', 'like', $request->year.'%') : null;
             ! empty($request->owner) ? $lawsProjects_query->where('assemblyman_id', $request->owner) : null;
 
-            if (Auth::user()->sector->slug === 'gabinete') {
+            if (Auth::user()->sector->slug != 'gabinete') {
+                $lawsProjects = $lawsProjects_query->paginate(20);
+            } else {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-
                 $gabIds = $this->getAssembbyIds($gabs);
-
-                $lawsProjects_query->whereIN('assemblyman_id', $gabIds)->paginate(20);
+                $lawsProjects = $lawsProjects_query->whereIN('assemblyman_id', $gabIds)->paginate(20);
             }
         } else {
-            if (Auth::user()->sector->slug === 'gabinete') {
+            if (Auth::user()->sector->slug != 'gabinete') {
+                $lawsProjects = LawsProject::byDateDesc()->paginate(20);
+            } else {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-
                 $gabIds = $this->getAssembbyIds($gabs);
-
-                $lawsProjects_query->whereIn('assemblyman_id', $gabIds);
+                $lawsProjects = LawsProject::whereIN('assemblyman_id', $gabIds)->byDateDesc()->paginate(20);
             }
         }
 

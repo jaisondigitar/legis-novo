@@ -787,6 +787,9 @@ Placed at the end of the document so the pages load faster
     }
 
     $(document).ready(function() {
+        $(".states").val(12);
+        $(".cities").val(5132);
+
         $("#zipcode").blur(async function () {
 
             //Nova variável "cep" somente com dígitos.
