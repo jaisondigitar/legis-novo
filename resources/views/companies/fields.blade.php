@@ -5,7 +5,8 @@
     @if(isset($company) && !empty($company->image))
         <div class="logo-inst">
             <img
-                src="{{ (new \App\Services\StorageService())->inCompanyFolder()->get($company->image) }}"
+                src="{{ (new \App\Services\StorageService())->inCompanyFolder()->getPath
+                ($company->image) }}"
                 height="150"
             >
             <div style="width: 100px;padding: 5px;font-family: monospace;">

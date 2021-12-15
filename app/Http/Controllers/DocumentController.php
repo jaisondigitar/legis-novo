@@ -22,11 +22,9 @@ use App\Models\Log;
 use App\Models\MeetingPauta;
 use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
-use App\Models\ProcessingDocument;
 use App\Models\ProtocolType;
 use App\Models\Sector;
 use App\Models\StatusProcessingDocument;
-use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
 use App\Services\StorageService;
@@ -41,7 +39,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Jurosh\PDFMerge\PDFMerger;
 
 class DocumentController extends AppBaseController
 {
@@ -100,52 +100,34 @@ class DocumentController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if (! Defender::hasPermission('documents.index')) {
-            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
-
-            return redirect('/admin');
-        }
-
-        $documents_query = Document::query();
-
-        if (Auth::user()->sector->slug === 'gabinete') {
-            $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-            $gabIds = $this->getAssembbyIds($gabs);
-            $documents_query->whereIN('owner_id', $gabIds);
-        }
+        $documents_query = Document::byDateDesc();
 
         if (count($request->all())) {
-            ! empty($request->reg) ?
-                $documents_query
-                    ->join('document_numbers', 'documents.id', '=', 'document_numbers.document_id')
-                    ->select('documents.*')
-                    ->where('document_numbers.date', date('Y-m-d H:i:s', $request->reg)) :
-                null;
             ! empty($request->type) ? $documents_query->where('document_type_id', $request->type) : null;
             ! empty($request->number) ? $documents_query->where('number', $request->number) : null;
             ! empty($request->year) ? $documents_query->where('date', 'like', $request->year.'%') : null;
             ! empty($request->owner) ? $documents_query->where('owner_id', $request->owner) : null;
-            ! empty($request->text) ?
-                $documents_query->where('content', 'like', '%'.$request->text.'%') :
-                null;
-        }
+            ! empty($request->text) ? $documents_query->where('content', 'like', '%'.$request->text.'%') : null;
 
-        $documents = $documents_query->with([
-            'processingDocument' => function ($query) {
-                return $query->orderByDesc('created_at')->first();
-            },
-            'processingDocument.statusProcessingDocument',
-            'processingDocument.destination',
-            'externalSector',
-        ])
-            ->orWhere('users_id', Auth::user()->id)
-            ->orWhereHas('document_protocol')
-            ->orderByDesc('created_at')
-            ->paginate(20);
+            if (Auth::user()->sector->slug != 'gabinete') {
+                $documents = $documents_query->paginate(20);
+            } else {
+                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
+                $gabIds = $this->getAssembbyIds($gabs);
+                $documents = $documents_query->whereIN('owner_id', $gabIds)->paginate(20);
+            }
+        } else {
+            if (Auth::user()->sector->slug != 'gabinete') {
+                $documents = Document::byDateDesc()->paginate(20);
+            } else {
+                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
+                $gabIds = $this->getAssembbyIds($gabs);
+                $documents = Document::whereIN('owner_id', $gabIds)->byDateDesc()->paginate(20);
+            }
+        }
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();
-
 
         return view('documents.index')
             ->with('assemblymensList', $assemblymensList[1])
@@ -273,21 +255,8 @@ class DocumentController extends AppBaseController
         return $resp;
     }
 
-    /**
-     * Display the specified Document.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
     public function show($id)
     {
-
-//        if(!Defender::hasPermission('documents.show'))
-//        {
-//            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning(;
-//            return redirect("/");
-//        }
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 
         $company = Company::first();
@@ -330,10 +299,7 @@ class DocumentController extends AppBaseController
         $pdf->SetAutoPageBreak(true, $margemInferior + 5);
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
         $pdf->setFontSubsetting(true);
-//        $font_ubuntu = \TCPDF_FONTS::addTTFfont(public_path() . ‘/front/ubuntu/Ubuntu-regular.ttf’, 'TrueTypeUnicode', '', 32);
         $pdf->SetFont('times', '', 12, '', true);
-        // set header and footer fonts
-
         $pdf->SetTitle($type->name);
 
         $pdf->AddPage();
@@ -539,10 +505,6 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($conteudo);
         }
 
-        //return $content;
-
-        //$pdf->writeHTMLCell(0, 0, '', '', $content, 0, 1, 0, true, '', true);
-
         if ($tramitacao) {
             $pdf->AddPage();
             $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
@@ -600,7 +562,62 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($html2);
         }
 
-        $pdf->Output($type->name.'.pdf', 'I');
+        $this->createTenantDirectoryIfNotExists();
+
+        $pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
+
+        $this->attachFilesToSavedDoc($document);
+
+        $files_to_remove = $document->documents->pluck('filename')->toArray();
+
+        $files_to_remove[] = 'doc.pdf';
+
+        $this->removeUnusedLocalFiles($files_to_remove);
+    }
+
+    private function attachFilesToSavedDoc(Document $document)
+    {
+        $pdfMerger = new PDFMerger;
+
+        $pdfMerger->addPDF(storage_path().'/app/documents/doc.pdf');
+
+        $document->documents
+            ->each(function ($doc) use ($pdfMerger) {
+                $file_content = (new StorageService())->usingDisk('digitalocean')
+                    ->inDocumentsFolder()
+                    ->getFile($doc->filename);
+
+                (new StorageService())->usingDisk('local')
+                    ->usingDisk('local')->inDocumentsFolder()
+                    ->sendContent($file_content)
+                    ->send(false, $doc->filename);
+
+                $pdfMerger->addPDF(
+                    storage_path().'/app/documents/'.$doc->filename
+                );
+            });
+
+        $pdfMerger->merge(
+            'browser',
+            storage_path().'/app/documents/law-project.pdf'
+        );
+    }
+
+    public function removeUnusedLocalFiles(array $filenames)
+    {
+        (new StorageService())->usingDisk('local')
+            ->inDocumentsFolder()
+            ->removeMany($filenames);
+    }
+
+    /**
+     * @return void
+     */
+    private function createTenantDirectoryIfNotExists()
+    {
+        if (! Storage::exists(storage_path().'/app/documents')) {
+            Storage::makeDirectory('documents');
+        }
     }
 
     /**

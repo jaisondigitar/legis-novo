@@ -304,7 +304,7 @@
 BEGIN PAGE
 ===========================================================
 -->
-<div class="wrapper">
+<div class="wrapper open-loading">
     <!-- BEGIN TOP NAV -->
     <div class="top-navbar dark-color">
         <div class="top-navbar-inner">
@@ -787,6 +787,9 @@ Placed at the end of the document so the pages load faster
     }
 
     $(document).ready(function() {
+        $(".states").val(12);
+        $(".cities").val(5132);
+
         $("#zipcode").blur(async function () {
 
             //Nova variável "cep" somente com dígitos.

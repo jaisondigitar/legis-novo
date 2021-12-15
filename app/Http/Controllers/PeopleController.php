@@ -66,7 +66,8 @@ class PeopleController extends AppBaseController
         }
 
         $states = $this->statesList();
-        $cities = City::where('state', '=', $states[1])->pluck('name', 'id');
+        $state = State::find(12);
+        $cities = City::where('state', '=', $state->uf)->pluck('name', 'id');
 
         return view('people.create', compact('states', 'cities'));
     }
@@ -213,7 +214,7 @@ class PeopleController extends AppBaseController
         $people = People::where('cpf', $request->get('cpf') ?? '')->first();
 
         if ($people->image) {
-            $people->image = (new StorageService())->inPeopleFolder()->get($people->image);
+            $people->image = (new StorageService())->inPeopleFolder()->getPath($people->image);
         }
 
         return response()->json($people);
