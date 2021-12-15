@@ -129,19 +129,19 @@ class LawsProjectController extends AppBaseController
             ! empty($request->owner) ? $lawsProjects_query->where('assemblyman_id', $request->owner) : null;
 
             if (Auth::user()->sector->slug != 'gabinete') {
-                $lawsProjects = $lawsProjects_query->paginate(20);
+                $lawsProjects_query->paginate(20);
             } else {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
                 $gabIds = $this->getAssembbyIds($gabs);
-                $lawsProjects = $lawsProjects_query->whereIN('assemblyman_id', $gabIds)->paginate(20);
+                $lawsProjects_query->whereIN('assemblyman_id', $gabIds)->paginate(20);
             }
         } else {
             if (Auth::user()->sector->slug != 'gabinete') {
-                $lawsProjects = LawsProject::byDateDesc()->paginate(20);
+                LawsProject::byDateDesc()->paginate(20);
             } else {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
                 $gabIds = $this->getAssembbyIds($gabs);
-                $lawsProjects = LawsProject::whereIN('assemblyman_id', $gabIds)->byDateDesc()->paginate(20);
+                LawsProject::whereIN('assemblyman_id', $gabIds)->byDateDesc()->paginate(20);
             }
         }
 
