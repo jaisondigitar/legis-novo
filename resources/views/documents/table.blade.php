@@ -35,13 +35,7 @@
     @foreach($documents as $document)
         @if(!$document->document_protocol)
             @include('documents.card')
-        @endif
-    @endforeach
-</div>
-<br>
-<div class="container">
-    @foreach($documents as $document)
-        @if($document->document_protocol)
+        @else
             @include('documents.card')
         @endif
     @endforeach
