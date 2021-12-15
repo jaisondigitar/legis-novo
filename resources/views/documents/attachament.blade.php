@@ -25,7 +25,8 @@
                             <td align="center">
                                 <a
                                     target="_blank"
-                                    href="{{ (new \App\Services\StorageService())->inDocumentsFolder()->get($file->filename) }}">
+                                    href="{{ (new \App\Services\StorageService())
+                                    ->inDocumentsFolder()->getPath($file->filename) }}">
                                     <span class="label label-info">Download</span>
                                 </a>
                                 <a style="text-decoration: none" id="delFile" onclick="deleteFile({{$file->id}})">
