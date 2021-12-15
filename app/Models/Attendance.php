@@ -29,6 +29,16 @@ class Attendance extends BaseModel
         'sector_id' => 'required',
     ];
 
+    public function scopeByIdDesc($query)
+    {
+        return $query->orderBy('id', 'desc');
+    }
+
+    public function scopeByDateDesc($query)
+    {
+        return $query->orderBy('date', 'desc');
+    }
+
     public function sector()
     {
         return $this->belongsTo(Sector::class, 'sector_id');

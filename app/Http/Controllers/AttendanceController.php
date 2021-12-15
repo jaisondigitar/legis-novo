@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Models\Attendance;
 use App\Models\City;
 use App\Models\People;
 use App\Models\Sector;
@@ -46,13 +47,33 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
+        $input = $request->all();
+        $attendance_query = Attendance::ByDateDesc();
+
+        if (count($request->all())) {
+            if ($request->date) {
+                if ($input['date']) {
+                    $d1 = explode('/', $input['date']);
+                    $request->date = $d1[2].'-'.$d1[1].'-'.$d1[0];
+                }
+            }
+            ! empty($request->date) ? $attendance_query->where('date', 'like', $request->date) : null;
+            ! empty($request->type_id) ? $attendance_query->where('type_id', $request->type_id) : null;
+            ! empty($request->people_id) ? $attendance_query->where('people_id', $request->people_id) : null;
+            ! empty($request->sector_id) ? $attendance_query->where('sector_id', $request->sector_id) : null;
+        }
+
         if (! Defender::hasPermission('attendance.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
             return redirect('/admin');
         }
 
-        $attendance = $this->attendanceRepository->getAll(0);
+        $attendance_query->parecer = $request->parecer;
+
+        $attendance = $attendance_query
+            ->orderByDesc('created_at')
+            ->paginate(20);
 
         $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
         $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
