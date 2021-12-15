@@ -110,21 +110,34 @@ class DocumentController extends AppBaseController
             ! empty($request->text) ? $documents_query->where('content', 'like', '%'.$request->text.'%') : null;
 
             if (Auth::user()->sector->slug != 'gabinete') {
-                $documents = $documents_query->paginate(20);
+                $documents_query->paginate(20);
             } else {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
                 $gabIds = $this->getAssembbyIds($gabs);
-                $documents = $documents_query->whereIN('owner_id', $gabIds)->paginate(20);
+                $documents_query->whereIN('owner_id', $gabIds)->paginate(20);
             }
         } else {
             if (Auth::user()->sector->slug != 'gabinete') {
-                $documents = Document::byDateDesc()->paginate(20);
+                Document::byDateDesc()->paginate(20);
             } else {
                 $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
                 $gabIds = $this->getAssembbyIds($gabs);
-                $documents = Document::whereIN('owner_id', $gabIds)->byDateDesc()->paginate(20);
+                Document::whereIN('owner_id', $gabIds)->byDateDesc()->paginate(20);
             }
         }
+
+        $documents = $documents_query->with([
+            'processingDocument' => function ($query) {
+                return $query->orderByDesc('created_at')->first();
+            },
+            'processingDocument.statusProcessingDocument',
+            'processingDocument.destination',
+            'externalSector',
+        ])
+            ->orWhere('users_id', Auth::user()->id)
+            ->orWhereHas('document_protocol')
+            ->orderByDesc('created_at')
+            ->paginate(20);
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();
