@@ -15,44 +15,47 @@
             </div>
         </div>
     </div>
+
     <hr class="hr">
 
     <h2>Permissões de <b>{{ $roles->name }}</b></h2>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 10px">
-        @foreach($list as $reg)
+        @foreach($list as $group_name)
             <div>
                 <?php $count = 0; ?>
-                @foreach($perms as $key => $perm)
+
+                @foreach($perms as $index => $permission)
                     <?php
-                        $check = '';
-                        foreach ($roles->permissions as $key2 => $value2) {
-                            if ($value2->name == $perm->name) {
-                                $check = 'checked';
-                            }
-                        }
+                        $checked = (
+    (bool) $roles->permissions->pluck('name')->search($permission->name)
+) ? 'checked' : '';
 
-                        $tmp = explode('.', $perm->name);
-
-                        if ($tmp[0] === $reg) {
+                        if (explode('.', $permission->name)[0] === $group_name) {
                             if ($count === 0) {
                                 echo '<ul class="list-group">';
                                 echo '<li class="list-group-item active">
-                                        <i
+                                        <span
                                             style="margin-right: 10px"
                                             class="fa fa-check-square-o"
                                             aria-hidden="true"
-                                        ></i>'.$perm->readable_name.'
+                                        ></span>'.$permission->readable_name.'
                                     </li>';
                             }
 
                             echo '<li class="list-group-item ">
-                                <span class="pull-left" style="margin-right: 10px">
-                                    <input id="perm_'.$perm->name.'" onchange="togglePerm(\''.$roles->name.'\',\''.$perm->id.'\')" type="checkbox" '.$check.'>
-                                </span>
-                                <span class="disabled" >'.$perm->readable_name.'</span>
-                            </li>';
-                            echo $count === 4 ? '</ul>' : null;
+                                    <span class="pull-left" style="margin-right: 10px">
+                                        <input
+                                            id="perm_'.$permission->name.'"
+                                            onchange="togglePerm(
+                                                \''.$roles->name.'\',\''.$permission->id.'\'
+                                            )"
+                                            type="checkbox" '.$checked.'
+                                        >
+                                    </span>
+                                    <span class="disabled" >'.$permission->readable_name.'</span>
+                                </li>';
+
                             $count++;
                         }
                     ?>
@@ -62,16 +65,12 @@
     </div>
 </div>
 <script>
-    var togglePerm = function(role,perm)
-    {
-        var url = '/gerencial/roles/toggle/permission/'+role+'/'+perm;
+    const togglePerm = (role, perm) => {
         $.ajax({
-            method: "GET",
-            url: url,
-            dataType: "json"
-        }).success(function(result,textStatus,jqXHR) {
-            console.log(result);
-        });
+            method: 'GET',
+            url: '/gerencial/roles/toggle/permission/'+role+'/'+perm,
+            dataType: 'json'
+        }).success(result => console.log(result))
     }
 </script>
 @endsection
