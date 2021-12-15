@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
@@ -191,22 +192,13 @@ class RoleController extends AppBaseController
     }
 
     /**
-     * @return array
+     * @return Permission[]|Collection|\Illuminate\Support\Collection
      */
     public function getNameOfPermissions()
     {
-        $arr = [];
-        $tmp = '';
-        $perms = Permission::all();
-        foreach ($perms as $value) {
-            $tmp2 = explode('.', $value->name);
-            if ($tmp != $tmp2[0]) {
-                $tmp = $tmp2[0];
-                $arr[] = $tmp;
-            }
-        }
-
-        return $arr;
+        return Permission::all()->map(function ($permission) {
+            return explode('.', $permission->name)[0];
+        })->unique();
     }
 
     public function togglePermission($role, $permission)

@@ -303,9 +303,15 @@ class RolesTableSeeder extends Seeder
         $perm['solicitaParecerDocumento'][] = Defender::permissionExists('documents.advices') ? Defender::findPermission('documents.advices') : Defender::createPermission('documents.advices', 'Pode pedir parecer documento');
 
         $perm['editaProtocoloDocumento'][] = Defender::permissionExists('document.editprotocol') ? Defender::findPermission('document.editprotocol') : Defender::createPermission('document.editprotocol', 'Pode editar protocolo de um documento');
+        $perm['editaProtocoloDocumento'][] = Defender::permissionExists('document.createProtocolNumber') ?
+            Defender::findPermission('document.createProtocolNumber') :
+            Defender::createPermission('document.createProtocolNumber', 'Pode protocolar um documento');
         $perm['editaNumeroDocumento'][] = Defender::permissionExists('document.editnumero') ? Defender::findPermission('document.editnumero') : Defender::createPermission('document.editnumero', 'Pode editar numero de um documento');
 
         $perm['editaProtocoloLei'][] = Defender::permissionExists('lawsProject.editprotocollei') ? Defender::findPermission('lawsProject.editprotocollei') : Defender::createPermission('lawsProject.editprotocollei', 'Pode editar protocolo de uma lei');
+        $perm['editaProtocoloLei'][] = Defender::permissionExists('lawsProject.createLawProjectNumber') ?
+            Defender::findPermission('lawsProject.createLawProjectNumber') :
+            Defender::createPermission('lawsProject.createLawProjectNumber', 'Pode protocolar um projeto de lei');
         $perm['editaNumeroLei'][] = Defender::permissionExists('lawsProject.editnumerolei') ? Defender::findPermission('lawsProject.editnumerolei') : Defender::createPermission('lawsProject.editnumerolei', 'Pode editar numero de uma lei');
         $perm['editaNumeroAprovacao'][] = Defender::permissionExists('lawProject.approvedEdit') ? Defender::findPermission('lawProject.approvedEdit') : Defender::createPermission('lawProject.approvedEdit', 'Pode editar numero de aprovação de uma lei');
 
@@ -379,6 +385,15 @@ class RolesTableSeeder extends Seeder
             $roleAdmin->attachPermission($item);
         }
 
+        $roleReadDocument
+            ->attachPermission(
+                collect($perm['editaProtocoloDocumento'])
+                    ->filter(function ($permission) {
+                        return $permission->name === 'document.createProtocolNumber';
+                    })
+                    ->first()
+            );
+
         foreach ($perm['editaNumeroDocumento'] as $item) {
             $roleRoot->attachPermission($item);
             $roleAdmin->attachPermission($item);
@@ -388,6 +403,15 @@ class RolesTableSeeder extends Seeder
             $roleRoot->attachPermission($item);
             $roleAdmin->attachPermission($item);
         }
+
+        $roleReadLawsProject
+            ->attachPermission(
+                collect($perm['editaProtocoloLei'])
+                    ->filter(function ($permission) {
+                        return $permission->name === 'lawsProject.createLawProjectNumber';
+                    })
+                    ->first()
+            );
 
         foreach ($perm['editaNumeroLei'] as $item) {
             $roleRoot->attachPermission($item);
