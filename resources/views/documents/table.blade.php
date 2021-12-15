@@ -108,20 +108,41 @@
                             <label>
                                 <strong>Protocolo: </strong>
                                 <span id="tdprotocol{{$document->id}}">
-
-                                    @if(!$document->document_protocol && Auth::user()->sector->slug!="secretaria")
+                                    @if (
+                                    !$document->document_protocol &&
+                                    !Auth::user()->roleHasPermission('document.createProtocolNumber')
+                                )
                                         -
-                                    @elseif(!$document->document_protocol && Auth::user()->sector->slug=="secretaria")
-                                        <button type="button" class='btn btn-default btn-xs btn-protocol' value="{!! $document->id !!}">
-                                            <i class="glyphicon glyphicon-folder-open"></i>
-                                        </button>
+                                    @elseif (
+                                        !$document->document_protocol &&
+                                        Auth::user()->roleHasPermission('document.createProtocolNumber')
+                                    )
+                                        <button
+                                            type="button"
+                                            class='btn btn-default btn-xs btn-protocol'
+                                            value="{!! $document->id !!}"
+                                        >
+                                        <i class="glyphicon glyphicon-folder-open"></i>
+                                    </button>
                                     @else
                                         @shield('document.editprotocol')
-                                        <a href="javascript:void(0)" id='linkProtocolo{{$document->id}}' onclick="alteraProtocolo('{!!$document->id!!}', '{{date('d/m/Y H:i:s', strtotime($document->document_protocol->created_at))}}');">
-                                                @if($document->document_protocol)
+                                        <a
+                                            href="javascript:void(0)"
+                                            id='linkProtocolo{{$document->id}}'
+                                            onclick="alteraProtocolo(
+                                                '{!!$document->id!!}',
+                                                '{{
+                                                    date('d/m/Y H:i:s',
+                                                    strtotime(
+                                                        $document->document_protocol->created_at
+                                                    ))
+                                                }}'
+                                                );"
+                                        >
+                                            @if($document->document_protocol)
                                                 {{$document->document_protocol->number}}
                                             @endif
-                                            </a>
+                                        </a>
                                         @endshield
                                     @endif
                                 </span>
