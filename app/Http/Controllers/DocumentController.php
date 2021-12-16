@@ -96,34 +96,32 @@ class DocumentController extends AppBaseController
      * Display a listing of the Document.
      *
      * @param Request $request
-     * @return Application|Factory|Redirector|RedirectResponse|View
+     * @return Application|Factory|View
      */
     public function index(Request $request)
     {
-        $documents_query = Document::byDateDesc();
+        $documents_query = Document::query();
+
+        if (Auth::user()->sector->slug === 'gabinete') {
+            $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
+            $gabIds = $this->getAssembbyIds($gabs);
+            $documents_query->whereIN('owner_id', $gabIds);
+        }
 
         if (count($request->all())) {
+            ! empty($request->reg) ?
+                $documents_query
+                    ->join('document_numbers', 'documents.id', '=', 'document_numbers.document_id')
+                    ->select('documents.*')
+                    ->where('document_numbers.date', date('Y-m-d H:i:s', $request->reg)) :
+                null;
             ! empty($request->type) ? $documents_query->where('document_type_id', $request->type) : null;
             ! empty($request->number) ? $documents_query->where('number', $request->number) : null;
             ! empty($request->year) ? $documents_query->where('date', 'like', $request->year.'%') : null;
             ! empty($request->owner) ? $documents_query->where('owner_id', $request->owner) : null;
-            ! empty($request->text) ? $documents_query->where('content', 'like', '%'.$request->text.'%') : null;
-
-            if (Auth::user()->sector->slug != 'gabinete') {
-                $documents_query->paginate(20);
-            } else {
-                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds = $this->getAssembbyIds($gabs);
-                $documents_query->whereIN('owner_id', $gabIds)->paginate(20);
-            }
-        } else {
-            if (Auth::user()->sector->slug != 'gabinete') {
-                Document::byDateDesc()->paginate(20);
-            } else {
-                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds = $this->getAssembbyIds($gabs);
-                Document::whereIN('owner_id', $gabIds)->byDateDesc()->paginate(20);
-            }
+            ! empty($request->text) ?
+                $documents_query->where('content', 'like', '%'.$request->text.'%') :
+                null;
         }
 
         $documents = $documents_query->with([
@@ -138,6 +136,7 @@ class DocumentController extends AppBaseController
             ->orWhereHas('document_protocol')
             ->orderByDesc('created_at')
             ->paginate(20);
+
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();
