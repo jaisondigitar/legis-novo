@@ -12,19 +12,35 @@
                     @if($document->document_type->parent_id)
                         {{ $document->document_type->parent->name }} ::
                     @endif
-                    {!! $document->document_type->name !!} -
-                    @if($document->number==0)
+                        {!! $document->document_type->name !!} -
+                    @if($document->number === 0)
                         -
-                    @elseif($document->number!=0)
-                        @shield('document.editnumero')
-                        <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
-                            {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
-                        </a>
-                        @endshield
+                    @elseif($document->number !== 0)
+                        @if (Auth::user()->roleHasPermission('document.editnumero'))
+                            <a
+                                href="javascript:void(0)"
+                                id="numberEdit{{$document->id}}"
+                                onclick="alteraNumero('{{ $document->id }}');"
+                            >
+                                {!!
+                                    $document->number
+                                !!}{!!
+                                    '/' . $document->getYear($document->date)
+                                !!}
+                            </a>
+                        @else
+                            <span>
+                                {!!
+                                    $document->number
+                                !!}{!!
+                                    '/' . $document->getYear($document->date)
+                                !!}
+                            </span>
+                        @endif
                     @else
-                        @shield('document.editnumero')
-                        {!! $document->number . '/' . $document->getYear($document->date) !!}
-                        @endshield
+                        @if (Auth::user()->roleHasPermission('document.editnumero'))
+                            {!! $document->number . '/' . $document->getYear($document->date) !!}
+                        @endif
                     @endif
                 </label>
 
@@ -49,18 +65,34 @@
                     <label>
                         <strong>Número:</strong>
                         <span id="tdnumber{{$document->id}}">
-                            @if($document->number==0)
+                            @if($document->number === 0)
                                 -
-                            @elseif($document->number != 0)
-                                @shield('document.editnumero')
-                                <a href="javascript:void(0)" id="numberEdit{{$document->id}}" onclick="alteraNumero('{{$document->id}}');">
-                                        {!! $document->number !!}{!!'/' . $document->getYear($document->date) !!}
+                            @elseif($document->number !== 0)
+                                @if (Auth::user()->roleHasPermission('document.editnumero'))
+                                    <a
+                                        href="javascript:void(0)"
+                                        id="numberEdit{{$document->id}}"
+                                        onclick="alteraNumero('{{$document->id}}');"
+                                    >
+                                        {!!
+                                            $document->number !!}{!!'/' . $document->getYear($document->date)
+                                        !!}
                                     </a>
-                                @endshield
+                                @else
+                                    <span>
+                                        {!!
+                                            $document->number
+                                        !!}{!!
+                                            '/' . $document->getYear($document->date)
+                                        !!}
+                                    </span>
+                                @endif
                             @else
-                                @shield('document.editnumero')
-                                {!! $document->number . '/' . $document->getYear($document->date) !!}
-                                @endshield
+                                @if (Auth::user()->roleHasPermission('document.editnumero'))
+                                    {!!
+                                        $document->number.'/'.$document->getYear($document->date)
+                                    !!}
+                                @endif
                             @endif
                         </span>
                     </label>
@@ -87,25 +119,31 @@
                                     <i class="glyphicon glyphicon-folder-open"></i>
                                 </button>
                             @else
-                                @shield('document.editprotocol')
-                                <a
-                                    href="javascript:void(0)"
-                                    id='linkProtocolo{{$document->id}}'
-                                    onclick="alteraProtocolo(
-                                        '{!!$document->id!!}',
-                                        '{{
+                                @if (Auth::user()->roleHasPermission('document.editprotocol'))
+                                    <a
+                                        href="javascript:void(0)"
+                                        id='linkProtocolo{{$document->id}}'
+                                        onclick="alteraProtocolo(
+                                            '{!!$document->id!!}',
+                                            '{{
                                                 date('d/m/Y H:i:s',
                                                 strtotime(
                                                     $document->document_protocol->created_at
                                                 ))
                                             }}'
-                                        );"
-                                >
+                                            );"
+                                    >
                                         @if($document->document_protocol)
-                                        {{$document->document_protocol->number}}
-                                    @endif
+                                            {{$document->document_protocol->number}}
+                                        @endif
                                     </a>
-                                @endshield
+                                @else
+                                    <span>
+                                        @if($document->document_protocol)
+                                            {{$document->document_protocol->number}}
+                                        @endif
+                                    </span>
+                                @endif
                             @endif
                         </span>
                     </label>
@@ -153,7 +191,7 @@
                 <label style="margin-top: 10px; min-height: 8rem">
                     <strong>Ementa:</strong>
                     <span>
-                        @if($document->resume==='')
+                        @if($document->resume === '')
                             -
                         @else
                             <p class="resume">
