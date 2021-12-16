@@ -29,7 +29,7 @@
                                 !!}
                             </a>
                         @else
-                            <span>
+                            <span style="color: #37BC9B">
                                 {!!
                                     $document->number
                                 !!}{!!
@@ -39,7 +39,11 @@
                         @endif
                     @else
                         @if (Auth::user()->roleHasPermission('document.editnumero'))
-                            {!! $document->number . '/' . $document->getYear($document->date) !!}
+                            <span style="color: #37BC9B">
+                                {!!
+                                    $document->number . '/' . $document->getYear($document->date)
+                                !!}
+                            </span>
                         @endif
                     @endif
                 </label>
@@ -79,7 +83,7 @@
                                         !!}
                                     </a>
                                 @else
-                                    <span>
+                                    <span style="color: #37BC9B">
                                         {!!
                                             $document->number
                                         !!}{!!
@@ -89,9 +93,13 @@
                                 @endif
                             @else
                                 @if (Auth::user()->roleHasPermission('document.editnumero'))
-                                    {!!
-                                        $document->number.'/'.$document->getYear($document->date)
-                                    !!}
+                                    <span style="color: #37BC9B">
+                                        {!!
+                                            $document->number
+                                        !!}{!!
+                                            '/' . $document->getYear($document->date)
+                                        !!}
+                                    </span>
                                 @endif
                             @endif
                         </span>
@@ -138,7 +146,7 @@
                                         @endif
                                     </a>
                                 @else
-                                    <span>
+                                    <span style="color: #37BC9B">
                                         @if($document->document_protocol)
                                             {{$document->document_protocol->number}}
                                         @endif
