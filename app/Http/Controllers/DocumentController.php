@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateDocumentRequest;
+use App\Http\Requests\IndexDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
 use App\Models\AdvicePublicationDocuments;
 use App\Models\AdviceSituationDocuments;
@@ -38,7 +39,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
@@ -95,21 +98,34 @@ class DocumentController extends AppBaseController
     /**
      * Display a listing of the Document.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Application|Factory|View
      */
     public function index(Request $request)
     {
+        DB::enableQueryLog();
+
         $documents_query = Document::query();
 
-        if (Auth::user()->sector->slug === 'gabinete') {
+        /*if (Auth::user()->sector->slug === 'gabinete') {
             $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
             $gabIds = $this->getAssembbyIds($gabs);
-            $documents_query->whereIN('owner_id', $gabIds);
-        }
+            $documents_query->whereIn('owner_id', $gabIds);
+        }*/
 
-        if (count($request->all())) {
-            ! empty($request->reg) ?
+//        $documents_query->orWhere('users_id', Auth::user()->id)
+//            ->orWhereHas('document_protocol');
+
+        if (data_get($request->all(), 'has-filter')) {
+            foreach ($request->all() as $key => $value) {
+                if (Schema::hasColumn('documents', $key) && ! empty($value)) {
+                    $documents_query->where($key, 'like', "%{$value}%");
+                }
+            }
+
+
+
+            /*! empty($request->reg) ?
                 $documents_query
                     ->join('document_numbers', 'documents.id', '=', 'document_numbers.document_id')
                     ->select('documents.*')
@@ -121,22 +137,32 @@ class DocumentController extends AppBaseController
             ! empty($request->owner) ? $documents_query->where('owner_id', $request->owner) : null;
             ! empty($request->text) ?
                 $documents_query->where('content', 'like', '%'.$request->text.'%') :
-                null;
-        }
+                null;*/
+        } /*else {
+            $documents_query
+                ->orWhere('users_id', Auth::user()->id)
+                ->orWhereHas('document_protocol');
+        }*/
 
         $documents = $documents_query->with([
-            'processingDocument' => function ($query) {
-                return $query->orderByDesc('created_at')->first();
-            },
-            'processingDocument.statusProcessingDocument',
-            'processingDocument.destination',
-            'externalSector',
-        ])
-            ->orWhere('users_id', Auth::user()->id)
-            ->orWhereHas('document_protocol')
+                'processingDocument' => function ($query) {
+                    return $query->orderByDesc('created_at')->first();
+                },
+                'processingDocument.statusProcessingDocument',
+                'processingDocument.destination',
+                'externalSector',
+            ])
+//            ->orWhere('users_id', Auth::user()->id)
             ->orderByDesc('created_at')
             ->paginate(20);
 
+        foreach ($documents->items() as $index => $document) {
+            if (! $document->document_protocol && $document->users_id !== Auth::user()->id) {
+                unset($documents[$index]);
+            }
+        }
+
+//        die();
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();
