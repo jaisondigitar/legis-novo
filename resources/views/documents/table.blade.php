@@ -31,19 +31,11 @@
     }
 </style>
 
-<h1>Abertos:</h1>
 <div class="container">
     @foreach($documents as $document)
         @if(!$document->document_protocol)
             @include('documents.card')
-        @endif
-    @endforeach
-</div>
-
-<h1>Protocolados:</h1>
-<div class="container">
-    @foreach($documents as $document)
-        @if($document->document_protocol)
+        @else
             @include('documents.card')
         @endif
     @endforeach
