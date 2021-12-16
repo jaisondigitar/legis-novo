@@ -87,11 +87,6 @@
                     {!! Form::number('next_number', null, ['class' => 'form-control', 'id' => 'next_number']) !!}
                     <label class="label label-danger" id="labelmessage"></label>
                 </div>
-                {{--<div class="form-group col-sm-4">--}}
-                    {{--{!! Form::label('version', 'Versão:') !!}--}}
-                    {{--{!! Form::text('version', null, ['class' => 'form-control', 'id' => 'version']) !!}--}}
-                    {{--<label class="label label-danger" id="labelmessage"></label>--}}
-                {{--</div>--}}
                 <div class="form-group col-sm-4">
                     {!! Form::label('year_document', 'Ano doc. oficial:') !!}
                     {!! Form::text('year_document', null, ['class' => 'form-control', 'id' => 'year_document', 'readonly']) !!}
@@ -157,13 +152,6 @@
                     {!! Form::text('document_number_edit', null, ['class' => 'form-control', 'id' => 'document_number_edit']) !!}
                     <label class="label label-danger" id="labelmessageeditnum"></label>
                 </div>
-
-                {{--<div class="form-group col-sm-4">--}}
-                    {{--{!! Form::label('document_version_edit', 'Versão Documento:') !!}--}}
-                    {{--{!! Form::text('document_version_edit', null, ['class' => 'form-control', 'id' => 'document_version_edit']) !!}--}}
-                    {{--<label class="label label-danger" id="labelmessageeditnum"></label>--}}
-                {{--</div>--}}
-
             </div>
             <div class="clearfix"></div>
             <div class="modal-footer">
@@ -178,8 +166,6 @@
     $(document).ready(function(){
         $('#protocol_date').datetimepicker({format: 'DD/MM/YYYY HH:mm:ss'});
         $('#protocol_date_edit').datetimepicker({format: 'DD/MM/YYYY HH:mm:ss'});
-
-
 
         var data = new Date();
         var dia     = data.getDate();           // 1-31
