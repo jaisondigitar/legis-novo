@@ -8,7 +8,7 @@ class DocumentStatuses
     public const PROTOCOLED = 2;
 
     public static array $statuses = [
-        self::OPENED,
-        self::PROTOCOLED,
+        1 => self::OPENED,
+        2 => self::PROTOCOLED,
     ];
 }

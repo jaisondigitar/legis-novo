@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DocumentStatuses;
 use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Requests\IndexDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
@@ -103,46 +104,25 @@ class DocumentController extends AppBaseController
      */
     public function index(Request $request)
     {
-        DB::enableQueryLog();
-
         $documents_query = Document::query();
 
-        /*if (Auth::user()->sector->slug === 'gabinete') {
-            $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-            $gabIds = $this->getAssembbyIds($gabs);
-            $documents_query->whereIn('owner_id', $gabIds);
-        }*/
-
-//        $documents_query->orWhere('users_id', Auth::user()->id)
-//            ->orWhereHas('document_protocol');
-
         if (data_get($request->all(), 'has-filter')) {
-            foreach ($request->all() as $key => $value) {
-                if (Schema::hasColumn('documents', $key) && ! empty($value)) {
-                    $documents_query->where($key, 'like', "%{$value}%");
-                }
+            $documents_query = $documents_query->filterByColumns()
+                ->filterByRelation(
+                    'document_number',
+                    'date',
+                    'date',
+                    $request->get('reg')
+                );
+
+            if (
+                isset(DocumentStatuses::$statuses[$request->get('status')]) &&
+                DocumentStatuses::$statuses[$request->get('status')] ===
+                DocumentStatuses::PROTOCOLED
+            ) {
+                $documents_query->hasRelation('document_protocol');
             }
-
-
-
-            /*! empty($request->reg) ?
-                $documents_query
-                    ->join('document_numbers', 'documents.id', '=', 'document_numbers.document_id')
-                    ->select('documents.*')
-                    ->where('document_numbers.date', date('Y-m-d H:i:s', $request->reg)) :
-                null;
-            ! empty($request->type) ? $documents_query->where('document_type_id', $request->type) : null;
-            ! empty($request->number) ? $documents_query->where('number', $request->number) : null;
-            ! empty($request->year) ? $documents_query->where('date', 'like', $request->year.'%') : null;
-            ! empty($request->owner) ? $documents_query->where('owner_id', $request->owner) : null;
-            ! empty($request->text) ?
-                $documents_query->where('content', 'like', '%'.$request->text.'%') :
-                null;*/
-        } /*else {
-            $documents_query
-                ->orWhere('users_id', Auth::user()->id)
-                ->orWhereHas('document_protocol');
-        }*/
+        }
 
         $documents = $documents_query->with([
                 'processingDocument' => function ($query) {
@@ -152,7 +132,6 @@ class DocumentController extends AppBaseController
                 'processingDocument.destination',
                 'externalSector',
             ])
-//            ->orWhere('users_id', Auth::user()->id)
             ->orderByDesc('created_at')
             ->paginate(20);
 
@@ -161,8 +140,6 @@ class DocumentController extends AppBaseController
                 unset($documents[$index]);
             }
         }
-
-//        die();
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();

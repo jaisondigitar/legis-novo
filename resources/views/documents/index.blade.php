@@ -4,11 +4,17 @@
 @endsection
 @section('content')
     <div class="the-box rounded">
-        <form method="GET">
+        <form id="search-form" method="GET">
             <input type="hidden" name="has-filter" value="true">
             <div class="form-group col-md-2">
                 {!! Form::label('date', 'Registro:') !!}
-                {!! Form::text('reg', $form->input('reg'), ['class' => 'form-control']) !!}
+                {!!
+                    Form::text('reg', $form->input('reg'), [
+                        'class' => 'form-control datepicker text-center',
+                        'minlength' => '10',
+                        'maxlength' => '10',
+                    ])
+                !!}
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('owner_id', 'Tipo:') !!}
@@ -38,10 +44,19 @@
             </div>
 
             <div class="form-group col-md-10">
-                <button class="btn btn-block btn-primary"><i class="fa fa-search"></i> Pesquisar</button>
+                <button
+                    class="btn btn-block btn-primary"
+                >
+                    <i class="fa fa-search"></i> Pesquisar
+                </button>
             </div>
             <div class="form-group col-md-2">
-                <button type="reset" class="btn btn-block btn-warning"><i class="fa fa-recycle"></i> Reset</button>
+                <button
+                    type="reset"
+                    class="btn btn-block btn-warning"
+                >
+                    <i class="fa fa-recycle"></i> Reset
+                </button>
             </div>
         </form>
         <div class="clearfix"></div>
