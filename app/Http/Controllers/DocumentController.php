@@ -40,9 +40,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
@@ -121,12 +119,18 @@ class DocumentController extends AppBaseController
                     $request->get('reg')
                 );
 
-            if (
-                isset(DocumentStatuses::$statuses[$request->get('status')]) &&
-                DocumentStatuses::$statuses[$request->get('status')] ===
-                DocumentStatuses::PROTOCOLED
-            ) {
-                $documents_query->hasRelation('document_protocol');
+            if (isset(DocumentStatuses::$statuses[$request->get('status')])) {
+                if (
+                    DocumentStatuses::$statuses[$request->get('status')] ===
+                    DocumentStatuses::PROTOCOLED
+                ) {
+                    $documents_query->hasRelation('document_protocol');
+                } elseif (
+                    DocumentStatuses::$statuses[$request->get('status')] ===
+                    DocumentStatuses::OPENED
+                ) {
+                    $documents_query->whereDoesntHave('document_protocol');
+                }
             }
         }
 
@@ -146,6 +150,8 @@ class DocumentController extends AppBaseController
                 unset($documents[$index]);
             }
         }
+
+//        dd(DB::getQueryLog());
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();

@@ -18,8 +18,12 @@
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('owner_id', 'Tipo:') !!}
-                {!! Form::select('document_type_id', App\Models\DocumentType::pluck('name', 'id')->prepend
-                ('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                {!! Form::select(
+                    'document_type_id',
+                    App\Models\DocumentType::pluck('name', 'id')
+                        ->prepend('Selecione...', ''),
+                    $form->input('owner_id'), ['class' => 'form-control'])
+                !!}
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Número:') !!}
@@ -27,20 +31,20 @@
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Ano:') !!}
-                {!! Form::input('number', 'date', $form->input('year'), ['class' => 'form-control', 'min' => 1000, 'max' => 9999]) !!}
+                {!! Form::input('number', 'date', $form->input('date'), ['class' => 'form-control', 'min' => 1000, 'max' => 9999]) !!}
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('owner_id', 'Responsável:') !!}
-                {!! Form::select('owner_id', $assemblymensList, $form->input('owner'), ['class' => 'form-control']) !!}
+                {!! Form::select('owner_id', $assemblymensList, $form->input('owner_id'), ['class' => 'form-control']) !!}
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('date', 'Que contenha (texto):') !!}
-                {!! Form::text('content', $form->input('text'), ['class' => 'form-control']) !!}
+                {!! Form::text('content', $form->input('content'), ['class' => 'form-control']) !!}
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('status', 'Status:') !!}
                 {!! Form::select('status', [0 => 'Selecione...', 1 => 'Aberto', 2 =>
-                'Protocolado'], $form->input('text'), ['class' => 'form-control']) !!}
+                'Protocolado'], $form->input('status'), ['class' => 'form-control']) !!}
             </div>
 
             <div class="form-group col-md-10">

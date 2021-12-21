@@ -120,29 +120,9 @@ class LawsProjectController extends AppBaseController
 
         $lawsProjects_query = LawsProject::query();
 
-        /*if (count($request->all())) {
-            ! empty($request->reg) ? $lawsProjects_query->where('updated_at', date('Y-m-d H:i:s', $request->reg)) : null;
-            ! empty($request->type) ? $lawsProjects_query->where('law_type_id', $request->type) : null;
-            ! empty($request->number) ? $lawsProjects_query->where('project_number', $request->number) : null;
-            ! empty($request->year) ? $lawsProjects_query->where('law_date', 'like', $request->year.'%') : null;
-            ! empty($request->owner) ? $lawsProjects_query->where('assemblyman_id', $request->owner) : null;
-
-            if (Auth::user()->sector->slug != 'gabinete') {
-                $lawsProjects_query->paginate(20);
-            } else {
-                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds = $this->getAssembbyIds($gabs);
-                $lawsProjects_query->whereIN('assemblyman_id', $gabIds)->paginate(20);
-            }
-        } else {
-            if (Auth::user()->sector->slug !== 'gabinete') {
-                LawsProject::byDateDesc()->paginate(20);
-            } else {
-                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds = $this->getAssembbyIds($gabs);
-                LawsProject::whereIN('assemblyman_id', $gabIds)->byDateDesc()->paginate(20);
-            }
-        }*/
+        if (data_get($request->all(), 'has-filter')) {
+            $lawsProjects_query->filterByColumns();
+        }
 
         $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
 
@@ -163,13 +143,13 @@ class LawsProjectController extends AppBaseController
         $offices_ids = $this->getAssembbyIds($offices);
 
         if (Auth::user()->sector->slug === 'gabinete') {
-            $lawsProjects_query
-                ->whereIn('assemblyman_id', $offices_ids);
+            $lawsProjects_query->where(function ($query) use ($offices_ids) {
+                $query->whereIn('assemblyman_id', $offices_ids)
+                    ->orWhere('protocol', '!=', '');
+            });
         }
 
-        $lawsProjects = $lawsProjects_query
-            ->orWhere('protocol', '!=', '')
-            ->orderByDesc('created_at')
+        $lawsProjects = $lawsProjects_query->orderByDesc('created_at')
             ->paginate(20);
 
         return view('lawsProjects.index', compact('externo'))

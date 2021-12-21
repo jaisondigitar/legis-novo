@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use OwenIt\Auditing\Auditable as AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -16,9 +17,29 @@ class BaseModel extends Model implements Auditable
 
     public function scopeFilterByColumns($query)
     {
+        $schema = DB::getSchemaBuilder();
+
         foreach (request()->all() as $key => $value) {
             if (Schema::hasColumn($this->table, $key) && ! empty($value)) {
-                $query->where($key, 'like', "%{$value}%");
+                switch ($schema->getColumnType($this->table, $key)) {
+                    case 'integer':
+                        $query->where($key, $value);
+                    break;
+                    case 'datetime':
+                        if (strlen($value) === 4) {
+                            $query->whereYear($key, '=', $value);
+                        } else {
+                            $query->whereDate(
+                                $key,
+                                '=',
+                                Carbon::parse(str_replace('/', '-', $value))
+                                    ->format('Y-m-d')
+                            );
+                        }
+                    break;
+                    default:
+                        $query->where($key, 'like', "%{$value}%");
+                }
             }
         }
     }
