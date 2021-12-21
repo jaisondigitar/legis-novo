@@ -117,6 +117,11 @@ class Document extends BaseModel
         'content' => 'required',
     ];
 
+    public function documentNumber()
+    {
+        return $this->belongsTo(DocumentNumber::class, 'document_id');
+    }
+
     public function externalSector()
     {
         return $this->belongsTo(Sector::class, 'sector_id');

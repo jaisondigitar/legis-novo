@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DocumentStatuses;
 use App\Http\Requests\CreateDocumentRequest;
+use App\Http\Requests\IndexDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
 use App\Models\AdvicePublicationDocuments;
 use App\Models\AdviceSituationDocuments;
@@ -95,48 +97,61 @@ class DocumentController extends AppBaseController
     /**
      * Display a listing of the Document.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Application|Factory|View
      */
     public function index(Request $request)
     {
-        $documents_query = Document::query();
+        if (! Defender::hasPermission('documents.index')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
-        if (Auth::user()->sector->slug === 'gabinete') {
-            $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-            $gabIds = $this->getAssembbyIds($gabs);
-            $documents_query->whereIN('owner_id', $gabIds);
+            return redirect('/admin');
         }
 
-        if (count($request->all())) {
-            ! empty($request->reg) ?
-                $documents_query
-                    ->join('document_numbers', 'documents.id', '=', 'document_numbers.document_id')
-                    ->select('documents.*')
-                    ->where('document_numbers.date', date('Y-m-d H:i:s', $request->reg)) :
-                null;
-            ! empty($request->type) ? $documents_query->where('document_type_id', $request->type) : null;
-            ! empty($request->number) ? $documents_query->where('number', $request->number) : null;
-            ! empty($request->year) ? $documents_query->where('date', 'like', $request->year.'%') : null;
-            ! empty($request->owner) ? $documents_query->where('owner_id', $request->owner) : null;
-            ! empty($request->text) ?
-                $documents_query->where('content', 'like', '%'.$request->text.'%') :
-                null;
+        $documents_query = Document::query();
+
+        if (data_get($request->all(), 'has-filter')) {
+            $documents_query = $documents_query->filterByColumns()
+                ->filterByRelation(
+                    'document_number',
+                    'date',
+                    'date',
+                    $request->get('reg')
+                );
+
+            if (isset(DocumentStatuses::$statuses[$request->get('status')])) {
+                if (
+                    DocumentStatuses::$statuses[$request->get('status')] ===
+                    DocumentStatuses::PROTOCOLED
+                ) {
+                    $documents_query->hasRelation('document_protocol');
+                } elseif (
+                    DocumentStatuses::$statuses[$request->get('status')] ===
+                    DocumentStatuses::OPENED
+                ) {
+                    $documents_query->whereDoesntHave('document_protocol');
+                }
+            }
         }
 
         $documents = $documents_query->with([
-            'processingDocument' => function ($query) {
-                return $query->orderByDesc('created_at')->first();
-            },
-            'processingDocument.statusProcessingDocument',
-            'processingDocument.destination',
-            'externalSector',
-        ])
-            ->orWhere('users_id', Auth::user()->id)
-            ->orWhereHas('document_protocol')
+                'processingDocument' => function ($query) {
+                    return $query->orderByDesc('created_at')->first();
+                },
+                'processingDocument.statusProcessingDocument',
+                'processingDocument.destination',
+                'externalSector',
+            ])
             ->orderByDesc('created_at')
             ->paginate(20);
 
+        foreach ($documents->items() as $index => $document) {
+            if (! $document->document_protocol && $document->users_id !== Auth::user()->id) {
+                unset($documents[$index]);
+            }
+        }
+
+//        dd(DB::getQueryLog());
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();

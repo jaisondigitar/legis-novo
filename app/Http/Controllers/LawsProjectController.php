@@ -38,6 +38,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
@@ -105,6 +106,8 @@ class LawsProjectController extends AppBaseController
      */
     public function index(Request $request)
     {
+        DB::enableQueryLog();
+
         if (! Defender::hasPermission('lawsProjects.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
@@ -113,36 +116,12 @@ class LawsProjectController extends AppBaseController
 
         $parameters = Parameters::where('slug', 'sempre-usa-protocolo-externo')->first();
 
-        if (! $parameters->value) {
-            $externo = 'readonly';
-        } else {
-            $externo = '';
-        }
+        $externo = ! $parameters->value ? 'readonly' : '';
 
-        $lawsProjects_query = LawsProject::ByDateDesc();
+        $lawsProjects_query = LawsProject::query();
 
-        if (count($request->all())) {
-            ! empty($request->reg) ? $lawsProjects_query->where('updated_at', date('Y-m-d H:i:s', $request->reg)) : null;
-            ! empty($request->type) ? $lawsProjects_query->where('law_type_id', $request->type) : null;
-            ! empty($request->number) ? $lawsProjects_query->where('project_number', $request->number) : null;
-            ! empty($request->year) ? $lawsProjects_query->where('law_date', 'like', $request->year.'%') : null;
-            ! empty($request->owner) ? $lawsProjects_query->where('assemblyman_id', $request->owner) : null;
-
-            if (Auth::user()->sector->slug != 'gabinete') {
-                $lawsProjects_query->paginate(20);
-            } else {
-                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds = $this->getAssembbyIds($gabs);
-                $lawsProjects_query->whereIN('assemblyman_id', $gabIds)->paginate(20);
-            }
-        } else {
-            if (Auth::user()->sector->slug != 'gabinete') {
-                LawsProject::byDateDesc()->paginate(20);
-            } else {
-                $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-                $gabIds = $this->getAssembbyIds($gabs);
-                LawsProject::whereIN('assemblyman_id', $gabIds)->byDateDesc()->paginate(20);
-            }
+        if (data_get($request->all(), 'has-filter')) {
+            $lawsProjects_query->filterByColumns();
         }
 
         $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
@@ -154,13 +133,23 @@ class LawsProjectController extends AppBaseController
         $references_project = [0 => 'Selecione'];
 
         foreach ($references as $reference) {
-            $references_project[$reference->id] = $reference->project_number.'/'.$reference->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
+            $references_project[$reference->id] = $reference->project_number.'/'.$reference
+                    ->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
         }
 
         $lawsProjects_query->parecer = $request->parecer;
 
-        $lawsProjects = $lawsProjects_query
-            ->orderByDesc('created_at')
+        $offices = UserAssemblyman::where('users_id', Auth::user()->id)->get();
+        $offices_ids = $this->getAssembbyIds($offices);
+
+        if (Auth::user()->sector->slug === 'gabinete') {
+            $lawsProjects_query->where(function ($query) use ($offices_ids) {
+                $query->whereIn('assemblyman_id', $offices_ids)
+                    ->orWhere('protocol', '!=', '');
+            });
+        }
+
+        $lawsProjects = $lawsProjects_query->orderByDesc('created_at')
             ->paginate(20);
 
         return view('lawsProjects.index', compact('externo'))
