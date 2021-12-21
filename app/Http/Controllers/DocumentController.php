@@ -104,6 +104,12 @@ class DocumentController extends AppBaseController
      */
     public function index(Request $request)
     {
+        if (! Defender::hasPermission('documents.index')) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
+            return redirect('/admin');
+        }
+
         $documents_query = Document::query();
 
         if (data_get($request->all(), 'has-filter')) {
