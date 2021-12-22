@@ -230,6 +230,14 @@ class DocumentController extends AppBaseController
             $input['sector_id'] = null;
         }
 
+        $last_document = Document::where('document_type_id', $request->document_type_id)
+            ->whereYear('date', '=', Carbon::parse(str_replace('/', '-', $request->date))->year)
+            ->where('number', '!=', '')
+            ->orderBy('number', 'DESC')
+            ->first();
+
+        $input['number'] = $last_document->number + 1;
+
         $document = $this->documentRepository->create($input);
 
         if (! empty($input['assemblymen'])) {
