@@ -23,6 +23,7 @@ use App\Models\Log;
 use App\Models\MeetingPauta;
 use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
+use App\Models\ProcessingDocument;
 use App\Models\ProtocolType;
 use App\Models\Sector;
 use App\Models\StatusProcessingDocument;
@@ -239,6 +240,14 @@ class DocumentController extends AppBaseController
         $input['number'] = $last_document->number + 1;
 
         $document = $this->documentRepository->create($input);
+
+        ProcessingDocument::create([
+           'document_id' => $document->id,
+           'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
+               ->first()->id,
+           'processing_document_date' => now()->format('d/m/Y'),
+           'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
+        ]);
 
         if (! empty($input['assemblymen'])) {
             foreach ($input['assemblymen'] as $assemblyman) {
@@ -967,7 +976,7 @@ class DocumentController extends AppBaseController
         } else {
             $document = Document::find($input['document_id']);
             $document->number = $input['next_number'];
-//            $document->version = $input['version'];
+
             if ($document->save()) {
                 $document_protocol = new DocumentProtocol();
                 $document_protocol->document_id = $input['document_id'];

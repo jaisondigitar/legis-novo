@@ -217,7 +217,10 @@
                             @if(count($document->processingDocument)===0)
                                 -
                             @else
-                                {!! $document->processingDocument->first()->processing_document_date !!}
+                                {!!
+                                    $document->processingDocument->first()
+                                        ->processing_document_date
+                                !!}
                             @endif
                         </span>
                     </label>
@@ -230,7 +233,10 @@
                             @if(count($document->processingDocument)===0)
                                 -
                             @else
-                                {!! $document->processingDocument->first()->statusProcessingDocument->name !!}
+                                {!!
+                                    $document->processingDocument->first()
+                                        ->statusProcessingDocument->name
+                                !!}
                             @endif
                         </span>
                     </label>
