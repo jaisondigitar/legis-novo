@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\DocumentStatuses;
 use App\Http\Requests\CreateDocumentRequest;
-use App\Http\Requests\IndexDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
 use App\Models\AdvicePublicationDocuments;
 use App\Models\AdviceSituationDocuments;
@@ -145,13 +144,13 @@ class DocumentController extends AppBaseController
             ->orderByDesc('created_at')
             ->paginate(20);
 
-        foreach ($documents->items() as $index => $document) {
-            if (! $document->document_protocol && $document->users_id !== Auth::user()->id) {
-                unset($documents[$index]);
+        if (! Auth::user()->hasRoles(['root', 'admin'])) {
+            foreach ($documents->items() as $index => $document) {
+                if (! $document->document_protocol && $document->users_id !== Auth::user()->id) {
+                    unset($documents[$index]);
+                }
             }
         }
-
-//        dd(DB::getQueryLog());
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();
@@ -230,6 +229,14 @@ class DocumentController extends AppBaseController
         if (! $input['sector_id']) {
             $input['sector_id'] = null;
         }
+
+        $last_document = Document::where('document_type_id', $request->document_type_id)
+            ->whereYear('date', '=', Carbon::parse(str_replace('/', '-', $request->date))->year)
+            ->where('number', '!=', '')
+            ->orderBy('number', 'DESC')
+            ->first();
+
+        $input['number'] = $last_document->number + 1;
 
         $document = $this->documentRepository->create($input);
 

@@ -128,7 +128,8 @@ class AttendanceController extends Controller
 
         $people = People::firstOrCreate(
             ['cpf' => $request->cpf],
-            ['name' => $request->name,
+            [
+                'name' => $request->name,
                 'email' => $request->email,
                 'celular' => $request->celular,
                 'zipcode' => $request->zipcode,
@@ -137,7 +138,8 @@ class AttendanceController extends Controller
                 'complement' => $request->complement,
                 'district' => $request->district,
                 'state_id' => $request->state_id,
-                'city_id' => $request->city_id, ]
+                'city_id' => $request->city_id,
+            ]
         );
 
         if ($image) {
@@ -217,16 +219,34 @@ class AttendanceController extends Controller
      * @return Application|Redirector|RedirectResponse
      * @throws BindingResolutionException
      */
-    /*public function update(UpdateAttendanceRequest $request, $id)
+    public function update(UpdateAttendanceRequest $request, $id)
     {
         if (! Defender::hasPermission('attendance.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
             return redirect('/');
         }
+
+        People::where('cpf', $request->get('cpf'))
+            ->update($request->only([
+                'name',
+                'email',
+                'celular',
+                'zipcode',
+                'street',
+                'number',
+                'complement',
+                'district',
+                'state_id',
+                'city_id',
+            ]));
+
         $attendance = $this->attendanceRepository->findById($id);
+
         $this->attendanceRepository->update($attendance, $request->all());
+
         return redirect(route('attendance.index'));
-    }*/
+    }
 
     /**
      * Remove the specified resource from storage.
