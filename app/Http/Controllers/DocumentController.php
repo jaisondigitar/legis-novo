@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\DocumentStatuses;
 use App\Http\Requests\CreateDocumentRequest;
-use App\Http\Requests\IndexDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
 use App\Models\AdvicePublicationDocuments;
 use App\Models\AdviceSituationDocuments;
@@ -145,13 +144,13 @@ class DocumentController extends AppBaseController
             ->orderByDesc('created_at')
             ->paginate(20);
 
-        foreach ($documents->items() as $index => $document) {
-            if (! $document->document_protocol && $document->users_id !== Auth::user()->id) {
-                unset($documents[$index]);
+        if (! Auth::user()->hasRoles(['root', 'admin'])) {
+            foreach ($documents->items() as $index => $document) {
+                if (! $document->document_protocol && $document->users_id !== Auth::user()->id) {
+                    unset($documents[$index]);
+                }
             }
         }
-
-//        dd(DB::getQueryLog());
 
         $protocol_types = ProtocolType::pluck('name', 'id');
         $assemblymensList = $this->getAssemblymenList();
