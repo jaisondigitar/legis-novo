@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 
 /**
  * @SWG\Definition(
@@ -253,5 +254,13 @@ class Document extends BaseModel
         }
 
         return $str;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsProtocoledAttribute(): bool
+    {
+        return self::document_protocol()->get()->isNotEmpty();
     }
 }

@@ -574,4 +574,12 @@ class LawsProject extends BaseModel
     {
         return ! $this->law_type ? $this->law_type_id : mb_strtoupper($this->law_type->name, 'UTF-8');
     }
+
+    /**
+     * @return bool
+     */
+    public function getIsProtocoledAttribute(): bool
+    {
+        return (bool) $this->protocol;
+    }
 }
