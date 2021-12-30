@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Consulta</title>
+    <title>{{ $title }}</title>
     <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
 
     <!-- Bootstrap core CSS -->

@@ -1,4 +1,4 @@
-@extends('layouts.site')
+@extends('layouts.site', ['title' => 'Consulta'])
 @section('content')
     <div class="wrapper">
         <div class="header">
