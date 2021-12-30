@@ -264,6 +264,16 @@
         {!! Form::open(['route' => ['documents.destroy', $document->id], 'method' => 'delete']) !!}
 
         <div class='btn-group action' id="tdoptions{{$document->id}}">
+                @if (Auth::user()->hasPermission('signer.sign') && $document->is_protocoled)
+                    <a
+                        href="{!! route('documents.show', [$document->id]) !!}"
+                        target="_blank"
+                        class="btn btn-default btn-xs tooltip-legis"
+                        data-tooltip="Assinar"
+                    >
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                @endif
             @shield('documents.show')
             <a href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
                 <i class="glyphicon glyphicon-eye-open"></i>

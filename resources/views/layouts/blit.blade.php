@@ -154,6 +154,27 @@
             color: red;
             padding-right: 3px;
         }
+
+        /* Tooltip configs */
+        .tooltip-legis:hover::before {
+            display: inline-block;
+        }
+
+        .tooltip-legis::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: -2.5rem;
+            font-size: 0.9em;
+            padding: 1px 5px;
+            display: none;
+            color: white;
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 4px;
+            transition: opacity 0.1s ease-out;
+            z-index: 99;
+            text-align: left;
+        }
+        /* End tooltip configs */
     </style>
     <script type="application/javascript">
 
