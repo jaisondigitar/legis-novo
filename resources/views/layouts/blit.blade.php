@@ -175,6 +175,11 @@
             text-align: left;
         }
         /* End tooltip configs */
+
+        .signature-icon {
+            padding-left: 3px;
+            padding-bottom: 2px;
+        }
     </style>
     <script type="application/javascript">
 

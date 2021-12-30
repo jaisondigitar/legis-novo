@@ -271,7 +271,11 @@
                         class="btn btn-default btn-xs tooltip-legis"
                         data-tooltip="Assinar"
                     >
-                        <i class="glyphicon glyphicon-pencil"></i>
+                        <img
+                            src="/assets/images/signature-icon-light.svg"
+                            alt="assinar"
+                            class="signature-icon"
+                        >
                     </a>
                 @endif
             @shield('documents.show')
