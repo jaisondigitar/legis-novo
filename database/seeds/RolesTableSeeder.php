@@ -28,6 +28,10 @@ class RolesTableSeeder extends Seeder
 
         $rolePodePedirParecer = Defender::roleExists('Solicita parecer') ? Defender::findRole('Solicita parecer') : Defender::createRole('Solicita parecer');
 
+        $signerRole = Defender::roleExists('Assinante') ?
+            Defender::findRole('Assinante') :
+            Defender::createRole('Assinante');
+
         /*
          *  PERMISSOES ROOT
          */
@@ -315,6 +319,10 @@ class RolesTableSeeder extends Seeder
         $perm['editaNumeroLei'][] = Defender::permissionExists('lawsProject.editnumerolei') ? Defender::findPermission('lawsProject.editnumerolei') : Defender::createPermission('lawsProject.editnumerolei', 'Pode editar numero de uma lei');
         $perm['editaNumeroAprovacao'][] = Defender::permissionExists('lawProject.approvedEdit') ? Defender::findPermission('lawProject.approvedEdit') : Defender::createPermission('lawProject.approvedEdit', 'Pode editar numero de aprovação de uma lei');
 
+        $perm['signer'][] = Defender::permissionExists('signer.sign') ?
+            Defender::findPermission('signer.sign') :
+            Defender::createPermission('signer.sign', 'Pode assinar documentos');
+
         /*
          *  ATIVAR PERMISSOES PADRAO
          */
@@ -416,6 +424,12 @@ class RolesTableSeeder extends Seeder
         foreach ($perm['editaNumeroLei'] as $item) {
             $roleRoot->attachPermission($item);
             $roleAdmin->attachPermission($item);
+        }
+
+        foreach ($perm['signer'] as $item) {
+            $roleRoot->attachPermission($item);
+            $roleAdmin->attachPermission($item);
+            $signerRole->attachPermission($item);
         }
     }
 }

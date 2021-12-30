@@ -735,7 +735,7 @@ class DocumentController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws BindingResolutionException
      */
-    public function update($id, UpdateDocumentRequest $request)
+    public function update(int $id, UpdateDocumentRequest $request)
     {
         if (! Defender::hasPermission('documents.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -761,8 +761,7 @@ class DocumentController extends AppBaseController
 
         $document = $this->documentRepository->update($document, $document_data);
 
-
-        $document_asseblyman_delete = DocumentAssemblyman::where('document_id', $id)->delete();
+        DocumentAssemblyman::where('document_id', $id)->delete();
 
         if (! empty($document_data['assemblymen'])) {
             foreach ($document_data['assemblymen'] as $assemblyman) {
