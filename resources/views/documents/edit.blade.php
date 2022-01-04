@@ -53,10 +53,10 @@
 
                         echo '<p style="border: 1px solid #adadad"></p>';
 
-                        echo '<div class="col-sm-1"><b>ID:</b> '.strtoupper($log->auditable_id).'</div>';
+                        echo '<div class="col-sm-3"><b>ID:</b> '.strtoupper($log->auditable_id).'</div>';
                         echo '<div class="col-sm-3"><b>Data</b>: '.date('d/m/Y H:i:s', strtotime($log->created_at)).'</div>';
-                        echo '<div class="col-sm-6"><b>Rota:</b> '.$log->url.'</div>';
-                        echo '<div class="col-sm-2"><b>IP:</b> '.$log->ip_address.'</div>';
+                        echo '<div class="col-sm-5"><b>Rota:</b> '.$log->url.'</div>';
+                        echo '<div class="col-sm-1"><b>IP:</b> '.$log->ip_address.'</div>';
 
                         echo '<p style="border: 1px solid #adadad; margin-top: 40px;"></p>';
 
