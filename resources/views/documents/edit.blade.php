@@ -49,7 +49,7 @@
                                 echo "<label class='badge badge-danger'>DELETOU</label>";
                                 break;
                         }
-                        echo '<br><b>MODEL: </b>'.strtoupper($model[2]).'<br><br>';
+                        echo '<br><div class="col-sm-12"><b>MODEL: </b>'.$translation[strtoupper($model[2])].'</div><br><br>';
 
                         echo '<p style="border: 1px solid #adadad"></p>';
 
@@ -68,9 +68,9 @@
                             foreach ($object as $key => $value) {
                                 if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
                                     $newDate = date('d/m/Y', strtotime($value));
-                                    echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$translation[$key].'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                                 } else {
-                                    echo '<strong>'.$key.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$translation[$key].'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                                 }
                             }
                             echo '</div>';
@@ -84,9 +84,9 @@
                             foreach ($object as $key => $value) {
                                 if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
                                     $newDate = date('d/m/Y', strtotime($value));
-                                    echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$translation[$key].'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                                 } else {
-                                    echo '<strong>'.$key.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$translation[$key].'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                                 }
                             }
                             echo '</div>';

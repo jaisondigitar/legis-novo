@@ -712,13 +712,24 @@ class DocumentController extends AppBaseController
 
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
+        $translation = [
+            'DOCUMENT' => 'DOCUMENTO',
+            'document_type_id' => 'Tipo de Documento',
+            'owner_id' => 'Setor',
+            'date' => 'Data',
+            'sector_id' => 'Setor',
+            'resume' => 'Ementa',
+            'content' => 'Conteúdo',
+            'users_id' => 'Usuário',
+            'id' => 'Id',
+        ];
+
         $logs = Log::where('auditable_id', $document->id)
             ->where('auditable_type', Document::class)
             ->orderBy('created_at', 'desc')
             ->get();
-//
 
-        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs'))
+        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs', 'translation'))
             ->with('document', $document)
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])

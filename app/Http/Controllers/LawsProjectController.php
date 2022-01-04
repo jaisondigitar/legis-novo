@@ -751,12 +751,45 @@ class LawsProjectController extends AppBaseController
         }
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-projetos')->first()->value;
 
+        $translation = [
+            'LAWSPROJECT' => 'PROJETO DE LEI',
+            'law_date' => 'Data projeto',
+            'law_type_id' => 'Tipo de le',
+            'reference_id' => 'Referente à',
+            'situation_id' => 'Situação Atual',
+            'date_presentation' => 'Data da Apresentação',
+            'comission_id' => 'Comissão',
+            'assemblyman_id' => 'Responsável',
+            'title' => 'Ementa',
+            'sub_title' => ' Texto PREFIXO',
+            'sufix' => 'Texto SUFIXO',
+            'justify' => 'Texto JUSTIFICATIVA',
+            'town_hall' => 'Prefeitura',
+            'id' => 'Id',
+        ];
+
         $logs = Log::where('auditable_id', $lawsProject->id)
             ->where('auditable_type', LawsProject::class)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('lawsProjects.edit')->with(compact('logs', 'status_processing_law', 'tramitacao', 'comission', 'situation', 'lawsProject', 'law_types', 'law_places', 'law_structure', 'lawsAssemblyman', 'references_project', 'advice_situation_law', 'advice_publication_law'))
+        return view('lawsProjects.edit')
+            ->with(compact(
+                'logs',
+                'translation',
+                'status_processing_law',
+                'tramitacao',
+                'comission',
+                'situation',
+                'lawsProject',
+                'law_types',
+                'law_places',
+                'law_structure',
+                'lawsAssemblyman',
+                'references_project',
+                'advice_situation_law',
+                'advice_publication_law'
+            ))
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1]);
     }
