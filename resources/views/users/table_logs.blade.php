@@ -41,7 +41,14 @@
                     $object = json_decode($log->old_values);
 
                     foreach ($object as $key => $value) {
-                        if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
+                        if (
+                            $key == 'date' ||
+                            $key == 'date_start' ||
+                            $key == 'date_end' ||
+                            $key == 'from' ||
+                            $key == 'to' ||
+                            $key == 'law_date'
+                        ) {
                             $newDate = date('d/m/Y', strtotime($value));
                             echo '<strong>'.$translation[$key].'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                         } else {
@@ -57,7 +64,16 @@
                     $object = json_decode($log->new_values);
 
                     foreach ($object as $key => $value) {
-                        if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
+                        if (
+                            $key == 'date' ||
+                            $key == 'date_start' ||
+                            $key == 'date_end' ||
+                            $key == 'start_date' ||
+                            $key == 'end_date' ||
+                            $key == 'from' ||
+                            $key == 'to' ||
+                            $key == 'law_date'
+                        ) {
                             $newDate = date('d/m/Y', strtotime($value));
                             echo '<strong>'.$translation[$key].'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                         } else {

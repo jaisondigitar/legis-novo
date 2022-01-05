@@ -258,7 +258,7 @@
                 @shield('comissionSituations.index')
                     <li>
                         <a href="{{url('/comissionSituations', $parameters = [], $secure = null)}}">
-                            Situações de pareceres
+                            Situação de comissão
                         </a>
                     </li>
                 @endshield

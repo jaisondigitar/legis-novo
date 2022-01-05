@@ -721,6 +721,9 @@ class DocumentController extends AppBaseController
             'resume' => 'Ementa',
             'content' => 'Conteúdo',
             'users_id' => 'Usuário',
+            'approved' => 'Aprovado',
+            'number' => 'Número',
+            'read' => 'Lido',
             'id' => 'Id',
         ];
 
@@ -873,12 +876,19 @@ class DocumentController extends AppBaseController
         $doc_ids = DocumentFiles::withTrashed()->where('document_id', $document->id)->pluck('id')
             ->toArray();
 
+        $translation = [
+            'DOCUMENTFILES' => 'ARQUIVOS DOCUMENTO',
+            'document_id' => 'Id do Documento',
+            'filename' => 'Nome do Arquivo',
+            'id' => 'Id',
+        ];
+
         $logs = Log::whereIn('auditable_id', $doc_ids)
             ->where('auditable_type', DocumentFiles::class)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('documents.attachament')->with(compact('document', 'document_files', 'logs'));
+        return view('documents.attachament')->with(compact('document', 'document_files', 'logs', 'translation'));
     }
 
     public function attachamentUpload($id, Request $request)
