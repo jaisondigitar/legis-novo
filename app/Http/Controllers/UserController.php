@@ -487,6 +487,10 @@ class UserController extends AppBaseController
             'responsibility_id' => 'Id da Responsabilidade',
             'companies_id' => 'Id do Setor',
             'short_name' => 'Nome Curto',
+            'law_place_id' => 'Local de publicação',
+            'law_date_publish' => 'Data de publicação',
+            'law_number' => 'Número da Lei',
+            'is_ready' => 'Aprovado pela câmara',
             'full_name' => 'Nome Completo',
             'id' => 'Id',
         ];
