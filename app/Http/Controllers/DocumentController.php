@@ -311,8 +311,7 @@ class DocumentController extends AppBaseController
 
         $document = Document::find($id);
 
-        $type = $document->document_type->parent_id ? $document->document_type->parent : $document->document_type;
-        $document_model = DocumentModels::where('document_type_id', $type->id)->first();
+        $document_model = DocumentModels::where('document_type_id', $document->type->id)->first();
         $assemblymen = DocumentAssemblyman::where('document_id', $document->id)->get();
 
         $showHeader = Parameters::where('slug', 'mostra-cabecalho-em-pdf-de-documentos-e-projetos')->first()->value;
@@ -325,7 +324,7 @@ class DocumentController extends AppBaseController
         $votacao = Parameters::where('slug', 'mostra-votacao-em-documento')->first()->value;
 
         if (! $document_model) {
-            $document_model = DocumentModels::where('document_type_id', $type->parent_id)->first();
+            $document_model = DocumentModels::where('document_type_id', $document->type->parent_id)->first();
         }
 
         require_once public_path().'/tcpdf/mypdf.php';
@@ -346,7 +345,7 @@ class DocumentController extends AppBaseController
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
         $pdf->setFontSubsetting(true);
         $pdf->SetFont('times', '', 12, '', true);
-        $pdf->SetTitle($type->name);
+        $pdf->SetTitle($document->type->name);
 
         $pdf->AddPage();
 
