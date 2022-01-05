@@ -311,7 +311,10 @@ class DocumentController extends AppBaseController
 
         $document = Document::find($id);
 
-        $document_model = DocumentModels::where('document_type_id', $document->type->id)->first();
+        $document_model = DocumentModels::documentModel(
+            $document->type->id ?? $document->type->parent_id
+        )->first();
+
         $assemblymen = DocumentAssemblyman::where('document_id', $document->id)->get();
 
         $showHeader = Parameters::where('slug', 'mostra-cabecalho-em-pdf-de-documentos-e-projetos')->first()->value;
@@ -322,10 +325,6 @@ class DocumentController extends AppBaseController
         $margemDireita = Parameters::where('slug', 'margem-direita-de-documentos')->first()->value;
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
         $votacao = Parameters::where('slug', 'mostra-votacao-em-documento')->first()->value;
-
-        if (! $document_model) {
-            $document_model = DocumentModels::where('document_type_id', $document->type->parent_id)->first();
-        }
 
         require_once public_path().'/tcpdf/mypdf.php';
 
@@ -518,12 +517,22 @@ class DocumentController extends AppBaseController
 
         if ($document_model) {
             $content = str_replace(
-                ['[numero]', '[data_curta]', '[data_longa]', '[autores]', '[autores_vereador]', '[nome_vereadores]', '[responsavel]', '[assunto]', '[conteudo]',
+                [
+                    '[numero]',
+                    '[data_curta]',
+                    '[data_longa]',
+                    '[autores]',
+                    '[autores_vereador]',
+                    '[nome_vereadores]',
+                    '[responsavel]',
+                    '[assunto]',
+                    '[conteudo]',
                     '[protocolo_numero]',
                     '[protocolo_data]',
                     '[protocolo_hora]',
                     '[numero_interno]',
-                    '[numero_documento]', '[ano_documento]', '[tipo_documento]', ],
+                    '[numero_documento]', '[ano_documento]', '[tipo_documento]',
+                ],
                 [
                     '<b>'.$tipo.'</b>: '.$docNum.' / '.$document->getYear($document->date),
                     ucfirst(strftime('%d/%m/%Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date)))),
@@ -540,7 +549,8 @@ class DocumentController extends AppBaseController
                     $document_internal_number,
                     $docNum,
                     $document->getYear($document->date),
-                    $tipo, ],
+                    $tipo,
+                ],
                 $document_model->content
             );
 

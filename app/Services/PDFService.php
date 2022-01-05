@@ -12,6 +12,10 @@ class PDFService implements PDFInterface
         'locales' => 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese',
     ];
 
+    /**
+     * @param  array  $locales_configs
+     * @return PDFInterface
+     */
     public function setLocale(array $locales_configs = self::DEFAULT_LOCALE): PDFInterface
     {
         setlocale(

@@ -265,4 +265,14 @@ class Document extends BaseModel
     {
         return self::document_protocol()->get()->isNotEmpty();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTypeAttribute()
+    {
+        return $this->document_type->parent_id ?
+            $this->document_type->parent :
+            $this->document_type;
+    }
 }

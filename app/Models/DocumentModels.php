@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -84,5 +85,15 @@ class DocumentModels extends BaseModel
     public function document_type()
     {
         return $this->belongsTo(DocumentType::class, 'document_type_id');
+    }
+
+    /**
+     * @param  Builder  $query
+     * @param  int  $document_type
+     * @return Builder
+     */
+    public function scopeDocumentModel(Builder $query, int $document_type): Builder
+    {
+        return $query->where('document_type_id', $document_type);
     }
 }
