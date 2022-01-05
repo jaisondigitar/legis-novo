@@ -29,6 +29,7 @@ use App\Models\Sector;
 use App\Models\StatusProcessingDocument;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
+use App\Services\PDFService;
 use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
@@ -50,7 +51,9 @@ class DocumentController extends AppBaseController
     /**
      * @var
      */
-    private static $uploadService;
+    private static $storageService;
+
+    private $pdfService;
 
     /** @var DocumentRepository */
     private $documentRepository;
@@ -62,7 +65,9 @@ class DocumentController extends AppBaseController
 
         $this->documentRepository = $documentRepo;
 
-        static::$uploadService = new StorageService();
+        static::$storageService = new StorageService();
+
+        $this->pdfService = new PDFService();
     }
 
     public function getAssemblymenList()
@@ -300,9 +305,10 @@ class DocumentController extends AppBaseController
 
     public function show($id)
     {
-        setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+        $this->pdfService->setLocale();
 
         $company = Company::first();
+
         $document = Document::find($id);
 
         $type = $document->document_type->parent_id ? $document->document_type->parent : $document->document_type;
@@ -311,7 +317,6 @@ class DocumentController extends AppBaseController
 
         $showHeader = Parameters::where('slug', 'mostra-cabecalho-em-pdf-de-documentos-e-projetos')->first()->value;
         $marginHeader = Parameters::where('slug', 'espaco-entre-texto-e-cabecalho')->first()->value;
-
         $margemSuperior = Parameters::where('slug', 'margem-superior-de-documentos')->first()->value;
         $margemInferior = Parameters::where('slug', 'margem-inferior-de-documentos')->first()->value;
         $margemEsquerda = Parameters::where('slug', 'margem-esquerda-de-documentos')->first()->value;
@@ -331,9 +336,7 @@ class DocumentController extends AppBaseController
 
         $pdf->SetPrintHeader($showHeader);
 
-        $company->phone1.' - '.$company->email."\n";
-
-        $pdf->setFooterData($document->getNumber(), [0, 64, 0], [0, 64, 128]);
+        $pdf->setFooterData($document->getNumber(), [0, 64, 0]);
         $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         $pdf->SetMargins($margemEsquerda, $marginHeader, $margemDireita);
@@ -526,7 +529,6 @@ class DocumentController extends AppBaseController
                     '<b>'.$tipo.'</b>: '.$docNum.' / '.$document->getYear($document->date),
                     ucfirst(strftime('%d/%m/%Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date)))),
                     $data_ptbr,
-//                ucfirst(iconv('ISO-8859-1', 'UTF-8',strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date))))),
                     $html,
                     $html2,
                     $html3,
@@ -882,7 +884,7 @@ class DocumentController extends AppBaseController
 
         if ($files) {
             foreach ($files as $file) {
-                $filename = static::$uploadService
+                $filename = static::$storageService
                     ->inDocumentsFolder()
                     ->sendFile($file)
                     ->send();
