@@ -110,12 +110,17 @@ class Document extends BaseModel
      * @var array
      */
     public static $rules = [
-      'date' => 'required',
-      'document_type_id' => 'required',
-      'sector_id' => 'nullable|integer',
-      'owner_id' => 'required',
-      'content' => 'required',
+        'date' => 'required',
+        'document_type_id' => 'required',
+        'sector_id' => 'nullable|integer',
+        'owner_id' => 'required',
+        'content' => 'required',
     ];
+
+    public function documentNumber()
+    {
+        return $this->belongsTo(DocumentNumber::class, 'document_id');
+    }
 
     public function externalSector()
     {

@@ -60,8 +60,12 @@
         <div class="row">
             <br>
             <div class="col-md-12">
-                @include('flash::message')
-                @include('report.documentTable')
+                @if($documents->isEmpty())
+                    <div class="well text-center">Sem dados. Insira um novo registro.</div>
+                @else
+                    @include('flash::message')
+                    @include('report.documentTable')
+                @endif
             </div>
         </div>
     </div>

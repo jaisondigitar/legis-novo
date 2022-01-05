@@ -5,31 +5,54 @@
 @section('content')
     <div class="the-box rounded">
         <form method="GET">
+            <input type="hidden" name="has-filter" value="true">
             <div class="form-group col-md-2">
                 {!! Form::label('date', 'Registro:') !!}
-                {!! Form::text('reg', $form->input('reg'), ['class' => 'form-control']) !!}
+                {!!
+                    Form::text('created_at', $form->input('updated_at'), [
+                        'class' => 'form-control datepicker text-center',
+                        'minlength' => '10',
+                        'maxlength' => '10',
+                    ])
+                !!}
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('owner_id', 'Tipo:') !!}
-                {!! Form::select('type', App\Models\LawsType::where('is_active', true)->pluck('name', 'id')->prepend('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                {!! Form::select(
+                    'law_type_id',
+                    App\Models\LawsType::where('is_active', true)
+                        ->pluck('name', 'id')
+                        ->prepend('Selecione...', ''),
+                    $form->input('law_type_id'), ['class' => 'form-control'])
+                !!}
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Número:') !!}
-                {!! Form::input('number', 'number', $form->input('number'), ['class' => 'form-control', 'min' => 0]) !!}
+                {!! Form::input(
+                    'number',
+                    'project_number',
+                    $form->input('project_number'),
+                    ['class' => 'form-control', 'min' => 0])
+                !!}
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Ano:') !!}
-                {!! Form::input('number', 'year', $form->input('year'), ['class' => 'form-control', 'min' => 1000, 'max' => 9999]) !!}
+                {!! Form::input(
+                    'number',
+                    'law_date',
+                    $form->input('law_date'),
+                    ['class' => 'form-control', 'min' => 1000, 'max' => 9999])
+                !!}
             </div>
             <div class="form-group col-md-3">
                 {!! Form::label('owner_id', 'Responsável:') !!}
-                {!! Form::select('owner', $assemblymensList ,$form->input('owner'), ['class' => 'form-control']) !!}
+                {!! Form::select(
+                    'assemblyman_id',
+                    $assemblymensList,
+                    $form->input('assemblyman_id'),
+                    ['class' => 'form-control'])
+                !!}
             </div>
-            <div class="form-group col-md-3">
-                {!! Form::label('parecer', 'Parecer:') !!}
-                {!! Form::select('parecer', [0=>'Todos', 1=>'Apenas com parecer'] ,$form->input('parecer'), ['class' => 'form-control']) !!}
-            </div>
-
             <div class="clearfix"></div>
             <div class="form-group col-md-10">
                 <button class="btn btn-block btn-primary"><i class="fa fa-search"></i> Pesquisar</button>

@@ -7,6 +7,7 @@
         margin-right: 4px;
     }
 </style>
+
 <div class="col-lg-12 col-md-12">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -87,12 +88,17 @@
                             <span id="tdLawProtocol{{$lawsProject->id}}" align="center">
                                 @if($lawsProject->project_number > 0)
                                     {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
-                                @else
-                                    @shield('lawsProject.approved')
-                                        <button type="button" class="btn btn-default btn-xs btn-protocol" value="{!! $lawsProject->id !!}">
-                                            <i class="glyphicon glyphicon-folder-open"></i>
-                                        </button>
-                                    @endshield
+                                @elseif(
+                                    Auth::user()
+                                        ->roleHasPermission('lawsProject.createLawProjectNumber')
+                                )
+                                    <button
+                                        type="button"
+                                        class="btn btn-default btn-xs btn-protocol"
+                                        value="{!! $lawsProject->id !!}"
+                                    >
+                                        <i class="glyphicon glyphicon-folder-open"></i>
+                                    </button>
                                 @endif
                             </span>
                         </td>
@@ -191,7 +197,11 @@
                 @endif
 
                 @shield('lawsProjects.show')
-                    <a href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
+                    <a
+                        href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}"
+                        target="_blank"
+                        class='btn btn-default btn-sm'
+                    >
                         <i class="fa fa-eye" aria-hidden="true"></i>
                     </a>
                 @endshield

@@ -4,15 +4,26 @@
 @endsection
 @section('content')
     <div class="the-box rounded">
-        <form method="GET">
+        <form id="search-form" method="GET">
+            <input type="hidden" name="has-filter" value="true">
             <div class="form-group col-md-2">
                 {!! Form::label('date', 'Registro:') !!}
-                {!! Form::text('reg', $form->input('reg'), ['class' => 'form-control']) !!}
+                {!!
+                    Form::text('reg', $form->input('reg'), [
+                        'class' => 'form-control datepicker text-center',
+                        'minlength' => '10',
+                        'maxlength' => '10',
+                    ])
+                !!}
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('owner_id', 'Tipo:') !!}
-                {!! Form::select('type', App\Models\DocumentType::pluck('name', 'id')->prepend
-                ('Selecione...', '') ,$form->input('type'), ['class' => 'form-control']) !!}
+                {!! Form::select(
+                    'document_type_id',
+                    App\Models\DocumentType::pluck('name', 'id')
+                        ->prepend('Selecione...', ''),
+                    $form->input('owner_id'), ['class' => 'form-control'])
+                !!}
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Número:') !!}
@@ -20,21 +31,36 @@
             </div>
             <div class="form-group col-md-1">
                 {!! Form::label('date', 'Ano:') !!}
-                {!! Form::input('number', 'year', $form->input('year'), ['class' => 'form-control', 'min' => 1000, 'max' => 9999]) !!}
-            </div>
-            <div class="form-group col-md-3">
-                {!! Form::label('owner_id', 'Responsável:') !!}
-                {!! Form::select('owner', $assemblymensList ,$form->input('owner'), ['class' => 'form-control']) !!}
-            </div>
-            <div class="form-group col-md-3">
-                {!! Form::label('date', 'Que contenha (texto):') !!}
-                {!! Form::text('text', $form->input('text'), ['class' => 'form-control']) !!}
-            </div>
-            <div class="form-group col-md-10">
-                <button class="btn btn-block btn-primary"><i class="fa fa-search"></i> Pesquisar</button>
+                {!! Form::input('number', 'date', $form->input('date'), ['class' => 'form-control', 'min' => 1000, 'max' => 9999]) !!}
             </div>
             <div class="form-group col-md-2">
-                <button type="reset" class="btn btn-block btn-warning"><i class="fa fa-recycle"></i> Reset</button>
+                {!! Form::label('owner_id', 'Responsável:') !!}
+                {!! Form::select('owner_id', $assemblymensList, $form->input('owner_id'), ['class' => 'form-control']) !!}
+            </div>
+            <div class="form-group col-md-2">
+                {!! Form::label('date', 'Que contenha (texto):') !!}
+                {!! Form::text('content', $form->input('content'), ['class' => 'form-control']) !!}
+            </div>
+            <div class="form-group col-md-2">
+                {!! Form::label('status', 'Status:') !!}
+                {!! Form::select('status', [0 => 'Selecione...', 1 => 'Aberto', 2 =>
+                'Protocolado'], $form->input('status'), ['class' => 'form-control']) !!}
+            </div>
+
+            <div class="form-group col-md-10">
+                <button
+                    class="btn btn-block btn-primary"
+                >
+                    <i class="fa fa-search"></i> Pesquisar
+                </button>
+            </div>
+            <div class="form-group col-md-2">
+                <button
+                    type="reset"
+                    class="btn btn-block btn-warning"
+                >
+                    <i class="fa fa-recycle"></i> Reset
+                </button>
             </div>
         </form>
         <div class="clearfix"></div>

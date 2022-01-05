@@ -28,7 +28,15 @@ interface StorageInterface
 
     public function sendFile($file);
 
-    public function send();
+    public function sendContent(string $content, string $ext = '.pdf');
 
-    public function get(string $filename);
+    public function send(bool $custom = true, string $filename = '');
+
+    public function getPath(string $filename);
+
+    public function getFile(string $filename);
+
+    public function removeOne(string $filename);
+
+    public function removeMany(array $filenames);
 }

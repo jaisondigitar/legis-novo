@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Models\Attendance;
 use App\Models\City;
 use App\Models\People;
+use App\Models\Sector;
 use App\Models\State;
 use App\Models\TypesOfAttendance;
 use App\Repositories\AttendanceRepository;
@@ -45,15 +47,41 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
+        $input = $request->all();
+        $attendance_query = Attendance::ByDateDesc();
+
+        if (count($request->all())) {
+            if ($request->date) {
+                if ($input['date']) {
+                    $d1 = explode('/', $input['date']);
+                    $request->date = $d1[2].'-'.$d1[1].'-'.$d1[0];
+                }
+            }
+            ! empty($request->date) ? $attendance_query->where('date', 'like', $request->date) : null;
+            ! empty($request->type_id) ? $attendance_query->where('type_id', $request->type_id) : null;
+            ! empty($request->people_id) ? $attendance_query->where('people_id', $request->people_id) : null;
+            ! empty($request->sector_id) ? $attendance_query->where('sector_id', $request->sector_id) : null;
+        }
+
         if (! Defender::hasPermission('attendance.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
             return redirect('/admin');
         }
 
-        $attendance = $this->attendanceRepository->getAll(0);
+        $attendance_query->parecer = $request->parecer;
 
-        return view('attendance.index')->with('attendance', $attendance);
+        $attendance = $attendance_query
+            ->orderByDesc('created_at')
+            ->paginate(20);
+
+        $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
+        $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
+        $people = People::pluck('name', 'id')->prepend('Selecione..', '');
+
+        return view('attendance.index', compact('type', 'sector', 'people'))
+            ->with('form', $request)
+            ->with('attendance', $attendance);
     }
 
     /**
@@ -70,11 +98,13 @@ class AttendanceController extends Controller
         }
 
         $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
+        $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
 
         $states = $this->statesList();
-        $cities = City::where('state', '=', $states[1])->pluck('name', 'id');
+        $state = State::find(12);
+        $cities = City::where('state', '=', $state->uf)->pluck('name', 'id');
 
-        return view('attendance.create', compact('states', 'cities', 'type'));
+        return view('attendance.create', compact('states', 'cities', 'type', 'sector'));
     }
 
     /**
@@ -94,11 +124,12 @@ class AttendanceController extends Controller
         }
 
         $image = $request->file('image');
-        $attendance_data = $request->only(['date', 'time', 'description', 'type_id']);
+        $attendance_data = $request->only(['date', 'time', 'sector_id', 'description', 'type_id']);
 
         $people = People::firstOrCreate(
             ['cpf' => $request->cpf],
-            ['name' => $request->name,
+            [
+                'name' => $request->name,
                 'email' => $request->email,
                 'celular' => $request->celular,
                 'zipcode' => $request->zipcode,
@@ -107,7 +138,8 @@ class AttendanceController extends Controller
                 'complement' => $request->complement,
                 'district' => $request->district,
                 'state_id' => $request->state_id,
-                'city_id' => $request->city_id, ]
+                'city_id' => $request->city_id,
+            ]
         );
 
         if ($image) {
@@ -155,18 +187,28 @@ class AttendanceController extends Controller
      * @return Application|Factory|Redirector|RedirectResponse|View
      * @throws BindingResolutionException
      */
-    /*public function edit($id)
+    public function edit($id)
     {
         if (! Defender::hasPermission('attendance.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
             return redirect('/');
         }
         $attendance = $this->attendanceRepository->findById($id);
+
+        $people = People::find($attendance->people_id);
+
         $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
+        $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
+
         $states = $this->statesList();
-        $cities = City::where('state', '=', $states[1])->pluck('name', 'id');
-        return view('attendance.edit', compact('states', 'cities', 'type'))->with('attendance', $attendance);
-    }*/
+        $state = State::find(12);
+        $cities = City::where('state', '=', $state->uf)->pluck('name', 'id');
+
+        return view('attendance.edit', compact('states', 'cities', 'type', 'sector'))
+            ->with('attendance', $attendance)
+            ->with('people', $people);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -177,16 +219,34 @@ class AttendanceController extends Controller
      * @return Application|Redirector|RedirectResponse
      * @throws BindingResolutionException
      */
-    /*public function update(UpdateAttendanceRequest $request, $id)
+    public function update(UpdateAttendanceRequest $request, $id)
     {
         if (! Defender::hasPermission('attendance.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
+
             return redirect('/');
         }
+
+        People::where('cpf', $request->get('cpf'))
+            ->update($request->only([
+                'name',
+                'email',
+                'celular',
+                'zipcode',
+                'street',
+                'number',
+                'complement',
+                'district',
+                'state_id',
+                'city_id',
+            ]));
+
         $attendance = $this->attendanceRepository->findById($id);
+
         $this->attendanceRepository->update($attendance, $request->all());
+
         return redirect(route('attendance.index'));
-    }*/
+    }
 
     /**
      * Remove the specified resource from storage.
