@@ -17,6 +17,17 @@ class MeetingPauta extends BaseModel
 
     ];
 
+    public static $translation = [
+        'MEETINGPAUTA' => 'ENCONTRO PAUTA',
+        'meeting_id' => 'Id da Reunião',
+        'structure_id' => 'Id da Estrutura',
+        'law_id' => 'Id da Lei',
+        'advice_id' => 'Id da Situação',
+        'document_id' => 'Id do Documento',
+        'description' => 'Descrição',
+        'observation' => 'Observação',
+    ];
+
     public static $rules = [
         'meeting_id' => 'required',
         'structure_id' => 'required',

@@ -137,6 +137,27 @@ class Assemblyman extends BaseModel
         'zipcode',
     ];
 
+    public static $translation = [
+        'ASSEMBLYMAN' => 'PARLAMENTAR',
+        'companies_id' => 'Id do Setor',
+        'image' => 'Imagem',
+        'short_name' => 'Nome Curto',
+        'full_name' => 'Nome Completo',
+        'email' => 'E-Mail',
+        'phone1' => 'Celular',
+        'phone2' => 'Telefone',
+        'official_document' => 'Documento Oficial',
+        'general_register' => 'RG',
+        'street' => 'Rua',
+        'number' => 'Número',
+        'complement' => 'Complemento',
+        'district' => 'Bairro',
+        'state_id' => 'Id do Estado',
+        'city_id' => 'Id da Cidade',
+        'active' => 'Ativo',
+        'zipcode' => 'CEP',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

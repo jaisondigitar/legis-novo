@@ -71,6 +71,15 @@ class AdviceAwnser extends BaseModel
         'file',
     ];
 
+    public static $translation = [
+        'ADVICEAWNSER' => 'RESPOSTA DE CONSELHOS',
+        'file' => 'Arquivo',
+        'advice_id' => 'Id da Situação',
+        'commission_id' => 'Id da Comissão',
+        'date' => 'Data',
+        'description' => 'Descrição',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

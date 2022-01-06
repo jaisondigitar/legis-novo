@@ -23,6 +23,17 @@ class ProcessingDocument extends BaseModel
         'destination_id',
     ];
 
+    public static $translation = [
+        'PROCESSINGDOCUMENT' => 'PROCESSANDO DOCUMENTO',
+        'document_id' => 'Id do Documento',
+        'document_situation_id' => 'Id da Situação do Documento',
+        'status_processing_document_id',
+        'status_processing_document_id' => 'Id do Status do Documento',
+        'obsevation' => 'Observação',
+        'processing_document_file' => 'Processamento de Arquivo de Documento',
+        'destination_id' => 'Id de Destino',
+    ];
+
     /**
      * @return BelongsTo
      */

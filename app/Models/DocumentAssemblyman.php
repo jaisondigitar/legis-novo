@@ -73,6 +73,12 @@ class DocumentAssemblyman extends BaseModel
         'assemblyman_id',
     ];
 
+    public static $translation = [
+        'COMMISSIONASSEMBLYMAN' => 'ASSEMBLÉIA DA COMISSÃO',
+        'document_id' => 'Id do Documento',
+        'assemblyman_id' => 'Id do Responsável',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *
@@ -81,15 +87,6 @@ class DocumentAssemblyman extends BaseModel
     protected $casts = [
         'document_id' => 'integer',
         'assemblyman_id' => 'integer',
-    ];
-
-    /**
-     * Validation rules.
-     *
-     * @var array
-     */
-    public static $rules = [
-
     ];
 
     public function document()

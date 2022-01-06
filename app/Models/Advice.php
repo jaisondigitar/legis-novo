@@ -53,6 +53,15 @@ class Advice extends BaseModel
         'description',
     ];
 
+    public static $translation = [
+        'ADVICE' => 'CONSELHO',
+        'date' => 'Data',
+        'description' => 'Descrição',
+        'type' => 'Tipo',
+        'laws_projects_id' => 'Id da Lei do Projeto',
+        'to_id' => 'Para',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

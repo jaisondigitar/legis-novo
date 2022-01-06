@@ -43,6 +43,11 @@ class LawsPlace extends BaseModel
         'name',
     ];
 
+    public static $translation = [
+        'LAWSPLACE' => 'LOCAL DE PUBLICAÇÃO',
+        'name' => 'Nome',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

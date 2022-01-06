@@ -14,6 +14,12 @@ class VersionPauta extends BaseModel
          'slug',
      ];
 
+    public static $translation = [
+        'VERSIONPAUTA' => 'ESTRUTURA DA PAUTA',
+        'name' => 'Nome',
+        'slug' => 'Sigla',
+     ];
+
     public static function boot()
     {
         parent::boot();

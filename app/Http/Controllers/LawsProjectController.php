@@ -751,27 +751,7 @@ class LawsProjectController extends AppBaseController
         }
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-projetos')->first()->value;
 
-        $translation = [
-            'LAWSPROJECT' => 'PROJETO DE LEI',
-            'law_date' => 'Data projeto',
-            'law_type_id' => 'Tipo de le',
-            'reference_id' => 'Referente à',
-            'situation_id' => 'Situação Atual',
-            'date_presentation' => 'Data da Apresentação',
-            'comission_id' => 'Comissão',
-            'assemblyman_id' => 'Responsável',
-            'title' => 'Ementa',
-            'is_read' => 'Lido',
-            'law_place_id' => 'Local de publicação',
-            'law_date_publish' => 'Data de publicação',
-            'law_number' => 'Número da Lei',
-            'is_ready' => 'Aprovado pela câmara',
-            'sub_title' => ' Texto PREFIXO',
-            'sufix' => 'Texto SUFIXO',
-            'justify' => 'Texto JUSTIFICATIVA',
-            'town_hall' => 'Prefeitura',
-            'id' => 'Id',
-        ];
+        $translation = LawsProject::$translation;
 
         $logs = Log::where('auditable_id', $lawsProject->id)
             ->where('auditable_type', LawsProject::class)

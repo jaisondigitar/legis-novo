@@ -30,6 +30,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'active',
     ];
 
+    public static $translation = [
+        'USER' => 'USUÁRIO',
+        'id' => 'ID',
+        'company_id' => 'ID da Empresa',
+        'sector_id' => 'Id do Setor',
+        'name' => 'Nome',
+        'email' => 'E-Mail',
+        'password' => 'Senha',
+        'active' => 'Ativo',
+    ];
+
     protected $hidden = ['password', 'remember_token', 'created_at', 'updated_at', 'deleted_at'];
 
     public function company()

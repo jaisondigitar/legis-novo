@@ -2,16 +2,65 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\PartiesAssemblymanAPIController;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Libraries\Repositories\ProfileRepository;
 use App\Libraries\Repositories\UserRepository;
+use App\Models\Advice;
+use App\Models\AdviceAwnser;
+use App\Models\AdvicePublicationDocuments;
+use App\Models\AdvicePublicationLaw;
+use App\Models\AdviceSituation;
+use App\Models\AdviceSituationDocuments;
+use App\Models\AdviceSituationLaw;
 use App\Models\Assemblyman;
+use App\Models\Attendance;
+use App\Models\ComissionSituation;
+use App\Models\Commission;
+use App\Models\Destination;
+use App\Models\Document;
+use App\Models\DocumentAssemblyman;
+use App\Models\DocumentFiles;
+use App\Models\DocumentModels;
+use App\Models\DocumentNumber;
+use App\Models\DocumentProtocol;
+use App\Models\DocumentSituation;
+use App\Models\DocumentType;
+use App\Models\LawFile;
+use App\Models\LawProjectsNumber;
+use App\Models\LawSituation;
+use App\Models\LawsPlace;
+use App\Models\LawsProject;
+use App\Models\LawsProjectAssemblyman;
+use App\Models\LawsStructure;
+use App\Models\LawsTag;
+use App\Models\LawsType;
+use App\Models\Legislature;
+use App\Models\LegislatureAssemblyman;
 use App\Models\Log;
+use App\Models\Meeting;
+use App\Models\MeetingPauta;
+use App\Models\OfficeCommission;
+use App\Models\Parameters;
+use App\Models\PartiesAssemblyman;
+use App\Models\Party;
+use App\Models\People;
+use App\Models\Permission;
+use App\Models\Processing;
+use App\Models\ProcessingDocument;
+use App\Models\Responsibility;
+use App\Models\ResponsibilityAssemblyman;
 use App\Models\Role;
 use App\Models\Sector;
+use App\Models\SessionType;
+use App\Models\StatusProcessingDocument;
+use App\Models\StatusProcessingLaw;
+use App\Models\TypesOfAttendance;
+use App\Models\TypeVoting;
 use App\Models\User;
 use App\Models\UserAssemblyman;
+use App\Models\VersionPauta;
 use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -335,169 +384,65 @@ class UserController extends AppBaseController
 
     public function auditing($id)
     {
-        $translation = [
-            'DOCUMENT' => 'DOCUMENTO',
-            'LAWSPROJECT' => 'PROJETO DE LEI',
-            'DOCUMENTNUMBER' => 'NÚMERO DO DUCUMENTO',
-            'COMMISSIONASSEMBLYMAN' => 'ASSEMBLÉIA DA COMISSÃO',
-            'ADVICESITUATION' => 'SITUAÇÃO DE CONSELHOS',
-            'ADVICEAWNSER' => 'RESPOSTA DE CONSELHOS',
-            'ADVICE' => 'CONSELHO',
-            'MEETINGPAUTA' => 'ENCONTRO PAUTA',
-            'PROCESSING' => 'EM PROCESSAMENTO',
-            'DESTINATION' => 'DESTINO',
-            'LAWSPROJECTASSEMBLYMAN' => 'ASSEMBLÉIA DE PROJETOS DE LEIS',
-            'LAWPROJECTSNUMBER' => 'NÚMERO DE PROJETOS DE LEI',
-            'STATUSPROCESSINGLAW' => 'LEI DE PROCESSAMENTO DE STATUS',
-            'ADVICESITUATIONLAW' => 'LEI DE SITUAÇÃO DE CONSELHOS',
-            'LAWFILE' => 'ARQUIVO DE LEI',
-            'PROCESSINGDOCUMENT' => 'PROCESSANDO DOCUMENTO',
-            'DOCUMENTSITUATION' => 'SITUAÇÃO DO DOCUMENTO',
-            'MEETING' => 'ENCONTRO',
-            'DOCUMENTMODELS' => 'MODELOS DE DOCUMENTOS',
-            'DOCUMENTPROTOCOL' => 'PROTOCOLO DO DOCUMENTO',
-            'PARAMETERS' => 'PARÂMETROS',
-            'PERMISSION' => 'PERMISSÃO',
-            'USERASSEMBLYMAN' => 'ASSEMBLYMAN DO USUÁRIO',
-            'LAWSITUATION' => 'SITUAÇÃO DA LEI',
-            'DOCUMENTTYPE' => 'TIPO DE DOCUMENTO',
-            'LEGISLATUREASSEMBLYMAN' => 'LEGISLATURA',
-            'PARTIESASSEMBLYMAN' => 'PARTIDOS',
-            'RESPONSIBILITYASSEMBLYMAN' => 'RESPONSABILIDADE',
-            'RESPONSIBILITY' => 'RESPONSABILIDADE',
-            'PEOPLE' => 'PESSOA',
-            'ATTENDANCE' => 'ATENDIMENTO',
-            'USER' => 'USUÁRIO',
-            'ASSEMBLYMAN' => 'PARLAMENTAR',
-            'SECTOR' => 'SETOR',
-            'PARTY' => 'PARTIDOS',
-            'LEGISLATURE' => 'LEGISLATURA',
-            'ADVICEPUBLICATIONDOCUMENTS' => 'PUBLICAÇÃO DO PARECER DO DOCUMENTO',
-            'ADVICESITUATIONDOCUMENTS' => 'SITUAÇÃO DO PARECER DO DOCUMENTO',
-            'STATUSPROCESSINGDOCUMENT' => 'STATUS DO TRAMITE',
-            'COMISSIONSITUATION' => 'SITUAÇÃO DA COMISSÃO',
-            'OFFICECOMMISSION' => 'CARGO DE COMISSÃO',
-            'COMMISSION' => 'COMISSÃO',
-            'TYPEVOTING' => 'TIPO DE VOTAÇÃO',
-            'SESSIONTYPE' => 'TIPO DE SESSÕES',
-            'VERSIONPAUTA' => 'ESTRUTURA DA PAUTA',
-            'LAWSPLACE' => 'LOCAL DE PUBLICAÇÃO',
-            'LAWSSTRUCTURE' => 'TIPO DE ESTRUTURA DE LEI',
-            'LAWSTAG' => 'TAG DE LEI',
-            'LAWSTYPE' => 'TIPOS DE LEI',
-            'ADVICEPUBLICATIONLAW' => 'PUBLICAÇÃO DO PARECER DE LEI',
-            'TYPESOFATTENDANCE' => 'TIPO DE ATENDIMENTO',
-            'ROLE' => 'GRUPO DE PERMISSÕES',
-            'document_id' => 'Id do Documento',
-            'remember_token' => 'Tokem',
-            'rg' => 'RG',
-            'laws_project_id' => 'Referente à',
-            'is_read' => 'Lido',
-            'anonymous' => 'Anônima',
-            'text_initial' => 'Texto Inicial',
-            'approved' => 'Aprovado',
-            'read' => 'Lido',
-            'from' => 'De',
-            'to' => 'Até',
-            'prefix' => 'Sigla',
-            'skip_board' => 'Ignora Mesa',
-            'order' => 'Ordem',
-            'external' => 'Externo',
-            'document_type_id' => 'Tipo de Documento',
-            'owner_id' => 'Setor',
-            'date' => 'Data',
-            'sector_id' => 'Setor',
-            'resume' => 'Ementa',
-            'content' => 'Conteúdo',
-            'users_id' => 'Usuário',
-            'law_date' => 'Data projeto',
-            'law_type_id' => 'Tipo de le',
-            'reference_id' => 'Referente à',
-            'situation_id' => 'Situação Atual',
-            'date_presentation' => 'Data da Apresentação',
-            'comission_id' => 'Comissão',
-            'assemblyman_id' => 'Responsável',
-            'title' => 'Ementa',
-            'sub_title' => ' Texto PREFIXO',
-            'sufix' => 'Texto SUFIXO',
-            'justify' => 'Texto JUSTIFICATIVA',
-            'town_hall' => 'Prefeitura',
-            'time' => 'Horário',
-            'description' => 'Descrição',
-            'type_id' => 'Id do Tipo',
-            'people_id' => 'Id da Pessoa',
-            'cpf' => 'CPF',
-            'name' => 'Nome',
-            'email' => 'E-Mail',
-            'celular' => 'Celular',
-            'telephone' => 'Telefone',
-            'zipcode' => 'CEP',
-            'street' => 'Rua',
-            'number' => 'Número',
-            'complement' => 'Complemento',
-            'district' => 'Bairro',
-            'state_id' => 'Id do Estado',
-            'city_id' => 'Id da Cidade',
-            'office' => 'Escritório',
-            'start_date' => 'Data de Início',
-            'end_date' => 'Data de Fim',
-            'commission_id' => 'Id da Comissão',
-            'advice_id' => 'Id da Situação',
-            'comission_situation_id' => 'Id da Situação da Comissão',
-            'file' => 'Arquivo',
-            'filename' => 'Nome do Arquivo',
-            'type' => 'Tipo',
-            'to_id' => 'Para',
-            'laws_projects_id' => 'Id da Lei do Projeto',
-            'meeting_id' => 'Id da Reunião',
-            'structure_id' => 'Id da Estrutura',
-            'law_id' => 'Id da Lei',
-            'observation' => 'Observação',
-            'law_projects_id' => 'Id da Lei do Projeto',
-            'advice_publication_id' => 'ID de Publicação de Conselho',
-            'advice_situation_id' => 'Id da Situação do Conselho',
-            'status_processing_law_id' => 'Id de Lei de Processamento de Status',
-            'processing_date' => 'Processando Dados',
-            'destination_id' => 'Id de Destino',
-            'obsevation' => 'Observação',
-            'law_project_id' => 'Id da Lei do Projeto',
-            'document_situation_id' => 'Id da Situação do Documento',
-            'status_processing_document_id' => 'Id do Status do Documento',
-            'processing_document_date' => 'Data do Processo do Documento',
-            'session_type_id' => 'id do Tipo de Sessão',
-            'session_place_id' => 'id do Local da Sessão',
-            'date_start' => 'Data Inicio',
-            'date_end' => 'Data Final',
-            'version_pauta_id' => 'Id da Estrutura da Pauta',
-            'protocol_type_id' => 'Id do Tipo do Protocolo',
-            'slug' => 'Slug',
-            'value' => 'Valor',
-            'readable_name' => 'Nome Legível',
-            'phone1' => 'Celular',
-            'phone2' => 'Telefone',
-            'official_document' => 'Documento Oficial',
-            'general_register' => 'Registro Geral',
-            'parent_id' => 'Id dos Pais',
-            'active' => 'Ativo',
-            'company_id' => 'ID da Empresa',
-            'password' => 'Senha',
-            'image' => 'Imagem',
-            'legislature_id' => 'Id da Legislatura',
-            'party_id' => 'Id do Partido',
-            'responsibility_id' => 'Id da Responsabilidade',
-            'companies_id' => 'Id do Setor',
-            'short_name' => 'Nome Curto',
-            'law_place_id' => 'Local de publicação',
-            'law_date_publish' => 'Data de publicação',
-            'law_number' => 'Número da Lei',
-            'is_ready' => 'Aprovado pela câmara',
-            'full_name' => 'Nome Completo',
-            'id' => 'Id',
+        $translationNews = [
+            'DOCUMENT' => Document::$translation,
+            'LAWSPROJECT' => LawsProject::$translation,
+            'DOCUMENTNUMBER' => DocumentNumber::$translation,
+            'COMMISSIONASSEMBLYMAN' => DocumentAssemblyman::$translation,
+            'ADVICESITUATION' => AdviceSituation::$translation,
+            'ADVICEAWNSER' => AdviceAwnser::$translation,
+            'ADVICE' => Advice::$translation,
+            'MEETINGPAUTA' => MeetingPauta::$translation,
+            'PROCESSING' => Processing::$translation,
+            'DESTINATION' => Destination::$translation,
+            'LAWSPROJECTASSEMBLYMAN' => LawsProjectAssemblyman::$translation,
+            'LAWPROJECTSNUMBER' => LawProjectsNumber::$translation,
+            'STATUSPROCESSINGLAW' => StatusProcessingLaw::$translation,
+            'ADVICESITUATIONLAW' => AdviceSituationLaw::$translation,
+            'LAWFILE' => LawFile::$translation,
+            'PROCESSINGDOCUMENT' => ProcessingDocument::$translation,
+            'DOCUMENTSITUATION' => DocumentSituation::$translation,
+            'MEETING' => Meeting::$translation,
+            'DOCUMENTMODELS' => DocumentModels::$translation,
+            'DOCUMENTPROTOCOL' => DocumentProtocol::$translation,
+            'PARAMETERS' => Parameters::$translation,
+            'PERMISSION' => Permission::$translation,
+            'USERASSEMBLYMAN' => UserAssemblyman::$translation,
+            'LAWSITUATION' => LawSituation::$translation,
+            'DOCUMENTTYPE' => DocumentType::$translation,
+            'LEGISLATUREASSEMBLYMAN' => LegislatureAssemblyman::$translation,
+            'PARTIESASSEMBLYMAN' => PartiesAssemblyman::$translation,
+            'RESPONSIBILITYASSEMBLYMAN' => ResponsibilityAssemblyman::$translation,
+            'RESPONSIBILITY' => Responsibility::$translation,
+            'PEOPLE' => People::$translation,
+            'ATTENDANCE' => Attendance::$translation,
+            'USER' => User::$translation,
+            'ASSEMBLYMAN' => Assemblyman::$translation,
+            'SECTOR' => Sector::$translation,
+            'PARTY' => Party::$translation,
+            'LEGISLATURE' => Legislature::$translation,
+            'ADVICEPUBLICATIONDOCUMENTS' => AdvicePublicationDocuments::$translation,
+            'ADVICESITUATIONDOCUMENTS' => AdviceSituationDocuments::$translation,
+            'STATUSPROCESSINGDOCUMENT' => StatusProcessingDocument::$translation,
+            'COMISSIONSITUATION' => ComissionSituation::$translation,
+            'OFFICECOMMISSION' => OfficeCommission::$translation,
+            'COMMISSION' => Commission::$translation,
+            'TYPEVOTING' => TypeVoting::$translation,
+            'SESSIONTYPE' => SessionType::$translation,
+            'VERSIONPAUTA' => VersionPauta::$translation,
+            'LAWSPLACE' => LawsPlace::$translation,
+            'LAWSSTRUCTURE' => LawsStructure::$translation,
+            'LAWSTAG' => LawsTag::$translation,
+            'LAWSTYPE' => LawsType::$translation,
+            'ADVICEPUBLICATIONLAW' => AdvicePublicationLaw::$translation,
+            'TYPESOFATTENDANCE' => TypesOfAttendance::$translation,
+            'ROLE' => Role::$translation,
+            'DOCUMENTFILES' => DocumentFiles::$translation,
         ];
 
         $user = User::find($id);
         $logs = Log::where('user_id', $id)->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('users.auditing', compact('user', 'logs', 'translation'));
+        return view('users.auditing', compact('user', 'logs', 'translationNews'));
     }
 }

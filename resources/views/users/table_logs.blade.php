@@ -12,6 +12,8 @@
             <div>
                 <?php
                 $model = explode('\\', $log->auditable_type);
+                $table = strtoupper($model[2]);
+                $title = $translationNews[$table][$table] ?? $table;
 
                 switch ($log->event) {
                     case 'created':
@@ -24,7 +26,8 @@
                         echo "<label class='badge badge-danger'>DELETOU</label>";
                         break;
                 }
-                echo '<br><div class="col-sm-12"><b>MODEL: </b>'.$translation[strtoupper($model[2])].'</div><br><br>';
+
+                echo '<br><div class="col-sm-12"><b>MODEL: </b>'.$title.'</div><br><br>';
 
                 echo '<p style="border: 1px solid #adadad"></p>';
 
@@ -41,6 +44,8 @@
                     $object = json_decode($log->old_values);
 
                     foreach ($object as $key => $value) {
+                        $columns = $translationNews[$table][$key] ?? $key;
+
                         if (
                             $key == 'date' ||
                             $key == 'date_start' ||
@@ -50,9 +55,9 @@
                             $key == 'law_date'
                         ) {
                             $newDate = date('d/m/Y', strtotime($value));
-                            echo '<strong>'.$translation[$key].'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
+                            echo '<strong>'.$columns.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                         } else {
-                            echo '<strong>'.$translation[$key].'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
+                            echo '<strong>'.$columns.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                         }
                     }
                     echo '</div>';
@@ -64,6 +69,8 @@
                     $object = json_decode($log->new_values);
 
                     foreach ($object as $key => $value) {
+                        $columns = $translationNews[$table][$key] ?? $key;
+
                         if (
                             $key == 'date' ||
                             $key == 'date_start' ||
@@ -75,9 +82,9 @@
                             $key == 'law_date'
                         ) {
                             $newDate = date('d/m/Y', strtotime($value));
-                            echo '<strong>'.$translation[$key].'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
+                            echo '<strong>'.$columns.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                         } else {
-                            echo '<strong>'.$translation[$key].'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
+                            echo '<strong>'.$columns.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                         }
                     }
                     echo '</div>';

@@ -49,6 +49,12 @@ class DocumentSituation extends BaseModel
         'active',
     ];
 
+    public static $translation = [
+        'DOCUMENTSITUATION' => 'SITUAÇÃO DO DOCUMENTO',
+        'name' => 'Nome',
+        'active' => 'Ativo',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

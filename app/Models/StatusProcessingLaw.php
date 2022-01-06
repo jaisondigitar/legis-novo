@@ -43,6 +43,11 @@ class StatusProcessingLaw extends BaseModel
         'name',
     ];
 
+    public static $translation = [
+        'STATUSPROCESSINGLAW' => ' STATUS DO PROCESSAMENTO DE LEI',
+        'name' => 'Nome',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

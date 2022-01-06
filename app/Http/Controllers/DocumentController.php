@@ -712,20 +712,7 @@ class DocumentController extends AppBaseController
 
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
-        $translation = [
-            'DOCUMENT' => 'DOCUMENTO',
-            'document_type_id' => 'Tipo de Documento',
-            'owner_id' => 'Setor',
-            'date' => 'Data',
-            'sector_id' => 'Setor',
-            'resume' => 'Ementa',
-            'content' => 'Conteúdo',
-            'users_id' => 'Usuário',
-            'approved' => 'Aprovado',
-            'number' => 'Número',
-            'read' => 'Lido',
-            'id' => 'Id',
-        ];
+        $translation = Document::$translation;
 
         $logs = Log::where('auditable_id', $document->id)
             ->where('auditable_type', Document::class)
@@ -876,12 +863,7 @@ class DocumentController extends AppBaseController
         $doc_ids = DocumentFiles::withTrashed()->where('document_id', $document->id)->pluck('id')
             ->toArray();
 
-        $translation = [
-            'DOCUMENTFILES' => 'ARQUIVOS DOCUMENTO',
-            'document_id' => 'Id do Documento',
-            'filename' => 'Nome do Arquivo',
-            'id' => 'Id',
-        ];
+        $translation = DocumentFiles::$translation;
 
         $logs = Log::whereIn('auditable_id', $doc_ids)
             ->where('auditable_type', DocumentFiles::class)

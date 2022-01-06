@@ -49,6 +49,12 @@ class SessionType extends BaseModel
         'slug',
     ];
 
+    public static $translation = [
+        'SESSIONTYPE' => 'TIPO DE SESSÕES',
+        'name' => 'Nome',
+        'slug' => 'Sigla',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *
