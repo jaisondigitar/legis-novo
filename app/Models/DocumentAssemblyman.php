@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * @SWG\Definition(
  *      definition="Document",
@@ -100,5 +102,15 @@ class DocumentAssemblyman extends BaseModel
     public function assemblyman()
     {
         return $this->belongsTo('App\Models\Assemblyman', 'assemblyman_id');
+    }
+
+    /**
+     * @param  Builder  $query
+     * @param  int  $document_id
+     * @return Builder
+     */
+    public function scopeGetAssemblyman(Builder $query, int $document_id): Builder
+    {
+        return $query->where('document_id', $document_id);
     }
 }

@@ -45,6 +45,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
+use phpDocumentor\Reflection\Types\This;
 
 class DocumentController extends AppBaseController
 {
@@ -53,7 +54,9 @@ class DocumentController extends AppBaseController
      */
     private static $storageService;
 
-    private $pdfService;
+    private PDFService $pdfService;
+
+    private $parameters;
 
     /** @var DocumentRepository */
     private $documentRepository;
@@ -68,6 +71,8 @@ class DocumentController extends AppBaseController
         static::$storageService = new StorageService();
 
         $this->pdfService = new PDFService();
+
+        $this->parameters = new Parameters();
     }
 
     public function getAssemblymenList()
@@ -315,16 +320,7 @@ class DocumentController extends AppBaseController
             $document->type->id ?? $document->type->parent_id
         )->first();
 
-        $assemblymen = DocumentAssemblyman::where('document_id', $document->id)->get();
-
-        $showHeader = Parameters::where('slug', 'mostra-cabecalho-em-pdf-de-documentos-e-projetos')->first()->value;
-        $marginHeader = Parameters::where('slug', 'espaco-entre-texto-e-cabecalho')->first()->value;
-        $margemSuperior = Parameters::where('slug', 'margem-superior-de-documentos')->first()->value;
-        $margemInferior = Parameters::where('slug', 'margem-inferior-de-documentos')->first()->value;
-        $margemEsquerda = Parameters::where('slug', 'margem-esquerda-de-documentos')->first()->value;
-        $margemDireita = Parameters::where('slug', 'margem-direita-de-documentos')->first()->value;
-        $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
-        $votacao = Parameters::where('slug', 'mostra-votacao-em-documento')->first()->value;
+        $assemblymen = DocumentAssemblyman::getAssemblyman($document->id)->get();
 
         require_once public_path().'/tcpdf/mypdf.php';
 
@@ -332,15 +328,19 @@ class DocumentController extends AppBaseController
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('MakerLegis');
 
-        $pdf->SetPrintHeader($showHeader);
+        $pdf->SetPrintHeader($this->parameters->show_header);
 
         $pdf->setFooterData($document->getNumber(), [0, 64, 0]);
         $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-        $pdf->SetMargins($margemEsquerda, $marginHeader, $margemDireita);
-        $pdf->SetHeaderMargin($margemSuperior);
-        $pdf->SetFooterMargin($margemInferior);
-        $pdf->SetAutoPageBreak(true, $margemInferior + 5);
+        $pdf->SetMargins(
+            $this->parameters->margin_left_docs,
+            $this->parameters->space_between_text_and_header,
+            $this->parameters->margin_right_docs
+        );
+        $pdf->SetHeaderMargin($this->parameters->margin_top_docs);
+        $pdf->SetFooterMargin($this->parameters->margin_bottom_docs);
+        $pdf->SetAutoPageBreak(true, $this->parameters->margin_bottom_docs + 5);
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
         $pdf->setFontSubsetting(true);
         $pdf->SetFont('times', '', 12, '', true);
@@ -559,7 +559,7 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($conteudo);
         }
 
-        if ($tramitacao) {
+        if ($this->parameters->perform_docs_advices) {
             $pdf->AddPage();
             $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
 
@@ -588,7 +588,7 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($html1);
         }
 
-        if ($votacao) {
+        if ($this->parameters->show_docs_votes) {
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
             $html2 = '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
