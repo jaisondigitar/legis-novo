@@ -237,7 +237,7 @@ class DocumentController extends AppBaseController
             ->orderBy('number', 'DESC')
             ->first();
 
-        $input['number'] = $last_document->number + 1;
+        $input['number'] = $last_document ? $last_document->number + 1 : 1;
 
         $document = $this->documentRepository->create($input);
 
