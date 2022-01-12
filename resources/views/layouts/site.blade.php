@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>Consulta</title>
-    <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
+    <link rel="shortcut icon" href="assets/images/logoLegis.ico" type="image/png"/>
 
     <!-- Bootstrap core CSS -->
     <link href="/front/assets/css/bootstrap.css" rel="stylesheet">
@@ -160,7 +160,7 @@
                 <a href="tel: 99978-1420">(67) 99978-1420</a> |
                 <a href="mailto: comercial@genesis.tec.br">comercial@genesis.tec.br</a>
             </h5>
-            <h6 class="mt">© {{ date('Y') }} MakerLegis - Software mantido por
+            <h6 class="mt">© {{ date('Y') }} GPL - Software mantido por
                 <a href="https://www.genesis.tec.br/" target="_blank">
                     Gênesis Tecnologia e Inovação
                 </a>

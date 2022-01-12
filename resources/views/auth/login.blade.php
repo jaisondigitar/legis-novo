@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>MakerLegis</title>
-    <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
+    <title>GPL</title>
+    <link rel="shortcut icon" href="assets/images/logoLegis.ico" type="image/png"/>
 
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
@@ -60,7 +60,7 @@
 
         button {
             border-radius: 5px;
-            background: rgb(47, 47, 47);
+            background: #166091;
             color: #fff;
             padding: 10px 20px;
             font-size: 15px;
@@ -69,8 +69,18 @@
         button:hover,
         button:focus,
         button:active {
-            background:#1abc9c;
+            background: white;
             color: #000000;
+        }
+
+        a {
+            color: white !important;
+        }
+
+        a:hover,
+        a:focus,
+        a:active {
+            color: red !important;
         }
 
         .align {
@@ -118,7 +128,7 @@
 
         @media screen and (min-width: 1100px) {
             .backFormat {
-                border-bottom: 100vh solid #2f2f2f;
+                border-bottom: 100vh solid #166091;
                 border-left: 35rem solid transparent;
                 margin-left: 15rem;
                 width: 100vw;
@@ -128,7 +138,7 @@
 
         @media screen and (max-width: 1100px) {
             .backFormat {
-                border-bottom: 100vh solid #2f2f2f;
+                border-bottom: 100vh solid #166091;
                 border-left: 45rem solid transparent;
                 width: 100vw;
             }
@@ -149,7 +159,7 @@
             }
 
             .backFormat {
-                border-bottom: 70vh solid #2f2f2f;
+                border-bottom: 70vh solid #166091;
                 border-left: 0 solid transparent;
                 /*width: 100vw;*/
             }
@@ -167,7 +177,7 @@
         .errorLogin {
             padding-bottom: 3rem;
             font-size: 15px;
-            color: #de0101;
+            color: black;
         }
     </style>
 </head>
@@ -176,8 +186,9 @@
 <div class="backLogin">
     <div class="logoType">
         <img
-            src="/assets/images/genesis-black.png"
+            src="/assets/images/gpl.png"
             class="img-responsive"
+            style="max-width: 75%; height: 50%;"
             alt="Logo"
         >
     </div>

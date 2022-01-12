@@ -8,8 +8,8 @@
     <meta name="keywords" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>MakerLegis</title>
-    <link rel="shortcut icon" href="/assets/images/genesis.ico" type="image/png"/>
+    <title>GPL</title>
+    <link rel="shortcut icon" href="/assets/images/logoLegis.ico" type="image/png"/>
 
     <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -346,7 +346,7 @@ BEGIN PAGE
             <a href="/admin">
                 <div class="logo-brand" style="padding: 5px 0">
                     <img
-                        src="/assets/images/not-name.png"
+                        src="/assets/images/gpl-not-description.png"
                         alt="Logo"
                         style="max-width: 100%;
                         height: 100%;"
@@ -409,7 +409,7 @@ BEGIN PAGE
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/admin">MakerLegis</a>
+                    <a class="navbar-brand" href="/admin">GPL</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
