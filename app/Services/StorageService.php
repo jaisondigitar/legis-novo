@@ -11,13 +11,13 @@ use Throwable;
 
 class StorageService implements StorageInterface
 {
-    protected $disk = 'digitalocean';
+    protected string $disk = 'digitalocean';
 
     protected static $file = null;
 
-    protected static $ext = null;
+    protected static string $ext = '';
 
-    private $folder;
+    private string $folder;
 
     /**
      * @return $this
