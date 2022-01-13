@@ -87,6 +87,7 @@ class Document extends BaseModel
         'approved',
         'updated_at',
         'resume',
+        'file',
     ];
 
     /**
