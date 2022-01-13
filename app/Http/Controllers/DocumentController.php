@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Adapters\TCPDFAdapter;
 use App\Enums\DocumentStatuses;
 use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
@@ -9,7 +10,6 @@ use App\Models\AdvicePublicationDocuments;
 use App\Models\AdviceSituationDocuments;
 use App\Models\Assemblyman;
 use App\Models\Commission;
-use App\Models\Company;
 use App\Models\Destination;
 use App\Models\Document;
 use App\Models\DocumentAssemblyman;
@@ -29,6 +29,7 @@ use App\Models\Sector;
 use App\Models\StatusProcessingDocument;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
+use App\Services\DocumentService;
 use App\Services\PDFService;
 use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
@@ -45,34 +46,41 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
-use phpDocumentor\Reflection\Types\This;
+use TCPDF;
+use Throwable;
 
 class DocumentController extends AppBaseController
 {
     /**
-     * @var
+     * @var StorageService
      */
-    private static $storageService;
+    private static StorageService $storageService;
 
-    private PDFService $pdfService;
+    /**
+     * @var DocumentService
+     */
+    private DocumentService $documentService;
 
-    private $parameters;
+    /**
+     * @var DocumentRepository
+     */
+    private DocumentRepository $documentRepository;
 
-    /** @var DocumentRepository */
-    private $documentRepository;
-
+    /**
+     * @param  DocumentRepository  $documentRepo
+     * @throws Throwable
+     */
     public function __construct(DocumentRepository $documentRepo)
     {
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+
         date_default_timezone_set('America/Cuiaba');
 
         $this->documentRepository = $documentRepo;
 
         static::$storageService = new StorageService();
 
-        $this->pdfService = new PDFService();
-
-        $this->parameters = new Parameters();
+        $this->documentService = new DocumentService();
     }
 
     public function getAssemblymenList()
@@ -252,11 +260,12 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->create($input);
 
         ProcessingDocument::create([
-           'document_id' => $document->id,
-           'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
-               ->first()->id,
-           'processing_document_date' => now()->format('d/m/Y'),
-           'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
+            'document_id' => $document->id,
+            'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
+            'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
+                ->first()->id,
+            'processing_document_date' => now()->format('d/m/Y'),
+            'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
         ]);
 
         if (! empty($input['assemblymen'])) {
@@ -273,352 +282,32 @@ class DocumentController extends AppBaseController
         $doc_number->date = $document->updated_at;
         $doc_number->save();
 
+        $this->documentRepository->update($document, [
+            'file' => $this->documentService->saveFile(Document::find($document->id)),
+        ]);
+
         flash('Documento salvo com sucesso.')->success();
 
         return redirect(route('documents.index'));
     }
 
-    public function getResponsability($assemblyman, $date)
-    {
-        if (count($assemblyman->assemblyman->responsibility_assemblyman()->where('date', '<=', $date)->get()) > 1) {
-            $resp = $assemblyman->assemblyman->responsibility_assemblyman()->orderBy('date')->where('date', '<=', $date)->get()->last()->responsibility->name.'(a) ';
-        } else {
-            if (count($assemblyman->assemblyman->responsibility_assemblyman) == 1) {
-                $resp = $assemblyman->assemblyman->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
-            } else {
-                $resp = 'Vereador(a) ';
-            }
-        }
-
-        return $resp;
-    }
-
-    public function getOrder($assemblyman, $date)
-    {
-        if (count($assemblyman->assemblyman->responsibility_assemblyman()->where('date', '<=', $date)->get()) > 1) {
-            $resp = $assemblyman->assemblyman->responsibility_assemblyman()->orderBy('date')->where('date', '<=', $date)->get()->last()->responsibility->order;
-        } else {
-            if (count($assemblyman->assemblyman->responsibility_assemblyman) == 1) {
-                $resp = $assemblyman->assemblyman->responsibility_assemblyman()->first()->responsibility->order;
-            } else {
-                $resp = 15;
-            }
-        }
-
-        return $resp;
-    }
-
     public function show($id)
     {
-        $this->pdfService->setLocale();
-
-        $company = Company::first();
-
         $document = Document::find($id);
 
-        $document_model = DocumentModels::documentModel(
-            $document->type->id ?? $document->type->parent_id
-        )->first();
-
-        $assemblymen = DocumentAssemblyman::getAssemblyman($document->id)->get();
-
-        require_once public_path().'/tcpdf/mypdf.php';
-
-        $pdf = new \MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('MakerLegis');
-
-        $pdf->SetPrintHeader($this->parameters->show_header);
-
-        $pdf->setFooterData($document->getNumber(), [0, 64, 0]);
-        $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
-        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-        $pdf->SetMargins(
-            $this->parameters->margin_left_docs,
-            $this->parameters->space_between_text_and_header,
-            $this->parameters->margin_right_docs
-        );
-        $pdf->SetHeaderMargin($this->parameters->margin_top_docs);
-        $pdf->SetFooterMargin($this->parameters->margin_bottom_docs);
-        $pdf->SetAutoPageBreak(true, $this->parameters->margin_bottom_docs + 5);
-        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-        $pdf->setFontSubsetting(true);
-        $pdf->SetFont('times', '', 12, '', true);
-        $pdf->SetTitle($document->type->name);
-
-        $pdf->AddPage();
-
-        $date = explode('/', $document->date);
-        $date = $date[2].'-'.$date[1].'-'.$date[0];
-
-        $list = [];
-        $list[0][0] = $document->owner->short_name;
-        if (count($document->owner->responsibility_assemblyman()->where('date', '<=', $date)->get()) > 1) {
-            $list[0][1] = $document->owner->responsibility_assemblyman()->orderBy('date')->where('date', '<=', $date)->get()->last()->responsibility->name.'(a) ';
-            $list[0][4] = 0;
-        } else {
-            if (count($document->owner->responsibility_assemblyman) > 0) {
-                $list[0][1] = $document->owner->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
-                $list[0][4] = 0;
-            } else {
-                $list[0][1] = 'Vereador(a) ';
-                $list[0][4] = 0;
-            }
-        }
-        $list[0][2] = 'Vereador(a) ';
-        $list[0][3] = PartiesAssemblyman::where('assemblyman_id', $document->owner->id)->orderBy('date', 'DESC')->first()->party->prefix;
-
-        if (! empty($assemblymen)) {
-            foreach ($assemblymen as $key => $assemblyman) {
-                $list[$key + 1][0] = $assemblyman->assemblyman->short_name;
-                if (count($assemblyman->assemblyman->responsibility_assemblyman()->get()) > 1) {
-                    $list[$key + 1][1] = $this->getResponsability($assemblyman, $date);
-                } else {
-                    $list[$key + 1][1] = count($assemblyman->assemblyman->responsibility_assemblyman) == 0 ? '-' : $assemblyman->assemblyman->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
-                }
-            }
-        }
-
-        if (! empty($assemblymen)) {
-            foreach ($assemblymen as $key => $assemblyman) {
-                $list[$key + 1][0] = $assemblyman->assemblyman->short_name;
-                $list[$key + 1][1] = $this->getResponsability($assemblyman, $date);
-                $list[$key + 1][4] = $this->getOrder($assemblyman, $date);
-                $list[$key + 1][2] = 'Vereador(a) ';
-                $list[$key + 1][3] = PartiesAssemblyman::where('assemblyman_id', $assemblyman->assemblyman->id)->orderBy('date', 'DESC')->first()->party->prefix;
-            }
-        }
-
-        if (empty($document)) {
+        if (! $document) {
             flash('Documento não encontrado')->error();
 
             return redirect(route('documents.index'));
         }
 
-        $html = '';
-        $count = 0;
-        $list = collect($list)->sortBy('4')->toArray();
+        return response()->redirectTo(
+            $this->documentService->openFileInBrowser($document)
+        );
 
-        if (count($list) == 1) {
-            $html .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
-            $html .= '<tr style="height: 300px">';
-            $html .= '<td style="width:25%;"></td>';
-            $html .= '<td style="width:50%; text-align: center;  vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][1].' - '.$list[0][3].'<br><br><br></td>';
-            $html .= '<td style="width:25%;"></td>';
-            $html .= '</tr>';
-            $html .= '</tbody></table>';
-        } else {
-            $html .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 300px"><tbody>';
-            foreach ($list as $vereador) {
-                if ($count == 0) {
-                    $html .= '<tr style="height: 300px">';
-                }
+        /*$this->createTenantDirectoryIfNotExists();
 
-                $html .= '<td style="text-align: center; vertical-align: text-top">'.$vereador[0].'<br>'.$vereador[1].' - '.$vereador[3].'<br><br><br></td>';
-
-                if ($count == 2 || $vereador === end($list)) {
-                    $html .= '</tr>';
-                    $count = 0;
-                } else {
-                    $count++;
-                }
-            }
-            $html .= '</tbody></table>';
-        }
-
-        $html2 = '';
-        $count = 0;
-
-        if (count($list) == 1) {
-            $html2 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
-            $html2 .= '<tr style="height: 300px">';
-            $html2 .= '<td style="width:25%;"></td>';
-            $html2 .= '<td style="width:50%; text-align: center;  vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][2].' - '.$list[0][3].'<br><br><br></td>';
-            $html2 .= '<td style="width:25%;"></td>';
-            $html2 .= '</tr>';
-            $html2 .= '</tbody></table>';
-        } else {
-            $html2 .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 300px"><tbody>';
-            foreach ($list as $vereador) {
-                if ($count == 0) {
-                    $html2 .= '<tr style="height: 300px">';
-                }
-
-                $html2 .= '<td style="text-align: center; vertical-align: text-top">'.$vereador[0].'<br>'.$vereador[1].' - '.$vereador[3].'<br><br><br></td>';
-
-                if ($count == 2 || $vereador === end($list)) {
-                    $html2 .= '</tr>';
-                    $count = 0;
-                } else {
-                    $count++;
-                }
-            }
-            $html2 .= '</tbody></table>';
-        }
-
-        $html3 = '';
-        $count = 0;
-
-        if (count($list) == 1) {
-            $html3 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
-            $html3 .= '<tr style="height: 300px">';
-            $html3 .= '<td style="width:25%;"></td>';
-            $html3 .= '<td style="width:50%; text-align: center;  vertical-align: text-top">'.$list[0][0].'<br>'.'<br><br><br></td>';
-            $html3 .= '<td style="width:25%;"></td>';
-            $html3 .= '</tr>';
-            $html3 .= '</tbody></table>';
-        } else {
-            $html3 .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 300px"><tbody>';
-            foreach ($list as $vereador) {
-                if ($count == 0) {
-                    $html3 .= '<tr style="height: 300px">';
-                }
-                $html3 .= '<td style="text-align: center; vertical-align: text-top">'.$vereador[0].'<br>'.'<br><br><br></td>';
-                if ($count == 2 || $vereador === end($list)) {
-                    $html3 .= '</tr>';
-                    $count = 0;
-                } else {
-                    $count++;
-                }
-            }
-            $html3 .= '</tbody></table>';
-        }
-
-        $tipo = '';
-        $tipo .= $document->document_type->parent_id ? $document->document_type->parent->name.' :: ' : '';
-        $tipo .= $document->document_type->name;
-        $docNum = $document->number == 0 ? '_______ ' : $document->number;
-
-        $document_internal_number = $document->getNumber();
-        $document_protocol_number = $document->document_protocol ? $document->document_protocol->number : '';
-        $document_protocol_date = $document->document_protocol ? date('d/m/Y', strtotime($document->document_protocol->created_at)) : '';
-        $document_protocol_hours = $document->document_protocol ? date('H:i', strtotime($document->document_protocol->created_at)) : '';
-
-        $data_USA = explode(' ', ucfirst(iconv('ISO-8859-1', 'UTF-8', strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date))))));
-
-        $mes['January'] = 'Janeiro';
-        $mes['February'] = 'Fevereiro';
-        $mes['March'] = 'Março';
-        $mes['April'] = 'Abril';
-        $mes['May'] = 'Maio';
-        $mes['June'] = 'Junho';
-        $mes['July'] = 'Julho';
-        $mes['August'] = 'Agosto';
-        $mes['September'] = 'Setembro';
-        $mes['October'] = 'Outubro';
-        $mes['November'] = 'Novembro';
-        $mes['December'] = 'Dezembro';
-
-        $mes_pt = isset($mes[$data_USA[2]]) ? $mes[$data_USA[2]] : $data_USA[2];
-
-        $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
-
-        $conteudo = $document->content;
-
-        if ($document_model) {
-            $content = str_replace(
-                [
-                    '[numero]',
-                    '[data_curta]',
-                    '[data_longa]',
-                    '[autores]',
-                    '[autores_vereador]',
-                    '[nome_vereadores]',
-                    '[responsavel]',
-                    '[assunto]',
-                    '[conteudo]',
-                    '[protocolo_numero]',
-                    '[protocolo_data]',
-                    '[protocolo_hora]',
-                    '[numero_interno]',
-                    '[numero_documento]', '[ano_documento]', '[tipo_documento]',
-                ],
-                [
-                    '<b>'.$tipo.'</b>: '.$docNum.' / '.$document->getYear($document->date),
-                    ucfirst(strftime('%d/%m/%Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date)))),
-                    $data_ptbr,
-                    $html,
-                    $html2,
-                    $html3,
-                    $document->owner->short_name,
-                    $document->content,
-                    $conteudo,
-                    $document_protocol_number,
-                    $document_protocol_date,
-                    $document_protocol_hours,
-                    $document_internal_number,
-                    $docNum,
-                    $document->getYear($document->date),
-                    $tipo,
-                ],
-                $document_model->content
-            );
-
-            $pdf->writeHTML($content);
-        } else {
-            $pdf->writeHTML($conteudo);
-        }
-
-        if ($this->parameters->perform_docs_advices) {
-            $pdf->AddPage();
-            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
-
-            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
-            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
-
-            $html1 .= '<tbody>';
-            foreach ($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing) {
-                $html1 .= '<hr>';
-                $html1 .= '<tr style=" text-align: left;">';
-                $html1 .= '<td width="100" style=" text-align: left;"><b>Data: </b> <br>'.$processing->processing_document_date.'</td>';
-                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do documento: </b> <br>'.$processing->documentSituation->name.'</td>';
-                if ($processing->statusProcessingDocument) {
-                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
-                }
-                $html1 .= '</tr>';
-                if (strlen($processing->observation) > 0) {
-                    $html1 .= '<tr>';
-                    $html1 .= '<td width="650" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->observation.'</td>';
-                    $html1 .= '</tr>';
-                }
-            }
-
-            $html1 .= '</tbody></table>';
-
-            $pdf->writeHTML($html1);
-        }
-
-        if ($this->parameters->show_docs_votes) {
-            $pdf->AddPage();
-            $pdf->setListIndentWidth(5);
-            $html2 = '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
-            $html2 .= '<tr style="height: 300px">';
-            $html2 .= '<td style="width:100%; text-align: center;"><h3> Votação </h3></td>';
-            $html2 .= '</tr>';
-            $html2 .= '</tbody></table>';
-            $html2 .= '<table style=" text-align: left;">';
-            foreach ($document->voting()->get() as $item) {
-                $html2 .= '<tr style=" text-align: left;">';
-                $html2 .= '<td style=" text-align: left;">Data da votação: '.date('d/m/Y', strtotime($item->open_at)).'</td>';
-                $html2 .= '<td style=" text-align: left;">Situação: ';
-                if ($item->situation($item)) {
-                    $html2 .= 'Votação Aprovada';
-                } else {
-                    $html2 .= 'Votação Reprovada';
-                }
-                $html2 .= '</td>';
-                $html2 .= '<br>';
-                $html2 .= '</tr>';
-            }
-
-            $html2 .= '</table>';
-            $html2 .= '<br>';
-            $pdf->writeHTML($html2);
-        }
-
-        $this->createTenantDirectoryIfNotExists();
-
-        $pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
+        $this->pdfService->lib_pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
 
         $this->attachFilesToSavedDoc($document);
 
@@ -626,7 +315,7 @@ class DocumentController extends AppBaseController
 
         $files_to_remove[] = 'doc.pdf';
 
-        $this->removeUnusedLocalFiles($files_to_remove);
+        $this->removeUnusedLocalFiles($files_to_remove);*/
     }
 
     private function attachFilesToSavedDoc(Document $document)
@@ -652,7 +341,7 @@ class DocumentController extends AppBaseController
             });
 
         $pdfMerger->merge(
-            'browser',
+            'string',
             storage_path().'/app/documents/law-project.pdf'
         );
     }
@@ -770,7 +459,7 @@ class DocumentController extends AppBaseController
 
         $document_data['users_id'] = Auth::user()->id;
 
-        $document = $this->documentRepository->update($document, $document_data);
+        $this->documentRepository->update($document, $document_data);
 
         DocumentAssemblyman::where('document_id', $id)->delete();
 
@@ -785,8 +474,12 @@ class DocumentController extends AppBaseController
 
         $doc_number = new DocumentNumber();
         $doc_number->document_id = $document->id;
-        $doc_number->date = $document->updated_at;
+        $doc_number->date = $document->fresh()->updated_at;
         $doc_number->save();
+
+        $this->documentRepository->update($document, [
+            'file' => $this->documentService->saveFile($document),
+        ]);
 
         flash('Documento editado com sucesso')->success();
 
