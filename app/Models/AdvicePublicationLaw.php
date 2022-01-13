@@ -38,6 +38,11 @@ class AdvicePublicationLaw extends BaseModel
         'name',
     ];
 
+    public static $translation = [
+        'ADVICEPUBLICATIONLAW' => 'PUBLICAÇÃO DO PARECER DE LEI',
+        'name' => 'Nome',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

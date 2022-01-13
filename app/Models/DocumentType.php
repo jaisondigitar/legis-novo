@@ -56,6 +56,14 @@ class DocumentType extends BaseModel
         'slug',
     ];
 
+    public static $translation = [
+        'DOCUMENTTYPE' => 'TIPO DE DOCUMENTO',
+        'parent_id' => 'Id dos Pais',
+        'name' => 'Nome',
+        'prefix' => 'Prefixo',
+        'slug' => 'Sigla',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

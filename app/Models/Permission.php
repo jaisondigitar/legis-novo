@@ -14,6 +14,15 @@ class Permission extends BaseModel
         'updated_at',
     ];
 
+    public static $translation = [
+        'PERMISSION' => 'PERMISSÃO',
+        'id' => 'Id',
+        'name' => 'Nome',
+        'readable_name' => 'Nome Legível',
+        'created_at' => 'Data de Criação',
+        'updated_at' => 'Data de Atualização',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

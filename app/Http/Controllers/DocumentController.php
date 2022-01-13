@@ -712,13 +712,14 @@ class DocumentController extends AppBaseController
 
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
+        $translation = Document::$translation;
+
         $logs = Log::where('auditable_id', $document->id)
             ->where('auditable_type', Document::class)
             ->orderBy('created_at', 'desc')
             ->get();
-//
 
-        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs'))
+        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs', 'translation'))
             ->with('document', $document)
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])
@@ -862,12 +863,14 @@ class DocumentController extends AppBaseController
         $doc_ids = DocumentFiles::withTrashed()->where('document_id', $document->id)->pluck('id')
             ->toArray();
 
+        $translation = DocumentFiles::$translation;
+
         $logs = Log::whereIn('auditable_id', $doc_ids)
             ->where('auditable_type', DocumentFiles::class)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('documents.attachament')->with(compact('document', 'document_files', 'logs'));
+        return view('documents.attachament')->with(compact('document', 'document_files', 'logs', 'translation'));
     }
 
     public function attachamentUpload($id, Request $request)

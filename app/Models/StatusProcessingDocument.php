@@ -43,6 +43,11 @@ class StatusProcessingDocument extends BaseModel
         'name',
     ];
 
+    public static $translation = [
+        'STATUSPROCESSINGDOCUMENT' => 'STATUS DO TRAMITE',
+        'name' => 'Nome',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

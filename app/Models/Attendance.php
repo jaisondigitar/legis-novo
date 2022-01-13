@@ -15,6 +15,16 @@ class Attendance extends BaseModel
         'people_id',
     ];
 
+    public static $translation = [
+        'ATTENDANCE' => 'ATENDIMENTO',
+        'date' => 'Data',
+        'time' => 'Horário',
+        'description' => 'Descrição',
+        'type_id' => 'Id do Tipo',
+        'sector_id' => 'Id do Setor',
+        'people_id' => 'Id da Pessoa',
+    ];
+
     /**
      *Validation rules.
      *

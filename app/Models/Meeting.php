@@ -56,6 +56,16 @@ class Meeting extends BaseModel
         'version_pauta_id',
     ];
 
+    public static $translation = [
+        'MEETING' => 'ENCONTRO',
+        'session_type_id' => 'id do Tipo de Sessão',
+        'session_place_id' => 'id do Local da Sessão',
+        'date_start' => 'Data Inicio',
+        'date_end' => 'Data Final',
+        'number' => 'Número',
+        'version_pauta_id' => 'Id da Estrutura da Pauta',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

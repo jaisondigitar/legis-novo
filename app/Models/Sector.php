@@ -50,6 +50,13 @@ class Sector extends BaseModel
         'slug',
     ];
 
+    public static $translation = [
+        'SECTOR' => 'SETOR',
+        'name' => 'Nome',
+        'external' => 'Externo',
+        'slug' => 'Sigla',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

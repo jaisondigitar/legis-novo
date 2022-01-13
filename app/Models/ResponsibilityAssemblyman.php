@@ -53,6 +53,13 @@ class ResponsibilityAssemblyman extends BaseModel
         'date',
     ];
 
+    public static $translation = [
+        'RESPONSIBILITYASSEMBLYMAN' => 'RESPONSABILIDADE',
+        'responsibility_id' => 'Id da Responsabilidade',
+        'assemblyman_id' => 'Responsável',
+        'date' => 'Data',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

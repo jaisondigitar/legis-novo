@@ -35,6 +35,12 @@ class LegislatureAssemblyman extends BaseModel
         'assemblyman_id',
     ];
 
+    public static $translation = [
+        'LEGISLATUREASSEMBLYMAN' => 'LEGISLATURA',
+        'legislature_id' => 'Id da Legislatura',
+        'assemblyman_id' => 'Id do Responsável',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

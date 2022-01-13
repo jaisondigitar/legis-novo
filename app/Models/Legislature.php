@@ -59,6 +59,13 @@ class Legislature extends BaseModel
         'to',
     ];
 
+    public static $translation = [
+        'LEGISLATURE' => 'LEGISLATURA',
+        'companies_id' => 'Id do Setor',
+        'from' => 'De',
+        'to' => 'Até',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

@@ -56,6 +56,13 @@ class Party extends BaseModel
         'name',
     ];
 
+    public static $translation = [
+        'PARTY' => 'PARTIDOS',
+        'companies_id' => 'Id do Setor',
+        'prefix' => 'Prefixo',
+        'name' => 'Nome',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *
