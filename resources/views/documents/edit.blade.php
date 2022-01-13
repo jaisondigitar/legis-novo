@@ -37,6 +37,8 @@
                     <div>
                         <?php
                         $model = explode('\\', $log->auditable_type);
+                        $table = strtoupper($model[2]);
+                        $title = $translation[$table] ?? $table;
 
                         switch ($log->event) {
                             case 'created':
@@ -49,14 +51,14 @@
                                 echo "<label class='badge badge-danger'>DELETOU</label>";
                                 break;
                         }
-                        echo '<br><b>MODEL: </b>'.strtoupper($model[2]).'<br><br>';
+                        echo '<br><div class="col-sm-12"><b>MODEL: </b>'.$title.'</div><br><br>';
 
                         echo '<p style="border: 1px solid #adadad"></p>';
 
-                        echo '<div class="col-sm-1"><b>ID:</b> '.strtoupper($log->auditable_id).'</div>';
+                        echo '<div class="col-sm-3"><b>ID:</b> '.strtoupper($log->auditable_id).'</div>';
                         echo '<div class="col-sm-3"><b>Data</b>: '.date('d/m/Y H:i:s', strtotime($log->created_at)).'</div>';
-                        echo '<div class="col-sm-6"><b>Rota:</b> '.$log->url.'</div>';
-                        echo '<div class="col-sm-2"><b>IP:</b> '.$log->ip_address.'</div>';
+                        echo '<div class="col-sm-5"><b>Rota:</b> '.$log->url.'</div>';
+                        echo '<div class="col-sm-1"><b>IP:</b> '.$log->ip_address.'</div>';
 
                         echo '<p style="border: 1px solid #adadad; margin-top: 40px;"></p>';
 
@@ -66,11 +68,13 @@
                             $object = json_decode($log->old_values);
 
                             foreach ($object as $key => $value) {
+                                $columns = $translation[$key] ?? $key;
+
                                 if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
                                     $newDate = date('d/m/Y', strtotime($value));
-                                    echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$columns.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                                 } else {
-                                    echo '<strong>'.$key.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$columns.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                                 }
                             }
                             echo '</div>';
@@ -82,11 +86,13 @@
                             $object = json_decode($log->new_values);
 
                             foreach ($object as $key => $value) {
+                                $columns = $translation[$key] ?? $key;
+
                                 if ($key == 'date' || $key == 'date_start' || $key == 'date_end' || $key == 'law_date') {
                                     $newDate = date('d/m/Y', strtotime($value));
-                                    echo '<strong>'.$key.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$columns.'</strong>: '.$newDate.'<br style="margin-bottom: 3px">';
                                 } else {
-                                    echo '<strong>'.$key.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
+                                    echo '<strong>'.$columns.'</strong>: '.(is_object($value) ? '' : $value).'<br style="margin-bottom: 3px">';
                                 }
                             }
                             echo '</div>';

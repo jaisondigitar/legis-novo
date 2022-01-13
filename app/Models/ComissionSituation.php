@@ -43,6 +43,11 @@ class ComissionSituation extends BaseModel
         'name',
     ];
 
+    public static $translation = [
+        'COMISSIONSITUATION' => 'SITUAÇÃO DA COMISSÃO',
+        'name' => 'Nome',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

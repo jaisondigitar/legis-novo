@@ -52,6 +52,14 @@ class Responsibility extends BaseModel
         'skip_board',
     ];
 
+    public static $translation = [
+        'RESPONSIBILITY' => 'RESPONSABILIDADE',
+        'companies_id' => 'Id do Setor',
+        'name' => 'Nome',
+        'order' => 'Ordem',
+        'skip_board' => 'Ignorar Mesa',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

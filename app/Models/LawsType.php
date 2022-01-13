@@ -43,6 +43,11 @@ class LawsType extends BaseModel
         'name',
     ];
 
+    public static $translation = [
+        'LAWSTYPE' => 'TIPOS DE LEI',
+        'name' => 'Nome',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

@@ -13,6 +13,14 @@ class Role extends BaseModel
         'updated_at',
     ];
 
+    public static $translation = [
+        'ROLE' => 'GRUPO DE PERMISSÕES',
+        'id' => 'Id',
+        'name' => 'Nome',
+        'created_at' => 'Data de Criação',
+        'updated_at' => 'Data de Atualização',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

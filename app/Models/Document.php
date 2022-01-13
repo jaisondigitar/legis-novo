@@ -88,6 +88,23 @@ class Document extends BaseModel
         'resume',
     ];
 
+    public static $translation = [
+        'DOCUMENT' => 'DOCUMENTO',
+        'document_type_id' => 'Tipo de Documento',
+        'owner_id' => 'Setor',
+        'date' => 'Data',
+        'sector_id' => 'Setor',
+        'resume' => 'Ementa',
+        'content' => 'Conteúdo',
+        'users_id' => 'Usuário',
+        'approved' => 'Aprovado',
+        'number' => 'Número',
+        'read' => 'Lido',
+        'id' => 'Id',
+        'session_date' => 'Data da Sessão',
+        'updated_at' => 'Data de Atualização',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

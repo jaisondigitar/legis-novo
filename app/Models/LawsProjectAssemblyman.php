@@ -11,6 +11,12 @@ class LawsProjectAssemblyman extends BaseModel
         'assemblyman_id',
     ];
 
+    public static $translation = [
+        'LAWSPROJECTASSEMBLYMAN' => 'ASSEMBLÉIA DE PROJETOS DE LEIS',
+        'law_project_id' => 'Id da Lei do Projeto',
+        'assemblyman_id' => 'Id do Responsável',
+    ];
+
     protected $casts = [
 
     ];

@@ -2,16 +2,65 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\PartiesAssemblymanAPIController;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Libraries\Repositories\ProfileRepository;
 use App\Libraries\Repositories\UserRepository;
+use App\Models\Advice;
+use App\Models\AdviceAwnser;
+use App\Models\AdvicePublicationDocuments;
+use App\Models\AdvicePublicationLaw;
+use App\Models\AdviceSituation;
+use App\Models\AdviceSituationDocuments;
+use App\Models\AdviceSituationLaw;
 use App\Models\Assemblyman;
+use App\Models\Attendance;
+use App\Models\ComissionSituation;
+use App\Models\Commission;
+use App\Models\Destination;
+use App\Models\Document;
+use App\Models\DocumentAssemblyman;
+use App\Models\DocumentFiles;
+use App\Models\DocumentModels;
+use App\Models\DocumentNumber;
+use App\Models\DocumentProtocol;
+use App\Models\DocumentSituation;
+use App\Models\DocumentType;
+use App\Models\LawFile;
+use App\Models\LawProjectsNumber;
+use App\Models\LawSituation;
+use App\Models\LawsPlace;
+use App\Models\LawsProject;
+use App\Models\LawsProjectAssemblyman;
+use App\Models\LawsStructure;
+use App\Models\LawsTag;
+use App\Models\LawsType;
+use App\Models\Legislature;
+use App\Models\LegislatureAssemblyman;
 use App\Models\Log;
+use App\Models\Meeting;
+use App\Models\MeetingPauta;
+use App\Models\OfficeCommission;
+use App\Models\Parameters;
+use App\Models\PartiesAssemblyman;
+use App\Models\Party;
+use App\Models\People;
+use App\Models\Permission;
+use App\Models\Processing;
+use App\Models\ProcessingDocument;
+use App\Models\Responsibility;
+use App\Models\ResponsibilityAssemblyman;
 use App\Models\Role;
 use App\Models\Sector;
+use App\Models\SessionType;
+use App\Models\StatusProcessingDocument;
+use App\Models\StatusProcessingLaw;
+use App\Models\TypesOfAttendance;
+use App\Models\TypeVoting;
 use App\Models\User;
 use App\Models\UserAssemblyman;
+use App\Models\VersionPauta;
 use Artesaos\Defender\Facades\Defender;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -335,9 +384,65 @@ class UserController extends AppBaseController
 
     public function auditing($id)
     {
+        $translationNews = [
+            'DOCUMENT' => Document::$translation,
+            'LAWSPROJECT' => LawsProject::$translation,
+            'DOCUMENTNUMBER' => DocumentNumber::$translation,
+            'COMMISSIONASSEMBLYMAN' => DocumentAssemblyman::$translation,
+            'ADVICESITUATION' => AdviceSituation::$translation,
+            'ADVICEAWNSER' => AdviceAwnser::$translation,
+            'ADVICE' => Advice::$translation,
+            'MEETINGPAUTA' => MeetingPauta::$translation,
+            'PROCESSING' => Processing::$translation,
+            'DESTINATION' => Destination::$translation,
+            'LAWSPROJECTASSEMBLYMAN' => LawsProjectAssemblyman::$translation,
+            'LAWPROJECTSNUMBER' => LawProjectsNumber::$translation,
+            'STATUSPROCESSINGLAW' => StatusProcessingLaw::$translation,
+            'ADVICESITUATIONLAW' => AdviceSituationLaw::$translation,
+            'LAWFILE' => LawFile::$translation,
+            'PROCESSINGDOCUMENT' => ProcessingDocument::$translation,
+            'DOCUMENTSITUATION' => DocumentSituation::$translation,
+            'MEETING' => Meeting::$translation,
+            'DOCUMENTMODELS' => DocumentModels::$translation,
+            'DOCUMENTPROTOCOL' => DocumentProtocol::$translation,
+            'PARAMETERS' => Parameters::$translation,
+            'PERMISSION' => Permission::$translation,
+            'USERASSEMBLYMAN' => UserAssemblyman::$translation,
+            'LAWSITUATION' => LawSituation::$translation,
+            'DOCUMENTTYPE' => DocumentType::$translation,
+            'LEGISLATUREASSEMBLYMAN' => LegislatureAssemblyman::$translation,
+            'PARTIESASSEMBLYMAN' => PartiesAssemblyman::$translation,
+            'RESPONSIBILITYASSEMBLYMAN' => ResponsibilityAssemblyman::$translation,
+            'RESPONSIBILITY' => Responsibility::$translation,
+            'PEOPLE' => People::$translation,
+            'ATTENDANCE' => Attendance::$translation,
+            'USER' => User::$translation,
+            'ASSEMBLYMAN' => Assemblyman::$translation,
+            'SECTOR' => Sector::$translation,
+            'PARTY' => Party::$translation,
+            'LEGISLATURE' => Legislature::$translation,
+            'ADVICEPUBLICATIONDOCUMENTS' => AdvicePublicationDocuments::$translation,
+            'ADVICESITUATIONDOCUMENTS' => AdviceSituationDocuments::$translation,
+            'STATUSPROCESSINGDOCUMENT' => StatusProcessingDocument::$translation,
+            'COMISSIONSITUATION' => ComissionSituation::$translation,
+            'OFFICECOMMISSION' => OfficeCommission::$translation,
+            'COMMISSION' => Commission::$translation,
+            'TYPEVOTING' => TypeVoting::$translation,
+            'SESSIONTYPE' => SessionType::$translation,
+            'VERSIONPAUTA' => VersionPauta::$translation,
+            'LAWSPLACE' => LawsPlace::$translation,
+            'LAWSSTRUCTURE' => LawsStructure::$translation,
+            'LAWSTAG' => LawsTag::$translation,
+            'LAWSTYPE' => LawsType::$translation,
+            'ADVICEPUBLICATIONLAW' => AdvicePublicationLaw::$translation,
+            'TYPESOFATTENDANCE' => TypesOfAttendance::$translation,
+            'ROLE' => Role::$translation,
+            'DOCUMENTFILES' => DocumentFiles::$translation,
+        ];
+
         $user = User::find($id);
         $logs = Log::where('user_id', $id)->orderBy('created_at', 'desc')->paginate(20);
 
-        return view('users.auditing', compact('user'))->with('logs', $logs);
+        return view('users.auditing', compact('user', 'logs', 'translationNews'));
     }
 }

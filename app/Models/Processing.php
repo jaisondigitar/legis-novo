@@ -24,6 +24,18 @@ class Processing extends BaseModel
         'destination_id',
     ];
 
+    public static $translation = [
+        'PROCESSING' => 'EM PROCESSAMENTO',
+        'law_projects_id' => 'Id da Lei do Projeto',
+        'advice_publication_id' => 'ID de Publicação de Conselho',
+        'advice_situation_id' => 'Id da Situação do Conselho',
+        'status_processing_law_id' => 'Id de Lei de Processamento de Status',
+        'processing_date' => 'Processando Dados',
+        'obsevation' => 'Observação',
+        'processing_file' => 'Processando Arquivo',
+        'destination_id' => 'Id de Destino',
+    ];
+
     /**
      * @return BelongsTo
      */

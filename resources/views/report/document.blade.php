@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     <div class="the-box rounded">
-        <form method="GET" >
+        <form method="GET">
             <div class="form-group col-md-2">
                 {!! Form::label('date_start', 'Data Inicial:') !!}
                 {!! Form::text('date_start', $form->input('date_start'), ['class' => 'form-control datepicker' , 'id' => 'date_start']) !!}
@@ -45,7 +45,9 @@
                 {!! Form::label('date', 'Que contenha (texto):') !!}
                 {!! Form::text('text', $form->input('text'), ['class' => 'form-control', 'id' => 'data']) !!}
             </div>
+
             <div class="clearfix"></div>
+
             <div class="form-group col-md-2 pull-right">
                 <button class="btn btn-block btn-primary" ><i class="fa fa-search"></i> Pesquisar</button>
             </div>
@@ -55,10 +57,8 @@
         </form>
         <div class="clearfix"></div>
     </div>
-
     <div class="the-box rounded">
         <div class="row">
-            <br>
             <div class="col-md-12">
                 @if($documents->isEmpty())
                     <div class="well text-center">Sem dados. Insira um novo registro.</div>
@@ -70,9 +70,3 @@
         </div>
     </div>
 @endsection
-
-<script>
-    const pdf = function (id) {
-        console.log(id);
-    }
-</script>
