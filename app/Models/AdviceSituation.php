@@ -47,6 +47,12 @@ class AdviceSituation extends BaseModel
         'comission_situation_id',
     ];
 
+    public static $translation = [
+        'ADVICESITUATION' => 'SITUAÇÃO DE CONSELHOS',
+        'advice_id' => 'Id da Situação',
+        'comission_situation_id' => 'Id da Situação da Comissão',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

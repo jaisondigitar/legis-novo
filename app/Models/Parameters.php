@@ -62,6 +62,15 @@ class Parameters extends BaseModel
         'value',
     ];
 
+
+    public static $translation = [
+        'PARAMETERS' => 'PARÂMETROS',
+        'name' => 'Nome',
+        'type' => 'Tipo',
+        'slug' => 'Sigla',
+        'value' => 'Valor',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

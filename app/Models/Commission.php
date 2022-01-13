@@ -64,6 +64,14 @@ class Commission extends BaseModel
         'description',
     ];
 
+    public static $translation = [
+        'COMMISSION' => 'COMISSÃO',
+        'date_start' => 'Data Inicio',
+        'date_end' => 'Data Final',
+        'name' => 'Nome',
+        'description' => 'Descrição',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

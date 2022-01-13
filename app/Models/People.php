@@ -27,6 +27,23 @@ class People extends BaseModel
         'city_id',
     ];
 
+    public static $translation = [
+        'name' => 'Nome',
+        'cpf' => 'CPF',
+        'rg' => 'RG',
+        'email' => 'E-Mail',
+        'telephone' => 'Telefone',
+        'celular' => 'Celular',
+        'image' => 'Imagem',
+        'zipcode' => 'CEP',
+        'street' => 'Rua',
+        'number' => 'Número',
+        'complement' => 'Complemento',
+        'district' => 'Bairro',
+        'state_id' => 'Id do Estado',
+        'city_id' => 'Id da Cidade',
+    ];
+
     /**
      * Validation rules.
      *

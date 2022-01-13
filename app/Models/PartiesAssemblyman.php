@@ -53,6 +53,13 @@ class PartiesAssemblyman extends BaseModel
         'date',
     ];
 
+    public static $translation = [
+        'PARTIESASSEMBLYMAN' => 'PARTIDOS',
+        'party_id' => 'Id do Partido',
+        'assemblyman_id' => 'Id do Responsável',
+        'date' => 'Data',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

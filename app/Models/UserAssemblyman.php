@@ -47,6 +47,12 @@ class UserAssemblyman extends BaseModel
         'assemblyman_id',
     ];
 
+    public static $translation = [
+        'USERASSEMBLYMAN' => 'ASSEMBLYMAN DO USUÁRIO',
+        'users_id' => 'Id do Usuário',
+        'assemblyman_id' => 'Id do Responsável',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

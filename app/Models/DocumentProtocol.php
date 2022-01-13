@@ -74,6 +74,13 @@ class DocumentProtocol extends BaseModel
         'number',
     ];
 
+    public static $translation = [
+        'DOCUMENTPROTOCOL' => 'PROTOCOLO DO DOCUMENTO',
+        'document_id' => 'Id do Documento',
+        'protocol_type_id' => 'Id do Tipo do Protocolo',
+        'number' => 'Número',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

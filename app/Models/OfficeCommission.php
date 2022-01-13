@@ -49,6 +49,12 @@ class OfficeCommission extends BaseModel
         'slug',
     ];
 
+    public static $translation = [
+        'OFFICECOMMISSION' => 'CARGO DE COMISSÃO',
+        'name' => 'Nome',
+        'slug' => 'Sigla',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

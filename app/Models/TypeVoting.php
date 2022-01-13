@@ -18,6 +18,13 @@ class TypeVoting extends BaseModel
         'active',
     ];
 
+    public static $translation = [
+        'TYPEVOTING' => 'TIPO DE VOTAÇÃO',
+        'name' => 'Nome',
+        'anonymous' => 'Anônima',
+        'active' => 'Ativo',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

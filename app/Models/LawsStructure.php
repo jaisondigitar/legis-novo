@@ -44,6 +44,12 @@ class LawsStructure extends BaseModel
         'prefix',
     ];
 
+    public static $translation = [
+        'LAWSSTRUCTURE' => 'TIPO DE ESTRUTURA DE LEI',
+        'name' => 'Nome',
+        'prefix' => 'Prefixo',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *
