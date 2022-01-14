@@ -231,23 +231,7 @@ class DocumentController extends AppBaseController
             $input['sector_id'] = null;
         }
 
-        $last_document = Document::where('document_type_id', $request->document_type_id)
-            ->whereYear('date', '=', Carbon::parse(str_replace('/', '-', $request->date))->year)
-            ->where('number', '!=', '')
-            ->orderBy('number', 'DESC')
-            ->first();
-
-        $input['number'] = $last_document ? $last_document->number + 1 : 1;
-
         $document = $this->documentRepository->create($input);
-
-        ProcessingDocument::create([
-           'document_id' => $document->id,
-           'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
-               ->first()->id,
-           'processing_document_date' => now()->format('d/m/Y'),
-           'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
-        ]);
 
         if (! empty($input['assemblymen'])) {
             foreach ($input['assemblymen'] as $assemblyman) {
@@ -944,6 +928,15 @@ class DocumentController extends AppBaseController
 
         $document = Document::find($input['document_id']);
 
+        ProcessingDocument::create([
+            'document_id' => $document->id,
+            'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
+            'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
+                ->first()->id,
+            'processing_document_date' => now()->format('d/m/Y'),
+            'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
+        ]);
+
         $year = explode('/', $document->date);
         $year = $year[2];
 
@@ -989,7 +982,6 @@ class DocumentController extends AppBaseController
                     $date = explode('/', $input['protocol_date']);
                     $time = explode(' ', $date[2]);
 
-                    $document_protocol = $document_protocol;
                     $document_protocol->created_at = $time[0].'-'.$date[1].'-'.$date[0].$time[1];
                     $document_protocol->save();
 
