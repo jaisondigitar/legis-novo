@@ -202,7 +202,7 @@
         <div class='btn-group col-md-12'>
             @shield('lawsProject.advices')
                 <a href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    HISTÓRICO
+                    TRÂMITES
                 </a>
             @endshield
 
