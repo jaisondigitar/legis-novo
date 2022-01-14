@@ -5,11 +5,11 @@
 @section('content')
 <div class="the-box rounded">
   <div class="form-group">
-         <a href="{!! route('lawsProjects.index') !!}" class="btn btn-default">Back</a>
+         <a href="{!! route('lawsProjects.index') !!}" class="btn btn-default">Voltar</a>
   </div>
 
   @if(isset($lawsProject))
-  <div class="form-group col-sm-12">
+  {{--<div class="form-group col-sm-12">
       <div class="panel panel-square panel-default">
           <div class="panel-heading">
               <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> PEDIDO DE PARECERES</h3>
@@ -62,7 +62,7 @@
               </div>
           </div>
       </div>
-  </div>
+  </div>--}}
 
         @if(isset($lawsProject->id) && $tramitacao)
             <div class="form-group col-sm-12">
