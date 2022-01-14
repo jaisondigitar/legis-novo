@@ -35,16 +35,26 @@
                   <h4 class="modal-title" id="myModalLabel">PEDIDO DE DESTINO</h4>
               </div>
               <div class="modal-body">
-                  <label>Selecione a comissão:</label>
-                  <select class="form-control destination" multiple name="comission" id="comissao">
-                      <optgroup label="Comissões">
-                          @foreach(\App\Models\Commission::active()->get() as $comission)
-                              <option value="c{{ $comission->id }}">{{ $comission->name }}</option>
-                          @endforeach
-                      </optgroup>
-                  </select>
-                  <label>Descrição:</label>
-                  <textarea name="comissionDescriprion" class="form-control descricao ckeditor"></textarea>
+                  <label style="width: 100%">
+                      Selecione a comissão:
+                      <select class="form-control destination" multiple name="comission" id="comissao">
+                          <optgroup label="Comissões">
+                              @foreach(\App\Models\Commission::active()->get() as $comission)
+                                  <option value="c{{ $comission->id }}">{{ $comission->name }}</option>
+                              @endforeach
+                          </optgroup>
+                      </select>
+                  </label>
+
+                  <label>
+                      Descrição:
+                      <textarea name="comissionDescriprion" class="form-control descricao ckeditor"></textarea>
+                  </label>
+
+                  <label>
+                      Parecer Jurídico:
+                      <textarea name="legalOpinion" class="form-control descricao ckeditor"></textarea>
+                  </label>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -155,7 +165,7 @@
 @endif
 
             <script>
-      
+
       $(document).ready(function () {
          setTimeout(function () {
              $('#comissao').addClass('chosen-select')
@@ -184,6 +194,8 @@
 
           var description = CKEDITOR.instances['comissionDescriprion'].getData();
 
+          const legalOpinion = CKEDITOR.instances['legalOpinion'].getData();
+
 
           if(to_id.length > 0) {
 
@@ -195,7 +207,8 @@
                       document_id: 0,
                       to_id: to_id,
                       type: type,
-                      description: description
+                      description: description,
+                      legal_opinion: legalOpinion
                   }
               }).success(function (data) {
 
