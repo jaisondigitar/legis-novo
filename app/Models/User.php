@@ -28,6 +28,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'email',
         'password',
         'active',
+        'legal',
     ];
 
     public static $translation = [
@@ -39,9 +40,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'email' => 'E-Mail',
         'password' => 'Senha',
         'active' => 'Ativo',
+        'legal' => 'Jurídico',
     ];
 
-    protected $hidden = ['password', 'remember_token', 'created_at', 'updated_at', 'deleted_at'];
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     public function company()
     {
