@@ -25,6 +25,7 @@ use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
 use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
+use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
 use App\Services\StorageService;
@@ -267,6 +268,8 @@ class LawsProjectController extends AppBaseController
      */
     public function advices($lawProjectId)
     {
+        $legal = Auth::user()->legal;
+
         setlocale(LC_ALL, 'pt_BR');
 
         $lawsProject = $this->lawsProjectRepository->findByID($lawProjectId);
@@ -297,7 +300,8 @@ class LawsProjectController extends AppBaseController
                 'advice_situation_law',
                 'advice_publication_law',
                 'status_processing_law',
-                'destinations'
+                'destinations',
+                'legal'
             )
         )->with(compact('lawsProject'));
     }

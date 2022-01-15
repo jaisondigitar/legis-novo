@@ -27,34 +27,34 @@
 
                 @foreach($perms as $index => $permission)
                     <?php
-                        $checked = (
-    (bool) $roles->permissions->pluck('name')->search($permission->name)
-) ? 'checked' : '';
+                        $checked = ((bool) $roles->permissions->pluck('name')->search($permission->name)) ?
+                            'checked' : '';
 
                         if (explode('.', $permission->name)[0] === $group_name) {
                             if ($count === 0) {
-                                echo '<ul class="list-group">';
                                 echo '<li class="list-group-item active">
-                                        <span
-                                            style="margin-right: 10px"
-                                            class="fa fa-check-square-o"
-                                            aria-hidden="true"
-                                        ></span>'.$permission->readable_name.'
-                                    </li>';
+                                    <span
+                                        style="margin-right: 10px;
+                                        font-size: 20px"
+                                        aria-hidden="true"
+                                    >
+                                        '.$permission->readable_name.'
+                                    </span>
+                                </li>';
                             }
 
                             echo '<li class="list-group-item ">
-                                    <span class="pull-left" style="margin-right: 10px">
-                                        <input
-                                            id="perm_'.$permission->name.'"
-                                            onchange="togglePerm(
-                                                \''.$roles->name.'\',\''.$permission->id.'\'
-                                            )"
-                                            type="checkbox" '.$checked.'
-                                        >
-                                    </span>
-                                    <span class="disabled" >'.$permission->readable_name.'</span>
-                                </li>';
+                                <span class="pull-left" style="margin-right: 10px">
+                                    <input
+                                        id="perm_'.$permission->name.'"
+                                        onchange="togglePerm(\''.$roles->name.'\',\''.$permission->id.'\')"
+                                        type="checkbox" '.$checked.'
+                                    >
+                                </span>
+                                <label for="perm_'.$permission->name.'">
+                                    '.$permission->readable_name.'
+                                </label>
+                            </li>';
 
                             $count++;
                         }
