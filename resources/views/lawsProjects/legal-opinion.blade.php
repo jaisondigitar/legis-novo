@@ -14,23 +14,25 @@
                         <i
                             class="fa fa-angle-double-right"
                             style="margin-right: 5px"
-                        ></i>PEDIDO DE PARECERES
+                        ></i>PARECERES
                     </h3>
                     <div class="right-content">
-                        <div class="btn-group btn-group-xs">
-                            <button
-                                type="button"
-                                class="btn btn-default btn-xs"
-                                data-toggle="modal"
-                                data-target="#newParecer"
-                                onclick="addChosen()"
-                            >
-                                <i
-                                    class="fa fa-plus"
-                                    style="margin-right: 5px"
-                                ></i>SOLICITAR PARECER
-                            </button>
-                        </div>
+                        @if (Auth::user()->can_request_legal_opinion)
+                            <div class="btn-group btn-group-xs">
+                                <button
+                                    type="button"
+                                    class="btn btn-default btn-xs"
+                                    data-toggle="modal"
+                                    data-target="#newParecer"
+                                    onclick="addChosen()"
+                                >
+                                    <i
+                                        class="fa fa-plus"
+                                        style="margin-right: 5px"
+                                    ></i>SOLICITAR PARECER
+                                </button>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="panel-body">

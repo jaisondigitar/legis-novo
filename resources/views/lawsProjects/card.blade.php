@@ -210,7 +210,7 @@
                 href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}"
                 class='btn btn-default btn-sm'
             >
-                SOLICITAR PARECER
+                PARECERES
             </a>
 
             @shield('lawsProjects.edit')
