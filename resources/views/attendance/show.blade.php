@@ -6,6 +6,6 @@
     @include('attendance.show_fields')
 
     <div class="form-group">
-        <a href="{!! route('attendance.index') !!}" class="btn btn-default">Back</a>
+        <a href="{!! route('attendance.index') !!}" class="btn btn-default">Voltar</a>
     </div>
 @endsection
