@@ -332,6 +332,10 @@ Route::middleware([
             'as' => 'lawsProjects.advices',
             'uses' => 'LawsProjectController@advices',
         ]);
+        Route::get('/lawsProjects/legal-opinion/{id}', [
+            'as' => 'lawsProjects.legal-opinion',
+            'uses' => 'LawsProjectController@legalOpinion',
+        ]);
 
         Route::get('law-file-delete/{id}', 'LawsProjectController@attachamentDelete');
         Route::post('/lawsProjects/{id}/attachament-upload', ['as' => 'lawsProjects.attachament.upload', 'uses' => 'LawsProjectController@attachamentUpload']);
