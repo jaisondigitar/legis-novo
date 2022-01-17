@@ -1371,8 +1371,6 @@ class LawsProjectController extends AppBaseController
 
             $lawsProject->file = $filename;
             $lawsProject->save();
-
-//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
         $laws_file = $request->file('law_file');
@@ -1385,11 +1383,28 @@ class LawsProjectController extends AppBaseController
 
             $lawsProject->law_file = $filename;
             $lawsProject->save();
-
-//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
         flash('Arquivos salvos com sucesso!')->success();
 
         return redirect(route('lawsProjects.index'));
+    }
+
+    /**
+     * @param  Request  $request
+     * @param  int  $id
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
+     */
+    public function legalOpinion(Request $request, int $id)
+    {
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
+
+        if (empty($lawsProject)) {
+            flash('Projeto de Leis não encontrado')->error();
+
+            return redirect(route('lawsProjects.index'));
+        }
+
+        return view('lawsProjects.legal-opinion', ['lawsProject' => $lawsProject]);
     }
 }
