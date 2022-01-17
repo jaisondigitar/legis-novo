@@ -155,17 +155,14 @@
             </span>
             <br>
         </div>
-
         <div class="col-md-12">
             <span>
                 <strong>Data Tram.:</strong>
-
-                @if(count($lawsProject->processing)===0)
+                @if($lawsProject->processing->isEmpty())
                     -
                 @else
                     {!!
-                        $lawsProject->processing->first()
-                            ->processing_date
+                        $lawsProject->processing->first()->processing_date
                     !!}
                 @endif
             </span>
@@ -173,12 +170,11 @@
             <span>
                 <strong>Status:</strong>
 
-                @if(count($lawsProject->processing)===0)
+                @if($lawsProject->processing->isEmpty())
                     -
                 @else
                     {!!
-                        $lawsProject->processing->first()
-                            ->statusProcessingLaw->name
+                        $lawsProject->processing->first()->adviceSituationLaw->name
                     !!}
                 @endif
             </span>
@@ -186,12 +182,11 @@
             <span>
                 <strong>Destinatário:</strong>
 
-                @if(count($lawsProject->processing)===0)
+                @if($lawsProject->processing->isEmpty())
                     -
                 @else
                     {!!
-                        $lawsProject->processing->first()
-                            ->destination->name
+                        $lawsProject->processing->first()->destination->name
                     !!}
                 @endif
             </span>
