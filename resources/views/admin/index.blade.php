@@ -20,7 +20,7 @@
     <div class="col-lg-3">
         <div class="alert alert-info alert-block square fade in">
             <p><strong>Bem vindo(a)!</strong></p>
-            <p style="text-align: justify">O MakerLegis é um software para Gestão de Processos Legislativos. </p>
+            <p style="text-align: justify">O GPL é um software para Gestão de Processos Legislativos. </p>
             <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis.</p>
         </div>
     </div>
