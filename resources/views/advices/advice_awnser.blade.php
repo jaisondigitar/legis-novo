@@ -149,7 +149,6 @@
                         </div>
                         <div id="accordion-1-child-3" class="collapse" aria-expanded="false">
                             <div class="panel-body">
-
                                 @foreach($advice->awnser()->orderBy('date','desc')->get() as $awnser)
                                     {{--{{dd($awnser)}}--}}
 

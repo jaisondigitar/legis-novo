@@ -15,7 +15,6 @@
                     <div class="btn-group">
                         <a href="/advice/findAwnser/{{$advice->id}}" class="btn btn-xs btn-info"><i class="fa fa-eye"></i> </a>
                         <button class="btn btn-xs btn-danger" onclick="remove_advice({{ $advice->id }})"><i class="fa fa-trash"></i> </button>
-
                     </div>
                 </td>
             </tr>

@@ -1390,12 +1390,11 @@ class LawsProjectController extends AppBaseController
     }
 
     /**
-     * @param  Request  $request
      * @param  int  $id
      * @return Application|Factory|RedirectResponse|Redirector|View
      * @throws BindingResolutionException
      */
-    public function legalOpinion(Request $request, int $id)
+    public function legalOpinion(int $id)
     {
         $lawsProject = $this->lawsProjectRepository->findByID($id);
 
