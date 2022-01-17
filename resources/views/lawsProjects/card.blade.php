@@ -199,17 +199,14 @@
     </div>
     <div class="panel-footer">
         {!! Form::open(['route' => ['lawsProjects.destroy', $lawsProject->id], 'method' => 'delete']) !!}
-        <div class='btn-group col-md-12'>
+        <div class='btn-group'>
             @shield('lawsProject.advices')
                 <a href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                     TRÂMITES
                 </a>
             @endshield
 
-            <a
-                href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}"
-                class='btn btn-default btn-sm'
-            >
+            <a href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                 PARECERES
             </a>
 
@@ -232,11 +229,7 @@
             @endif
 
             @shield('lawsProjects.show')
-                <a
-                    href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}"
-                    target="_blank"
-                    class='btn btn-default btn-sm'
-                >
+                <a href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
                     <i class="fa fa-eye" aria-hidden="true"></i>
                 </a>
             @endshield
@@ -263,7 +256,7 @@
                 {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
             @endshield
 
-            <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="pull-right btn btn-info btn-sm">
+            <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-info btn-sm">
                 <i class="fa fa-plus"></i> Anexos
             </a>
         </div>
