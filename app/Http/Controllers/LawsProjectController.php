@@ -23,6 +23,7 @@ use App\Models\Log;
 use App\Models\MeetingPauta;
 use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
+use App\Models\Processing;
 use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
 use App\Models\User;
@@ -151,6 +152,9 @@ class LawsProjectController extends AppBaseController
         }
 
         $lawsProjects = $lawsProjects_query->orderByDesc('created_at')
+            ->with(['processing' => function ($query) {
+                return $query->orderByDesc('created_at')->first();
+            }])
             ->paginate(20);
 
         return view('lawsProjects.index', compact('externo'))
@@ -1073,6 +1077,13 @@ class LawsProjectController extends AppBaseController
         $params = \Illuminate\Support\Facades\Request::all();
 
         $law_project = LawsProject::find($params['law_project_id']);
+
+        Processing::create([
+            'law_projects_id' => $law_project->id,
+            'advice_situation_id' => AdviceSituationLaw::where('name', 'Encaminhado')->first()->id,
+            'processing_date' => now()->format('d/m/Y'),
+            'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
+        ]);
 
         $year = explode('/', $law_project->law_date);
         $year = $year[2];
