@@ -20,8 +20,8 @@ class UpdateUserRequest extends Request
     public function rules(): array
     {
         return [
-            'sector_id' => 'required|integer|exists:companies,id',
-            'company_id' => 'required|integer|exists:sectors,id',
+            'sector_id' => 'required|integer|exists:sectors,id',
+            'company_id' => 'required|integer|exists:companies,id',
             'name' => 'required|string',
             'email' => [
                 'nullable',
