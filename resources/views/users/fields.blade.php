@@ -30,20 +30,50 @@
 </div>
 
 <!--- Password Field --->
-<div class="form-group col-sm-6 col-lg-4">
+<div class="form-group col-sm-4 col-lg-4">
     {!! Form::label('password', 'Senha:') !!}
 	{!! Form::password('password', ['class' => 'form-control']) !!}
 </div>
 
 <!--- Active Field --->
-<div class="form-group col-sm-6 col-lg-2">
+<div class="form-group col-sm-1 col-lg-1">
     <span>Ativo</span><br>
     <label for="active">
-        <input name="active" id="active" class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal" type="checkbox"
+        <input
+            name="active"
+            id="active"
+            class="switch"
+            data-on-text="Sim"
+            data-off-text="Não"
+            data-off-color="danger"
+            data-on-color="success"
+            data-size="normal"
+            type="checkbox"
             @if(isset($user))
-                {!! $user->active>0?'checked':'' !!}
+               {!! $user->active>0?'checked':'' !!}
             @else
-                checked
+               checked
+            @endif
+        >
+    </label>
+</div>
+
+<!--- Legal Field --->
+<div class="form-group col-sm-1 col-lg-1">
+    <span>Jurídico</span><br>
+    <label for="legal">
+        <input
+            name="legal"
+            id="legal"
+            class="switch"
+            type="checkbox"
+            data-on-text="Sim"
+            data-on-color="success"
+            data-off-text="Não"
+            data-off-color="danger"
+            data-size="normal"
+            @if(isset($user))
+                {!! $user->legal > 0 ? 'checked' : '' !!}
             @endif
         >
     </label>

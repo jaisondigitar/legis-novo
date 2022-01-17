@@ -4,28 +4,31 @@
 @endsection
 @section('content')
 <div class="the-box rounded">
-  <div class="form-group">
-         <a href="{!! route('lawsProjects.index') !!}" class="btn btn-default">Voltar</a>
-  </div>
+    <div class="form-group">
+        <a href="{!! route('lawsProjects.index') !!}" class="btn btn-default">Back</a>
+    </div>
 
-  @if(isset($lawsProject))
-  {{--<div class="form-group col-sm-12">
-      <div class="panel panel-square panel-default">
-          <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> PEDIDO DE PARECERES</h3>
-              <div class="right-content">
-                  <div class="btn-group btn-group-xs">
-                      <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#newParecer" onclick="addChosen()">
-                          <i class="fa fa-plus"></i> SOLICITAR PARECER
-                      </button>
-                  </div>
-              </div>
-          </div>
-          <div class="panel-body">
-              @include('lawsProjects.tramites_table')
-          </div><!-- /.panel-body -->
-      </div>
-  </div>
+    @if(isset($lawsProject))
+        @if(isset($legal))
+            <div class="form-group col-sm-12">
+                <div class="panel panel-square panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> PEDIDO DE PARECERES</h3>
+                        <div class="right-content">
+                            <div class="btn-group btn-group-xs">
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#newParecer" onclick="addChosen()">
+                                    <i class="fa fa-plus"></i> SOLICITAR PARECER
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        @include('lawsProjects.tramites_table')
+                    </div><!-- /.panel-body -->
+                </div>
+            </div>
+        @endif
 
   <div class="modal fade" id="newParecer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog modal-lg" role="document">
