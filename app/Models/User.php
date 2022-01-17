@@ -28,7 +28,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'email',
         'password',
         'active',
-        'legal',
     ];
 
     public static $translation = [
@@ -84,5 +83,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function get_assemblyman()
     {
         return $this->user_assemblyman()->first()->assemblyman_id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCanRequestLegalOpinionAttribute(): bool
+    {
+        if ($this->sector) {
+            return $this->sector->name === 'Jurídico' || $this->hasRole('root');
+        }
+
+        return false;
     }
 }

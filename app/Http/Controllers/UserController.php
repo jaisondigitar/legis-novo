@@ -299,7 +299,7 @@ class UserController extends AppBaseController
 
         $new = $this->userRepository->findByID($id);
         $new->active = isset($request->active) ? 1 : 0;
-        $new->legal = isset($request->legal) ? 1 : 0;
+
         $new->save();
 
         $this->clearRoles($new, $user);

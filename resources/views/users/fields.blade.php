@@ -58,27 +58,6 @@
     </label>
 </div>
 
-<!--- Legal Field --->
-<div class="form-group col-sm-1 col-lg-1">
-    <span>Jurídico</span><br>
-    <label for="legal">
-        <input
-            name="legal"
-            id="legal"
-            class="switch"
-            type="checkbox"
-            data-on-text="Sim"
-            data-on-color="success"
-            data-off-text="Não"
-            data-off-color="danger"
-            data-size="normal"
-            @if(isset($user))
-                {!! $user->legal > 0 ? 'checked' : '' !!}
-            @endif
-        >
-    </label>
-</div>
-
 <div class="form-group col-sm-6">
     <div class="the-box bg-success no-border">
         <table>
