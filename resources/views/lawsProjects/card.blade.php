@@ -206,6 +206,13 @@
                 </a>
             @endshield
 
+            <a
+                href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}"
+                class='btn btn-default btn-sm'
+            >
+                SOLICITAR PARECER
+            </a>
+
             @shield('lawsProjects.edit')
                 <a href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                     ESTRUTURA DA LEI
