@@ -9,64 +9,6 @@
     </div>
 
     @if(isset($lawsProject))
-        @if(isset($legal))
-            <div class="form-group col-sm-12">
-                <div class="panel panel-square panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> PEDIDO DE PARECERES</h3>
-                        <div class="right-content">
-                            <div class="btn-group btn-group-xs">
-                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                        data-target="#newParecer" onclick="addChosen()">
-                                    <i class="fa fa-plus"></i> SOLICITAR PARECER
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        @include('lawsProjects.tramites_table')
-                    </div><!-- /.panel-body -->
-                </div>
-            </div>
-        @endif
-
-  <div class="modal fade" id="newParecer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title" id="myModalLabel">PEDIDO DE DESTINO</h4>
-              </div>
-              <div class="modal-body">
-                  <label style="width: 100%">
-                      Selecione a comissão:
-                      <select class="form-control destination" multiple name="comission" id="comissao">
-                          <optgroup label="Comissões">
-                              @foreach(\App\Models\Commission::active()->get() as $comission)
-                                  <option value="c{{ $comission->id }}">{{ $comission->name }}</option>
-                              @endforeach
-                          </optgroup>
-                      </select>
-                  </label>
-
-                  <label>
-                      Descrição:
-                      <textarea name="comissionDescriprion" class="form-control descricao ckeditor"></textarea>
-                  </label>
-
-                  <label>
-                      Parecer Jurídico:
-                      <textarea name="legalOpinion" class="form-control descricao ckeditor"></textarea>
-                  </label>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                  <button type="button" class="btn btn-primary" onclick="newAdvice({{ $lawsProject->id }})">SOLICITAR</button>
-              </div>
-          </div>
-      </div>
-  </div>--}}
-
         @if(isset($lawsProject->id) && $tramitacao)
             <div class="form-group col-sm-12">
                 <div class="panel panel-square panel-default">
