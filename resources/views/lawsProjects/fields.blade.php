@@ -61,7 +61,7 @@
 </div>
 
 <div class="form-group col-sm-6">
-    {!! Form::label('sufix', 'Texto SUFIXO:') !!}
+    {!! Form::label('sufix', 'Texto OBSERVAÇÃO:') !!}
     {!! Form::textarea('sufix', null, ['class' => 'form-control ckeditor']) !!}
 </div>
 

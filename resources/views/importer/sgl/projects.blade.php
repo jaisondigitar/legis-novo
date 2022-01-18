@@ -80,7 +80,7 @@
           <li><strong>protocoldate</strong>: Data do protocolo no formato d/m/aaaa</li>
           <li><strong>protocolnumber</strong>: Numero do protocolo sem ano</li>
           <li><strong>prefix</strong>: Preâmbulo do projeto de lei</li>
-          <li><strong>sufix</strong>: Sufixo do projeto de lei</li>
+          <li><strong>sufix</strong>: Observação do projeto de lei</li>
           <li><strong>justify</strong>: Justificativa do projeto de lei</li>
         </ul>
         <p class="text-danger">** Todos documentos importados, serão considerados lidos e receberão um numero de protocolo automatico.</p>
