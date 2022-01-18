@@ -151,10 +151,25 @@ class LawsProjectController extends AppBaseController
             });
         }
 
+        if (Auth::user()->can_request_legal_opinion && ! Auth::user()->hasRole('root')) {
+            $lawsProjects_query->whereHas('processing', function ($query) {
+                $query->where(
+                    'destination_id',
+                    Destination::where('name', 'JURÍDICO')->first()->id
+                );
+            })->with(['processing' => function ($query) {
+                $query->where(
+                    'destination_id',
+                    Destination::where('name', 'JURÍDICO')->first()->id
+                );
+            }]);
+        } else {
+            $lawsProjects_query->with(['processing' => function ($query) {
+                $query->orderByDesc('created_at')->get();
+            }]);
+        }
+
         $lawsProjects = $lawsProjects_query->orderByDesc('created_at')
-            ->with(['processing' => function ($query) {
-                return $query->orderByDesc('created_at')->first();
-            }])
             ->paginate(20);
 
         return view('lawsProjects.index', compact('externo'))
