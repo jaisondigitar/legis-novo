@@ -76,7 +76,7 @@
                     <tr>
                         <td>
                             <label>
-                                {!! Form::checkbox('roles[]', $value->id, $teste, ['class' => 'required']) !!}
+                                {!! Form::checkbox('roles[]', $value->id, $teste) !!}
                                 {!! $value->name !!}
                             </label>
                         </td>
