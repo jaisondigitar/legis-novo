@@ -825,7 +825,7 @@ class MeetingController extends AppBaseController
                     return \GuzzleHttp\json_encode(true);
                 }
             } elseif ($doc->document_id != null) {
-                $doc->law->each(function ($law) {
+                $doc->document->each(function ($law) {
                     if ($law->processingDocument->isNotEmpty()) {
                         $law_query = $law->processingDocument()
                             ->where('destination_id', Destination::where('name', 'PLENÁRIO')->first()->id)
