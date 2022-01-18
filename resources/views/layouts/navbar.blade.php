@@ -60,7 +60,11 @@
     @shield('destination.index', 'users.index', 'roles.index')
         @if(App::make("ModuleService")->isActive('Geral'))
             <li>
-                <a class="dropdown-toggle courser" data-toggle="dropdown"><span>Geral</span></a>
+                <a class="dropdown-toggle courser" data-toggle="dropdown">
+                    <span>
+                        Geral
+                    </span>
+                </a>
                 <ul class="dropdown-menu square margin-list-rounded with-triangle">
                     @is(['root','admin'])
                         <li>
@@ -126,7 +130,7 @@
                                 <i class="fa fa-cog space"></i>Exportar Documentos
                             </a>
                         </li>
-                    @endshield
+                    @endis
                 </ul>
             </li>
         @endif
@@ -135,7 +139,11 @@
     @shield('assemblymen.index', 'legislatures.index', 'parties.index', 'responsibilities.index', 'sectors.index')
         @if(App::make("ModuleService")->isActive('Cadastro'))
             <li>
-                <a class="dropdown-toggle courser" data-toggle="dropdown"><span>Cadastro</span></a>
+                <a class="dropdown-toggle courser" data-toggle="dropdown">
+                    <span>
+                        Cadastro
+                    </span>
+                </a>
                 <ul class="dropdown-menu square margin-list-rounded with-triangle">
                     @shield('assemblymen.index')
                     <li>
@@ -191,7 +199,11 @@
     )
         @if(App::make("ModuleService")->isActive('Documentos'))
             <li>
-                <a class="dropdown-toggle courser" data-toggle="dropdown"><span>Documentos</span></a>
+                <a class="dropdown-toggle courser" data-toggle="dropdown">
+                    <span>
+                        Documentos
+                    </span>
+                </a>
                 <ul class="dropdown-menu square margin-list-rounded with-triangle">
                     @shield('documents.index')
                         <li>
@@ -251,7 +263,11 @@
     @shield('commissions.index', 'officeCommissions.index', 'comissionSituations.index')
         @if(App::make("ModuleService")->isActive('Comissoes'))
             <li>
-                <a class="dropdown-toggle courser" data-toggle="dropdown"><span>Comissões</span></a>
+                <a class="dropdown-toggle courser" data-toggle="dropdown">
+                    <span>
+                        Comissões
+                    </span>
+                </a>
                 <ul class="dropdown-menu square margin-list-rounded with-triangle">
                     @shield('commissions.index')
                         <li>
@@ -284,7 +300,11 @@
     @shield('meetings.index', 'version_pauta.index', 'sessionTypes.index', 'structurepautas.index')
         @if(App::make("ModuleService")->isActive('Sessoes'))
             <li>
-                <a class="dropdown-toggle courser" data-toggle="dropdown"><span>Sessões</span></a>
+                <a class="dropdown-toggle courser" data-toggle="dropdown">
+                    <span>
+                        Sessões
+                    </span>
+                </a>
                 <ul class="dropdown-menu square margin-list-rounded with-triangle">
                     @shield('meetings.index')
                         <li>
@@ -355,7 +375,11 @@
     )
         @if(App::make("ModuleService")->isActive('Leis'))
             <li>
-                <a class="dropdown-toggle courser" data-toggle="dropdown"><span>Projeto de Lei</span></a>
+                <a class="dropdown-toggle courser" data-toggle="dropdown">
+                    <span>
+                        Projeto de Lei
+                    </span>
+                </a>
                 <ul class="dropdown-menu square margin-list-rounded with-triangle">
                     @shield('lawsProjects.index')
                         <li>
@@ -419,7 +443,7 @@
                     @shield('lawsPlaces.index')
                         <li>
                             <a href="{{url('/lawsPlaces', $parameters = [], $secure = null)}}">
-                                Locais publicação
+                                Local de publicação
                             </a>
                         </li>
                     @endshield
@@ -431,7 +455,11 @@
     @shield('attendance.index', 'people.index', 'typesOfAttendance.index')
         @if(App::make("ModuleService")->isActive('Attendance'))
             <li>
-                <a class="dropdown-toggle courser" data-toggle="dropdown"><span>Recepção</span></a>
+                <a class="dropdown-toggle courser" data-toggle="dropdown">
+                    <span>
+                        Recepção
+                    </span>
+                </a>
                 <ul class="dropdown-menu square margin-list-rounded with-triangle">
                     @shield('attendance.index')
                     <li>
