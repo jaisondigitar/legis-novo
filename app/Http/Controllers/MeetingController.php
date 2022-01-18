@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateMeetingRequest;
 use App\Models\Advice;
 use App\Models\Assemblyman;
 use App\Models\Company;
+use App\Models\Destination;
 use App\Models\Document;
 use App\Models\LawsProject;
 use App\Models\Meeting;
@@ -807,6 +808,16 @@ class MeetingController extends AppBaseController
 
         if ($doc) {
             if ($doc->law_id != null) {
+                $doc->law->each(function ($law) {
+                    if ($law->processing->isNotEmpty()) {
+                        $law_query = $law->processing()
+                            ->where('destination_id', Destination::where('name', 'PLENÁRIO')->first()->id)
+                            ->orderByDesc('created_at');
+
+                        $law_query->get()->isNotEmpty() && $law_query->first()->delete();
+                    }
+                });
+
                 $voting = Voting::where('meeting_id', $doc->meeting_id)->where('law_id', $doc->law_id)->get();
                 if ($voting->count() == 0) {
                     $doc->delete($id);
@@ -814,6 +825,16 @@ class MeetingController extends AppBaseController
                     return \GuzzleHttp\json_encode(true);
                 }
             } elseif ($doc->document_id != null) {
+                $doc->document->each(function ($law) {
+                    if ($law->processingDocument->isNotEmpty()) {
+                        $law_query = $law->processingDocument()
+                            ->where('destination_id', Destination::where('name', 'PLENÁRIO')->first()->id)
+                            ->orderByDesc('created_at');
+
+                        $law_query->get()->isNotEmpty() && $law_query->first()->delete();
+                    }
+                });
+
                 $voting = Voting::where('meeting_id', $doc->meeting_id)->where('document_id', $doc->document_id)->get();
                 if ($voting->count() == 0) {
                     $doc->delete($id);

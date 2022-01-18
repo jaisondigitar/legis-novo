@@ -4,6 +4,6 @@
     @include('adviceSituationLaws.show_fields')
 
     <div class="form-group">
-           <a href="{!! route('adviceSituationLaws.index') !!}" class="btn btn-default">Back</a>
+           <a href="{!! route('adviceSituationLaws.index') !!}" class="btn btn-default">Voltar</a>
     </div>
 @endsection

@@ -235,7 +235,7 @@
                             @else
                                 {!!
                                     $document->processingDocument->first()
-                                        ->statusProcessingDocument->name
+                                        ->documentSituation->name
                                 !!}
                             @endif
                         </span>
