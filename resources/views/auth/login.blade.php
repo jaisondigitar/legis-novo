@@ -73,14 +73,14 @@
             color: #000000;
         }
 
-        a {
+        #forgot {
             color: white !important;
         }
 
-        a:hover,
-        a:focus,
-        a:active {
-            color: red !important;
+        #forgot:hover,
+        #forgot:focus,
+        #forgot:active {
+            color: black !important;
         }
 
         .align {
@@ -168,6 +168,7 @@
         .forgot {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .forgot a {
@@ -206,18 +207,18 @@
 
                 <label>
                     E-mail
-                    <input type="text" name="email" tabindex="1" placeholder="email" required>
+                    <input type="text" name="email" tabindex="1" placeholder="email">
                 </label>
 
                 <label>
                     Senha
-                    <input type="password" name="password" placeholder="senha" tabindex="2" required>
+                    <input type="password" name="password" placeholder="senha" tabindex="2">
                 </label>
 
                 <div class="forgot">
-                    <button type="submit"> ENTRAR</button>
+                    <button type="submit">ENTRAR</button>
 
-                    <a href="#" tabindex="5">Esqueci a senha?</a>
+                    <a href="#" tabindex="5" id="forgot">Esqueceu a senha?</a>
                 </div>
             </form>
         </div>
