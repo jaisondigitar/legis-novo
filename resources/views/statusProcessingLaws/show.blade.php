@@ -4,6 +4,6 @@
     @include('statusProcessingLaws.show_fields')
 
     <div class="form-group">
-           <a href="{!! route('statusProcessingLaws.index') !!}" class="btn btn-default">Back</a>
+           <a href="{!! route('statusProcessingLaws.index') !!}" class="btn btn-default">Voltar</a>
     </div>
 @endsection

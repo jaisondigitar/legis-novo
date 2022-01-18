@@ -12,6 +12,6 @@
         </div>
     </div>
     <div class="form-group">
-           <a href="{!! route('legislatures.index') !!}" class="btn btn-default">Back</a>
+           <a href="{!! route('legislatures.index') !!}" class="btn btn-default">Voltar</a>
     </div>
 @endsection

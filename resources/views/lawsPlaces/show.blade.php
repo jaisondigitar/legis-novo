@@ -6,6 +6,6 @@
     @include('lawsPlaces.show_fields')
 
     <div class="form-group">
-           <a href="{!! route('lawsPlaces.index') !!}" class="btn btn-default">Back</a>
+           <a href="{!! route('lawsPlaces.index') !!}" class="btn btn-default">Voltar</a>
     </div>
 @endsection

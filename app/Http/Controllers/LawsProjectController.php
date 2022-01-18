@@ -23,8 +23,10 @@ use App\Models\Log;
 use App\Models\MeetingPauta;
 use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
+use App\Models\Processing;
 use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
+use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
 use App\Services\StorageService;
@@ -149,6 +151,24 @@ class LawsProjectController extends AppBaseController
             });
         }
 
+        if (Auth::user()->can_request_legal_opinion && ! Auth::user()->hasRole('root')) {
+            $lawsProjects_query->whereHas('processing', function ($query) {
+                $query->where(
+                    'destination_id',
+                    Destination::where('name', 'JURÍDICO')->first()->id
+                );
+            })->with(['processing' => function ($query) {
+                $query->where(
+                    'destination_id',
+                    Destination::where('name', 'JURÍDICO')->first()->id
+                );
+            }]);
+        } else {
+            $lawsProjects_query->with(['processing' => function ($query) {
+                $query->orderByDesc('created_at')->get();
+            }]);
+        }
+
         $lawsProjects = $lawsProjects_query->orderByDesc('created_at')
             ->paginate(20);
 
@@ -267,6 +287,8 @@ class LawsProjectController extends AppBaseController
      */
     public function advices($lawProjectId)
     {
+        $legal = Auth::user()->legal;
+
         setlocale(LC_ALL, 'pt_BR');
 
         $lawsProject = $this->lawsProjectRepository->findByID($lawProjectId);
@@ -297,7 +319,8 @@ class LawsProjectController extends AppBaseController
                 'advice_situation_law',
                 'advice_publication_law',
                 'status_processing_law',
-                'destinations'
+                'destinations',
+                'legal'
             )
         )->with(compact('lawsProject'));
     }
@@ -1070,6 +1093,13 @@ class LawsProjectController extends AppBaseController
 
         $law_project = LawsProject::find($params['law_project_id']);
 
+        Processing::create([
+            'law_projects_id' => $law_project->id,
+            'advice_situation_id' => AdviceSituationLaw::where('name', 'Encaminhado')->first()->id,
+            'processing_date' => now()->format('d/m/Y'),
+            'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
+        ]);
+
         $year = explode('/', $law_project->law_date);
         $year = $year[2];
 
@@ -1367,8 +1397,6 @@ class LawsProjectController extends AppBaseController
 
             $lawsProject->file = $filename;
             $lawsProject->save();
-
-//            if ($request->file('file')->move('laws', $fileName)) {}
         }
 
         $laws_file = $request->file('law_file');
@@ -1381,11 +1409,27 @@ class LawsProjectController extends AppBaseController
 
             $lawsProject->law_file = $filename;
             $lawsProject->save();
-
-//            if ($request->file('law_file')->move('laws', $fileName)) {}
         }
         flash('Arquivos salvos com sucesso!')->success();
 
         return redirect(route('lawsProjects.index'));
+    }
+
+    /**
+     * @param  int  $id
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
+     */
+    public function legalOpinion(int $id)
+    {
+        $lawsProject = $this->lawsProjectRepository->findByID($id);
+
+        if (empty($lawsProject)) {
+            flash('Projeto de Leis não encontrado')->error();
+
+            return redirect(route('lawsProjects.index'));
+        }
+
+        return view('lawsProjects.legal-opinion', ['lawsProject' => $lawsProject]);
     }
 }
