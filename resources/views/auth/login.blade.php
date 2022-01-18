@@ -1,24 +1,15 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
     <title>GPL</title>
     <link rel="shortcut icon" href="assets/images/logoLegis.ico" type="image/png"/>
 
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/structure.css') }}">
     <style>
-        body {
-            background: url('{{ asset('/assets/images/pixels.jpg')}}') no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
-
         form {
             width: 20rem;
         }
@@ -184,57 +175,57 @@
 </head>
 
 <body class="banner">
-<div class="backLogin">
-    <div class="logoType">
-        <img
-            src="/assets/images/gpl.png"
-            class="img-responsive"
-            style="max-width: 75%; height: 50%;"
-            alt="Logo"
-        >
-    </div>
-    <div class="backFormat">
-        <div class="align">
-            <form action="login" method="post">
-                <div class="errorLogin">
-                    @if($errors->any())
-                        @foreach($errors->all() as $error)
-                            <li>{!! $error !!}</li>
-                        @endforeach
-                    @endif
-                    @csrf
-                </div>
+    <div class="backLogin">
+        <div class="logoType">
+            <img
+                src="/assets/images/gpl.png"
+                class="img-responsive"
+                style="max-width: 75%; height: 50%;"
+                alt="Logo"
+            >
+        </div>
+        <div class="backFormat">
+            <div class="align">
+                <form action="login" method="post">
+                    <div class="errorLogin">
+                        @if($errors->any())
+                            @foreach($errors->all() as $error)
+                                <li>{!! $error !!}</li>
+                            @endforeach
+                        @endif
+                        @csrf
+                    </div>
 
-                <label>
-                    E-mail
-                    <input type="text" name="email" tabindex="1" placeholder="email">
-                </label>
+                    <label>
+                        E-mail
+                        <input type="text" name="email" tabindex="1" placeholder="email">
+                    </label>
 
-                <label>
-                    Senha
-                    <input type="password" name="password" placeholder="senha" tabindex="2">
-                </label>
+                    <label>
+                        Senha
+                        <input type="password" name="password" placeholder="senha" tabindex="2">
+                    </label>
 
-                <div class="forgot">
-                    <button type="submit">ENTRAR</button>
+                    <div class="forgot">
+                        <button type="submit">ENTRAR</button>
 
-                    <a href="#" tabindex="5" id="forgot">Esqueceu a senha?</a>
-                </div>
-            </form>
+                        <a href="#" tabindex="5" id="forgot">Esqueceu a senha?</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<footer id="main">
-    &copy; {{Date('Y')}}
-    <a href="https://www.genesis.tec.br/"
-       onMouseOver="this.style.color='#1abc9c'"
-       onMouseOut="this.style.color='white'"
-       style="color: white;"
-    >
-        Gênesis Tecnologia e Inovação
-    </a>. Todos os Direitos Reservados
-</footer>
+    <footer id="main">
+        &copy; {{Date('Y')}}
+        <a href="https://www.genesis.tec.br/"
+           onMouseOver="this.style.color='#1abc9c'"
+           onMouseOut="this.style.color='white'"
+           style="color: white;"
+        >
+            Gênesis Tecnologia e Inovação
+        </a>. Todos os Direitos Reservados
+    </footer>
 </body>
 </html>
 
