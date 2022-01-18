@@ -136,7 +136,7 @@ class DocumentController extends AppBaseController
 
         $documents = $documents_query->with([
                 'processingDocument' => function ($query) {
-                    return $query->orderByDesc('created_at')->first();
+                    return $query->orderByDesc('created_at')->get();
                 },
                 'processingDocument.statusProcessingDocument',
                 'processingDocument.destination',
