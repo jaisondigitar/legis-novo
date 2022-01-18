@@ -5,22 +5,26 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateMeetingRequest;
 use App\Http\Requests\UpdateMeetingRequest;
 use App\Models\Advice;
+use App\Models\AdviceSituationLaw;
 use App\Models\Assemblyman;
 use App\Models\Company;
 use App\Models\Destination;
 use App\Models\Document;
+use App\Models\DocumentSituation;
 use App\Models\LawsProject;
 use App\Models\Meeting;
 use App\Models\MeetingFiles;
 use App\Models\MeetingPauta;
 use App\Models\Parameters;
+use App\Models\Processing;
+use App\Models\ProcessingDocument;
 use App\Models\Responsibility;
 use App\Models\ResponsibilityAssemblyman;
 use App\Models\SessionPlace;
 use App\Models\SessionType;
+use App\Models\StatusProcessingDocument;
 use App\Models\Structurepautum;
 use App\Models\TypeVoting;
-use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Models\VersionPauta;
 use App\Models\Votes;
@@ -781,6 +785,26 @@ class MeetingController extends AppBaseController
         $input['advice_id'] = $input['advice_id'] ? $input['advice_id'] : null;
         $input['description'] = $input['description'] ? $input['description'] : null;
         $input['observation'] = $input['observation'] ? $input['observation'] : null;
+
+        if ($input['document_id']) {
+            ProcessingDocument::create([
+                'document_id' => $input['document_id'],
+                'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
+                'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
+                    ->first()->id,
+                'processing_document_date' => now()->format('d/m/Y'),
+                'destination_id' => Destination::where('name', 'PLENÁRIO')->first()->id,
+            ]);
+        }
+
+        if ($input['law_id']) {
+            Processing::create([
+                'law_projects_id' => $input['law_id'],
+                'advice_situation_id' => AdviceSituationLaw::where('name', 'Encaminhado')->first()->id,
+                'processing_date' => now()->format('d/m/Y'),
+                'destination_id' => Destination::where('name', 'PLENÁRIO')->first()->id,
+            ]);
+        }
 
         $obj = MeetingPauta::where('meeting_id', $input['meeting_id'])
             ->where('structure_id', $input['structure_id'])
