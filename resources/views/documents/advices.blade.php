@@ -173,27 +173,22 @@
               label[i] = $(sel).text();
           });
 
-          var description = CKEDITOR.instances['comissionDescriprion'].getData();
-
+          const data = {
+              document_id: document_id,
+              laws_projects_id : 0,
+              to_id: to_id,
+              type: type,
+              description: CKEDITOR.instances['comissionDescriprion'].getData(),
+              date_end: null,
+          };
 
           if(to_id.length > 0) {
 
               $.ajax({
                   url: url,
-                  method: 'POST',
-                  data: {
-                      document_id: document_id,
-                      laws_projects_id : 0,
-                      to_id: to_id,
-                      type: type,
-                      description: description
-                  }
+                  data: data,
+                  method: 'POST'
               }).success(function (data) {
-
-                  data = JSON.parse(data);
-
-                  console.log(data);
-
                   if(data){
                       toastr.success("Pedido salvo com sucesso!!");
                   }else{

@@ -149,23 +149,21 @@
                 label[i] = $(sel).text();
             });
 
-            const description = CKEDITOR.instances['comissionDescriprion'].getData();
-            const legalOpinion = CKEDITOR.instances['legalOpinion'].getData();
-            const data_end = document.getElementById('date_end').value;
+            const data = {
+                laws_projects_id: laws_projects_id,
+                document_id: 0,
+                to_id: to_id,
+                type: type,
+                description: CKEDITOR.instances['comissionDescriprion'].getData(),
+                legal_opinion: CKEDITOR.instances['legalOpinion'].getData(),
+                date_end: $('#date_end').val(),
+            };
 
             if(to_id.length > 0) {
                 $.ajax({
                     url: url,
-                    method: 'POST',
-                    data: {
-                        laws_projects_id: laws_projects_id,
-                        document_id: 0,
-                        to_id: to_id,
-                        type: type,
-                        description: description,
-                        legal_opinion: legalOpinion,
-                        data_end: data_end
-                    }
+                    data: data,
+                    method: 'POST'
                 }).success((data) => {
                     if (data) {
                         toastr.success("Pedido salvo com sucesso!!");

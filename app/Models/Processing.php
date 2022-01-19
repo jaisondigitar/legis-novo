@@ -22,6 +22,7 @@ class Processing extends BaseModel
         'obsevation',
         'processing_file',
         'destination_id',
+        'date_end',
     ];
 
     public static $translation = [
@@ -34,6 +35,7 @@ class Processing extends BaseModel
         'obsevation' => 'Observação',
         'processing_file' => 'Processando Arquivo',
         'destination_id' => 'Id de Destino',
+        'date_end' => 'Prazo',
     ];
 
     /**
@@ -67,6 +69,23 @@ class Processing extends BaseModel
     public function getProcessingDateAttribute($processing_date): string
     {
         return $this->asDateTime($processing_date)->format('d/m/Y');
+    }
+
+    /**
+     * @param $date_end
+     */
+    public function setDateEndAttribute($date_end)
+    {
+        $this->attributes['date_end'] = Carbon::createFromFormat('d/m/Y', $date_end);
+    }
+
+    /**
+     * @param $date_end
+     * @return string
+     */
+    public function getDateEndAttribute($date_end): string
+    {
+        return $this->asDateTime($date_end)->format('d/m/Y');
     }
 
     /**

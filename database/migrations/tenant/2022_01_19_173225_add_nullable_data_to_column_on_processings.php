@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNullableToColumnsOnAdvice extends Migration
+class AddNullableDataToColumnOnProcessings extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,7 @@ class AddNullableToColumnsOnAdvice extends Migration
      */
     public function up()
     {
-        Schema::table('advices', function (Blueprint $table) {
-            $table->string('description')->nullable()->change();
+        Schema::table('processings', function (Blueprint $table) {
             $table->date('date_end')->nullable();
         });
     }
@@ -26,8 +25,7 @@ class AddNullableToColumnsOnAdvice extends Migration
      */
     public function down()
     {
-        Schema::table('advices', function (Blueprint $table) {
-            $table->string('description')->change();
+        Schema::table('processings', function (Blueprint $table) {
             $table->dropColumn('date_end');
         });
     }

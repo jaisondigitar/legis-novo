@@ -32,26 +32,18 @@
                         </div>
 
                         <div class="form-group col-sm-2">
-                            {!! Form::label('date_end', 'Data:') !!}
-                            {!! Form::date('date_end', null, ['class' => 'form-control datepicker']) !!}
+                            {!! Form::label('new_date_processing', 'Data:') !!}
+                            {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!}
                         </div>
-
-{{--
-                        <div class="form-group col-sm-12">
-                            {!! Form::label('date', 'Data:', ['class' => 'required']) !!}
-                            {!! Form::date('date', null, ['class' => 'form-control date']) !!}
-                        </div>
---}}
 
                         <div class="form-group col-sm-2">
                             {!! Form::label('destination_id', 'Destinatários:') !!}
-                            {!! Form::select('destination_id', $destinations, null, ['class' =>
-                            'form-control']) !!}
+                            {!! Form::select('destination_id', $destinations, null, ['class' => 'form-control']) !!}
                         </div>
 
                         <div class="form-group col-sm-2">
-                            {!! Form::label('new_date_processing', 'Prazo:') !!}
-                            {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!}
+                            {!! Form::label('date_end', 'Prazo:') !!}
+                            {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
                         </div>
 
                         <div class="form-group col-sm-12">
@@ -218,8 +210,8 @@
             }else {
                 if($('#new_date_processing').val() == ''){
                     toastr.error('Selecione uma data para tramitação!');
-                }else
-                    data = {
+                }else {
+                    const data = {
                         law_projects_id: '{{ $lawsProject->id }}',
                         advice_publication_id: $('#new_advice_publication_id').val(),
                         advice_situation_id: $('#new_advice_situation_id').val(),
@@ -227,61 +219,62 @@
                         processing_date: $('#new_date_processing').val(),
                         destination_id: $('#destination_id').val(),
                         processing_file: $('#processing_file').val(),
+                        date_end: $('#date_end').val(),
                         obsevation: CKEDITOR.instances.new_observation.getData()
                     };
 
-                $.ajax({
-                    url: url,
-                    data: data,
-                    method: 'post'
-                }).success(function (data) {
+                    $.ajax({
+                        url: url,
+                        data: data,
+                        method: 'post'
+                    }).success(function (data) {
+                        data = JSON.parse(data);
 
-                    data = JSON.parse(data);
+                        table = $('#table_processing').empty();
 
-                    table = $('#table_processing').empty();
+                        data.forEach(function (valor, chave) {
 
-                    data.forEach(function (valor, chave) {
+                            str = '<tr id="line_' + valor.id + '"> ';
+                            str += "<td>";
+                            if (valor.advice_publication_id > 0) {
+                                str += valor.advice_publication_law.name;
+                            }
+                            str += "</td>";
+                            str += "<td>";
+                            str += valor.advice_situation_law.name;
+                            str += "</td>";
+                            str += "<td>";
+                            if (valor.status_processing_law_id > 0) {
+                                str += valor.status_processing_law.name;
+                            }
+                            str += "</td>";
+                            str += "<td>";
+                            str += valor.processing_date;
+                            str += "</td>";
+                            str += "<td>";
+                            if (valor.destination) {
+                                str += valor.destination.name;
+                            }
+                            str += "</td>";
+                            str += "<td>";
+                            str += valor.obsevation;
+                            str += "</td>";
+                            str += "<td>";
+                            str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
+                            str += "</td>";
+                            str += "</tr>";
+                            table.append(str);
+                        });
 
-                        str = '<tr id="line_' + valor.id + '"> ';
-                        str += "<td>";
-                        if(valor.advice_publication_id > 0) {
-                            str += valor.advice_publication_law.name;
-                        }
-                        str += "</td>";
-                        str += "<td>";
-                        str += valor.advice_situation_law.name;
-                        str += "</td>";
-                        str += "<td>";
-                        if(valor.status_processing_law_id > 0) {
-                            str += valor.status_processing_law.name;
-                        }
-                        str += "</td>";
-                        str += "<td>";
-                        str += valor.processing_date;
-                        str += "</td>";
-                        str += "<td>";
-                        if (valor.destination) {
-                            str += valor.destination.name;
-                        }
-                        str += "</td>";
-                        str += "<td>";
-                        str += valor.obsevation;
-                        str += "</td>";
-                        str += "<td>";
-                        str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
-                        str += "</td>";
-                        str += "</tr>";
-                        table.append(str);
+                        toastr.success('Tramitação salva com sucesso!');
+
+                        $('#new_advice_publication_id').val('');
+                        $('#new_advice_situation_id').val('');
+                        $('#new_status_processing_law_id').val('');
+                        $('#new_date_processing').val('');
+                        CKEDITOR.instances.new_observation.setData('');
                     });
-
-                    toastr.success('Tramitação salva com sucesso!');
-
-                    $('#new_advice_publication_id').val('');
-                    $('#new_advice_situation_id').val('');
-                    $('#new_status_processing_law_id').val('');
-                    $('#new_date_processing').val('');
-                    CKEDITOR.instances.new_observation.setData('');
-                });
+                }
             }
         }
 
