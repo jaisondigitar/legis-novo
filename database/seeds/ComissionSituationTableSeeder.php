@@ -11,7 +11,7 @@ class ComissionSituationTableSeeder extends Seeder
      */
     public function run()
     {
-        $datas = ['Pedido', 'Em análise', 'Aguardando documentos', 'Indiferente', 'Desfavorável', 'Favorável'];
+        $datas = ['Pedido', 'Em análise', 'Aguardando documentos', 'Indiferente', 'Contrário', 'Favorável'];
 
         foreach ($datas as $data) {
             \App\Models\ComissionSituation::firstOrCreate(['name' => $data]);
