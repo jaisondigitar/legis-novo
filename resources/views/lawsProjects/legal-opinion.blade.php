@@ -94,6 +94,11 @@
                                 class="form-control descricao ckeditor"
                             ></textarea>
                         </label>
+
+                        <label>
+                            {!! Form::label('date_end', 'Prazo:') !!}
+                            {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
+                        </label>
                     </div>
                     <div class="modal-footer">
                         <button
@@ -131,27 +136,24 @@
 
         };
 
-        var newAdvice = function(project_id)
-        {
-            var url = "/advice/create";
-            var laws_projects_id = project_id;
-            var to_id = [];
-            var type = [];
-            var label = [];
+        const newAdvice = (project_id) => {
+            const url = "/advice/create";
+            const laws_projects_id = project_id;
+            const to_id = [];
+            const type = [];
+            const label = [];
 
-            $('#comissao :selected').each(function(i, sel){
+            $('#comissao :selected').each((i, sel) =>{
                 to_id[i] = $(sel).val().substr(1);
                 type[i] = $(sel).val().substr(0,1);
                 label[i] = $(sel).text();
             });
 
-            var description = CKEDITOR.instances['comissionDescriprion'].getData();
-
+            const description = CKEDITOR.instances['comissionDescriprion'].getData();
             const legalOpinion = CKEDITOR.instances['legalOpinion'].getData();
-
+            const data_end = document.getElementById('date_end').value;
 
             if(to_id.length > 0) {
-
                 $.ajax({
                     url: url,
                     method: 'POST',
@@ -161,35 +163,29 @@
                         to_id: to_id,
                         type: type,
                         description: description,
-                        legal_opinion: legalOpinion
+                        legal_opinion: legalOpinion,
+                        data_end: data_end
                     }
-                }).success(function (data) {
-
-                    data = JSON.parse(data);
-
-                    console.log(data);
-
-                    if(data){
+                }).success((data) => {
+                    if (data) {
                         toastr.success("Pedido salvo com sucesso!!");
-                    }else{
+                    } else {
                         toastr.error("Erro ao salvar pedido!!");
                     }
-
                 })
-            }else{
+            } else {
                 toastr.error('Selecione um destino!');
             }
         }
 
-
-        function dataAtualFormatada(data){
-            var dia = data.getDate();
-            if (dia.toString().length == 1)
+        const dataAtualFormatada = (data) => {
+            let dia = data.getDate();
+            if (dia.toString().length === 1)
                 dia = "0"+dia;
-            var mes = data.getMonth()+1;
-            if (mes.toString().length == 1)
+            let mes = data.getMonth()+1;
+            if (mes.toString().length === 1)
                 mes = "0"+mes;
-            var ano = data.getFullYear();
+            let ano = data.getFullYear();
             return dia+"/"+mes+"/"+ano;
         }
     </script>
