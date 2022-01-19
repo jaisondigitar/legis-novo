@@ -155,7 +155,6 @@ class UserController extends AppBaseController
 
         $user->password = bcrypt($request->password);
         $user->active = isset($request->active) ? 1 : 0;
-        $user->legal = isset($request->legal) ? 1 : 0;
         $user->save();
 
         $user->syncRoles($validated['roles']);
@@ -379,7 +378,6 @@ class UserController extends AppBaseController
 
         $register = $this->userRepository->findByID($id);
         $register->active = $register->active > 0 ? 0 : 1;
-        $register->legal = $register->legal > 0 ? 0 : 1;
         $register->save();
 
         return json_encode(true);
