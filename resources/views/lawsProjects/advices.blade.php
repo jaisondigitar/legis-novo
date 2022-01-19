@@ -16,46 +16,58 @@
                         <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> TRAMITAÇÃO</h3>
                     </div>
                     <div class="panel-body">
-                        <div class=" col-md-12 col-sm-12">
-                            <div class="form-group col-sm-3">
-                                {!! Form::label('new_advice_publication_id', ' Publicado no:') !!}
-                                {!! Form::select('new_advice_publication_id', $advice_publication_law ,null, ['class' => 'form-control ']) !!}
-                            </div>
+                        <div class="form-group col-sm-2">
+                            {!! Form::label('new_advice_publication_id', ' Publicado no:') !!}
+                            {!! Form::select('new_advice_publication_id', $advice_publication_law ,null, ['class' => 'form-control ']) !!}
+                        </div>
 
-                            <div class="form-group col-sm-3">
-                                {!! Form::label('new_advice_situation_id', 'Situação do projeto:') !!}
-                                {!! Form::select('new_advice_situation_id', $advice_situation_law ,null, ['class' => 'form-control']) !!}
-                            </div>
+                        <div class="form-group col-sm-2">
+                            {!! Form::label('new_advice_situation_id', 'Situação do projeto:') !!}
+                            {!! Form::select('new_advice_situation_id', $advice_situation_law ,null, ['class' => 'form-control']) !!}
+                        </div>
 
-                            <div class="form-group col-sm-3">
-                                {!! Form::label('new_status_processing_law_id', 'Status do trâmite:') !!}
-                                {!! Form::select('new_status_processing_law_id', $status_processing_law ,null, ['class' => 'form-control']) !!}
-                            </div>
+                        <div class="form-group col-sm-2">
+                            {!! Form::label('new_status_processing_law_id', 'Status do trâmite:') !!}
+                            {!! Form::select('new_status_processing_law_id', $status_processing_law ,null, ['class' => 'form-control']) !!}
+                        </div>
 
-                            <div class="form-group col-sm-2">
-                                {!! Form::label('new_date_processing', 'Data:') !!}
-                                {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!}
-                            </div>
+                        <div class="form-group col-sm-2">
+                            {!! Form::label('date_end', 'Data:') !!}
+                            {!! Form::date('date_end', null, ['class' => 'form-control datepicker']) !!}
+                        </div>
 
-                            <div class="form-group col-sm-3">
-                                {!! Form::label('destination_id', 'Destinatários:') !!}
-                                {!! Form::select('destination_id', $destinations, null, ['class' =>
-                                'form-control']) !!}
-                            </div>
+{{--
+                        <div class="form-group col-sm-12">
+                            {!! Form::label('date', 'Data:', ['class' => 'required']) !!}
+                            {!! Form::date('date', null, ['class' => 'form-control date']) !!}
+                        </div>
+--}}
 
-                            <div class="form-group col-sm-12">
-                                {!! Form::label('new_observation', ' Observações:') !!}
-                                {!! Form::textarea('new_observation', null, ['class' => 'form-control ckeditor']) !!}
-                            </div>
+                        <div class="form-group col-sm-2">
+                            {!! Form::label('destination_id', 'Destinatários:') !!}
+                            {!! Form::select('destination_id', $destinations, null, ['class' =>
+                            'form-control']) !!}
+                        </div>
 
-                            <div class="form-group col-sm-12">
-                                <button class="btn btn-info pull-right" type="button" onclick="save_processing()"> Salvar </button>
-                            </div>
+                        <div class="form-group col-sm-2">
+                            {!! Form::label('new_date_processing', 'Prazo:') !!}
+                            {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!}
+                        </div>
 
-                            <div class="col-md-12">
+                        <div class="form-group col-sm-12">
+                            {!! Form::label('new_observation', ' Observações:') !!}
+                            {!! Form::textarea('new_observation', null, ['class' => 'form-control ckeditor']) !!}
+                        </div>
 
-                                <table class="table table-th-block table-dark">
-                                    <thead>
+                        <div class="form-group col-sm-12">
+                            <button class="btn btn-info pull-right" type="button" onclick="save_processing()">
+                                Salvar
+                            </button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <table class="table table-th-block table-dark">
+                                <thead>
                                     <tr>
                                         <th width="150">
                                             Publicado no
@@ -79,18 +91,21 @@
                                             Ações
                                         </th>
                                     </tr>
-
-                                    </thead>
-                                    <tbody id="table_processing">
+                                </thead>
+                                <tbody id="table_processing">
                                     @forelse($lawsProject->processing()->orderBy('processing_date', 'desc')->get() as $processing)
                                         <tr id="line_{{$processing->id}}">
-                                            <td > @if($processing->advicePublicationLaw) {{$processing->advicePublicationLaw->name}} @endif</td>
-                                            <td > {{$processing->adviceSituationLaw->name}}</td>
-                                            <td > @if($processing->statusProcessingLaw) {{$processing->statusProcessingLaw->name}} @endif</td>
-                                            <td > {{$processing->processing_date}}</td>
-                                            <td > {{ $processing->destination->name ?? '' }}</td>
+                                            <td> @if($processing->advicePublicationLaw) {{$processing->advicePublicationLaw->name}} @endif</td>
+                                            <td> {{$processing->adviceSituationLaw->name}}</td>
+                                            <td> @if($processing->statusProcessingLaw) {{$processing->statusProcessingLaw->name}} @endif</td>
+                                            <td> {{$processing->processing_date}}</td>
+                                            <td> {{ $processing->destination->name ?? '' }}</td>
                                             <td style="text-align: justify;"> {!! $processing->obsevation !!}</td>
-                                            <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-xs"
+                                                        onclick="delete_processing('{{$processing->id}}')"><i
+                                                        class="fa fa-trash"></i></button>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
@@ -99,17 +114,15 @@
                                             </td>
                                         </tr>
                                     @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-@endif
+        @endif
 
-            <script>
+    <script>
 
       $(document).ready(function () {
          setTimeout(function () {
