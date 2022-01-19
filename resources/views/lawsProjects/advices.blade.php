@@ -33,7 +33,7 @@
 
                         <div class="form-group col-sm-2">
                             {!! Form::label('new_date_processing', 'Data:') !!}
-                            {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!}
+                            {!! Form::date('new_date_processing', null, ['class' => 'form-control']) !!}
                         </div>
 
                         <div class="form-group col-sm-2">
@@ -43,7 +43,7 @@
 
                         <div class="form-group col-sm-2">
                             {!! Form::label('date_end', 'Prazo:') !!}
-                            {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
+                            {!! Form::date('date_end', null, ['class' => 'form-control']) !!}
                         </div>
 
                         <div class="form-group col-sm-12">
@@ -114,82 +114,85 @@
             </div>
         @endif
 
-    <script>
+        <script>
+            const getDate = (number) => {
+                if (number <= 9)
+                    return "0" + number;
+                else
+                    return number;
+            }
+            let date = new Date();
+            let dateForm = (date.getFullYear() + "-" + (getDate(date.getMonth() + 1).toString()) + "-" + getDate(date.getDate().toString()));
 
-      $(document).ready(function () {
-         setTimeout(function () {
-             $('#comissao').addClass('chosen-select')
-         },500);
-      });
+            document.querySelector('#new_date_processing').value = dateForm
 
-      var addChosen = function(){
+            $(document).ready(function () {
+                setTimeout(function () {
+                    $('#comissao').addClass('chosen-select')
+                }, 500);
+            });
 
-          $('#comissao').addClass('chosen-select')
+            var addChosen = function () {
 
-      };
+                $('#comissao').addClass('chosen-select')
 
-      var newAdvice = function(project_id)
-      {
-          var url = "/advice/create";
-          var laws_projects_id = project_id;
-          var to_id = [];
-          var type = [];
-          var label = [];
+            };
 
-          $('#comissao :selected').each(function(i, sel){
-              to_id[i] = $(sel).val().substr(1);
-              type[i] = $(sel).val().substr(0,1);
-              label[i] = $(sel).text();
-          });
+            var newAdvice = function (project_id) {
+                var url = "/advice/create";
+                var laws_projects_id = project_id;
+                var to_id = [];
+                var type = [];
+                var label = [];
 
-          var description = CKEDITOR.instances['comissionDescriprion'].getData();
+                $('#comissao :selected').each(function (i, sel) {
+                    to_id[i] = $(sel).val().substr(1);
+                    type[i] = $(sel).val().substr(0, 1);
+                    label[i] = $(sel).text();
+                });
 
-          const legalOpinion = CKEDITOR.instances['legalOpinion'].getData();
+                const data = {
+                    laws_projects_id: laws_projects_id,
+                    document_id: 0,
+                    to_id: to_id,
+                    type: type,
+                    description: CKEDITOR.instances['comissionDescriprion'].getData(),
+                    legal_opinion: CKEDITOR.instances['legalOpinion'].getData(),
+                    date_end: $('#date_end').val(),
+                }
 
+                if (to_id.length > 0) {
 
-          if(to_id.length > 0) {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: data
+                    }).success(function (data) {
+                        data = JSON.parse(data);
 
-              $.ajax({
-                  url: url,
-                  method: 'POST',
-                  data: {
-                      laws_projects_id: laws_projects_id,
-                      document_id: 0,
-                      to_id: to_id,
-                      type: type,
-                      description: description,
-                      legal_opinion: legalOpinion
-                  }
-              }).success(function (data) {
+                        if (data) {
+                            toastr.success("Pedido salvo com sucesso!!");
+                        } else {
+                            toastr.error("Erro ao salvar pedido!!");
+                        }
 
-                  data = JSON.parse(data);
+                    })
+                } else {
+                    toastr.error('Selecione um destino!');
+                }
+            }
 
-                  console.log(data);
-
-                  if(data){
-                      toastr.success("Pedido salvo com sucesso!!");
-                  }else{
-                      toastr.error("Erro ao salvar pedido!!");
-                  }
-
-              })
-          }else{
-              toastr.error('Selecione um destino!');
-          }
-      }
-
-
-      function dataAtualFormatada(data){
-          var dia = data.getDate();
-          if (dia.toString().length == 1)
-              dia = "0"+dia;
-          var mes = data.getMonth()+1;
-          if (mes.toString().length == 1)
-              mes = "0"+mes;
-          var ano = data.getFullYear();
-          return dia+"/"+mes+"/"+ano;
-      }
-  </script>
+            function dataAtualFormatada(data) {
+                var dia = data.getDate();
+                if (dia.toString().length == 1)
+                    dia = "0" + dia;
+                var mes = data.getMonth() + 1;
+                if (mes.toString().length == 1)
+                    mes = "0" + mes;
+                var ano = data.getFullYear();
+                return dia + "/" + mes + "/" + ano;
+            }
+        </script>
   @endif
   <div class="clearfix">
 

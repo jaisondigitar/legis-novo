@@ -97,7 +97,7 @@
 
                         <label>
                             {!! Form::label('date_end', 'Prazo:') !!}
-                            {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
+                            {!! Form::date('date_end', null, ['class' => 'form-control']) !!}
                         </label>
                     </div>
                     <div class="modal-footer">
@@ -123,6 +123,16 @@
     </div>
 
     <script>
+        const getDate = (number) => {
+            if (number <= 9)
+                return "0" + number;
+            else
+                return number;
+        }
+        let date = new Date();
+        let dateForm = (date.getFullYear() + "-" + (getDate(date.getMonth() + 1).toString()) + "-" + getDate(date.getDate().toString()));
+
+        document.querySelector('#date_end').value = dateForm
 
         $(document).ready(function () {
             setTimeout(function () {
