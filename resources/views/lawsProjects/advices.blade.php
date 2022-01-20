@@ -228,20 +228,10 @@
 
                             str = '<tr id="line_' + valor.id + '"> ';
                             str += "<td>";
-                            if (valor.advice_publication_id > 0) {
-                                str += valor.advice_publication_law.name;
-                            }
+                            str += valor.processing_date;
                             str += "</td>";
                             str += "<td>";
                             str += valor.advice_situation_law.name;
-                            str += "</td>";
-                            str += "<td>";
-                            if (valor.status_processing_law_id > 0) {
-                                str += valor.status_processing_law.name;
-                            }
-                            str += "</td>";
-                            str += "<td>";
-                            str += valor.processing_date;
                             str += "</td>";
                             str += "<td>";
                             if (valor.destination) {
@@ -249,7 +239,15 @@
                             }
                             str += "</td>";
                             str += "<td>";
+                            if (valor.status_processing_law_id > 0) {
+                                str += valor.status_processing_law.name;
+                            }
+                            str += "</td>";
+                            str += "<td>";
                             str += valor.obsevation;
+                            str += "</td>";
+                            str += "<td>";
+                            str += valor.date_end;
                             str += "</td>";
                             str += "<td>";
                             str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
