@@ -86,6 +86,7 @@ class AdviceController extends AppBaseController
         $input = $request->all();
 
         $input['date'] = Carbon::now();
+        $date_end = isset($input['date_end']) ? Carbon::createFromFormat('d/m/Y', $input['date_end']) : null;
 
         $to_id = $input['to_id'];
         $type = $input['type'];
@@ -97,9 +98,10 @@ class AdviceController extends AppBaseController
             $advice->date = $input['date'];
             $advice->type = $type[$key];
             $advice->to_id = $to_id[$key];
-            $advice->laws_projects_id = isset($input['laws_projects_id']) ? $input['laws_projects_id'] : 0;
+            $advice->laws_projects_id = $input['laws_projects_id'] ?? 0;
             $advice->document_id = $input['document_id'];
             $advice->description = $input['description'];
+            $advice->date_end = $date_end;
 
             if ($advice->save()) {
                 $situation = ComissionSituation::first();
