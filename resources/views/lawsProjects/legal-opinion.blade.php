@@ -97,7 +97,7 @@
 
                         <label>
                             {!! Form::label('date_end', 'Prazo:') !!}
-                            {!! Form::date('date_end', null, ['class' => 'form-control date_default']) !!}
+                            {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
                         </label>
                     </div>
                     <div class="modal-footer">
@@ -123,7 +123,7 @@
     </div>
 
     <script>
-        document.querySelector('.date_default').value = dateForm
+        document.querySelector('#date_end').value = dateForm
 
         $(document).ready(function () {
             setTimeout(function () {

@@ -107,7 +107,7 @@
         <!-- Date Field -->
         <div class="form-group col-sm-12">
             {!! Form::label('date', 'Data:', ['class' => 'required']) !!}
-            {!! Form::date('date', null, ['class' => 'form-control date_default']) !!}
+            {!! Form::text('date', null, ['class' => 'form-control datepicker']) !!}
         </div>
 
         <!-- Time Field -->
@@ -145,8 +145,8 @@
 </div>
 
 <script>
-    document.querySelector('.date_default').value = dateForm
-    document.querySelector('.time_default').value = timeForm
+    document.querySelector('#date').value = dateForm
+    document.querySelector('#time').value = timeForm
 
     const removeImage = async () => {
         const peopleId = document.querySelector('.logo-inst img').getAttribute('id')
