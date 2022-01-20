@@ -39,7 +39,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'email' => 'E-Mail',
         'password' => 'Senha',
         'active' => 'Ativo',
-        'legal' => 'Jurídico',
     ];
 
     protected $hidden = [

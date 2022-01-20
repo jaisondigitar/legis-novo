@@ -1,4 +1,4 @@
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-2">
     {!! Form::label('law_date', 'Data projeto:', ['class' => 'required']) !!}
     {!! Form::text('law_date', null, ['class' => 'form-control datepicker', 'required']) !!}
 </div>
@@ -8,47 +8,22 @@
     {!! Form::select('law_type_id', $law_types, null, ['class' => 'form-control']) !!}
 </div>
 
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-2">
     {!! Form::label('reference_id', 'Referente à:') !!}
     {!! Form::select('reference_id', $references_project, null, ['class' => 'form-control chosen']) !!}
 </div>
 
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-2">
     {!! Form::label('situation_id', 'Situação Atual:', ['class' => 'required']) !!}
     {!! Form::select('situation_id', $situation, null, ['class' => 'form-control']) !!}
 </div>
 
-
-
-{{--<div class="form-group col-sm-2">--}}
-    {{--{!! Form::label('town_hall', 'Aprovado pela câmara:') !!}--}}
-    {{--<div class="clearfix"></div>--}}
-    {{--{!! Form::checkbox('town_hall', 1, null, ['class' => 'form-control switch' , 'data-on-text' => 'Sim', 'data-off-text' => 'Não', 'data-off-color' => 'danger', 'data-on-color' => 'success', 'data-size' => 'normal', 'type' => 'checkbox' ]) !!}--}}
-{{--</div>--}}
-
-
-
-{{--<div class="form-group col-sm-2">--}}
-    {{--{!! Form::label('town_hall', 'Aprovado pela câmara::') !!}--}}
-    {{--<input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal" type="checkbox" {!! $town_hall > 0 ? 'checked':'' !!}>--}}
-{{--</div>--}}
-
-<div class="form-group col-sm-3" style="padding: 0">
-    <div class="form-group col-sm-12 hidden">
-        {!! Form::label('date_presentation', 'Data ao plenário:') !!}
-        {!! Form::text('date_presentation', null, ['class' => 'form-control datepicker']) !!}
-    </div>
-    <div class="form-group col-sm-12">
-        {!! Form::label('comission_id', 'Comissão:') !!}
-        {!! Form::select('comission_id', $comission, null, ['class' => 'form-control']) !!}
-    </div>
-    <div class="form-group col-sm-12">
-        {!! Form::label('assemblyman_id', 'Responsável', ['class' => 'required']) !!}
-        {!! Form::select('assemblyman_id', $assemblymensList ,null, ['class' => 'form-control', 'id' => 'owner_id']) !!}
-    </div>
+<div class="form-group col-sm-3">
+    {!! Form::label('assemblyman_id', 'Responsável', ['class' => 'required']) !!}
+    {!! Form::select('assemblyman_id', $assemblymensList ,null, ['class' => 'form-control', 'id' => 'owner_id']) !!}
 </div>
 
-<div class="form-group col-sm-9">
+<div class="form-group col-sm-12">
     {!! Form::label('title', 'Ementa:', ['class' => 'required']) !!}
     {!! Form::textarea('title', null, ['class' => 'form-control', 'rows'=>5]) !!}
 </div>
@@ -61,60 +36,22 @@
 </div>
 
 <div class="form-group col-sm-6">
-    {!! Form::label('sufix', 'Texto SUFIXO:') !!}
-    {!! Form::textarea('sufix', null, ['class' => 'form-control ckeditor']) !!}
-</div>
-
-<div class="form-group col-sm-12">
     {!! Form::label('sufix', 'Texto JUSTIFICATIVA:') !!}
     {!! Form::textarea('justify', null, ['class' => 'form-control ckeditor']) !!}
 </div>
 
 <div class="clearfix"></div>
 
-<div class="form-group col-sm-5">
+<div class="form-group col-sm-12">
     <div class="panel panel-square panel-default">
         <div class="panel-heading">
             <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> PARLAMENTARES ASSINANDO</h3>
         </div>
         <div class="panel-body">
             {!! Form::select('assemblymen[]', $assemblymen, null, ['class' => 'chosen-select', 'multiple', 'style' => 'width:100%;', 'data-placeholder' => 'Selecione o parlamentar...']) !!}
-        </div><!-- /.panel-body -->
+        </div>
     </div>
 </div>
-
-{{--<div class="form-group col-sm-3">--}}
-    {{--<div class="panel panel-square panel-default">--}}
-        {{--<div class="panel-heading">--}}
-            {{--<h3 class="panel-title"><i class="fa fa-upload"></i> ANEXAR ARQUIVO</h3>--}}
-        {{--</div>--}}
-        {{--<div class="panel-body">--}}
-            {{--<input type="file" name="file" value="" class="form-control">--}}
-            {{--<br>--}}
-            {{--@if(isset($lawsProject) && $lawsProject->file)--}}
-              {{--<a href="/laws/{{ $lawsProject->file }}" target="_blank"><i class="fa fa-download"></i> {{ $lawsProject->file }}</a>--}}
-            {{--@endif--}}
-        {{--</div><!-- /.panel-body -->--}}
-    {{--</div>--}}
-{{--</div>--}}
-
-{{--<div class="form-group col-sm-3">--}}
-    {{--<div class="panel panel-square panel-default">--}}
-        {{--<div class="panel-heading">--}}
-            {{--<h3 class="panel-title"><i class="fa fa-upload"></i> ANEXAR LEI SANCIONADA</h3>--}}
-        {{--</div>--}}
-        {{--<div class="panel-body">--}}
-            {{--<input type="file" name="law_file" value="" class="form-control">--}}
-            {{--<br>--}}
-            {{--@if(isset($lawsProject) && $lawsProject->law_file)--}}
-              {{--<a href="/laws/{{ $lawsProject->law_file }}" target="_blank"><i class="fa fa-download"></i> {{ $lawsProject->law_file }}</a>--}}
-            {{--@endif--}}
-        {{--</div><!-- /.panel-body -->--}}
-    {{--</div>--}}
-{{--</div>--}}
-
-
-{{-- -----------------------------------tamitação --}}
 
 @if(isset($lawsProject->id) && $tramitacao)
 

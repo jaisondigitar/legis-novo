@@ -71,7 +71,7 @@
                 @endif
             </span>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <span>
                 <strong>Responsável: </strong>
 
@@ -110,9 +110,9 @@
                 {{ $lawsProject->town_hall ? 'Sim' : 'Não' }}
             </span>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <span>
-                <strong>Aprovado pela câmara:</strong>
+                <strong>Aprovação:</strong>
                 <br>
                 <label>
                     <input
@@ -241,19 +241,21 @@
                 </button>
             @endif
 
-            @shield('lawsProjects.edit')
-                <a href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-warning btn-sm'>
-                    <i class="glyphicon glyphicon-edit"></i>
+            <div>
+                @shield('lawsProjects.edit')
+                    <a href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-warning btn-sm'>
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                @endshield
+
+                @shield('lawsProjects.delete')
+                    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                @endshield
+
+                <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-info btn-sm">
+                    <i class="fa fa-plus"></i> Anexos
                 </a>
-            @endshield
-
-            @shield('lawsProjects.delete')
-                {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
-            @endshield
-
-            <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-info btn-sm">
-                <i class="fa fa-plus"></i> Anexos
-            </a>
+            </div>
         </div>
         <div class="clearfix"></div>
         {!! Form::close() !!}

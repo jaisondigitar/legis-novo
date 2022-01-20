@@ -156,6 +156,16 @@
         }
     </style>
     <script type="application/javascript">
+        const getDate = (number) => {
+            if (number <= 9)
+                return "0" + number;
+            else
+                return number;
+        }
+        let date = new Date();
+
+        let dateForm = (date.getFullYear() + "-" + (getDate(date.getMonth()+1).toString()) + "-" + getDate(date.getDate().toString()));
+        let timeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
 
         jQuery.ajaxSetup({
             beforeSend: function() {

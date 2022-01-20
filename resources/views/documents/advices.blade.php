@@ -77,9 +77,9 @@
                                 {!! Form::select('destination_id', $destinations, null, ['class' => 'form-control']) !!}
                             </div>
 
-                            <div class="form-group col-sm-2">
+                            <div class="form-group col-sm-3">
                                 {!! Form::label('new_processing_document_date', 'Data:') !!}
-                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datepicker']) !!}
+                                {!! Form::date('new_processing_document_date', null, ['class' => 'form-control date_default']) !!}
                             </div>
 
                             <div class="form-group col-sm-12">
@@ -136,88 +136,75 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         @endif
 
+        <script>
+            document.querySelector('.date_default').value = dateForm
 
+            $(document).ready(function () {
+                setTimeout(function () {
+                    $('#comissao').addClass('chosen-select')
+                }, 500);
+            });
 
-    <script>
+            const addChosen = () => {
+                $('#comissao').addClass('chosen-select')
+            };
 
-      $(document).ready(function () {
-         setTimeout(function () {
-             $('#comissao').addClass('chosen-select')
-         },500);
-      });
+            const newAdvice = (document_id) => {
+                var url = "/advice/create";
+                var document_id = document_id;
+                var to_id = [];
+                var type = [];
+                var label = [];
 
-      var addChosen = function(){
+                $('#comissao :selected').each(function (i, sel) {
+                    to_id[i] = $(sel).val().substr(1);
+                    type[i] = $(sel).val().substr(0, 1);
+                    label[i] = $(sel).text();
+                });
 
-          $('#comissao').addClass('chosen-select')
+                const data = {
+                    document_id: document_id,
+                    laws_projects_id: 0,
+                    to_id: to_id,
+                    type: type,
+                    description: CKEDITOR.instances['comissionDescriprion'].getData(),
+                    date_end: null,
+                };
 
-      };
+                if (to_id.length > 0) {
+                    $.ajax({
+                        url: url,
+                        data: data,
+                        method: 'POST'
+                    }).success(function (data) {
+                        if (data) {
+                            toastr.success("Pedido salvo com sucesso!!");
+                        } else {
+                            toastr.error("Erro ao salvar pedido!!");
+                        }
+                    })
+                } else {
+                    toastr.error('Selecione um destino!');
+                }
+            }
 
-      var newAdvice = function(document_id)
-      {
-          var url = "/advice/create";
-          var document_id = document_id;
-          var to_id = [];
-          var type = [];
-          var label = [];
-
-          $('#comissao :selected').each(function(i, sel){
-              to_id[i] = $(sel).val().substr(1);
-              type[i] = $(sel).val().substr(0,1);
-              label[i] = $(sel).text();
-          });
-
-          var description = CKEDITOR.instances['comissionDescriprion'].getData();
-
-
-          if(to_id.length > 0) {
-
-              $.ajax({
-                  url: url,
-                  method: 'POST',
-                  data: {
-                      document_id: document_id,
-                      laws_projects_id : 0,
-                      to_id: to_id,
-                      type: type,
-                      description: description
-                  }
-              }).success(function (data) {
-
-                  data = JSON.parse(data);
-
-                  console.log(data);
-
-                  if(data){
-                      toastr.success("Pedido salvo com sucesso!!");
-                  }else{
-                      toastr.error("Erro ao salvar pedido!!");
-                  }
-
-              })
-          }else{
-              toastr.error('Selecione um destino!');
-          }
-      }
-
-
-      function dataAtualFormatada(data){
-          var dia = data.getDate();
-          if (dia.toString().length == 1)
-              dia = "0"+dia;
-          var mes = data.getMonth()+1;
-          if (mes.toString().length == 1)
-              mes = "0"+mes;
-          var ano = data.getFullYear();
-          return dia+"/"+mes+"/"+ano;
-      }
-    </script>
+            function dataAtualFormatada(data) {
+                var dia = data.getDate();
+                if (dia.toString().length == 1)
+                    dia = "0" + dia;
+                var mes = data.getMonth() + 1;
+                if (mes.toString().length == 1)
+                    mes = "0" + mes;
+                var ano = data.getFullYear();
+                return dia + "/" + mes + "/" + ano;
+            }
+        </script>
   @endif
   <div class="clearfix">
 
@@ -247,7 +234,8 @@
                         status_processing_document_id: $('#new_status_processing_document_id').val(),
                         processing_document_date: $('#new_processing_document_date').val(),
                         destination_id: $('#destination_id').val(),
-                        observation: CKEDITOR.instances.new_document_observation.getData()
+                        observation: CKEDITOR.instances.new_document_observation.getData(),
+                        date_end: null,
                     };
 
                     $.ajax({

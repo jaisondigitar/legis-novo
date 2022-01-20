@@ -30,7 +30,7 @@
 
                     <div class="col-lg-4 col-md-12" >
                         <div class="the-box btn-warning assemblyman_vote" id="abstention" style="display: table; width: 100%; height: 300px;" onclick="voting(this)">
-                            <h1 class="text-center" style="display: table-cell; text-align: center; vertical-align: middle; font-size: 40px; width: 100%" > ABSTENÇÃO </h1>
+                            <h1 class="text-center" style="display: table-cell; text-align: center; vertical-align: middle; font-size: 40px; width: 100%" > IMPEDIDO </h1>
                         </div><!-- /.the-box .bg-primary .no-border-->
                     </div>
 

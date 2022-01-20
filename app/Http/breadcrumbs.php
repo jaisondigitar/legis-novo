@@ -404,11 +404,11 @@ Breadcrumbs::for('meetings.edit', function ($breadcrumbs) {
 });
 Breadcrumbs::for('meetings.show', function ($breadcrumbs) {
     $breadcrumbs->parent('meetings.list');
-    $breadcrumbs->push('Sessão', null);
+    $breadcrumbs->push('Visualização', null);
 });
 Breadcrumbs::for('meetings.attachment', function ($breadcrumbs) {
     $breadcrumbs->parent('meetings.list');
-    $breadcrumbs->push('Anexos documento', null);
+    $breadcrumbs->push('Anexos da Sessão', null);
 });
 
 /*
@@ -484,19 +484,19 @@ Breadcrumbs::for('lawsStructures.show', function ($breadcrumbs) {
 Breadcrumbs::for('lawsTags.list', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Cadastro', null);
-    $breadcrumbs->push('Tags de lei', '/lawsTags');
+    $breadcrumbs->push('Projeto de lei', '/lawsTags');
 });
 Breadcrumbs::for('lawsTags.new', function ($breadcrumbs) {
     $breadcrumbs->parent('lawsTags.list');
-    $breadcrumbs->push('Nova tag de lei', '/lawsTags/create');
+    $breadcrumbs->push('Nova projeto de lei', '/lawsTags/create');
 });
 Breadcrumbs::for('lawsTags.edit', function ($breadcrumbs) {
     $breadcrumbs->parent('lawsTags.list');
-    $breadcrumbs->push('Editar tag de lei', null);
+    $breadcrumbs->push('Editar projeto de lei', null);
 });
 Breadcrumbs::for('lawsTags.show', function ($breadcrumbs) {
     $breadcrumbs->parent('lawsTags.list');
-    $breadcrumbs->push('Tag de lei', null);
+    $breadcrumbs->push('Projeto de lei', null);
 });
 
 /*

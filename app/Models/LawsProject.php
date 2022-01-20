@@ -138,7 +138,7 @@ class LawsProject extends BaseModel
         'law_number' => 'Número da Lei',
         'is_ready' => 'Aprovado pela câmara',
         'sub_title' => ' Texto PREFIXO',
-        'sufix' => 'Texto SUFIXO',
+        'sufix' => 'Texto OBSERVAÇÃO',
         'justify' => 'Texto JUSTIFICATIVA',
         'town_hall' => 'Prefeitura',
         'id' => 'Id',

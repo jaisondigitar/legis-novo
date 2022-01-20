@@ -43,7 +43,7 @@
                     </li>
                     <li class="list-group-item">
                         <label  style="width: 100%;">
-                            ABSTENÇÃO
+                            IMPEDIDO
                             <span class="pull-right">
                                 <input type="radio" class="pull-left radioBox" id="vote_{{$item->id}}_3" name="{{$item->id}}_vote" value="abstention" onclick="votes(this, '{{$item->id}}')" disabled @if($voting->votes()->where('assemblyman_id',$item->id)->where('abstention', 1)->first()) checked @endif>
                             </span>
