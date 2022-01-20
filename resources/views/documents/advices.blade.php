@@ -79,7 +79,7 @@
 
                             <div class="form-group col-sm-3">
                                 {!! Form::label('new_processing_document_date', 'Data:') !!}
-                                {!! Form::date('new_processing_document_date', null, ['class' => 'form-control date_default']) !!}
+                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datepicker']) !!}
                             </div>
 
                             <div class="form-group col-sm-12">
@@ -143,7 +143,7 @@
         @endif
 
         <script>
-            document.querySelector('.date_default').value = dateForm
+            document.querySelector('#new_processing_document_date').value = dateForm
 
             $(document).ready(function () {
                 setTimeout(function () {

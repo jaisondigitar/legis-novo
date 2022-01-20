@@ -16,24 +16,19 @@
                         <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> TRAMITAÇÃO</h3>
                     </div>
                     <div class="panel-body">
-                        <div class="form-group col-sm-2">
-                            {!! Form::label('new_advice_publication_id', ' Publicado no:') !!}
-                            {!! Form::select('new_advice_publication_id', $advice_publication_law ,null, ['class' => 'form-control ']) !!}
-                        </div>
-
-                        <div class="form-group col-sm-2">
+                        <div class="form-group col-sm-3">
                             {!! Form::label('new_advice_situation_id', 'Situação do projeto:') !!}
                             {!! Form::select('new_advice_situation_id', $advice_situation_law ,null, ['class' => 'form-control']) !!}
                         </div>
 
-                        <div class="form-group col-sm-2">
+                        <div class="form-group col-sm-3">
                             {!! Form::label('new_status_processing_law_id', 'Status do trâmite:') !!}
                             {!! Form::select('new_status_processing_law_id', $status_processing_law ,null, ['class' => 'form-control']) !!}
                         </div>
 
                         <div class="form-group col-sm-2">
                             {!! Form::label('new_date_processing', 'Data:') !!}
-                            {!! Form::date('new_date_processing', null, ['class' => 'form-control date_default']) !!}
+                            {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!}
                         </div>
 
                         <div class="form-group col-sm-2">
@@ -43,7 +38,7 @@
 
                         <div class="form-group col-sm-2">
                             {!! Form::label('date_end', 'Prazo:') !!}
-                            {!! Form::date('date_end', null, ['class' => 'form-control']) !!}
+                            {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
                         </div>
 
                         <div class="form-group col-sm-12">
@@ -61,23 +56,23 @@
                             <table class="table table-th-block table-dark">
                                 <thead>
                                     <tr>
-                                        <th width="150">
-                                            Publicado no
+                                        <th width="100">
+                                            Data
                                         </th>
                                         <th width="150">
                                             Situação do projeto
                                         </th>
                                         <th width="150">
-                                            Status do trâmite
-                                        </th>
-                                        <th width="100">
-                                            Data
+                                            Destinatário
                                         </th>
                                         <th width="150">
-                                            Destinatário
+                                            Status do trâmite
                                         </th>
                                         <th width="500">
                                             Observação
+                                        </th>
+                                        <th width="50">
+                                            Prazo
                                         </th>
                                         <th width="20">
                                             Ações
@@ -87,12 +82,12 @@
                                 <tbody id="table_processing">
                                     @forelse($lawsProject->processing()->orderBy('processing_date', 'desc')->get() as $processing)
                                         <tr id="line_{{$processing->id}}">
-                                            <td> @if($processing->advicePublicationLaw) {{$processing->advicePublicationLaw->name}} @endif</td>
-                                            <td> {{$processing->adviceSituationLaw->name}}</td>
-                                            <td> @if($processing->statusProcessingLaw) {{$processing->statusProcessingLaw->name}} @endif</td>
                                             <td> {{$processing->processing_date}}</td>
+                                            <td> {{$processing->adviceSituationLaw->name}}</td>
                                             <td> {{ $processing->destination->name ?? '' }}</td>
+                                            <td> @if($processing->statusProcessingLaw) {{$processing->statusProcessingLaw->name}} @endif</td>
                                             <td style="text-align: justify;"> {!! $processing->obsevation !!}</td>
+                                            <td style="text-align: justify;"> {!! $processing->date_end !!}</td>
                                             <td>
                                                 <button type="button" class="btn btn-danger btn-xs"
                                                         onclick="delete_processing('{{$processing->id}}')"><i
@@ -115,7 +110,8 @@
         @endif
 
         <script>
-            document.querySelector('.date_default').value = dateForm
+            document.querySelector('#new_date_processing').value = dateForm
+            document.querySelector('#date_end').value = someDateForm
 
             $(document).ready(function () {
                 setTimeout(function () {
@@ -217,7 +213,9 @@
                         obsevation: CKEDITOR.instances.new_observation.getData()
                     };
 
-                    $.ajax({
+                    console.log(data);
+
+                    /*$.ajax({
                         url: url,
                         data: data,
                         method: 'post'
@@ -267,7 +265,7 @@
                         $('#new_status_processing_law_id').val('');
                         $('#new_date_processing').val('');
                         CKEDITOR.instances.new_observation.setData('');
-                    });
+                    });*/
                 }
             }
         }
