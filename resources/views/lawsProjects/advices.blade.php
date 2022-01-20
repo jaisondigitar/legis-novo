@@ -33,7 +33,7 @@
 
                         <div class="form-group col-sm-2">
                             {!! Form::label('new_date_processing', 'Data:') !!}
-                            {!! Form::date('new_date_processing', null, ['class' => 'form-control']) !!}
+                            {!! Form::date('new_date_processing', null, ['class' => 'form-control date_default']) !!}
                         </div>
 
                         <div class="form-group col-sm-2">
@@ -115,16 +115,7 @@
         @endif
 
         <script>
-            const getDate = (number) => {
-                if (number <= 9)
-                    return "0" + number;
-                else
-                    return number;
-            }
-            let date = new Date();
-            let dateForm = (date.getFullYear() + "-" + (getDate(date.getMonth() + 1).toString()) + "-" + getDate(date.getDate().toString()));
-
-            document.querySelector('#new_date_processing').value = dateForm
+            document.querySelector('.date_default').value = dateForm
 
             $(document).ready(function () {
                 setTimeout(function () {

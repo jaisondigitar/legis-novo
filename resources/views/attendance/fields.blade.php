@@ -107,13 +107,13 @@
         <!-- Date Field -->
         <div class="form-group col-sm-12">
             {!! Form::label('date', 'Data:', ['class' => 'required']) !!}
-            {!! Form::date('date', null, ['class' => 'form-control date']) !!}
+            {!! Form::date('date', null, ['class' => 'form-control date_default']) !!}
         </div>
 
         <!-- Time Field -->
         <div class="form-group col-sm-12">
             {!! Form::label('time', 'Hora:', ['class' => 'required']) !!}
-            {!! Form::time('time', null, ['class' => 'form-control time']) !!}
+            {!! Form::time('time', null, ['class' => 'form-control time_default']) !!}
         </div>
 
         <!-- Sector Field -->
@@ -145,17 +145,8 @@
 </div>
 
 <script>
-    const getDate = (number) => {
-        if (number <= 9)
-            return "0" + number;
-        else
-            return number;
-    }
-    let date = new Date();
-    let dateForm = (date.getFullYear() + "-" + (getDate(date.getMonth()+1).toString()) + "-" + getDate(date.getDate().toString()));
-    let TimeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
-    document.querySelector('.date').value = dateForm
-    document.querySelector('.time').value = TimeForm
+    document.querySelector('.date_default').value = dateForm
+    document.querySelector('.time_default').value = timeForm
 
     const removeImage = async () => {
         const peopleId = document.querySelector('.logo-inst img').getAttribute('id')
