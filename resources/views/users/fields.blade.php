@@ -68,19 +68,19 @@
             </tr>
             @foreach($levels as $value)
                 <?php
-                $teste = false;
-                if (isset($user)) {
-                    $teste = $user->hasRole($value->name);
-                }
+                    $teste = false;
+                    if (isset($user)) {
+                        $teste = $user->hasRole($value->name);
+                    }
                 ?>
-                    <tr>
-                        <td>
-                            <label>
-                                {!! Form::checkbox('roles[]', $value->id, $teste) !!}
-                                {!! $value->name !!}
-                            </label>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <label>
+                            {!! Form::checkbox('roles[]', $value->id, $teste) !!}
+                            {!! $value->name !!}
+                        </label>
+                    </td>
+                </tr>
             @endforeach
         </table>
         <div class="clearfix"></div>
@@ -97,16 +97,16 @@
             </tr>
             @foreach($assemblyman as $value)
                 <?php
-                    $teste = false;
+                    $test = false;
                     if (isset($user)) {
-                        $teste = $user->hasRole($value->name);
+                        $test = in_array($value->id, $user_assemblyman);
                     }
                 ?>
                 <tr>
                     <td>
                         <label>
-                            {!! Form::checkbox('assemblyman[]', $value->id, $teste) !!}
-                            {!! $value->short_name !!}
+                            {!! Form::checkbox('assemblyman[]', $value->id, $test) !!}
+                            {!! $value->short_name !!} {!! $value->id !!}
                         </label>
                     </td>
                 </tr>
