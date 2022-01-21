@@ -170,7 +170,7 @@
             return date;
         }
 
-        let dateForm = (getDate(date.getDate().toString())  + "/" + (getDate(date.getMonth()+1).toString()) + "/" + date.getFullYear());
+        let dateForm = (getDate(date.getDate().toString()) + "/" + (getDate(date.getMonth()+1).toString()) + "/" + date.getFullYear());
         let someDateForm = (getDate(date.addDays(5).getDate().toString())  + "/" + (getDate(date.getMonth()+1).toString()) + "/" + date.getFullYear());
         let timeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
 

@@ -721,7 +721,8 @@ class LawsProjectController extends AppBaseController
 
             $html .= '<ul style="list-style-type:none; list-style: none;display:block">';
 
-            foreach ($node->children as $child) {
+            $children = $node->children->sortBy('id');
+            foreach ($children as $child) {
                 $html .= $this->renderNode($child, $index, $level);
             }
 

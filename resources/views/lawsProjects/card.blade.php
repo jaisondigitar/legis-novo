@@ -9,10 +9,23 @@
             @else
                 {!! mb_strtoupper($lawsProject->law_type->name, 'UTF-8') !!}
             @endif
-
-            <span id="tdLawProjectNumber{{$lawsProject->id}}">
+            -
+            <span id="tdLawProjectNumber{{$lawsProject->id}}" style="color: #37BC9B">
                 {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!}
             </span>
+            <div class="pull-right">
+                Prazo:
+
+                @if($lawsProject->processing->first()->date_end)
+                    @if(!$lawsProject->processing->first()->date_end)
+                        <div class="pull-right" style="color: #c71111; margin-left: 10px">{{$lawsProject->processing->first()->date_end}}</div>
+                    @else
+                        <div class="pull-right" style="color: #c71111; margin-left: 10px">{{$lawsProject->processing->first()->date_end}}</div>
+                    @endif
+                @else
+                    <div class="pull-right" style="color: #c71111; margin-left: 10px">{{$lawsProject->processing->first()->date_end}}</div>
+                @endif
+            </div>
         </span>
     </div>
     <div class="panel-body" style="font-size: 12px">
