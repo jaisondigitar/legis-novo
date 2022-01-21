@@ -93,7 +93,6 @@
                                 $html .= '<ol>';
 
                                 $actual_node = $node->children()
-//                                    ->orderBy('id')
                                     ->orderBy('law_structure_id')
                                     ->orderBy('number')
                                     ->get();
