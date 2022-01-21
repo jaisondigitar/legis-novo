@@ -347,12 +347,12 @@ class LawsProject extends BaseModel
 
     public function scopeApproved($query)
     {
-        return $query->whereNotNull('law_number');
+        return $query->where('town_hall', 1);
     }
 
     public function scopeUnRead($query)
     {
-        return $query->where('is_ready', 0);
+        return $query->where('is_read', 1);
     }
 
     // mutator parecer law
