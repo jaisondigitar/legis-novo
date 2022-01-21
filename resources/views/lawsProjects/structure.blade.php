@@ -49,50 +49,56 @@
 
                         </style>
                         <?php
-                        function renderNode($node,$index=0,$level=0) {
-                            if( $node->isLeaf() ) {
-                                $html = '<li id="' . $node->id. '" class="list-item"><div class="the-box rounded"><strong>' .
+                        function renderNode($node, $index = 0, $level = 0)
+                        {
+                            if ($node->isLeaf()) {
+                                $html = '<li id="'.$node->id.'" class="list-item"><div class="the-box rounded"><strong>'.
                                         (isset($node->type) ? $node->type->showName() : '')
-                                        . ' '
+                                        .' '
                                         .($node->number ? $node->number : '')
                                         .':</strong> '
-                                        .  $node->content;
-                                if(!$node->isRoot()){
-                                    $html .='
+                                        .$node->content;
+                                if (! $node->isRoot()) {
+                                    $html .= '
             <div class="editable">
-            <button type="button" class="editable btn btn-xs btn-info" data-item="' . $node->parent_id.'" data-method="post" data-action="store" data-title="Novo IRMAO" data-toggle="modal" data-target="#myModal"><i class="fa fa-bars"></i> abaixo</i></button>
-            <button type="button" class="editable btn btn-xs btn-primary" data-item="' . $node->id.'" data-method="post" data-action="store" data-title="Novo FILHO" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
-            <button type="button" class="editable btn btn-xs btn-warning" data-item="' . $node->id.'" data-method="put" data-type="' . $node->law_structure_id.'" data-number="' . $node->number.'" data-name="' . strip_tags($node->content).'" data-action="update" data-title="Editando" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> editar</i></button>
-            <button type="button" class="editable btn btn-xs btn-danger"  onClick="deletaReg(' . $node->id.')"><i class="fa fa-remove"></i> remover</i></button>
+            <button type="button" class="editable btn btn-xs btn-info" data-item="'.$node->parent_id.'" data-method="post" data-action="store" data-title="Novo IRMAO" data-toggle="modal" data-target="#myModal"><i class="fa fa-bars"></i> abaixo</i></button>
+            <button type="button" class="editable btn btn-xs btn-primary" data-item="'.$node->id.'" data-method="post" data-action="store" data-title="Novo FILHO" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
+            <button type="button" class="editable btn btn-xs btn-warning" data-item="'.$node->id.'" data-method="put" data-type="'.$node->law_structure_id.'" data-number="'.$node->number.'" data-name="'.strip_tags($node->content).'" data-action="update" data-title="Editando" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> editar</i></button>
+            <button type="button" class="editable btn btn-xs btn-danger"  onClick="deletaReg('.$node->id.')"><i class="fa fa-remove"></i> remover</i></button>
             </div>';
-                                }else{
-                                    $html .='<div class="editable">
-            <button type="button" class="editable btn btn-xs btn-primary" data-item="' . $node->id.'" data-method="post" data-action="store" data-title="Novo FILHO" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
+                                } else {
+                                    $html .= '<div class="editable">
+            <button type="button" class="editable btn btn-xs btn-primary" data-item="'.$node->id.'" data-method="post" data-action="store" data-title="Novo FILHO" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
             </div>';
                                 }
-                                $html .='</div></li>';
+                                $html .= '</div></li>';
+
                                 return $html;
                             } else {
-
-                                $html = '<li id="' . $node->id. '" class="list-item"><div class="the-box rounded"><strong>' . (isset($node->type) ? $node->type->showName() : '') . ' ' .($node->number ? $node->number : '') .':</strong> '  .  $node->content;
-                                if(!$node->isRoot()){
-                                    $html .='
+                                $html = '<li id="'.$node->id.'" class="list-item"><div class="the-box rounded"><strong>'.(isset($node->type) ? $node->type->showName() : '').' '.($node->number ? $node->number : '').':</strong> '.$node->content;
+                                if (! $node->isRoot()) {
+                                    $html .= '
             <div class="editable">
-                <button type="button" class="btn btn-xs btn-info" data-item="' . $node->parent_id.'" data-method="post" data-action="store" data-title="Novo IRMAO" data-toggle="modal" data-target="#myModal"><i class="fa fa-bars"></i> abaixo</i></button>
-                <button type="button" class="btn btn-xs btn-primary" data-item="' . $node->id.'" data-method="post" data-action="store" data-title="Novo FILHO" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
-                <button type="button" class="btn btn-xs btn-warning" data-item="' . $node->id.'" data-method="put" data-type="' . $node->law_structure_id.'" data-number="' . $node->number.'" data-name="' . strip_tags($node->content).'" data-action="update" data-title="Editando" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> editar</i></button>
-                <button type="button" class="btn btn-xs btn-danger"  onClick="deletaReg(' . $node->id.')"><i class="fa fa-remove"></i> remover</i></button>
+                <button type="button" class="btn btn-xs btn-info" data-item="'.$node->parent_id.'" data-method="post" data-action="store" data-title="Novo IRMAO" data-toggle="modal" data-target="#myModal"><i class="fa fa-bars"></i> abaixo</i></button>
+                <button type="button" class="btn btn-xs btn-primary" data-item="'.$node->id.'" data-method="post" data-action="store" data-title="Novo FILHO" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
+                <button type="button" class="btn btn-xs btn-warning" data-item="'.$node->id.'" data-method="put" data-type="'.$node->law_structure_id.'" data-number="'.$node->number.'" data-name="'.strip_tags($node->content).'" data-action="update" data-title="Editando" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> editar</i></button>
+                <button type="button" class="btn btn-xs btn-danger"  onClick="deletaReg('.$node->id.')"><i class="fa fa-remove"></i> remover</i></button>
             </div>';
-                                }else{
-                                    $html .='<div class="editable">
-            <button type="button" class="editable btn btn-xs btn-primary" data-item="' . $node->id.'" data-method="post" data-action="store" data-title="Novo FILHO" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
+                                } else {
+                                    $html .= '<div class="editable">
+            <button type="button" class="editable btn btn-xs btn-primary" data-item="'.$node->id.'" data-method="post" data-action="store" data-title="Novo FILHO" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
             </div>';
                                 }
-                                $html .='</div>';
+                                $html .= '</div>';
                                 $html .= '<ol>';
 
-                                foreach($node->children as $child){
-                                    $html .= renderNode($child,$index,$level);
+                                $actual_node = $node->children()
+                                    ->orderBy('law_structure_id')
+                                    ->orderBy('number')
+                                    ->get();
+
+                                foreach ($actual_node as $child) {
+                                    $html .= renderNode($child, $index, $level);
                                 }
 
                                 $html .= '</ol>';
