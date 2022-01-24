@@ -20,9 +20,6 @@
                     $input = $lawsProject->processing->first()->date_end;
                     $date = implode('-', array_reverse(explode('/', $input)));
 
-                    $dateStart = new DateTime($date);
-                    $dateNow = new \DateTime(date('Y-m-d'));
-
                     $diff = strtotime($date) - strtotime(date('Y-m-d'));
                     $dateDiff = $diff / (60 * 60 * 24);
 
@@ -191,7 +188,7 @@
                     -
                 @else
                     {!!
-                        $lawsProject->processing->first()->processing_date
+                        $lawsProject->processing->first()->created_at
                     !!}
                 @endif
             </span>

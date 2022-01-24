@@ -213,8 +213,6 @@
                         obsevation: CKEDITOR.instances.new_observation.getData()
                     };
 
-                    console.log(data);
-
                     $.ajax({
                         url: url,
                         data: data,

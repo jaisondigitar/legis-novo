@@ -170,8 +170,25 @@
             return date;
         }
 
-        let dateForm = (getDate(date.getDate().toString()) + "/" + (getDate(date.getMonth()+1).toString()) + "/" + date.getFullYear());
-        let someDateForm = (getDate(date.addDays(5).getDate().toString())  + "/" + (getDate(date.getMonth()+1).toString()) + "/" + date.getFullYear());
+        let newDate = date.addDays(10)
+
+        let dateForm = (
+            getDate(date.getDate().toString()) + "/"
+            + (getDate(date.getMonth()+1).toString()) + "/"
+            + date.getFullYear());
+
+        let dateTimeForm = (
+            getDate(date.getDate().toString()) + "/"
+            + (getDate(date.getMonth()+1).toString()) + "/"
+            + date.getFullYear() + " "
+            + getDate(date.getHours()) + ":"
+            + getDate(date.getMinutes()));
+
+        let someDateForm = (
+            getDate(newDate.getDate().toString()) + "/"
+            + (getDate(newDate.getMonth()+1).toString()) + "/"
+            + newDate.getFullYear());
+
         let timeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
 
         jQuery.ajaxSetup({
