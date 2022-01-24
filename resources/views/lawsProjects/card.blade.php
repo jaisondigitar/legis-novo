@@ -16,27 +16,31 @@
             <div class="pull-right">
                 Prazo:
 
-                <?php
-                    $input = $lawsProject->processing->first()->date_end;
-                    $date = implode('-', array_reverse(explode('/', $input)));
+                @if(isset($lawsProject->processing->first()->date_end))
+                    <?php
+                        $input = $lawsProject->processing->first()->date_end;
+                        $date = implode('-', array_reverse(explode('/', $input)));
 
-                    $diff = strtotime($date) - strtotime(date('Y-m-d'));
-                    $dateDiff = $diff / (60 * 60 * 24);
+                        $diff = strtotime($date) - strtotime(date('Y-m-d'));
+                        $dateDiff = $diff / (60 * 60 * 24);
 
-                    if ($dateDiff <= 0) {
-                        echo '<div class="pull-right" style = "color: #c71111; margin-left: 10px">'.
-                            $lawsProject->processing->first()->date_end
-                        .'</div>';
-                    } elseif ($dateDiff === 1 || $dateDiff === 2) {
-                        echo '<div class="pull-right" style="color: #ff7300; margin-left: 10px">'.
-                            $lawsProject->processing->first()->date_end
-                        .'</div>';
-                    } else {
-                        echo '<div class="pull-right" style="margin-left: 10px">'.
-                            $lawsProject->processing->first()->date_end
-                        .'</div>';
-                    }
-                ?>
+                        if ($dateDiff <= 0) {
+                            echo '<div class="pull-right" style = "color: #c71111; margin-left: 10px">'.
+                                $lawsProject->processing->first()->date_end
+                                .'</div>';
+                        } elseif ($dateDiff === 1 || $dateDiff === 2) {
+                            echo '<div class="pull-right" style="color: #ff7300; margin-left: 10px">'.
+                                $lawsProject->processing->first()->date_end
+                                .'</div>';
+                        } else {
+                            echo '<div class="pull-right" style="margin-left: 10px">'.
+                                $lawsProject->processing->first()->date_end
+                                .'</div>';
+                        }
+                    ?>
+                @else
+                    -
+                @endif
 
             </div>
         </span>
