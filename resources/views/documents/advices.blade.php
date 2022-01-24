@@ -281,6 +281,8 @@
                         $('#new_status_processing_document_id').val(0);
                         $('#new_processing_document_date').val('');
                         CKEDITOR.instances.new_document_observation.setData('');
+
+                        window.location.href = '{{route('documents.index')}}';
                     });
                 }
             }

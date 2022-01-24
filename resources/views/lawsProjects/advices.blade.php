@@ -263,6 +263,8 @@
                         $('#new_status_processing_law_id').val('');
                         $('#new_date_processing').val('');
                         CKEDITOR.instances.new_observation.setData('');
+
+                        window.location.href = '{{route('lawsProjects.index')}}';
                     });
                 }
             }
