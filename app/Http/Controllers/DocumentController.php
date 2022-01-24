@@ -17,6 +17,7 @@ use App\Models\DocumentFiles;
 use App\Models\DocumentModels;
 use App\Models\DocumentNumber;
 use App\Models\DocumentProtocol;
+use App\Models\DocumentSector;
 use App\Models\DocumentSituation;
 use App\Models\DocumentType;
 use App\Models\Log;
@@ -232,6 +233,17 @@ class DocumentController extends AppBaseController
         }
 
         $document = $this->documentRepository->create($input);
+
+        if (! empty($input['sectors'])) {
+            $sectors = Sector::whereIn($input['sectors'])->get();
+
+            $sectors->each(function ($sector) use ($document) {
+                $documentSector = new DocumentSector();
+                $documentSector->document()->associate($document);
+                $documentSector->sector()->associate($sector);
+                $documentSector->save();
+            });
+        }
 
         if (! empty($input['assemblymen'])) {
             foreach ($input['assemblymen'] as $assemblyman) {
