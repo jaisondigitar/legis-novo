@@ -111,7 +111,6 @@
 
         <script>
             document.querySelector('#new_date_processing').value = dateForm
-            document.querySelector('#date_end').value = someDateForm
 
             $(document).ready(function () {
                 setTimeout(function () {
@@ -186,8 +185,18 @@
   </div>
 </div>
 
-
 <script>
+    if ({{Auth::user()->can_request_secretary}}) {
+        $('body').on('change', '#destination_id', () => {
+            if ($('#destination_id').val() == 4) {
+                document.querySelector('#date_end').value = someDateForm
+            } else {
+                document.querySelector('#date_end').value = ''
+            }
+        });
+    }
+
+
     var save_processing = function(){
 
         url = '{{route('processings.store')}}';
