@@ -173,7 +173,7 @@ return [
         'number' => 'Número',
         'complement' => 'Complemento',
 
-        'from' => 'Inicio',
+        'from' => 'Início',
         'to' => 'Fim',
 
         'prefix' => 'Sigla',
