@@ -31,7 +31,7 @@
                             $lawsProject->processing->first()->date_end
                         .'</div>';
                     } elseif ($dateDiff === 1 || $dateDiff === 2) {
-                        echo '<div class="pull-right" style="color: #ff7200; margin-left: 10px">'.
+                        echo '<div class="pull-right" style="color: #ffad00; margin-left: 10px">'.
                             $lawsProject->processing->first()->date_end
                         .'</div>';
                     } else {
@@ -58,7 +58,7 @@
             <br>
             <span>
                 <strong>Protocolo: </strong>
-                <span id="tdLawProtocol{{$lawsProject->id}}" align="center">
+                <span id="tdLawProtocol{{$lawsProject->id}}" style="color: #37BC9B" align="center">
                     @if($lawsProject->project_number > 0)
                         {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
                     @elseif(
@@ -79,15 +79,15 @@
             <span>
                 <strong> Aprovado: </strong>
 
-                @if($lawsProject->is_ready === 1)
+                @if($lawsProject->is_ready >= 1)
                     <span id="tdLawApproved_{{$lawsProject->id}}">
-                            {{$lawsProject->law_number}} - {{$lawsProject->law_date_publish}}
-                        </span>
+                        {{$lawsProject->law_number}} - {{$lawsProject->law_date_publish}}
+                    </span>
 
                     @shield('lawProject.approvedEdit')
-                    <button type="button" class="btn btn-warning btn-xs" onclick="approvedEdit('{{ $lawsProject->id }}')">
-                                <i class="fa fa-pencil"></i>
-                            </button>
+                        <button type="button" class="btn btn-warning btn-xs" onclick="approvedEdit('{{ $lawsProject->id }}')">
+                            <i class="fa fa-pencil"></i>
+                        </button>
                     @endshield
                 @else
                     @shield('lawsProject.approved')
