@@ -28,7 +28,7 @@
                             $lawsProject->processing->first()->date_end
                         .'</div>';
                     } elseif ($dateDiff === 1 || $dateDiff === 2) {
-                        echo '<div class="pull-right" style="color: #ffad00; margin-left: 10px">'.
+                        echo '<div class="pull-right" style="color: #ff7300; margin-left: 10px">'.
                             $lawsProject->processing->first()->date_end
                         .'</div>';
                     } else {
