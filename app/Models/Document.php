@@ -168,6 +168,11 @@ class Document extends BaseModel
         return $this->hasMany('App\Models\DocumentFiles', 'document_id');
     }
 
+    public function documentsSectors()
+    {
+        return $this->hasMany(DocumentSector::class);
+    }
+
     public function processingDocument()
     {
         return $this->hasMany('App\Models\ProcessingDocument', 'document_id', 'id');

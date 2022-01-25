@@ -231,7 +231,8 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->create($input);
 
         if (! empty($input['sectors'])) {
-            $sectors = Sector::whereIn('id', [$input['sectors']])->get();
+            $sectorsIds = $input['sectors'];
+            $sectors = Sector::whereIn('id', $sectorsIds)->get();
 
             $sectors->each(function ($sector) use ($document) {
                 $documentSector = new DocumentSector();
@@ -751,7 +752,11 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->update($document, $document_data);
 
         if (! empty($input['sectors'])) {
-            $sectors = Sector::whereIn('id', $input['sectors'])->get();
+            $sectorsIds = $input['sectors'];
+            $sectors = Sector::whereIn('id', $sectorsIds)->get();
+
+            $documentSectors = DocumentSector::where('document_id', $document->id);
+            $documentSectors->whereNotIn('sectorId', $sectorsIds)->delete();
 
             $sectors->each(function ($sector) use ($document) {
                 $documentSector = new DocumentSector();
