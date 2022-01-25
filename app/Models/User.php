@@ -95,4 +95,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         return false;
     }
+
+    /**
+     * @return bool
+     */
+    public function getCanRequestSecretaryAttribute(): bool
+    {
+        if ($this->sector) {
+            return $this->sector->name === 'Secretaria' || $this->hasRole('root');
+        }
+
+        return false;
+    }
 }
