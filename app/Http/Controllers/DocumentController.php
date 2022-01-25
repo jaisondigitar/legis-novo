@@ -758,6 +758,17 @@ class DocumentController extends AppBaseController
 
         $document = $this->documentRepository->update($document, $document_data);
 
+        if (! empty($input['sectors'])) {
+            $sectors = Sector::whereIn($input['sectors'])->get();
+
+            $sectors->each(function ($sector) use ($document) {
+                $documentSector = new DocumentSector();
+                $documentSector->document()->associate($document);
+                $documentSector->sector()->associate($sector);
+                $documentSector->save();
+            });
+        }
+
 
         $document_asseblyman_delete = DocumentAssemblyman::where('document_id', $id)->delete();
 
