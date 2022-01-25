@@ -28,7 +28,7 @@
 <!-- Sector Field -->
 <div class="form-group col-sm-2">
     {!! Form::label('sectors', 'Destinatário Final') !!}
-    {!! Form::select('sectors', $sector, null, ['class' => 'form-control', 'multiple' => true]) !!}
+    {!! Form::select('sectors', $sector, null, ['class' => 'form-control', 'multiple' => '', 'name' => 'sectors[]']) !!}
 </div>
 
 <!-- Resume Field -->
