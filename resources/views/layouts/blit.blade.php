@@ -171,6 +171,7 @@
         }
 
         let newDate = date.addDays(10)
+        let newDateFive = date.addDays(5)
 
         let dateForm = (
             getDate(date.getDate().toString()) + "/"
@@ -188,6 +189,11 @@
             getDate(newDate.getDate().toString()) + "/"
             + (getDate(newDate.getMonth()+1).toString()) + "/"
             + newDate.getFullYear());
+
+        let someDateFiveForm = (
+            getDate(newDateFive.getDate().toString()) + "/"
+            + (getDate(newDateFive.getMonth()+1).toString()) + "/"
+            + newDateFive.getFullYear());
 
         let timeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
 

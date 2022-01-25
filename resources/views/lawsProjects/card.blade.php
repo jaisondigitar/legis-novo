@@ -16,9 +16,9 @@
             <div class="pull-right">
                 Prazo:
 
-                @if(isset($lawsProject->processing->first()->date_end))
+                @if(isset($lawsProject->processing->last()->date_end))
                     <?php
-                        $input = $lawsProject->processing->first()->date_end;
+                        $input = $lawsProject->processing->last()->date_end;
                         $date = implode('-', array_reverse(explode('/', $input)));
 
                         $diff = strtotime($date) - strtotime(date('Y-m-d'));
@@ -26,15 +26,15 @@
 
                         if ($dateDiff <= 0) {
                             echo '<div class="pull-right" style = "color: #c71111; margin-left: 10px">'.
-                                $lawsProject->processing->first()->date_end
+                                $input
                                 .'</div>';
                         } elseif ($dateDiff === 1 || $dateDiff === 2) {
                             echo '<div class="pull-right" style="color: #ff7300; margin-left: 10px">'.
-                                $lawsProject->processing->first()->date_end
+                                $input
                                 .'</div>';
                         } else {
                             echo '<div class="pull-right" style="margin-left: 10px">'.
-                                $lawsProject->processing->first()->date_end
+                                $input
                                 .'</div>';
                         }
                     ?>
@@ -62,10 +62,7 @@
                 <span id="tdLawProtocol{{$lawsProject->id}}" style="color: #37BC9B" align="center">
                     @if($lawsProject->project_number > 0)
                         {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
-                    @elseif(
-                        Auth::user()
-                            ->roleHasPermission('lawsProject.createLawProjectNumber')
-                    )
+                    @elseif(Auth::user()->roleHasPermission('lawsProject.createLawProjectNumber'))
                         <button
                             type="button"
                             class="btn btn-default btn-xs btn-protocol"

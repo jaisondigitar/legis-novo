@@ -125,7 +125,7 @@
     </div>
 
     <script>
-        document.querySelector('#date_end').value = dateForm
+        document.querySelector('#date_end').value = someDateFiveForm
 
         $(document).ready(function () {
             setTimeout(function () {
@@ -170,6 +170,7 @@
                     data: data,
                     method: 'POST'
                 }).success((data) => {
+                    console.log(data);
                     if (data) {
                         toastr.success("Pedido salvo com sucesso!!");
                         window.location.reload()
