@@ -228,14 +228,10 @@ class DocumentController extends AppBaseController
 
         $input = $request->all();
 
-        if (! $input['sector_id']) {
-            $input['sector_id'] = null;
-        }
-
         $document = $this->documentRepository->create($input);
 
         if (! empty($input['sectors'])) {
-            $sectors = Sector::whereIn($input['sectors'])->get();
+            $sectors = Sector::whereIn('id', [$input['sectors']])->get();
 
             $sectors->each(function ($sector) use ($document) {
                 $documentSector = new DocumentSector();
@@ -744,10 +740,6 @@ class DocumentController extends AppBaseController
 
         $document_data = $request->validated();
 
-        if (! $document_data['sector_id']) {
-            $document_data['sector_id'] = null;
-        }
-
         if (empty($document)) {
             flash('Documento não encontrado')->error();
 
@@ -759,7 +751,7 @@ class DocumentController extends AppBaseController
         $document = $this->documentRepository->update($document, $document_data);
 
         if (! empty($input['sectors'])) {
-            $sectors = Sector::whereIn($input['sectors'])->get();
+            $sectors = Sector::whereIn('id', $input['sectors'])->get();
 
             $sectors->each(function ($sector) use ($document) {
                 $documentSector = new DocumentSector();

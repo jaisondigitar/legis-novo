@@ -77,7 +77,6 @@ class Document extends BaseModel
         'document_type_id',
         'users_id',
         'owner_id',
-        'sector_id',
         'number',
         'content',
         'date',
