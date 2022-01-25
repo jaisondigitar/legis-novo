@@ -517,39 +517,6 @@ class LawsProjectController extends AppBaseController
 
         $pdf->writeHTML($content);
 
-        if ($tramitacao && $lawsProject->processing()->orderBy('processing_date', 'desc')->count() > 0) {
-            $pdf->AddPage();
-            $pdf->setListIndentWidth(5);
-
-            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
-
-            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
-            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
-
-            $html1 .= '<tbody>';
-            foreach ($lawsProject->processing()->orderBy('processing_date', 'desc')->get() as $processing) {
-                $html1 .= '<hr>';
-                $html1 .= '<tr style=" text-align: left;">';
-                $html1 .= '<td width="100" style=" text-align: left;"><b>Data: </b> <br>'.$processing->processing_date.'</td>';
-                if ($processing->advicePublicationLaw) {
-                    $html1 .= '<td width="120" style=" text-align: left;"><b>Publicado no: </b> <br>'.$processing->advicePublicationLaw->name.' </td>';
-                }
-                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do projeto: </b> <br>'.$processing->adviceSituationLaw->name.'</td>';
-                if ($processing->statusProcessingLaw) {
-                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingLaw->name.'</td>';
-                }
-                $html1 .= '</tr>';
-                if (strlen($processing->obsevation) > 0) {
-                    $html1 .= '<tr>';
-                    $html1 .= '<td width="650" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->obsevation.'</td>';
-                    $html1 .= '</tr>';
-                }
-            }
-            $html1 .= '</tbody></table>';
-
-            $pdf->writeHTML($html1);
-        }
-
         if ($votacao && $lawsProject->voting()->get()->count() > 0) {
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
@@ -581,9 +548,11 @@ class LawsProjectController extends AppBaseController
         if ($lawsProject->justify) {
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
-            $content = '<p>'.$lawsProject->justify.'</p>';
+            $content = '<h3 style="text-align: center">JUSTIFICATIVA</h3>';
 
-            $html = '<table cellspacing="10" cellpadding="10" style="width:100%;  "><tbody>';
+            $content .= '<p>'.$lawsProject->justify.'</p>';
+
+            $html = '<table cellspacing="10" cellpadding="10" style="margin-top: 300px; width:100%;"><tbody>';
             $html .= '<tr style="height: 300px">';
             $html .= '<td style="width:25%;"></td>';
             $html .= '<td style="width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][1].'<br><br><br></td>';
@@ -591,6 +560,7 @@ class LawsProjectController extends AppBaseController
             $html .= '</tr>';
             $html .= '</tbody></table>';
 
+            $content .= '<br><br>';
             $content .= '<div>'.$html.'</div>';
 
             $pdf->writeHTML($content);
@@ -598,6 +568,42 @@ class LawsProjectController extends AppBaseController
 
         if ($showAdvices) {
             $this->loadAdvices($pdf, $id);
+        }
+
+        if ($tramitacao && $lawsProject->processing()->orderBy('processing_date', 'desc')->count() > 0) {
+            $pdf->AddPage();
+            $pdf->setListIndentWidth(5);
+
+            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
+
+            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
+            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
+
+            $html1 .= '<tbody>';
+            foreach ($lawsProject->processing()->orderBy('processing_date', 'desc')->get() as $processing) {
+                $html1 .= '<hr>';
+                $html1 .= '<tr style=" text-align: left;">';
+                $html1 .= '<td width="100" style=" text-align: left;"><b>Data: </b> <br>'.$processing->created_at.'</td>';
+                if ($processing->advicePublicationLaw) {
+                    $html1 .= '<td width="120" style=" text-align: left;"><b>Publicado no: </b> <br>'.$processing->advicePublicationLaw->name.' </td>';
+                }
+                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do projeto: </b> <br>'.$processing->adviceSituationLaw->name.'</td>';
+                if ($processing->statusProcessingLaw) {
+                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingLaw->name.'</td>';
+                }
+                if ($processing->destination_id) {
+                    $html1 .= '<td width="150" style=" text-align: left;"><b>Destinatario: </b> <br>'.$processing->destination->name.'</td>';
+                }
+                $html1 .= '</tr>';
+                if (strlen($processing->obsevation) > 0) {
+                    $html1 .= '<tr>';
+                    $html1 .= '<td width="650" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->obsevation.'</td>';
+                    $html1 .= '</tr>';
+                }
+            }
+            $html1 .= '</tbody></table>';
+
+            $pdf->writeHTML($html1);
         }
 
         $this->createTenantDirectoryIfNotExists();
