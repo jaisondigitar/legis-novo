@@ -87,6 +87,7 @@ class AdviceController extends AppBaseController
 
         $input['date'] = Carbon::now();
         $date_end = isset($input['date_end']) ? Carbon::createFromFormat('d/m/Y', $input['date_end']) : null;
+        $legal_option = $input['legal_option'] ?? null;
 
         $to_id = $input['to_id'];
         $type = $input['type'];
@@ -100,6 +101,7 @@ class AdviceController extends AppBaseController
             $advice->to_id = $to_id[$key];
             $advice->laws_projects_id = $input['laws_projects_id'] ?? 0;
             $advice->document_id = $input['document_id'];
+            $advice->legal_option = $legal_option;
             $advice->description = $input['description'];
             $advice->date_end = $date_end;
 

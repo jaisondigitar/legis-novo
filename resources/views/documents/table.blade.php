@@ -361,6 +361,7 @@
                 $('#row_'+ value).fadeOut(300);
             })
 
+            window.location.reload()
         })
     };
 

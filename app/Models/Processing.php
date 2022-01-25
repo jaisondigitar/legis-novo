@@ -72,6 +72,15 @@ class Processing extends BaseModel
     }
 
     /**
+     * @param $created_at
+     * @return string
+     */
+    public function getCreatedAtAttribute($created_at): string
+    {
+        return $this->asDateTime($created_at)->format('d/m/Y H:i');
+    }
+
+    /**
      * @param $date_end
      */
     public function setDateEndAttribute($date_end)

@@ -87,13 +87,15 @@
                             ></textarea>
                         </label>
 
-                        <label>
-                            Parecer Jurídico:
-                            <textarea
-                                name="legalOpinion"
-                                class="form-control descricao ckeditor"
-                            ></textarea>
-                        </label>
+                        @if (Auth::user()->can_request_legal_opinion && !isset($lawsProject->advices->last()->legal_option))
+                            <label>
+                                Parecer Jurídico:
+                                <textarea
+                                    name="legal_option"
+                                    class="form-control descricao ckeditor"
+                                ></textarea>
+                            </label>
+                        @endif
 
                         <label>
                             {!! Form::label('date_end', 'Prazo:') !!}
@@ -156,9 +158,11 @@
                 to_id: to_id,
                 type: type,
                 description: CKEDITOR.instances['comissionDescriprion'].getData(),
-                legal_opinion: CKEDITOR.instances['legalOpinion'].getData(),
+                legal_option: CKEDITOR.instances['legal_option'].getData(),
                 date_end: $('#date_end').val(),
             };
+
+            console.log(data);
 
             if(to_id.length > 0) {
                 $.ajax({
@@ -168,6 +172,7 @@
                 }).success((data) => {
                     if (data) {
                         toastr.success("Pedido salvo com sucesso!!");
+                        window.location.reload()
                     } else {
                         toastr.error("Erro ao salvar pedido!!");
                     }

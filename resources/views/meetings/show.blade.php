@@ -6,7 +6,7 @@
         <!-- BEGIN TODAY VISITOR TILES -->
             <div class="panel panel-primary panel-square panel-no-border text-center" style="border: 1px solid #49BD9A;">
                 <div class="panel-heading">
-                    <h3 class="panel-title">PAINEIS DIGITAIS</h3>
+                    <h3 class="panel-title">PAINÉIS DIGITAIS</h3>
                 </div>
                 <div class="panel-body">
                     <br>

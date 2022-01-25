@@ -66,7 +66,7 @@ class Commission extends BaseModel
 
     public static $translation = [
         'COMMISSION' => 'COMISSÃO',
-        'date_start' => 'Data Inicio',
+        'date_start' => 'Data Início',
         'date_end' => 'Data Final',
         'name' => 'Nome',
         'description' => 'Descrição',
