@@ -185,6 +185,7 @@
                     }).success(function (data) {
                         if (data) {
                             toastr.success("Pedido salvo com sucesso!!");
+                            window.location.reload()
                         } else {
                             toastr.error("Erro ao salvar pedido!!");
                         }
