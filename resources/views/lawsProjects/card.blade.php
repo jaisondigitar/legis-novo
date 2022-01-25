@@ -26,15 +26,15 @@
 
                         if ($dateDiff <= 0) {
                             echo '<div class="pull-right" style = "color: #c71111; margin-left: 10px">'.
-                                $lawsProject->processing->last()->date_end
+                                $input
                                 .'</div>';
                         } elseif ($dateDiff === 1 || $dateDiff === 2) {
                             echo '<div class="pull-right" style="color: #ff7300; margin-left: 10px">'.
-                                $lawsProject->processing->last()->date_end
+                                $input
                                 .'</div>';
                         } else {
                             echo '<div class="pull-right" style="margin-left: 10px">'.
-                                $lawsProject->processing->last()->date_end
+                                $input
                                 .'</div>';
                         }
                     ?>
