@@ -80,7 +80,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table_processing">
-                                    @forelse($lawsProject->processing()->orderBy('processing_date', 'desc')->get() as $processing)
+                                    @forelse($processing_last as $key => $processing)
                                         <tr id="line_{{$processing->id}}">
                                             <td> {{$processing->processing_date}}</td>
                                             <td> {{$processing->adviceSituationLaw->name}}</td>
@@ -89,9 +89,15 @@
                                             <td style="text-align: justify;"> {!! $processing->obsevation !!}</td>
                                             <td style="text-align: justify;"> {!! $processing->date_end !!}</td>
                                             <td>
-                                                <button type="button" class="btn btn-danger btn-xs"
-                                                        onclick="delete_processing('{{$processing->id}}')"><i
-                                                        class="fa fa-trash"></i></button>
+                                                @if($key === $last_position)
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-danger btn-xs"
+                                                        onclick="delete_processing('{{$processing->id}}')"
+                                                    >
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty
@@ -110,6 +116,10 @@
         @endif
 
         <script>
+            const contMax = (value) => {
+                console.log(value);
+            }
+
             document.querySelector('#new_date_processing').value = dateForm
 
             $(document).ready(function () {
@@ -195,7 +205,6 @@
             }
         });
     }
-
 
     var save_processing = function(){
 
