@@ -592,7 +592,7 @@ class LawsProjectController extends AppBaseController
             foreach ($lawsProject->processing()->orderBy('processing_date', 'desc')->get() as $processing) {
                 $html1 .= '<hr>';
                 $html1 .= '<tr style=" text-align: left;">';
-                $html1 .= '<td width="100" style=" text-align: left;"><b>Data: </b> <br>'.$processing->created_at.'</td>';
+                $html1 .= '<td width="130" style=" text-align: left;"><b>Data: </b> <br>'.$processing->created_at.'</td>';
                 if ($processing->advicePublicationLaw) {
                     $html1 .= '<td width="120" style=" text-align: left;"><b>Publicado no: </b> <br>'.$processing->advicePublicationLaw->name.' </td>';
                 }

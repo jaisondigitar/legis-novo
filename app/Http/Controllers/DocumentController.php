@@ -543,35 +543,6 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($conteudo);
         }
 
-        if ($tramitacao) {
-            $pdf->AddPage();
-            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
-
-            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
-            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
-
-            $html1 .= '<tbody>';
-            foreach ($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing) {
-                $html1 .= '<hr>';
-                $html1 .= '<tr style=" text-align: left;">';
-                $html1 .= '<td width="100" style=" text-align: left;"><b>Data: </b> <br>'.$processing->processing_document_date.'</td>';
-                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do documento: </b> <br>'.$processing->documentSituation->name.'</td>';
-                if ($processing->statusProcessingDocument) {
-                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
-                }
-                $html1 .= '</tr>';
-                if (strlen($processing->observation) > 0) {
-                    $html1 .= '<tr>';
-                    $html1 .= '<td width="650" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->observation.'</td>';
-                    $html1 .= '</tr>';
-                }
-            }
-
-            $html1 .= '</tbody></table>';
-
-            $pdf->writeHTML($html1);
-        }
-
         if ($votacao) {
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
@@ -598,6 +569,35 @@ class DocumentController extends AppBaseController
             $html2 .= '</table>';
             $html2 .= '<br>';
             $pdf->writeHTML($html2);
+        }
+
+        if ($tramitacao) {
+            $pdf->AddPage();
+            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
+
+            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
+            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
+
+            $html1 .= '<tbody>';
+            foreach ($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing) {
+                $html1 .= '<hr>';
+                $html1 .= '<tr style=" text-align: left;">';
+                $html1 .= '<td width="130" style=" text-align: left;"><b>Data: </b> <br>'.$processing->created_at.'</td>';
+                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do documento: </b> <br>'.$processing->documentSituation->name.'</td>';
+                if ($processing->statusProcessingDocument) {
+                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
+                }
+                $html1 .= '</tr>';
+                if (strlen($processing->observation) > 0) {
+                    $html1 .= '<tr>';
+                    $html1 .= '<td width="630" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->observation.'</td>';
+                    $html1 .= '</tr>';
+                }
+            }
+
+            $html1 .= '</tbody></table>';
+
+            $pdf->writeHTML($html1);
         }
 
         $this->createTenantDirectoryIfNotExists();
