@@ -101,6 +101,19 @@
 
 @endif
 
+<style>
+    .select2.select2-container .select2-selection {
+        border: 1px solid #ddd;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        height: 34px;
+        margin-bottom: 15px;
+        outline: none !important;
+        transition: all .15s ease-in-out;
+    }
+</style>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('.js-example-basic-multiple').select2();
