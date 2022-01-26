@@ -87,15 +87,13 @@
                             ></textarea>
                         </label>
 
-                        @if (Auth::user()->can_request_legal_opinion && !isset($lawsProject->advices->last()->legal_option))
-                            <label>
-                                Parecer Jurídico:
-                                <textarea
-                                    name="legal_option"
-                                    class="form-control descricao ckeditor"
-                                ></textarea>
-                            </label>
-                        @endif
+                        <label>
+                            Parecer Jurídico:
+                            <textarea
+                                name="legal_option"
+                                class="form-control descricao ckeditor"
+                            ></textarea>
+                        </label>
 
                         <label>
                             {!! Form::label('date_end', 'Prazo:') !!}
