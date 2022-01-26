@@ -77,7 +77,6 @@ class Document extends BaseModel
         'document_type_id',
         'users_id',
         'owner_id',
-        'sector_id',
         'number',
         'content',
         'date',
@@ -167,6 +166,11 @@ class Document extends BaseModel
     public function documents()
     {
         return $this->hasMany('App\Models\DocumentFiles', 'document_id');
+    }
+
+    public function documentsSectors()
+    {
+        return $this->hasMany(DocumentSector::class);
     }
 
     public function processingDocument()
