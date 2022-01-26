@@ -697,6 +697,7 @@ class DocumentController extends AppBaseController
         $documentType = $novo;
 
         $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+        $documentSectors = DocumentSector::where('document_id', $document->id)->get();
 
         $assemblymensList = $this->getAssemblymenList();
         $documentAssemblyman = DocumentAssemblyman::where('document_id', $id)->pluck('assemblyman_id');
@@ -712,7 +713,16 @@ class DocumentController extends AppBaseController
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs', 'translation'))
+
+        foreach ($documentSectors as $items) {
+            $sectors_default[] = $items->sector_id;
+        }
+
+        if (empty($sectors_default)) {
+            $sectors_default = [];
+        }
+
+        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs', 'translation', 'sectors_default'))
             ->with('document', $document)
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])
