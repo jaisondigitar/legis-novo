@@ -37,7 +37,6 @@
             @endif
         @endforeach
     </select>
-{{--    {!! Form::select('sectors', $sector, $sectors_default, ['class' => 'form-control', 'multiple' => '', 'name' => 'sectors[]']) !!}--}}
 </div>
 
 <!-- Resume Field -->
