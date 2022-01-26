@@ -20,15 +20,24 @@
 </div>
 
 <!-- From Field -->
-<div class="form-group col-sm-2">
+<div class="form-group col-sm-4">
     {!! Form::label('date', 'Data', ['class' => 'required']) !!}
     {!! Form::text('date', null, ['class' => 'form-control datepicker', 'minlength' => '10']) !!}
 </div>
 
 <!-- Sector Field -->
-<div class="form-group col-sm-2">
-    {!! Form::label('sectors', 'Destinatário Final') !!}
-    {!! Form::select('sectors', $sector, $sectors_default, ['class' => 'form-control', 'multiple' => '', 'name' => 'sectors[]']) !!}
+<div class="form-group col-sm-12">
+    {!! Form::label('sectors[]', 'Destinatário Final') !!}
+    <select class="js-example-basic-multiple col-sm-12" name="sectors[]" multiple="multiple">
+        @foreach($sector as $key => $name)
+            @if(in_array($key, $sectors_default))
+                <option value="{{ $key }}" selected>{{$name}}</option>
+            @else
+                <option value="{{ $key }}">{{$name}}</option>
+            @endif
+        @endforeach
+    </select>
+{{--    {!! Form::select('sectors', $sector, $sectors_default, ['class' => 'form-control', 'multiple' => '', 'name' => 'sectors[]']) !!}--}}
 </div>
 
 <!-- Resume Field -->
@@ -92,8 +101,11 @@
 
 @endif
 
-
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+
     $(document).ready(function () {
 
         var oldValue;
