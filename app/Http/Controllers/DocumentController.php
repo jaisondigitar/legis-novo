@@ -202,7 +202,9 @@ class DocumentController extends AppBaseController
 
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
-        return view('documents.create', compact('document', 'tramitacao'))
+        $sectors_default = [];
+
+        return view('documents.create', compact('document', 'tramitacao', 'sectors_default'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])
             ->with(compact('sector'))
