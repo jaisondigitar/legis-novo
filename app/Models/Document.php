@@ -213,9 +213,9 @@ class Document extends BaseModel
         return $this->asDateTime($date)->format('d/m/Y');
     }
 
-    public function getDateC($date)
+    public function getCreatedAtAttribute($created_at): string
     {
-        return $this->asDateTime($date)->format('Y/m/d');
+        return $this->asDateTime($created_at)->format('d/m/Y H:i');
     }
 
     public function getYear($date)
