@@ -296,7 +296,7 @@
     <script>
 
         var showFields = function (id, struct, texto, observation) {
-            observation = observation ?? '';
+            observation = observation ? observation :'';
             var tb = $('#document_' + struct);
             var str1  = '<tr id="document_row_'+ id +'"> ';
                 str1 += '<td>'+ texto +'<br>';
