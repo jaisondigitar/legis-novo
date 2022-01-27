@@ -54,9 +54,11 @@
                                             <span class="label label-info">Download</span>
                                         </a>
                                         @shield('lawsProjects.upload')
+                                            @if(Auth::user()->id == $file->owner->id)
                                             <a style="text-decoration: none" id="delFile" onclick="deleteFile({{$file->id}})">
                                                 <span class="label label-danger">Excluir</span>
                                             </a>
+                                            @endif
                                         @endshield
                                     </td>
                                 </tr>

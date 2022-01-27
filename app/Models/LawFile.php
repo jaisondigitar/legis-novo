@@ -19,4 +19,9 @@ class LawFile extends BaseModel
     {
         return $this->belongsTo(LawsProject::class);
     }
+
+    public function owner()
+    {
+        return $this->hasOne(User::class);
+    }
 }
