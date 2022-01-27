@@ -25,15 +25,15 @@
                         $dateDiff = $diff / (60 * 60 * 24);
 
                         if ($dateDiff <= 0) {
-                            echo '<div class="pull-right" style = "color: #c71111; margin-left: 10px">'.
+                            echo '<div class="pull-right" style = "color: #c71111; margin-left: 5px">'.
                                 $input
                                 .'</div>';
                         } elseif ($dateDiff === 1 || $dateDiff === 2) {
-                            echo '<div class="pull-right" style="color: #ff7300; margin-left: 10px">'.
+                            echo '<div class="pull-right" style="color: #ff7300; margin-left: 5px">'.
                                 $input
                                 .'</div>';
                         } else {
-                            echo '<div class="pull-right" style="margin-left: 10px">'.
+                            echo '<div class="pull-right" style="margin-left: 5px">'.
                                 $input
                                 .'</div>';
                         }
