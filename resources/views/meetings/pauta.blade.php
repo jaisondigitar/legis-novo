@@ -300,7 +300,7 @@
             var tb = $('#document_' + struct);
             var str1  = '<tr id="document_row_'+ id +'"> ';
                 str1 += '<td>'+ texto +'<br>';
-                if(observation != '') {
+                if(observation) {
                     str1 += '<div class="document_list"> Observação - ' + observation + '</div>';
                 }
                 str1 += '</td> ';
