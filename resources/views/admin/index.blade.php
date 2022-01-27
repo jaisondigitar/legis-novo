@@ -24,6 +24,7 @@
             <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis.</p>
         </div>
     </div>
+    <a href="/lawsProjects">
     <div class="col-lg-3">
         <!-- BEGIN TODAY VISITOR TILES -->
         <div class="panel panel-danger panel-square panel-no-border text-center">
@@ -36,7 +37,9 @@
             </div><!-- /.panel-body -->
         </div><!-- /.panel panel-success panel-block-color -->
     </div>
+    </a>
 
+    <a href="/documents">
     <div class="col-lg-3">
         <div class="panel panel-info panel-square panel-no-border text-center">
             <div class="panel-heading">
@@ -48,6 +51,7 @@
             </div><!-- /.panel-body -->
         </div><!-- /.panel panel-success panel-block-color -->
     </div>
+    </a>
 
     <a href="/admin/commissions">
     <div class="col-lg-3">
