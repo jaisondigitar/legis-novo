@@ -194,7 +194,7 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
-        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+        $sector = Sector::where('external', 1)->pluck('name', 'id');
 
         $assemblymensList = $this->getAssemblymenList();
 
@@ -698,7 +698,7 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
-        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+        $sector = Sector::where('external', 1)->pluck('name', 'id');
         $documentSectors = DocumentSector::where('document_id', $document->id)->get();
 
         $assemblymensList = $this->getAssemblymenList();
