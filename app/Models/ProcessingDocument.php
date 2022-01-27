@@ -84,6 +84,15 @@ class ProcessingDocument extends BaseModel
     }
 
     /**
+     * @param $created_at
+     * @return string
+     */
+    public function getCreatedAtAttribute($created_at): string
+    {
+        return $this->asDateTime($created_at)->format('d/m/Y H:i');
+    }
+
+    /**
      * @return BelongsTo
      */
     public function adviceSituationDocument(): BelongsTo

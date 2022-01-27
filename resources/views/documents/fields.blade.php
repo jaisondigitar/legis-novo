@@ -20,15 +20,23 @@
 </div>
 
 <!-- From Field -->
-<div class="form-group col-sm-2">
+<div class="form-group col-sm-4">
     {!! Form::label('date', 'Data', ['class' => 'required']) !!}
     {!! Form::text('date', null, ['class' => 'form-control datepicker', 'minlength' => '10']) !!}
 </div>
 
 <!-- Sector Field -->
-<div class="form-group col-sm-2">
-    {!! Form::label('sector_id', 'Destinatário Final') !!}
-    {!! Form::select('sector_id', $sector, null, ['class' => 'form-control']) !!}
+<div class="form-group col-sm-12">
+    {!! Form::label('sectors[]', 'Destinatário Final') !!}
+    <select class="js-example-basic-multiple col-sm-12" name="sectors[]" multiple="multiple">
+        @foreach($sector as $key => $name)
+            @if(in_array($key, $sectors_default))
+                <option value="{{ $key }}" selected>{{$name}}</option>
+            @else
+                <option value="{{ $key }}">{{$name}}</option>
+            @endif
+        @endforeach
+    </select>
 </div>
 
 <!-- Resume Field -->
@@ -92,8 +100,24 @@
 
 @endif
 
+<style>
+    .select2.select2-container .select2-selection {
+        border: 1px solid #ddd;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        height: 34px;
+        margin-bottom: 15px;
+        outline: none !important;
+        transition: all .15s ease-in-out;
+    }
+</style>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+
     $(document).ready(function () {
 
         var oldValue;

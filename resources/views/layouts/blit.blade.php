@@ -58,6 +58,9 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <style>
         .log {
             padding: 5px;
@@ -170,8 +173,31 @@
             return date;
         }
 
-        let dateForm = (getDate(date.getDate().toString())  + "/" + (getDate(date.getMonth()+1).toString()) + "/" + date.getFullYear());
-        let someDateForm = (getDate(date.addDays(5).getDate().toString())  + "/" + (getDate(date.getMonth()+1).toString()) + "/" + date.getFullYear());
+        let newDate = date.addDays(10)
+        let newDateFive = date.addDays(5)
+
+        let dateForm = (
+            getDate(date.getDate().toString()) + "/"
+            + (getDate(date.getMonth()+1).toString()) + "/"
+            + date.getFullYear());
+
+        let dateTimeForm = (
+            getDate(date.getDate().toString()) + "/"
+            + (getDate(date.getMonth()+1).toString()) + "/"
+            + date.getFullYear() + " "
+            + getDate(date.getHours()) + ":"
+            + getDate(date.getMinutes()));
+
+        let someDateForm = (
+            getDate(newDate.getDate().toString()) + "/"
+            + (getDate(newDate.getMonth()+1).toString()) + "/"
+            + newDate.getFullYear());
+
+        let someDateFiveForm = (
+            getDate(newDateFive.getDate().toString()) + "/"
+            + (getDate(newDateFive.getMonth()+1).toString()) + "/"
+            + newDateFive.getFullYear());
+
         let timeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
 
         jQuery.ajaxSetup({
@@ -887,8 +913,6 @@ Placed at the end of the document so the pages load faster
         });
     });
 </script>
-
-
 
 @if(Auth::check() && Auth::user()->sector->slug=='gabinete')
     <div class="modal fade" id="select_gabinete" tabindex="-1" role="dialog" aria-hidden="true">

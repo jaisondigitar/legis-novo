@@ -77,7 +77,6 @@ class Document extends BaseModel
         'document_type_id',
         'users_id',
         'owner_id',
-        'sector_id',
         'number',
         'content',
         'date',
@@ -169,6 +168,11 @@ class Document extends BaseModel
         return $this->hasMany('App\Models\DocumentFiles', 'document_id');
     }
 
+    public function documentsSectors()
+    {
+        return $this->hasMany(DocumentSector::class);
+    }
+
     public function processingDocument()
     {
         return $this->hasMany('App\Models\ProcessingDocument', 'document_id', 'id');
@@ -209,9 +213,9 @@ class Document extends BaseModel
         return $this->asDateTime($date)->format('d/m/Y');
     }
 
-    public function getDateC($date)
+    public function getCreatedAtAttribute($created_at): string
     {
-        return $this->asDateTime($date)->format('Y/m/d');
+        return $this->asDateTime($created_at)->format('d/m/Y H:i');
     }
 
     public function getYear($date)

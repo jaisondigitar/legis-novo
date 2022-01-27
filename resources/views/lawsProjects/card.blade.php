@@ -9,13 +9,43 @@
             @else
                 {!! mb_strtoupper($lawsProject->law_type->name, 'UTF-8') !!}
             @endif
-
-            <span id="tdLawProjectNumber{{$lawsProject->id}}">
+            -
+            <span id="tdLawProjectNumber{{$lawsProject->id}}" style="color: #37BC9B">
                 {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!}
             </span>
+            <div class="pull-right">
+                Prazo:
+
+                @if(isset($lawsProject->processing[0]->date_end))
+                    <?php
+                        $input = $lawsProject->processing[0]->date_end;
+                        $date = implode('-', array_reverse(explode('/', $input)));
+
+                        $diff = strtotime($date) - strtotime(date('Y-m-d'));
+                        $dateDiff = $diff / (60 * 60 * 24);
+
+                        if ($dateDiff <= 0) {
+                            echo '<div class="pull-right" style = "color: #c71111; margin-left: 5px">'.
+                                $input
+                                .'</div>';
+                        } elseif ($dateDiff === 1 || $dateDiff === 2) {
+                            echo '<div class="pull-right" style="color: #ff7300; margin-left: 5px">'.
+                                $input
+                                .'</div>';
+                        } else {
+                            echo '<div class="pull-right" style="margin-left: 5px">'.
+                                $input
+                                .'</div>';
+                        }
+                    ?>
+                @else
+                    -
+                @endif
+
+            </div>
         </span>
     </div>
-    <div class="panel-body" style="font-size: 12px">
+    <div class="panel-body" style="font-size: 12px; height: 240px">
         <div class="col-md-4">
             <span>
                 <strong>COD:</strong>
@@ -29,13 +59,10 @@
             <br>
             <span>
                 <strong>Protocolo: </strong>
-                <span id="tdLawProtocol{{$lawsProject->id}}" align="center">
+                <span id="tdLawProtocol{{$lawsProject->id}}" style="color: #37BC9B" align="center">
                     @if($lawsProject->project_number > 0)
                         {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
-                    @elseif(
-                        Auth::user()
-                            ->roleHasPermission('lawsProject.createLawProjectNumber')
-                    )
+                    @elseif(Auth::user()->roleHasPermission('lawsProject.createLawProjectNumber'))
                         <button
                             type="button"
                             class="btn btn-default btn-xs btn-protocol"
@@ -50,15 +77,15 @@
             <span>
                 <strong> Aprovado: </strong>
 
-                @if($lawsProject->is_ready === 1)
+                @if($lawsProject->is_ready >= 1)
                     <span id="tdLawApproved_{{$lawsProject->id}}">
-                            {{$lawsProject->law_number}} - {{$lawsProject->law_date_publish}}
-                        </span>
+                        {{$lawsProject->law_number}} - {{$lawsProject->law_date_publish}}
+                    </span>
 
                     @shield('lawProject.approvedEdit')
-                    <button type="button" class="btn btn-warning btn-xs" onclick="approvedEdit('{{ $lawsProject->id }}')">
-                                <i class="fa fa-pencil"></i>
-                            </button>
+                        <button type="button" class="btn btn-warning btn-xs" onclick="approvedEdit('{{ $lawsProject->id }}')">
+                            <i class="fa fa-pencil"></i>
+                        </button>
                     @endshield
                 @else
                     @shield('lawsProject.approved')
@@ -162,7 +189,7 @@
                     -
                 @else
                     {!!
-                        $lawsProject->processing->first()->processing_date
+                        $lawsProject->processing->first()->created_at
                     !!}
                 @endif
             </span>

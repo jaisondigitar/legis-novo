@@ -17,6 +17,7 @@ use App\Models\DocumentFiles;
 use App\Models\DocumentModels;
 use App\Models\DocumentNumber;
 use App\Models\DocumentProtocol;
+use App\Models\DocumentSector;
 use App\Models\DocumentSituation;
 use App\Models\DocumentType;
 use App\Models\Log;
@@ -193,7 +194,7 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
-        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+        $sector = Sector::where('external', 1)->pluck('name', 'id');
 
         $assemblymensList = $this->getAssemblymenList();
 
@@ -201,7 +202,9 @@ class DocumentController extends AppBaseController
 
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
-        return view('documents.create', compact('document', 'tramitacao'))
+        $sectors_default = [];
+
+        return view('documents.create', compact('document', 'tramitacao', 'sectors_default'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])
             ->with(compact('sector'))
@@ -227,11 +230,19 @@ class DocumentController extends AppBaseController
 
         $input = $request->all();
 
-        if (! $input['sector_id']) {
-            $input['sector_id'] = null;
-        }
-
         $document = $this->documentRepository->create($input);
+
+        if (! empty($input['sectors'])) {
+            $sectorsIds = $input['sectors'];
+            $sectors = Sector::whereIn('id', $sectorsIds)->get();
+
+            $sectors->each(function ($sector) use ($document) {
+                $documentSector = new DocumentSector();
+                $documentSector->document()->associate($document);
+                $documentSector->sector()->associate($sector);
+                $documentSector->save();
+            });
+        }
 
         if (! empty($input['assemblymen'])) {
             foreach ($input['assemblymen'] as $assemblyman) {
@@ -532,35 +543,6 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($conteudo);
         }
 
-        if ($tramitacao) {
-            $pdf->AddPage();
-            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
-
-            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
-            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
-
-            $html1 .= '<tbody>';
-            foreach ($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing) {
-                $html1 .= '<hr>';
-                $html1 .= '<tr style=" text-align: left;">';
-                $html1 .= '<td width="100" style=" text-align: left;"><b>Data: </b> <br>'.$processing->processing_document_date.'</td>';
-                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do documento: </b> <br>'.$processing->documentSituation->name.'</td>';
-                if ($processing->statusProcessingDocument) {
-                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
-                }
-                $html1 .= '</tr>';
-                if (strlen($processing->observation) > 0) {
-                    $html1 .= '<tr>';
-                    $html1 .= '<td width="650" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->observation.'</td>';
-                    $html1 .= '</tr>';
-                }
-            }
-
-            $html1 .= '</tbody></table>';
-
-            $pdf->writeHTML($html1);
-        }
-
         if ($votacao) {
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
@@ -587,6 +569,35 @@ class DocumentController extends AppBaseController
             $html2 .= '</table>';
             $html2 .= '<br>';
             $pdf->writeHTML($html2);
+        }
+
+        if ($tramitacao) {
+            $pdf->AddPage();
+            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
+
+            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
+            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
+
+            $html1 .= '<tbody>';
+            foreach ($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing) {
+                $html1 .= '<hr>';
+                $html1 .= '<tr style=" text-align: left;">';
+                $html1 .= '<td width="130" style=" text-align: left;"><b>Data: </b> <br>'.$processing->created_at.'</td>';
+                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do documento: </b> <br>'.$processing->documentSituation->name.'</td>';
+                if ($processing->statusProcessingDocument) {
+                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
+                }
+                $html1 .= '</tr>';
+                if (strlen($processing->observation) > 0) {
+                    $html1 .= '<tr>';
+                    $html1 .= '<td width="630" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->observation.'</td>';
+                    $html1 .= '</tr>';
+                }
+            }
+
+            $html1 .= '</tbody></table>';
+
+            $pdf->writeHTML($html1);
         }
 
         $this->createTenantDirectoryIfNotExists();
@@ -687,7 +698,8 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
-        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+        $sector = Sector::where('external', 1)->pluck('name', 'id');
+        $documentSectors = DocumentSector::where('document_id', $document->id)->get();
 
         $assemblymensList = $this->getAssemblymenList();
         $documentAssemblyman = DocumentAssemblyman::where('document_id', $id)->pluck('assemblyman_id');
@@ -703,7 +715,16 @@ class DocumentController extends AppBaseController
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs', 'translation'))
+
+        foreach ($documentSectors as $items) {
+            $sectors_default[] = $items->sector_id;
+        }
+
+        if (empty($sectors_default)) {
+            $sectors_default = [];
+        }
+
+        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs', 'translation', 'sectors_default'))
             ->with('document', $document)
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])
@@ -732,10 +753,6 @@ class DocumentController extends AppBaseController
 
         $document_data = $request->validated();
 
-        if (! $document_data['sector_id']) {
-            $document_data['sector_id'] = null;
-        }
-
         if (empty($document)) {
             flash('Documento não encontrado')->error();
 
@@ -745,6 +762,21 @@ class DocumentController extends AppBaseController
         $document_data['users_id'] = Auth::user()->id;
 
         $document = $this->documentRepository->update($document, $document_data);
+
+        if (! empty($input['sectors'])) {
+            $sectorsIds = $input['sectors'];
+            $sectors = Sector::whereIn('id', $sectorsIds)->get();
+
+            $documentSectors = DocumentSector::where('document_id', $document->id);
+            $documentSectors->whereNotIn('sectorId', $sectorsIds)->delete();
+
+            $sectors->each(function ($sector) use ($document) {
+                $documentSector = new DocumentSector();
+                $documentSector->document()->associate($document);
+                $documentSector->sector()->associate($sector);
+                $documentSector->save();
+            });
+        }
 
 
         $document_asseblyman_delete = DocumentAssemblyman::where('document_id', $id)->delete();

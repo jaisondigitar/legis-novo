@@ -90,7 +90,7 @@
                         <label>
                             Parecer Jurídico:
                             <textarea
-                                name="legalOpinion"
+                                name="legal_option"
                                 class="form-control descricao ckeditor"
                             ></textarea>
                         </label>
@@ -123,7 +123,7 @@
     </div>
 
     <script>
-        document.querySelector('#date_end').value = dateForm
+        document.querySelector('#date_end').value = someDateFiveForm
 
         $(document).ready(function () {
             setTimeout(function () {
@@ -156,9 +156,11 @@
                 to_id: to_id,
                 type: type,
                 description: CKEDITOR.instances['comissionDescriprion'].getData(),
-                legal_opinion: CKEDITOR.instances['legalOpinion'].getData(),
+                legal_option: CKEDITOR.instances['legal_option'].getData(),
                 date_end: $('#date_end').val(),
             };
+
+            console.log(data);
 
             if(to_id.length > 0) {
                 $.ajax({
@@ -166,8 +168,10 @@
                     data: data,
                     method: 'POST'
                 }).success((data) => {
+                    console.log(data);
                     if (data) {
                         toastr.success("Pedido salvo com sucesso!!");
+                        window.location.reload()
                     } else {
                         toastr.error("Erro ao salvar pedido!!");
                     }

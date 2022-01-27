@@ -55,6 +55,14 @@ class Processing extends BaseModel
     }
 
     /**
+     * @return HasOne
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
      * @param $processing_date
      */
     public function setProcessingDateAttribute($processing_date)
@@ -72,6 +80,15 @@ class Processing extends BaseModel
     }
 
     /**
+     * @param $created_at
+     * @return string
+     */
+    public function getCreatedAtAttribute($created_at): string
+    {
+        return $this->asDateTime($created_at)->format('d/m/Y H:i');
+    }
+
+    /**
      * @param $date_end
      */
     public function setDateEndAttribute($date_end)
@@ -83,9 +100,9 @@ class Processing extends BaseModel
      * @param $date_end
      * @return string
      */
-    public function getDateEndAttribute($date_end): string
+    public function getDateEndAttribute($date_end)
     {
-        return $this->asDateTime($date_end)->format('d/m/Y');
+        return isset($date_end) ? $this->asDateTime($date_end)->format('d/m/Y') : null;
     }
 
     /**
