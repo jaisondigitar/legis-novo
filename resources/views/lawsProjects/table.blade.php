@@ -1,9 +1,15 @@
 @foreach($lawsProjects as $lawsProject)
     @if (Auth::user()->can_request_legal_opinion && isset($lawsProject->advices->last()->legal_option))
     @else
-        <div class="col-lg-6">
-            @include('lawsProjects.card')
-        </div>
+        @if(Auth::user()->can_request_executive_power && isset($lawsProject->town_hall))
+            <div class="col-lg-6">
+                @include('lawsProjects.card')
+            </div>
+        @else
+            <div class="col-lg-6">
+                @include('lawsProjects.card')
+            </div>
+        @endif
     @endif
 @endforeach
 {{--MODAL VOTAÇÃO--}}
