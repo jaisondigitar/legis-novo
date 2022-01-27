@@ -124,7 +124,9 @@
                                             <td > {{ $processing->statusProcessingDocument->name ?? '' }}</td>
                                             <td > {{ $processing->destination->name ?? '' }}</td>
                                             <td style="text-align: justify;"> {!! $processing->observation !!}</td>
-                                            <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
+                                            @if(Auth::user()->id == $processing->owner->id)
+                                                <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
+                                            @endif
                                         </tr>
                                     @empty
                                         <tr>
@@ -269,9 +271,12 @@
                             str += "<td>";
                             str += valor.observation || '';
                             str += "</td>";
+                            @if(Auth::user()->id == $processing->owner->id)
                             str += "<td>";
                             str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
                             str += "</td>";
+                            @endif
+
                             str += "</tr>";
                             table.append(str);
                         });

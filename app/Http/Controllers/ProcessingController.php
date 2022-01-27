@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Processing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProcessingController extends Controller
 {
@@ -39,6 +40,7 @@ class ProcessingController extends Controller
     {
         $input = $request->all();
         $processing = Processing::create($request->all());
+        $processing->owner()->associate(Auth::user());
 
         if ($processing) {
             $processing = Processing::where('law_projects_id', $input['law_projects_id'])
@@ -101,7 +103,7 @@ class ProcessingController extends Controller
     {
         $processing = Processing::find($id);
 
-        if ($processing) {
+        if ($processing && Auth::user()->id == $processing->user_id) {
             $processing->delete();
 
             return json_encode($id);

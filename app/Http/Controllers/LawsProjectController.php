@@ -1374,8 +1374,10 @@ class LawsProjectController extends AppBaseController
                     ->send();
 
                 $law_file = new LawFile();
+                $user = Auth::user();
                 $law_file->law_project_id = $lawsProject->id;
                 $law_file->filename = $filename;
+                $law_file->owner()->associate($user);
                 $law_file->save();
             }
         }
