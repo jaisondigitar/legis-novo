@@ -33,16 +33,10 @@
 
 <div class="container">
     @foreach($documents as $document)
-        @if(Auth::user()->can_request_executive_power)
-            @if(isset($document->approved))
-                @include('documents.card')
-            @endif
+        @if(!$document->document_protocol)
+            @include('documents.card')
         @else
-            @if(!$document->document_protocol)
-                @include('documents.card')
-            @else
-                @include('documents.card')
-            @endif
+            @include('documents.card')
         @endif
     @endforeach
 </div>
