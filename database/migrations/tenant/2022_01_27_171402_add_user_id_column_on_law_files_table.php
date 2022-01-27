@@ -13,7 +13,10 @@ class AddUserIdColumnOnLawFilesTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('law_files', function (Blueprint $table) {
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+        });
     }
 
     /**
@@ -23,6 +26,9 @@ class AddUserIdColumnOnLawFilesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('law_files', function (Blueprint $table) {
+            $table->dropForeign('user_id');
+            $table->dropColumn('user_id');
+        });
     }
 }
