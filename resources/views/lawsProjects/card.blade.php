@@ -45,7 +45,7 @@
             </div>
         </span>
     </div>
-    <div class="panel-body" style="font-size: 12px">
+    <div class="panel-body" style="font-size: 12px; height: 240px">
         <div class="col-md-4">
             <span>
                 <strong>COD:</strong>
