@@ -420,11 +420,11 @@
                             <input type="hidden" id="meeting_id" name="meeting_id" value="{{$meeting->id}}"  >
                             <input type="hidden" id="document_id" name="document_id" value="0" >
                             <div class="form-group ">
-                                <label> Sessão </label>
+                                <label for="meeting_name"> Sessão </label>
                                 <input type="text" id="meeting_name"  name="meeting_name" value="{{$meeting->number}}/{{Carbon\Carbon::createFromFormat('d/m/Y H:i',$meeting->date_start)->year}}" class="form-control" placeholder="Enter email" disabled>
                             </div>
                             <div class="form-group">
-                                <label> Documento </label>
+                                <label for="document_name"> Documento </label>
                                 <input type="text" id="document_name" name="document_name" value="" class="form-control" placeholder="Password" disabled>
                             </div>
                             <div class="form-group" hidden>
@@ -552,7 +552,9 @@
 
             if(doc.number==0) {
             } else {
-                name = name + doc.number + '/' +  new Date(doc.date).getFullYear();
+                const new_date = doc.date.split('/')
+                const date_finish = new_date[2]+'-'+new_date[1]+'-'+(parseInt(new_date[0], 10)%100)
+                name = name + doc.number + '/' +  new Date(date_finish).getFullYear();
             }
 
             var meeting_id = $('#document_name').val(name);
