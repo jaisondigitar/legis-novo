@@ -427,6 +427,10 @@
                                 <label for="document_name"> Documento </label>
                                 <input type="text" id="document_name" name="document_name" value="" class="form-control" placeholder="Password" disabled>
                             </div>
+                            <div class="form-group">
+                                <label for="author_name"> Autor </label>
+                                <input type="text" id="author_name" name="author_name" value="" class="form-control" placeholder="Password" disabled>
+                            </div>
                             <div class="form-group" hidden>
                                 <label> Tipo de votação </label>
                                 {!! Form::select('type_voting_id', $type_voting, null, ['id'=> 'type_voting_id', 'class' => 'form-control']) !!}
@@ -557,6 +561,9 @@
                 name = name + doc.number + '/' +  new Date(date_finish).getFullYear();
             }
 
+            console.log(doc.owner_id);
+
+            $('#author_name').val('{{$docs[0]->owner->short_name}}');
             var meeting_id = $('#document_name').val(name);
         }
 
