@@ -296,15 +296,12 @@
     <script>
 
         var showFields = function (id, struct, texto, observation) {
-            console.log(id, struct, texto);
+            observation = observation ?? '';
             var tb = $('#document_' + struct);
             var str1  = '<tr id="document_row_'+ id +'"> ';
                 str1 += '<td>'+ texto +'<br>';
-                if(observation) {
-                    str1 += '<div class="document_list"> Observação - ' + observation + '</div>';
-                }
+                str1 += '<div class="document_list"> Observação - ' + observation + '</div>';
                 str1 += '</td> ';
-
                 str1 += '<td><button type="button" onclick="removeRow('+ id +')" class="btn btn-sm btn-danger">Remover</button></td> ' ;
                 str1 += '</tr>';
             tb.append(str1);
