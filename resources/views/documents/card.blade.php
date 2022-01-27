@@ -284,7 +284,10 @@
                 @endshield
                 @shield('documents.advices')
                 <a href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                    <i class="glyphicon glyphicon-list-alt"></i>
+                    TRÂMITES
+                </a>
+                <a href="{!! route('documents.legal-opinion', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                    PARECERES
                 </a>
                 @endshield
                 @shield('documents.delete')
