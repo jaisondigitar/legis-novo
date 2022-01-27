@@ -40,6 +40,7 @@ class ProcessingController extends Controller
     {
         $input = $request->all();
         $processing = Processing::create($request->all());
+        $processing->owner()->associate(Auth::user());
 
         if ($processing) {
             $processing = Processing::where('law_projects_id', $input['law_projects_id'])
