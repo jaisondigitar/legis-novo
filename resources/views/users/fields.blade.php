@@ -26,7 +26,7 @@
 <!--- Email Field --->
 <div class="form-group col-sm-6 col-lg-6">
     {!! Form::label('email', 'Email:', ['class' => 'required']) !!}
-	{!! Form::email('email', null, ['class' => 'form-control', isset($user->email) ? 'disabled' : '']) !!}
+	{!! Form::email('email', null, ['class' => 'form-control']) !!}
 </div>
 
 <!--- Password Field --->
