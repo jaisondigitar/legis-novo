@@ -37,12 +37,12 @@
                     <input multiple="" class="file" name="file[]" type="file">
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success pull-right">Incluir</button>
+                <button type="submit" style="border-radius: 5px" class="btn btn-success pull-right">Incluir</button>
                 <button
                     type="button"
                     class="btn btn-default"
                     data-dismiss="modal"
-                    style="margin-right: 10px"
+                    style="border-radius: 5px; margin-right: 10px"
                 >
                     Fechar
                 </button>
