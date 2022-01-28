@@ -575,7 +575,7 @@ class LawsProjectController extends AppBaseController
             $pdf->writeHTML($content);
         }
 
-        if ($lawsProject->advices) {
+        if ($lawsProject->advices->last()) {
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
             $content = '<h3 style="text-align: center">PARECER JURÍDICO</h3>';
