@@ -2,7 +2,7 @@
 @section('content')
     <div class="wrapper">
         <div class="header">
-            <a class="login" href="/login"><i class="fa fa-sign-in" style="margin-right: 10px;"></i></i>AREA RESTRITA</a>
+            <a class="login" href="/login"><i class="fa fa-sign-in" style="margin-right: 5px;"></i></i>ACESSO RESTRITO</a>
         </div>
 
         <div class="container">
