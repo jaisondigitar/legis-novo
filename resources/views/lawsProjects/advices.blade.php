@@ -90,13 +90,15 @@
                                             <td style="text-align: justify;"> {!! $processing->date_end !!}</td>
                                             <td>
                                                 @if($key === $last_position)
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-danger btn-xs"
-                                                        onclick="delete_processing('{{$processing->id}}')"
-                                                    >
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                    @if(Auth::user()->id == $processing->owner_id || Auth::user()->hasRole('root'))
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-danger btn-xs"
+                                                            onclick="delete_processing('{{$processing->id}}')"
+                                                        >
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    @endif
                                                 @endif
                                             </td>
                                         </tr>
@@ -265,9 +267,11 @@
                             str += "<td>";
                             str += valor.date_end;
                             str += "</td>";
-                            str += "<td>";
-                            str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
-                            str += "</td>";
+                            @if(Auth::user()->id == $processing->owner_id || Auth::user()->hasRole('root'))
+                                str += "<td>";
+                                str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
+                                str += "</td>";
+                            @endif
                             str += "</tr>";
                             table.append(str);
                         });
