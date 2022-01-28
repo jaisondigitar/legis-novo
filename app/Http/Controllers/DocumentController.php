@@ -1156,6 +1156,13 @@ class DocumentController extends AppBaseController
 
         $destinations = Destination::pluck('name', 'id')->prepend('Selecione...', '');
 
+        $documents = $document->processingDocument()->orderBy('processing_document_date', 'desc')->get();
+        foreach ($documents as $key => $last) {
+            $array[] = $key;
+        }
+
+        $last_position = end($array);
+
         return view(
             'documents.advices',
             compact(
@@ -1165,6 +1172,8 @@ class DocumentController extends AppBaseController
                 'advice_situation_document',
                 'advice_publication_document',
                 'status_processing_document',
+                'documents',
+                'last_position',
                 'destinations'
             )
         )

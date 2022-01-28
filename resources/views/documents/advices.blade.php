@@ -117,15 +117,17 @@
                                     </tr>
                                     </thead>
                                     <tbody id="table_processing">
-                                    @forelse($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing)
+                                    @forelse($documents as $key => $processing)
                                         <tr id="line_{{ $processing->id }}">
                                             <td > {{ $processing->processing_document_date }}</td>
                                             <td > {{ $processing->documentSituation->name }}</td>
                                             <td > {{ $processing->statusProcessingDocument->name ?? '' }}</td>
                                             <td > {{ $processing->destination->name ?? '' }}</td>
                                             <td style="text-align: justify;"> {!! $processing->observation !!}</td>
-                                            @if(Auth::user()->id == $processing->owner->id)
-                                                <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
+                                            @if($key === $last_position)
+                                                @if(Auth::user()->id == $processing->owner_id || Auth::user()->hasRole('root'))
+                                                    <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
+                                                @endif
                                             @endif
                                         </tr>
                                     @empty
@@ -271,7 +273,7 @@
                             str += "<td>";
                             str += valor.observation || '';
                             str += "</td>";
-                            @if(Auth::user()->id == $processing->owner->id)
+                            @if(Auth::user()->id == $processing->owner_id || Auth::user()->hasRole('root'))
                             str += "<td>";
                             str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
                             str += "</td>";
