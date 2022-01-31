@@ -269,11 +269,13 @@
                     <i class="glyphicon glyphicon-eye-open"></i>
                 </a>
             @endshield
+
             @shield('documents.edit')
                 <a href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-xs'>
                     <i class="glyphicon glyphicon-paperclip"></i>
                 </a>
             @endshield
+
             @if(Auth::user()->id === $document->users_id || Auth::user()->hasRole('root'))
                 @shield('documents.edit')
                     <a href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
@@ -281,14 +283,18 @@
                     </a>
                 @endshield
             @endif
+
             @shield('documents.advices')
                 <a href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
                     <i class="glyphicon glyphicon-list-alt"></i>
                 </a>
             @endshield
-            @shield('documents.delete')
-                {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
-            @endshield
+
+            @if(!$document->document_protocol)
+                @shield('documents.delete')
+                    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                @endshield
+            @endif
         </div>
         <div class="clearfix"></div>
         {!! Form::close() !!}

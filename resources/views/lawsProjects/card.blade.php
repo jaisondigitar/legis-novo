@@ -232,11 +232,13 @@
                 PARECERES
             </a>
 
-            @shield('lawsProjects.edit')
-                <a href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    ESTRUTURA DA LEI
-                </a>
-            @endshield
+{{--            @if(Auth::user()->id === $lawsProject->users_id || Auth::user()->hasRole('root'))--}}
+                @shield('lawsProjects.edit')
+                    <a href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        ESTRUTURA DA LEI
+                    </a>
+                @endshield
+{{--            @endif--}}
 
             @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
                 <a href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
@@ -275,9 +277,11 @@
                     </a>
                 @endshield
 
-                @shield('lawsProjects.delete')
-                    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                @endshield
+                @if(!$lawsProject->project_number)
+                    @shield('lawsProjects.delete')
+                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    @endshield
+                @endif
 
                 <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-info btn-sm">
                     <i class="fa fa-plus"></i> Anexos
