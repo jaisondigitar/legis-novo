@@ -34,7 +34,7 @@
                                 <td id="resume_nao" class="text_reset">-</td>
                             </tr>
                             <tr>
-                                <td>ABSTENÇÃO</td>
+                                <td>IMPEDIDO</td>
                                 <td id="resume_abstention" class="text_reset">-</td>
                             </tr>
                             </tbody>

@@ -23,6 +23,8 @@
                                     <th class="text-center"> Número</th>
                                     <th class="text-center"> Ano</th>
                                     <th class="text-center"> Nome</th>
+                                    <th class="text-center"> Ementa</th>
+                                    <th class="text-center"> Autor</th>
                                     <th class="text-center"> Ações</th>
                                 </tr>
                             </thead>
@@ -33,6 +35,8 @@
                                             <td> {!! $advice->project->project_number !!} </td>
                                             <td> {!! $advice->project->getYearLawPublish($advice->project->law_date) !!}</td>
                                             <td> {!! $advice->project->law_type->name !!}</td>
+                                            <td> {!! $advice->project->title !!}</td>
+                                            <td> {!! $advice->project->owner->short_name !!}</td>
                                             <td>
                                                 <span class="pull-right">
                                                     <a href="/lawsProjects/{{$advice->project->id}}" target="_blank" class="btn btn-xs btn-info"><i class="fa fa-file-text-o"></i></a>
@@ -49,6 +53,8 @@
                                         <tr>
                                             <td> {!! $advice->document->number !!} </td>
                                             <td> {!! $advice->document->getYear($advice->document->date) !!}</td>
+                                            <td> {!! $advice->document->document_type->name !!}</td>
+                                            <td> {!! $advice->document->document_type->name !!}</td>
                                             <td> {!! $advice->document->document_type->name !!}</td>
                                             <td>
                                                  <span class="pull-right">

@@ -575,6 +575,27 @@ class LawsProjectController extends AppBaseController
             $pdf->writeHTML($content);
         }
 
+        if ($lawsProject->advices->last()) {
+            $pdf->AddPage();
+            $pdf->setListIndentWidth(5);
+            $content = '<h3 style="text-align: center">PARECER JURÍDICO</h3>';
+
+            $content .= '<p>'.$lawsProject->advices->last()->legal_option.'</p>';
+
+            $html = '<table cellspacing="10" cellpadding="10" style="margin-top: 300px; width:100%;"><tbody>';
+            $html .= '<tr style="height: 300px">';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '<td style="width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][1].'<br><br><br></td>';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '</tr>';
+            $html .= '</tbody></table>';
+
+            $content .= '<br><br>';
+            $content .= '<div>'.$html.'</div>';
+
+            $pdf->writeHTML($content);
+        }
+
         if ($showAdvices) {
             $this->loadAdvices($pdf, $id);
         }
@@ -1374,8 +1395,10 @@ class LawsProjectController extends AppBaseController
                     ->send();
 
                 $law_file = new LawFile();
+                $user = Auth::user();
                 $law_file->law_project_id = $lawsProject->id;
                 $law_file->filename = $filename;
+                $law_file->owner()->associate($user);
                 $law_file->save();
             }
         }

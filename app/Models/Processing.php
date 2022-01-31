@@ -55,6 +55,14 @@ class Processing extends BaseModel
     }
 
     /**
+     * @return HasOne
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
      * @param $processing_date
      */
     public function setProcessingDateAttribute($processing_date)

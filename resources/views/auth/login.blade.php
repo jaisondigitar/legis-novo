@@ -190,7 +190,7 @@
                     <div class="errorLogin">
                         @if($errors->any())
                             @foreach($errors->all() as $error)
-                                <li>{!! $error !!}</li>
+                                <li style="color: gainsboro">{!! $error !!}</li>
                             @endforeach
                         @endif
                         @csrf

@@ -70,11 +70,11 @@
             <div class="clearfix"></div>
 
             <?php
-            function renderNode($node,$index=0,$level=0,$meeting_id) {
-
+            function renderNode($node, $index, $level, $meeting_id)
+            {
                 $class = $level == 0 ? 'the-box rounded' : '';
 
-                $html = '<hr> <li id="struc_' . $node->id. '" class="list-item"><div class="'. $class .'"><h4 style="margin-top:0px"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> ' .  ($node->isRoot() ? strtoupper($node->name) : $node->name) . '</h4>';
+                $html = '<hr> <li id="struc_'.$node->id.'" class="list-item"><div class="'.$class.'"><h4 style="margin-top:0px"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> '.($node->isRoot() ? strtoupper($node->name) : $node->name).'</h4>';
 
                 /*
                  * $node->add_doc
@@ -84,13 +84,18 @@
                  */
 
 
-                if($level>0)
-                {
+                if ($level > 0) {
                     $html .= '<div class="col-md-2">';
 
-                    if($node->add_doc){ $html .= '<button type="button" id="btn-add-doc" class="addDoc btn btn-block btn-sm btn-info" data-structure = "'. $node->id .'" data-toggle="modal" ><i class="fa fa-plus"></i> DOCUMENTO</button>';}
-                    if($node->add_law){$html .= '<button type="button" class=" addLaw btn btn-block btn-sm btn-info"  data-structure = "'. $node->id .'" data-toggle="modal" ><i class="fa fa-plus"></i> PROJETO DE LEI</button>';}
-                    if($node->add_advice){$html .= '<button type="button" class=" addAdvice btn btn-block btn-sm btn-info"  data-structure = "'. $node->id .'" data-toggle="modal" ><i class="fa fa-plus"></i> PARECER</button>';}
+                    if ($node->add_doc) {
+                        $html .= '<button type="button" id="btn-add-doc" class="addDoc btn btn-block btn-sm btn-info" data-structure = "'.$node->id.'" data-toggle="modal" ><i class="fa fa-plus"></i> DOCUMENTO</button>';
+                    }
+                    if ($node->add_law) {
+                        $html .= '<button type="button" class=" addLaw btn btn-block btn-sm btn-info"  data-structure = "'.$node->id.'" data-toggle="modal" ><i class="fa fa-plus"></i> PROJETO DE LEI</button>';
+                    }
+                    if ($node->add_advice) {
+                        $html .= '<button type="button" class=" addAdvice btn btn-block btn-sm btn-info"  data-structure = "'.$node->id.'" data-toggle="modal" ><i class="fa fa-plus"></i> PARECER</button>';
+                    }
 
 //                    $html .= '<button type="button" onclick="addDocument()" class="btn btn-block btn-sm btn-info"><i class="fa fa-plus"></i> teste</button>';
 
@@ -98,7 +103,7 @@
 
                     $html .= '<div class="col-md-10">';
 
-                    if($node->add_doc || $node->add_law || $node->add_advice){
+                    if ($node->add_doc || $node->add_law || $node->add_advice) {
                         $html .= '<table class="table table-striped table-responsive">
                                         <thead>
                                             <th>Descrição</th>
@@ -112,24 +117,22 @@
                                     </table>';
                     }
 
-                    if($node->add_ass)
-                    {
-                        $ass = \App\Models\Assemblyman::where('active',1)->orderBy('short_name', 'ASC')->get();
+                    if ($node->add_ass) {
+                        $ass = \App\Models\Assemblyman::where('active', 1)->orderBy('short_name', 'ASC')->get();
                         $html .= '<ul class="list-group">';
-                        foreach($ass as $par)
-                        {
+                        foreach ($ass as $par) {
                             $par->party_last = \App\Models\PartiesAssemblyman::where('assemblyman_id', $par->id)->orderBy('date', 'DESC')->first();
                             $par->responsibility_last = \App\Models\ResponsibilityAssemblyman::where('assemblyman_id', $par->id)->orderBy('date', 'DESC')->first();
 
                             $html .= '<li class="list-group-item">';
-                            $html .= '<label>[___] ' . $par->short_name;
+                            $html .= '<label>[___] '.$par->short_name;
 
-                            if(!empty($par->party_last)){
-                                $html .= ' - ' . $par->party_last->party->prefix;
+                            if (! empty($par->party_last)) {
+                                $html .= ' - '.$par->party_last->party->prefix;
                             }
 
-                            if(!empty($par->responsibility_last)){
-                                $html .= ' (' . $par->responsibility_last->responsibility->name . ')';
+                            if (! empty($par->responsibility_last)) {
+                                $html .= ' ('.$par->responsibility_last->responsibility->name.')';
                             }
 
                             $html .= '</li>';
@@ -138,22 +141,21 @@
                         $html .= '</ul>';
                     }
 
-                    if($node->add_obs)
-                    {
-                        $value = \App\Models\MeetingPauta::where('meeting_id',$meeting_id)
-                            ->where('structure_id',$node->id)
+                    if ($node->add_obs) {
+                        $value = \App\Models\MeetingPauta::where('meeting_id', $meeting_id)
+                            ->where('structure_id', $node->id)
                             ->whereNull('law_id')
                             ->whereNull('document_id')
                             ->whereNull('advice_id')
                             ->first();
 
-                        $value1 = $value ? $value->description : "";
+                        $value1 = $value ? $value->description : '';
 
 
-                        $html .= '<textarea class="form-control addObs ckeditor" data-structure="'. $node->id .'" id="obs_' . $node->id . '" rows="5">' . $value1 . '</textarea>';
+                        $html .= '<textarea class="form-control addObs ckeditor" data-structure="'.$node->id.'" id="obs_'.$node->id.'" rows="5">'.$value1.'</textarea>';
                         $html .= '<div style="margin-top: 5px; float: right;">';
-                        if($value) {
-                            $html .= '<button class="btn btn-warning" onclick="limpaTexto('.$node->id .' , '.$value->id.') "  data-structure='.$node->id.' style="margin-right: 5px;"> Limpar Texto</button>';
+                        if ($value) {
+                            $html .= '<button class="btn btn-warning" onclick="limpaTexto('.$node->id.' , '.$value->id.') "  data-structure='.$node->id.' style="margin-right: 5px;"> Limpar Texto</button>';
                         }
                         $html .= '<button class="btn btn-info" data-structure='.$node->id.' onclick="salvaTexto('.$node->id.')"> Salvar Texto</button>';
                         $html .= '</div>';
@@ -163,13 +165,12 @@
                 }
 
 
-                if(count($node->children)>0)
-                {
+                if (count($node->children) > 0) {
                     $level++;
                     $html .= '<ul>';
 
-                    foreach($node->children as $child){
-                        $html .= renderNode($child,$index,$level,$meeting_id);
+                    foreach ($node->children as $child) {
+                        $html .= renderNode($child, $index, $level, $meeting_id);
                     }
 
                     $html .= '<div class="clearfix"><div></div></ul>';
@@ -295,15 +296,12 @@
     <script>
 
         var showFields = function (id, struct, texto, observation) {
-            console.log(id, struct, texto);
+            observation = observation ? observation :'';
             var tb = $('#document_' + struct);
             var str1  = '<tr id="document_row_'+ id +'"> ';
                 str1 += '<td>'+ texto +'<br>';
-                if(observation != '') {
-                    str1 += '<div class="document_list"> Observação - ' + observation + '</div>';
-                }
+                str1 += '<div class="document_list"> Observação - ' + observation + '</div>';
                 str1 += '</td> ';
-
                 str1 += '<td><button type="button" onclick="removeRow('+ id +')" class="btn btn-sm btn-danger">Remover</button></td> ' ;
                 str1 += '</tr>';
             tb.append(str1);
@@ -312,28 +310,30 @@
 
 
     <?php
-        function loadText($p){
+        function loadText($p)
+        {
+            if ($p->document_id) {
+                $documts = \App\Models\Document::where('id', $p->document_id)->first();
+                $texto = '<b>DOCUMENTO :</b> <br>'.'<span class="text-muted">'.$documts->number.'/'.$documts->getYear($documts->date).' '.($documts->document_type->parent_id ? $documts->document_type->parent->name.'::'.$documts->document_type->name : $documts->document_type->name).' - '.$documts->owner->short_name.'</span>';
 
-            if($p->document_id){
-            $documts = \App\Models\Document::where('id', $p->document_id)->first();
-            $texto = '<b>DOCUMENTO :</b> <br>' . '<span class="text-muted">' . $documts->number . '/' . $documts->getYear($documts->date) . " " . ($documts->document_type->parent_id ? $documts->document_type->parent->name . "::" . $documts->document_type->name : $documts->document_type->name) . " - " . $documts->owner->short_name . '</span>';
-            return $texto;
-            }
-
-            if($p->law_id){
-                $law = \App\Models\LawsProject::where('id', $p->law_id)->first();
-                $texto = '<b>PROJETO DE LEI :</b> <br>' . '<span class="text-muted">' . $law->project_number .'/'. $law->getYearLawPublish($law->law_date) .' '. $law->law_type->name .' - '. ($law->assemblyman_id ? $law->owner->short_name : '') . '</span>';
                 return $texto;
             }
 
-            if($p->advice_id){
+            if ($p->law_id) {
+                $law = \App\Models\LawsProject::where('id', $p->law_id)->first();
+                $texto = '<b>PROJETO DE LEI :</b> <br>'.'<span class="text-muted">'.$law->project_number.'/'.$law->getYearLawPublish($law->law_date).' '.$law->law_type->name.' - '.($law->assemblyman_id ? $law->owner->short_name : '').'</span>';
+
+                return $texto;
+            }
+
+            if ($p->advice_id) {
                 $advice = \App\Models\Advice::where('id', $p->advice_id)->first();
-                $texto = '<b>' . $advice->commission->name .' :</b><br>';
-                if($advice->laws_projects_id > 0){
-                    $texto .=  '<span class="text-muted">' . $advice->project->project_number .'/'. $advice->project->getYearLawPublish($advice->project->law_date) .' '. $advice->project->law_type->name .' - '. ($advice->project->assemblyman_id ? $advice->project->owner->short_name : '') . '</span>';
+                $texto = '<b>'.$advice->commission->name.' :</b><br>';
+                if ($advice->laws_projects_id > 0) {
+                    $texto .= '<span class="text-muted">'.$advice->project->project_number.'/'.$advice->project->getYearLawPublish($advice->project->law_date).' '.$advice->project->law_type->name.' - '.($advice->project->assemblyman_id ? $advice->project->owner->short_name : '').'</span>';
                 }
-                if($advice->document_id > 0){
-                    $texto .=  '<span class="text-muted">' . $advice->document->number . '/' . $advice->document->getYear($advice->document->date) . " " . ($advice->document->document_type->parent_id ? $advice->document->document_type->parent->name . "::" . $advice->document->document_type->name : $advice->document->document_type->name) . " - " . $advice->document->owner->short_name . '</span>' ;
+                if ($advice->document_id > 0) {
+                    $texto .= '<span class="text-muted">'.$advice->document->number.'/'.$advice->document->getYear($advice->document->date).' '.($advice->document->document_type->parent_id ? $advice->document->document_type->parent->name.'::'.$advice->document->document_type->name : $advice->document->document_type->name).' - '.$advice->document->owner->short_name.'</span>';
                 }
 
                 return $texto;

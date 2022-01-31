@@ -128,9 +128,14 @@
                                     {!! $advice->description !!}
                                 </div>
 
+                                <div class="clearfix"></div>
+                                <br/>
+                                <br/>
 
-
-
+                                <div class="col-md-12">
+                                    <b>Parecer Jurídico:</b> <br/>
+                                    {!! $advice->legal_option !!}
+                                </div>
                             </div><!-- /.panel-body -->
                         </div><!-- /.collapse in -->
                     </div><!-- /.panel panel-default -->
@@ -313,7 +318,7 @@
             }
         }
 
-        
+
 
         var get_awnser = function (id) {
             $('#file_div').fadeIn();
