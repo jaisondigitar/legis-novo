@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    @include('lawsProjects.tramites_table')
+                    @include('lawsProjects.procedures_table')
                 </div>
             </div>
         </div>
