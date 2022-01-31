@@ -15,16 +15,18 @@
                     <div class="btn-group">
                         <a href="/advice/findAwnser/{{$advice->id}}" class="btn btn-xs btn-info"><i class="fa fa-eye"></i> </a>
                         <button class="btn btn-xs btn-danger" onclick="remove_advice({{ $advice->id }})"><i class="fa fa-trash"></i> </button>
-                        <button
-                            type="button"
-                            class="btn btn-default btn-xs"
-                            data-toggle="modal"
-                            data-target="#modalressources"
-                        >
-                            <i
-                                class=" fa fa-cog"
-                            ></i>
-                        </button>
+                        @if($advice->situation->last()->situation->name === 'Contrário' || Auth::user()->hasRole('root'))
+                            <button
+                                type="button"
+                                class="btn btn-default btn-xs"
+                                data-toggle="modal"
+                                data-target="#modalressources"
+                            >
+                                <i
+                                    class=" fa fa-cog"
+                                ></i>
+                            </button>
+                        @endif
                     </div>
                 </td>
             </tr>
