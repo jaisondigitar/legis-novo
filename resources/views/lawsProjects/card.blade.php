@@ -223,7 +223,7 @@
         {!! Form::open(['route' => ['lawsProjects.destroy', $lawsProject->id], 'method' => 'delete']) !!}
         <div class='btn-group'>
             @shield('lawsProject.advices')
-                <a href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                <a @popper(TRÂMITES) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                     TRÂMITES
                 </a>
             @endshield
@@ -232,13 +232,13 @@
                 PARECERES
             </a>
 
-{{--            @if(Auth::user()->id === $lawsProject->users_id || Auth::user()->hasRole('root'))--}}
+            @if(Auth::user()->id === $lawsProject->users_id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.edit')
                     <a href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                         ESTRUTURA DA LEI
                     </a>
                 @endshield
-{{--            @endif--}}
+            @endif
 
             @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
                 <a href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
@@ -277,7 +277,7 @@
                     </a>
                 @endshield
 
-                @if(!$lawsProject->project_number)
+                @if(!$lawsProject->project_number || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.delete')
                         {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     @endshield
