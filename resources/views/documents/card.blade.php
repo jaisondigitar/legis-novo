@@ -290,7 +290,7 @@
                 </a>
             @endshield
 
-            @if(!$document->document_protocol)
+            @if(!$document->document_protocol || Auth::user()->hasRole('root'))
                 @shield('documents.delete')
                     {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                 @endshield
