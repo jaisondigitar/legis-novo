@@ -265,32 +265,30 @@
 
         <div class='btn-group action' id="tdoptions{{$document->id}}">
             @shield('documents.show')
-            <a href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
-                <i class="glyphicon glyphicon-eye-open"></i>
-            </a>
+                <a href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
+                    <i class="glyphicon glyphicon-eye-open"></i>
+                </a>
             @endshield
-            @if(!$document->document_protocol || Auth::user()->sector_id == 1)
-                @shield('documents.edit')
+            @shield('documents.edit')
                 <a href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-xs'>
                     <i class="glyphicon glyphicon-paperclip"></i>
                 </a>
+            @endshield
+            @if(Auth::user()->id === $document->users_id || Auth::user()->hasRole('root'))
+                @shield('documents.edit')
+                    <a href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
                 @endshield
             @endif
-            @if(!$document->document_protocol || Auth::user()->sector_id == 1)
-                @shield('documents.edit')
-                <a href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                    <i class="glyphicon glyphicon-edit"></i>
-                </a>
-                @endshield
-                @shield('documents.advices')
+            @shield('documents.advices')
                 <a href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
                     <i class="glyphicon glyphicon-list-alt"></i>
                 </a>
-                @endshield
-                @shield('documents.delete')
+            @endshield
+            @shield('documents.delete')
                 {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                @endshield
-            @endif
+            @endshield
         </div>
         <div class="clearfix"></div>
         {!! Form::close() !!}

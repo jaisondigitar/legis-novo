@@ -89,11 +89,11 @@
                     @endshield
                 @else
                     @shield('lawsProject.approved')
-                    <span id="tdLawApproved{{$lawsProject->id}}" align="center">
-                                <button type="button" class="btn btn-default btn-xs btn-approved" value="{!! $lawsProject->id !!}">
-                                    <i class="glyphicon glyphicon-folder-open"></i>
-                                </button>
-                            </span>
+                        <span id="tdLawApproved{{$lawsProject->id}}" align="center">
+                            <button type="button" class="btn btn-default btn-xs btn-approved" value="{!! $lawsProject->id !!}">
+                                <i class="glyphicon glyphicon-folder-open"></i>
+                            </button>
+                        </span>
                     @endshield
                 @endif
             </span>
@@ -102,7 +102,7 @@
             <span>
                 <strong>Responsável: </strong>
 
-                    @if($lawsProject->owner)
+                @if($lawsProject->owner)
                     {{ $lawsProject->owner->short_name }}
                 @else
                     -
