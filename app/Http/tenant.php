@@ -426,6 +426,7 @@ Route::middleware([
         ]);
 
         Route::resource('users', 'UserController');
+        Route::get('/reset-password', 'UserController@resetPassword');
         Route::get('/users/{id}/toggle', 'UserController@toggle');
         Route::get('/users/{id}/auditing', 'UserController@auditing');
         Route::get('users/{id}/delete', [

@@ -446,4 +446,14 @@ class UserController extends AppBaseController
 
         return view('users.auditing', compact('user', 'logs', 'translationNews'));
     }
+
+    /**
+     * Display a listing of the User.
+     *
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     */
+    public function resetPassword()
+    {
+        return view('users.reset_password');
+    }
 }
