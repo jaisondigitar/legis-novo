@@ -298,7 +298,7 @@ class LawsProjectController extends AppBaseController
             $array[] = $key;
         }
 
-        $last_position = end($array);
+        $last_position = empty($array) ? [] : end($array);
 
         if (empty($lawsProject)) {
             flash('Projeto de Leis não encontrado')->error();

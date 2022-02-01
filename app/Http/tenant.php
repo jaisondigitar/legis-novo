@@ -349,6 +349,11 @@ Route::middleware([
             'uses' => 'DocumentController@advices',
         ]);
 
+        Route::get('/documents/legal-opinion/{id}', [
+            'as' => 'documents.legal-opinion',
+            'uses' => 'DocumentController@legalOpinion',
+        ]);
+
         Route::resource('processings', 'ProcessingController');
 
         Route::resource('processingDocuments', 'ProcessingDocumentController');

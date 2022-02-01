@@ -21,14 +21,6 @@
     .action a {
         margin-right: 4px;
     }
-
-    .resume {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        margin: 0;
-    }
 </style>
 
 <div class="container">
@@ -62,9 +54,9 @@
 
                 <div class="form-group col-sm-4">
                     <?php
-                    $externo = \App\Models\Parameters::where('slug', 'sempre-usa-protocolo-externo')->first()->value;
+                        $externo = \App\Models\Parameters::where('slug', 'sempre-usa-protocolo-externo')->first()->value;
 
-                    $prot = $externo ? 2 : 1;
+                        $prot = $externo ? 2 : 1;
                     ?>
                     {!! Form::label('protocol_type_id', 'Tipo de protocolo') !!}
                     {!! Form::select('protocol_type_id', $protocol_types, $prot, ['class' => 'form-control', 'id' => 'protocol_type_id']) !!}
@@ -76,7 +68,7 @@
                 </div>
                 <div class="form-group col-sm-4">
                     {!! Form::label('next_number', 'Nº doc. oficial:') !!}
-                    {!! Form::number('next_number', null, ['class' => 'form-control', 'id' => 'next_number']) !!}
+                    {!! Form::number('next_number', null, ['class' => 'form-control', 'id' => 'next_number', 'disabled']) !!}
                     <label class="label label-danger" id="labelmessage"></label>
                 </div>
                 <div class="form-group col-sm-4">
@@ -453,7 +445,7 @@
                         $('#tdnumber'+result.document_id).html(result.protocol_number);
                         $('#tddate'+result.document_id).html(result.protocol_date);
                         $('#tdprotocol'+result.document_id).html(result.protocol_code);
-                        location.reload();
+                        window.location.reload();
                     } else {
                         $('#next_number').val(result.next_number);
                         $('#labelmessage').html(result.message);
