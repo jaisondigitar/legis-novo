@@ -192,7 +192,6 @@ Route::middleware([
             'as' => 'users.delete',
             'uses' => 'UserController@destroy',
         ]);
-        Route::post('/users/{id}/update-password', 'UserController@updatePassword')->name('user.password-update');
 
         Route::post('/advice/create', 'AdviceController@store');
         Route::post('/advice/delete', 'AdviceController@removerAdvice');
@@ -427,7 +426,8 @@ Route::middleware([
         ]);
 
         Route::resource('users', 'UserController');
-        Route::get('/reset-password', 'UserController@resetPassword');
+        Route::get('/edit-password', 'UserController@editPassword');
+        Route::post('/update-password', 'UserController@updatePassword')->name('user.password-update');
         Route::get('/users/{id}/toggle', 'UserController@toggle');
         Route::get('/users/{id}/auditing', 'UserController@auditing');
         Route::get('users/{id}/delete', [

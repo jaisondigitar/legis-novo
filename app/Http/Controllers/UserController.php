@@ -459,21 +459,21 @@ class UserController extends AppBaseController
         return view('users.edit_password');
     }
 
-    public function updatePassword($id, UpdatePasswordRequest $request)
+    public function updatePassword(UpdatePasswordRequest $request)
     {
-        $user = User::findOrFail($id);
+        $user = Auth::user();
 
         $oldPassword = Hash::make($request->old_passoord);
 
         if (! $user->password == $oldPassword) {
-            flash('Ops! Desculpe, você não possui permissão para esta ação.', 1)->warning();
+            flash('Senha antiga incorreta')->warning();
 
-            return redirect('/admin');
+            return 'failure';
         }
 
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return view('admin');
+        return 'sucesso';
     }
 }
