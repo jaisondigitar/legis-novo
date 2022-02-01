@@ -42,6 +42,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.css" rel="stylesheet">
 
     <!-- MAIN CSS (REQUIRED ALL PAGE)-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
     <link href="/assets/css/style-responsive.css" rel="stylesheet">
@@ -156,6 +157,13 @@
             content: '*';
             color: red;
             padding-right: 3px;
+        }
+        .resume {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            margin: 0;
         }
     </style>
     <script type="application/javascript">
@@ -373,7 +381,7 @@
 </head>
 
 <body class="tooltips top-navigation">
-
+@include('popper::assets')
 
 <!--
 ===========================================================
@@ -409,7 +417,9 @@ BEGIN PAGE
                             <strong>{{ Auth::user()->name }}</strong>
                         </a>
                         <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
-                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a></li>
+                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a>
+                                <a href="/edit-password"><i class="fa fa-key"></i> Mudar senha </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

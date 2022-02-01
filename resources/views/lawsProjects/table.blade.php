@@ -1,3 +1,28 @@
+<style>
+    h1 {
+        margin-left: 50px;
+    }
+
+    .container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 20px;
+    }
+
+    .container:before {
+        display: none;
+    }
+
+    .action{
+        float: right;
+    }
+
+    .action a {
+        margin-right: 4px;
+    }
+</style>
+
 @foreach($lawsProjects as $lawsProject)
     @if (Auth::user()->can_request_legal_opinion_not_root && isset($lawsProject->advices->last()->legal_option))
     @else
@@ -81,7 +106,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Aprovar lei</h4>
+                <h4 class="modal-title">Protocolo de lei</h4>
             </div>
             <div class="modal-body">
                 <div align="center"><label class="label label-danger" id="labelmessage2"></label></div>
@@ -352,6 +377,7 @@
                     $('#tdLawProjectNumber'+result.lawProject_id).html(result.project_number + '/' + result.year);
                     $('#tdLawProtocol'+result.lawProject_id).html('<label class="label label-success">Sim</label>');
                     $('#modalProtocol').modal('hide');
+                    window.location.reload()
                 } else {
                     $('#labelmessage2').html(result.message);
                     $('#project_number').val(result.next_number);
