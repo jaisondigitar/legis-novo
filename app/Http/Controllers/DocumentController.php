@@ -194,7 +194,7 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
-        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+        $sector = Sector::where('external', 1)->pluck('name', 'id');
 
         $assemblymensList = $this->getAssemblymenList();
 
@@ -698,7 +698,7 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
-        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+        $sector = Sector::where('external', 1)->pluck('name', 'id');
         $documentSectors = DocumentSector::where('document_id', $document->id)->get();
 
         $assemblymensList = $this->getAssemblymenList();
@@ -1155,6 +1155,13 @@ class DocumentController extends AppBaseController
 
         $destinations = Destination::pluck('name', 'id')->prepend('Selecione...', '');
 
+        $documents = $document->processingDocument()->orderBy('processing_document_date', 'desc')->get();
+        foreach ($documents as $key => $last) {
+            $array[] = $key;
+        }
+
+        $last_position = end($array);
+
         return view(
             'documents.advices',
             compact(
@@ -1163,6 +1170,8 @@ class DocumentController extends AppBaseController
                 'advice_situation_document',
                 'advice_publication_document',
                 'status_processing_document',
+                'documents',
+                'last_position',
                 'destinations'
             )
         )
