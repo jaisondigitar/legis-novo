@@ -266,13 +266,23 @@
         <div class='btn-group action' id="tdoptions{{$document->id}}">
             @shield('documents.show')
                 <a @popper(GERAR PDF) href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
-                    <i class="far fa-file-pdf"></i>
+                    <i class="far fa-eye"></i>
+                </a>
+            @endshield
+
+            @shield('documents.advices')
+                <a @popper(TRÂMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                    <i class="glyphicon glyphicon-list-alt"></i>
+                </a>
+
+                <a @popper(PARECERES) href="{!! route('documents.legal-opinion', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                    <i class="fa fa-clipboard"></i>
                 </a>
             @endshield
 
             @shield('documents.edit')
                 <a @popper(ANEXAR ARQUIVO) href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                    <i class="glyphicon glyphicon-paperclip"></i>
+                    <i class="fas fa-paperclip"></i>
                 </a>
             @endshield
 
@@ -283,20 +293,11 @@
                     </a>
                 @endshield
             @endif
-            @shield('documents.advices')
-                <a @popper(TRAMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                    <i class="glyphicon glyphicon-list-alt"></i>
-                </a>
-
-                <a href="{!! route('documents.legal-opinion', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                    PARECERES
-                </a>
-            @endshield
 
             @if(!$document->document_protocol || Auth::user()->hasRole('root'))
                 @shield('documents.delete')
-                   <a
-                       @popper(DELETAR) {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                   <a @popper(REMOVER)>
+                       {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                    </a>
                 @endshield
             @endif

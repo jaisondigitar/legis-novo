@@ -226,17 +226,29 @@
         </div>
     </div>
     <div class="panel-footer">
+        @if(!$lawsProject->project_number)
+            <span class="badge badge-warning pull-left">Aberto</span>
+        @else
+            <span class="badge badge-info pull-left">Protocolado</span>
+        @endif
+
         {!! Form::open(['route' => ['lawsProjects.destroy', $lawsProject->id], 'method' => 'delete']) !!}
-        <div class='btn-group'>
-            @shield('lawsProject.advices')
-                <a @popper(TRÂMITES) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    <i class="far fa-file-alt"></i>
+        <div class='btn-group action'>
+            @shield('lawsProjects.show')
+                <a @popper(GERAR PDF) href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
+                    <i class="far fa-eye"></i>
                 </a>
             @endshield
 
-            <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                <i class="fas fa-clipboard"></i>
-            </a>
+            @shield('lawsProject.advices')
+                <a @popper(TRÂMITAÇÃO) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                    <i class="glyphicon glyphicon-list-alt"></i>
+                </a>
+
+                <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                    <i class="fa fa-clipboard"></i>
+                </a>
+            @endshield
 
             @if(Auth::user()->id === $lawsProject->users_id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.edit')
@@ -248,7 +260,7 @@
 
             @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
                 <a @popper(ALTERAR NÚMERO/PROTOCOLO) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
-            <i class="fas fa-project-diagram"></i>
+                   <i class="fas fa-project-diagram"></i>
                 </a>
             @endshield
 
@@ -258,12 +270,6 @@
                 </a>
             @endif
 
-            @shield('lawsProjects.show')
-                <a @popper(GERAR PDF) href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
-                    <i class="far fa-file-pdf"></i>
-                </a>
-            @endshield
-
             @if($lawsProject->file)
                 <a href="/laws/{{ $lawsProject->file }}" target="_blank" class='btn btn-default btn-sm'>
                     <i class="fa fa-paperclip"></i>
@@ -271,29 +277,28 @@
             @endif
 
             @if($lawsProject->voting)
-                <a @popper(VOTAÇÃO) <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
+                <a @popper(VOTAÇÃO) type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
                     <i class="fas fa-vote-yea"></i>
-                </button>
                 </a>
             @endif
 
-            <div>
-                @shield('lawsProjects.edit')
-                    <a href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-warning btn-sm'>
-                        <i class="glyphicon glyphicon-edit"></i>
+            <a @popper(ANEXOS) href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-default btn-sm">
+                <i class="fas fa-paperclip"></i>
+            </a>
+
+            @shield('lawsProjects.edit')
+                <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+            @endshield
+
+            @if(!$lawsProject->project_number || Auth::user()->hasRole('root'))
+                @shield('lawsProjects.delete')
+                    <a @popper(REMOVER)>
+                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
                     </a>
                 @endshield
-
-                @if(!$lawsProject->project_number || Auth::user()->hasRole('root'))
-                    @shield('lawsProjects.delete')
-                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                    @endshield
-                @endif
-
-                <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-info btn-sm">
-                    <i class="fas fa-file-pdf"></i>
-                </a>
-            </div>
+            @endif
         </div>
         <div class="clearfix"></div>
         {!! Form::close() !!}

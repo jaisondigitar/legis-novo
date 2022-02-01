@@ -1160,7 +1160,7 @@ class DocumentController extends AppBaseController
             $array[] = $key;
         }
 
-        $last_position = end($array);
+        $last_position = empty($array) ? [] : end($array);
 
         return view(
             'documents.advices',

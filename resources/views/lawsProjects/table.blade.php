@@ -1,3 +1,28 @@
+<style>
+    h1 {
+        margin-left: 50px;
+    }
+
+    .container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 20px;
+    }
+
+    .container:before {
+        display: none;
+    }
+
+    .action{
+        float: right;
+    }
+
+    .action a {
+        margin-right: 4px;
+    }
+</style>
+
 @foreach($lawsProjects as $lawsProject)
     @if (Auth::user()->can_request_legal_opinion_not_root && isset($lawsProject->advices->last()->legal_option))
     @else
