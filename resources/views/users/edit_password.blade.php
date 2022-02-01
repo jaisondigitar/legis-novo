@@ -6,7 +6,7 @@
     <div class="the-box rounded">
         <div class="row">
             <!--- Password Field --->
-            {!! Form::open(['route' => 'password.update']) !!}
+            {!! Form::open(['route' => 'user.password-update']) !!}
             <div class="form-group col-sm-4">
                 {!! Form::label('old_password', 'Senha Antiga:') !!}
                 {!! Form::password('old_password', ['class' => 'form-control']) !!}
