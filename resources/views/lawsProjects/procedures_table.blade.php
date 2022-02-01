@@ -20,7 +20,7 @@
                                 type="button"
                                 class="btn btn-default btn-xs"
                                 data-toggle="modal"
-                                data-target="#modalressources"
+                                data-target="#modalRessources"
                             >
                                 <i
                                     class=" fa fa-cog"
@@ -30,7 +30,7 @@
                     </div>
                 </td>
             </tr>
-            @include('lawsProjects.modalsolicparec')
+            @include('lawsProjects.modal_legal_opinion')
         @endforeach
     </tbody>
 </table>
