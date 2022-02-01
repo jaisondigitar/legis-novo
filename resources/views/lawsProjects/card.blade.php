@@ -234,14 +234,14 @@
                 </a>
             @endshield
 
-            <a href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                PARECERES
+            <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                <i class="far fa-check-circle"></i>
             </a>
 
             @if(Auth::user()->id === $lawsProject->users_id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.edit')
-                    <a href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                        ESTRUTURA DA LEI
+                    <a @popper(ESTRUTURA DE LEI) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        <i class="fas fa-gavel"></i>
                     </a>
                 @endshield
             @endif
@@ -290,7 +290,7 @@
                 @endif
 
                 <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-info btn-sm">
-                    <i class="fa fa-plus"></i> Anexos
+                    <i class="fas fa-file-pdf"></i>
                 </a>
             </div>
         </div>
