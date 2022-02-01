@@ -464,7 +464,7 @@ class UserController extends AppBaseController
         $user = Auth::user();
 
         if ($request->new_password !== $request->confirm_password) {
-            flash('Confirmar senha incorreto')->error();
+            flash('Senhas não coincidem')->error();
 
             return view('users.edit_password');
         }
