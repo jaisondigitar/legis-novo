@@ -230,12 +230,12 @@
         <div class='btn-group'>
             @shield('lawsProject.advices')
                 <a @popper(TRÂMITES) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    TRÂMITES
+                    <i class="far fa-file-alt"></i>
                 </a>
             @endshield
 
             <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                <i class="far fa-check-circle"></i>
+                <i class="fas fa-clipboard"></i>
             </a>
 
             @if(Auth::user()->id === $lawsProject->users_id || Auth::user()->hasRole('root'))
@@ -247,8 +247,8 @@
             @endif
 
             @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
-                <a href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
-                    ALTERAR NÚMERO/PROTOCOLO
+                <a @popper(ALTERAR NÚMERO/PROTOCOLO) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
+            <i class="fas fa-project-diagram"></i>
                 </a>
             @endshield
 
@@ -259,8 +259,8 @@
             @endif
 
             @shield('lawsProjects.show')
-                <a href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
-                    <i class="fa fa-eye" aria-hidden="true"></i>
+                <a @popper(GERAR PDF) href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
+                    <i class="far fa-file-pdf"></i>
                 </a>
             @endshield
 
@@ -271,9 +271,10 @@
             @endif
 
             @if($lawsProject->voting)
-                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
-                    VOTAÇÃO
+                <a @popper(VOTAÇÃO) <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
+                    <i class="fas fa-vote-yea"></i>
                 </button>
+                </a>
             @endif
 
             <div>
