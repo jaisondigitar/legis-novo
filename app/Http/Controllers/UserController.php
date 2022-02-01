@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\PartiesAssemblymanAPIController;
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Libraries\Repositories\ProfileRepository;
 use App\Libraries\Repositories\UserRepository;
@@ -70,6 +71,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class UserController extends AppBaseController
@@ -452,8 +454,26 @@ class UserController extends AppBaseController
      *
      * @return Application|Factory|RedirectResponse|Redirector|View
      */
-    public function resetPassword()
+    public function editPassword()
     {
-        return view('users.reset_password');
+        return view('users.edit_password');
+    }
+
+    public function updatePassword($id, UpdatePasswordRequest $request)
+    {
+        $user = User::findOrFail($id);
+
+        $oldPassword = Hash::make($request->old_passoord);
+
+        if (! $user->password == $oldPassword) {
+            flash('Ops! Desculpe, você não possui permissão para esta ação.', 1)->warning();
+
+            return redirect('/admin');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return view('admin');
     }
 }

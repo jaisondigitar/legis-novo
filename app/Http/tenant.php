@@ -192,6 +192,7 @@ Route::middleware([
             'as' => 'users.delete',
             'uses' => 'UserController@destroy',
         ]);
+        Route::post('/users/{id}/update-password', 'UserController@updatePassword');
 
         Route::post('/advice/create', 'AdviceController@store');
         Route::post('/advice/delete', 'AdviceController@removerAdvice');
