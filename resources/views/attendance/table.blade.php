@@ -12,7 +12,7 @@
     <tbody>
     @foreach($attendance as $attend)
         <tr>
-            <td>{!! date_format(date_create($attend->date), "d/m/Y") !!}</td>
+            <td>{!! $attend->date !!}</td>
             <td>{!! $attend->time !!}</td>
             <td>{!! $attend->sector->name !!}</td>
             <td>{!! $attend->people->name !!}</td>
