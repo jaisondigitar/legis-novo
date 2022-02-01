@@ -283,10 +283,13 @@
                     </a>
                 @endshield
             @endif
-
             @shield('documents.advices')
                 <a @popper(TRAMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
                     <i class="glyphicon glyphicon-list-alt"></i>
+                </a>
+
+                <a href="{!! route('documents.legal-opinion', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                    PARECERES
                 </a>
             @endshield
 
