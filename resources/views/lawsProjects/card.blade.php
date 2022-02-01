@@ -45,7 +45,7 @@
             </div>
         </span>
     </div>
-    <div class="panel-body" style="font-size: 12px; height: 240px">
+    <div class="panel-body" style="font-size: 12px; height: 260px">
         <div class="col-md-4">
             <span>
                 <strong>COD:</strong>
@@ -89,11 +89,11 @@
                     @endshield
                 @else
                     @shield('lawsProject.approved')
-                    <span id="tdLawApproved{{$lawsProject->id}}" align="center">
-                                <button type="button" class="btn btn-default btn-xs btn-approved" value="{!! $lawsProject->id !!}">
-                                    <i class="glyphicon glyphicon-folder-open"></i>
-                                </button>
-                            </span>
+                        <span id="tdLawApproved{{$lawsProject->id}}" align="center">
+                            <button type="button" class="btn btn-default btn-xs btn-approved" value="{!! $lawsProject->id !!}">
+                                <i class="glyphicon glyphicon-folder-open"></i>
+                            </button>
+                        </span>
                     @endshield
                 @endif
             </span>
@@ -102,7 +102,7 @@
             <span>
                 <strong>Responsável: </strong>
 
-                    @if($lawsProject->owner)
+                @if($lawsProject->owner)
                     {{ $lawsProject->owner->short_name }}
                 @else
                     -
@@ -173,12 +173,18 @@
             </span>
         </div>
 
-        <div class="col-md-12" style="height: 80px">
+        <div class="col-md-12" style="height: 100px">
             <br>
             <span style="text-align: justify !important;" class="text-uppercase">
                 <strong>Ementa:</strong>
-                <br>
-                {!! $lawsProject->title !!}
+
+                @if($lawsProject->title === '')
+                    -
+                @else
+                    <p class="resume">
+                        {!! $lawsProject->title !!}
+                    </p>
+                @endif
             </span>
             <br>
         </div>
@@ -220,27 +226,41 @@
         </div>
     </div>
     <div class="panel-footer">
+        @if(!$lawsProject->project_number)
+            <span class="badge badge-warning pull-left">Aberto</span>
+        @else
+            <span class="badge badge-info pull-left">Protocolado</span>
+        @endif
+
         {!! Form::open(['route' => ['lawsProjects.destroy', $lawsProject->id], 'method' => 'delete']) !!}
-        <div class='btn-group'>
+        <div class='btn-group action'>
+            @shield('lawsProjects.show')
+                <a @popper(GERAR PDF) href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
+                    <i class="far fa-eye"></i>
+                </a>
+            @endshield
+
             @shield('lawsProject.advices')
-                <a href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    TRÂMITES
+                <a @popper(TRÂMITAÇÃO) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                    <i class="glyphicon glyphicon-list-alt"></i>
+                </a>
+
+                <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                    <i class="fa fa-clipboard"></i>
                 </a>
             @endshield
 
-            <a href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                PARECERES
-            </a>
-
-            @shield('lawsProjects.edit')
-                <a href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    ESTRUTURA DA LEI
-                </a>
-            @endshield
+            @if(Auth::user()->id === $lawsProject->users_id || Auth::user()->hasRole('root'))
+                @shield('lawsProjects.edit')
+                    <a @popper(ESTRUTURA DE LEI) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        <i class="fas fa-gavel"></i>
+                    </a>
+                @endshield
+            @endif
 
             @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
-                <a href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
-                    ALTERAR NÚMERO/PROTOCOLO
+                <a @popper(ALTERAR NÚMERO/PROTOCOLO) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
+                   <i class="fas fa-project-diagram"></i>
                 </a>
             @endshield
 
@@ -250,12 +270,6 @@
                 </a>
             @endif
 
-            @shield('lawsProjects.show')
-                <a href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
-                    <i class="fa fa-eye" aria-hidden="true"></i>
-                </a>
-            @endshield
-
             @if($lawsProject->file)
                 <a href="/laws/{{ $lawsProject->file }}" target="_blank" class='btn btn-default btn-sm'>
                     <i class="fa fa-paperclip"></i>
@@ -263,26 +277,30 @@
             @endif
 
             @if($lawsProject->voting)
-                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
-                    VOTAÇÃO
-                </button>
+                <a @popper(VOTAÇÃO) type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
+                    <i class="fas fa-vote-yea"></i>
+                </a>
             @endif
 
-            <div>
+            <a @popper(ANEXOS) href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-default btn-sm">
+                <i class="fas fa-paperclip"></i>
+            </a>
+
+            @if($lawsProject->user_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.edit')
-                    <a href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-warning btn-sm'>
+                    <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="glyphicon glyphicon-edit"></i>
                     </a>
                 @endshield
+            @endif
 
+            @if(!$lawsProject->project_number && $lawsProject->user_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.delete')
-                    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    <a @popper(REMOVER)>
+                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+                    </a>
                 @endshield
-
-                <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-info btn-sm">
-                    <i class="fa fa-plus"></i> Anexos
-                </a>
-            </div>
+            @endif
         </div>
         <div class="clearfix"></div>
         {!! Form::close() !!}

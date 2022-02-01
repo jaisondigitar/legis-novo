@@ -143,38 +143,40 @@
                     }).success(function (data) {
                         data = JSON.parse(data);
 
-                        table = $('#table_processing').empty();
+                        @if(isset($processing))
+                            table = $('#table_processing').empty();
 
-                        data.forEach(function (valor) {
-                            str = '<tr id="line_' + valor.id + '"> ';
-                            str += "<td>";
-                            str += valor.processing_document_date;
-                            str += "</td>";
-                            str += "<td>";
-                            str += valor.document_situation.name;
-                            str += "</td>";
-                            str += "<td>";
-                            if (valor.status_processing_document_id > 0) {
-                                str += valor.status_processing_document.name;
-                            }
-                            str += "</td>";
-                            str += "<td>";
-                            if (valor.destination) {
-                                str += valor.destination.name;
-                            }
-                            str += "</td>";
-                            str += "<td>";
-                            str += valor.observation || '';
-                            str += "</td>";
-                            @if(Auth::user()->id == $processing->owner_id || Auth::user()->hasRole('root'))
-                            str += "<td>";
-                            str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
-                            str += "</td>";
-                            @endif
+                            data.forEach(function (valor) {
+                                str = '<tr id="line_' + valor.id + '"> ';
+                                str += "<td>";
+                                str += valor.processing_document_date;
+                                str += "</td>";
+                                str += "<td>";
+                                str += valor.document_situation.name;
+                                str += "</td>";
+                                str += "<td>";
+                                if (valor.status_processing_document_id > 0) {
+                                    str += valor.status_processing_document.name;
+                                }
+                                str += "</td>";
+                                str += "<td>";
+                                if (valor.destination) {
+                                    str += valor.destination.name;
+                                }
+                                str += "</td>";
+                                str += "<td>";
+                                str += valor.observation || '';
+                                str += "</td>";
+                                @if(Auth::user()->id == $processing->user_id || Auth::user()->hasRole('root'))
+                                str += "<td>";
+                                str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
+                                str += "</td>";
+                                @endif
 
-                            str += "</tr>";
-                            table.append(str);
-                        });
+                                str += "</tr>";
+                                table.append(str);
+                            });
+                        @endif
 
                         toastr.success('Tramitação salva com sucesso!');
 
