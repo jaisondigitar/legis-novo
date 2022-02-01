@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\PartiesAssemblymanAPIController;
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Libraries\Repositories\ProfileRepository;
 use App\Libraries\Repositories\UserRepository;
@@ -70,6 +71,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class UserController extends AppBaseController
@@ -445,5 +447,41 @@ class UserController extends AppBaseController
         $logs = Log::where('user_id', $id)->orderBy('created_at', 'desc')->paginate(20);
 
         return view('users.auditing', compact('user', 'logs', 'translationNews'));
+    }
+
+    /**
+     * Display a listing of the User.
+     *
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     */
+    public function editPassword()
+    {
+        return view('users.edit_password');
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $user = Auth::user();
+
+        if ($request->new_password !== $request->confirm_password) {
+            flash('Senhas não coincidem')->error();
+
+            return view('users.edit_password');
+        }
+
+        if (! Hash::check($request->old_password, $user->password)) {
+            flash('Senha antiga incorreta')->warning();
+
+            return view('users.edit_password');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        DB::commit();
+
+        flash('Senha Atualizada')->success();
+
+        return view('users.edit_password');
     }
 }

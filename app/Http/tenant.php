@@ -431,6 +431,8 @@ Route::middleware([
         ]);
 
         Route::resource('users', 'UserController');
+        Route::get('/edit-password', 'UserController@editPassword');
+        Route::post('/update-password', 'UserController@updatePassword')->name('user.password-update');
         Route::get('/users/{id}/toggle', 'UserController@toggle');
         Route::get('/users/{id}/auditing', 'UserController@auditing');
         Route::get('users/{id}/delete', [
