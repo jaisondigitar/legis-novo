@@ -463,19 +463,25 @@ class UserController extends AppBaseController
     {
         $user = Auth::user();
 
+        if ($request->new_password !== $request->confirm_password) {
+            flash('Confirmar senha incorreto')->error();
+
+            return view('users.edit_password');
+        }
+
         if (! Hash::check($request->old_password, $user->password)) {
             flash('Senha antiga incorreta')->warning();
 
-            return 'failure';
+            return view('users.edit_password');
         }
-
-        DB::commit();
 
         $user->password = Hash::make($request->new_password);
         $user->save();
 
         DB::commit();
 
-        return 'sucess';
+        flash('Senha Atualizada')->success();
+
+        return view('users.edit_password');
     }
 }
