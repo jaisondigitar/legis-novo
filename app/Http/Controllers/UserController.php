@@ -463,17 +463,19 @@ class UserController extends AppBaseController
     {
         $user = Auth::user();
 
-        $oldPassword = Hash::make($request->old_passoord);
-
-        if (! $user->password == $oldPassword) {
+        if (! Hash::check($request->old_password, $user->password)) {
             flash('Senha antiga incorreta')->warning();
 
             return 'failure';
         }
 
+        DB::commit();
+
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return 'sucesso';
+        DB::commit();
+
+        return 'sucess';
     }
 }
