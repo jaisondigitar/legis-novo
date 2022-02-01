@@ -445,7 +445,7 @@
                         $('#tdnumber'+result.document_id).html(result.protocol_number);
                         $('#tddate'+result.document_id).html(result.protocol_date);
                         $('#tdprotocol'+result.document_id).html(result.protocol_code);
-                        location.reload();
+                        window.location.reload();
                     } else {
                         $('#next_number').val(result.next_number);
                         $('#labelmessage').html(result.message);

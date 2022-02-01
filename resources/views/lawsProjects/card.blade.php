@@ -286,13 +286,15 @@
                 <i class="fas fa-paperclip"></i>
             </a>
 
-            @shield('lawsProjects.edit')
-                <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    <i class="glyphicon glyphicon-edit"></i>
-                </a>
-            @endshield
+            @if($lawsProject->user_id === Auth::user()->id || Auth::user()->hasRole('root'))
+                @shield('lawsProjects.edit')
+                    <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                @endshield
+            @endif
 
-            @if(!$lawsProject->project_number || Auth::user()->hasRole('root'))
+            @if(!$lawsProject->project_number && $lawsProject->user_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.delete')
                     <a @popper(REMOVER)>
                         {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}

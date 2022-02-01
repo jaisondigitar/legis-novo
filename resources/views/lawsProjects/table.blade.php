@@ -106,7 +106,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Aprovar lei</h4>
+                <h4 class="modal-title">Protocolo de lei</h4>
             </div>
             <div class="modal-body">
                 <div align="center"><label class="label label-danger" id="labelmessage2"></label></div>
@@ -377,6 +377,7 @@
                     $('#tdLawProjectNumber'+result.lawProject_id).html(result.project_number + '/' + result.year);
                     $('#tdLawProtocol'+result.lawProject_id).html('<label class="label label-success">Sim</label>');
                     $('#modalProtocol').modal('hide');
+                    window.location.reload()
                 } else {
                     $('#labelmessage2').html(result.message);
                     $('#project_number').val(result.next_number);

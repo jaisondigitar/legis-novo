@@ -286,7 +286,7 @@
                 </a>
             @endshield
 
-            @if(Auth::user()->id === $document->users_id || Auth::user()->hasRole('root'))
+            @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('documents.edit')
                     <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
                         <i class="glyphicon glyphicon-edit"></i>
@@ -294,7 +294,7 @@
                 @endshield
             @endif
 
-            @if(!$document->document_protocol || Auth::user()->hasRole('root'))
+            @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('documents.delete')
                    <a @popper(REMOVER)>
                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
