@@ -21,14 +21,6 @@
     .action a {
         margin-right: 4px;
     }
-
-    .resume {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        margin: 0;
-    }
 </style>
 
 <div class="container">

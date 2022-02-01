@@ -157,6 +157,13 @@
             color: red;
             padding-right: 3px;
         }
+        .resume {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            margin: 0;
+        }
     </style>
     <script type="application/javascript">
         const getDate = (number) => {

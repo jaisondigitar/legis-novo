@@ -45,7 +45,7 @@
             </div>
         </span>
     </div>
-    <div class="panel-body" style="font-size: 12px; height: 240px">
+    <div class="panel-body" style="font-size: 12px; height: 260px">
         <div class="col-md-4">
             <span>
                 <strong>COD:</strong>
@@ -173,12 +173,18 @@
             </span>
         </div>
 
-        <div class="col-md-12" style="height: 80px">
+        <div class="col-md-12" style="height: 100px">
             <br>
             <span style="text-align: justify !important;" class="text-uppercase">
                 <strong>Ementa:</strong>
-                <br>
-                {!! $lawsProject->title !!}
+
+                @if($lawsProject->title === '')
+                    -
+                @else
+                    <p class="resume">
+                        {!! $lawsProject->title !!}
+                    </p>
+                @endif
             </span>
             <br>
         </div>
