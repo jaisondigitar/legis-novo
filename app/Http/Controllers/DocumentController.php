@@ -1146,7 +1146,6 @@ class DocumentController extends AppBaseController
             return redirect(route('documents.index'));
         }
 
-        $comission = Commission::active()->pluck('name', 'id');
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
         $document_situation = DocumentSituation::pluck('name', 'id')->prepend('Selecione... ', 0);
@@ -1167,7 +1166,6 @@ class DocumentController extends AppBaseController
             'documents.advices',
             compact(
                 'document_situation',
-                'comission',
                 'tramitacao',
                 'advice_situation_document',
                 'advice_publication_document',
@@ -1175,6 +1173,28 @@ class DocumentController extends AppBaseController
                 'documents',
                 'last_position',
                 'destinations'
+            )
+        )
+            ->with(compact('document'));
+    }
+
+    public function legalOpinion($documentId)
+    {
+        setlocale(LC_ALL, 'pt_BR');
+        $document = $this->documentRepository->findByID($documentId);
+
+        if (empty($document)) {
+            flash('Documento não encontrado')->error();
+
+            return redirect(route('documents.index'));
+        }
+
+        $comission = Commission::active()->pluck('name', 'id');
+
+        return view(
+            'documents.legal-opinion',
+            compact(
+                'comission',
             )
         )
             ->with(compact('document'));
