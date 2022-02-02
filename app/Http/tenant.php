@@ -407,6 +407,8 @@ Route::middleware([
 
         Route::get('/resume/voting/{id}', 'MeetingController@showResume');
 
+        Route::resource('signature', 'SignatureController');
+
         /* --------------------------------------------------
          *  ----| GRUPO GERENCIAL
          *  -------------------------------------------------*/

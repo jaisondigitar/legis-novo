@@ -651,3 +651,12 @@ Breadcrumbs::for('destination.show', function ($breadcrumbs) {
     $breadcrumbs->parent('destination.list');
     $breadcrumbs->push('Destinatários', null);
 });
+
+/*
+ * SIGNATURE
+ */
+Breadcrumbs::for('signature.list', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Documentos', '/documents');
+    $breadcrumbs->push('Assinatura', '/signature');
+});
