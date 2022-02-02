@@ -116,59 +116,53 @@ class LawsProjectController extends AppBaseController
             return redirect('/admin');
         }
 
-        $lawProjects_query = lawProjects::query();
+        $lawsProject_query = lawsProject::query();
 
         if (data_get($request->all(), 'has-filter')) {
-            $lawProjects_query = $lawProjects_query->filterByColumns()
+            $lawsProject_query = $lawsProject_query->filterByColumns()
                 ->filterByRelation(
                     'lawProject_number',
                     'date',
                     'date',
                     $request->get('reg')
                 );
-
-            if (isset(lawProjectStatuses::$statuses[$request->get('status')])) {
-                if (
-                    lawProjectStatuses::$statuses[$request->get('status')] ===
-                    lawProjectStatuses::PROTOCOLED
-                ) {
-                    $lawProjects_query->hasRelation('lawProject_protocol');
-                } elseif (
-                    lawProjectStatuses::$statuses[$request->get('status')] ===
-                    lawProjectStatuses::OPENED
-                ) {
-                    $lawProjects_query->whereDoesntHave('lawProject_protocol');
-                }
-            }
         }
 
-        $lawProjects = $lawProjects_query->with([
-            'processinglawProject' => function ($query) {
+        $lawsProject = $lawsProject_query->with([
+            'processing' => function ($query) {
                 return $query->orderByDesc('created_at')->get();
             },
-            'processinglawProject.statusProcessinglawProject',
-            'processinglawProject.destination',
-            'externalSector',
+            'processing.statusProcessingLaw',
+            'processing.destination',
+
         ])
             ->orderByDesc('created_at')
             ->paginate(20);
 
+
         if (! Auth::user()->hasRoles(['root', 'admin'])) {
-            foreach ($lawProjects->items() as $index => $lawProjects) {
-                if (! $lawProjects->lawProjects_protocol && $lawProjects->users_id !== Auth::user()->id) {
-                    unset($lawProjects[$index]);
+            foreach ($lawsProject->items() as $index => $lawsProject) {
+                if (! $lawsProject->lawProjects_protocol && $lawsProject->users_id !== Auth::user()->id) {
+                    unset($lawsProject[$index]);
                 }
             }
         }
 
-        $protocol_types = ProtocolType::pluck('name', 'id');
+        $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
+
         $assemblymensList = $this->getAssemblymenList();
 
-        return view('lawProjects.index')
-            ->with('assemblymensList', $assemblymensList[1])
-            ->with('form', $request)
-            ->with('lawProjects', $lawProjects)
-            ->with('protocol_types', $protocol_types);
+        $references_project = [0 => 'Selecione'];
+
+        $externo = '';
+
+        return view('lawsProjects.index', compact('externo'))
+        ->with('assemblymensList', $assemblymensList[1])
+        ->with('form', $request)
+        ->with('lawsProjects', $lawsProject)
+        ->with('references_project', $references_project)
+        ->with('law_places', $law_places)
+        ->with('voting');
     }
 
     /**
