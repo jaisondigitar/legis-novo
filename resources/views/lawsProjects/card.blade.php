@@ -250,7 +250,7 @@
                 </a>
             @endshield
 
-            @if(Auth::user()->id === $lawsProject->users_id || Auth::user()->hasRole('root'))
+            @if(Auth::user()->id == $lawsProject->owner->id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.edit')
                     <a @popper(ESTRUTURA DE LEI) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="fas fa-gavel"></i>
@@ -286,7 +286,7 @@
                 <i class="fas fa-paperclip"></i>
             </a>
 
-            @if($lawsProject->user_id === Auth::user()->id || Auth::user()->hasRole('root'))
+            @if($lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.edit')
                     <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="glyphicon glyphicon-edit"></i>
@@ -294,7 +294,7 @@
                 @endshield
             @endif
 
-            @if(!$lawsProject->project_number && $lawsProject->user_id === Auth::user()->id || Auth::user()->hasRole('root'))
+            @if(!$lawsProject->project_number && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.delete')
                     <a @popper(REMOVER)>
                         {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
