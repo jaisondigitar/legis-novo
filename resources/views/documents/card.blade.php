@@ -265,30 +265,30 @@
 
         <div class='btn-group action' id="tdoptions{{$document->id}}">
             @shield('documents.show')
-                <a href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
+                <a @popper(GERAR PDF) href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
                     <i class="far fa-eye"></i>
                 </a>
             @endshield
 
             @shield('documents.advices')
-                <a href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                <a @popper(TRÂMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
                     <i class="glyphicon glyphicon-list-alt"></i>
                 </a>
 
-                <a href="{!! route('documents.legal-opinion', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                <a @popper(PARECERES) href="{!! route('documents.legal-opinion', [$document->id]) !!}" class='btn btn-default btn-xs'>
                     <i class="fa fa-clipboard"></i>
                 </a>
             @endshield
 
             @shield('documents.edit')
-                <a href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                <a @popper(ANEXAR ARQUIVO) href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-xs'>
                     <i class="fas fa-paperclip"></i>
                 </a>
             @endshield
 
             @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('documents.edit')
-                    <a href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                    <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
                         <i class="glyphicon glyphicon-edit"></i>
                     </a>
                 @endshield
@@ -296,7 +296,7 @@
 
             @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('documents.delete')
-                   <a>
+                   <a @popper(REMOVER)>
                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                    </a>
                 @endshield

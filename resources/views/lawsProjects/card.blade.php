@@ -235,31 +235,31 @@
         {!! Form::open(['route' => ['lawsProjects.destroy', $lawsProject->id], 'method' => 'delete']) !!}
         <div class='btn-group action'>
             @shield('lawsProjects.show')
-                <a href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
+                <a @popper(GERAR PDF) href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
                     <i class="far fa-eye"></i>
                 </a>
             @endshield
 
             @shield('lawsProject.advices')
-                <a href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                <a @popper(TRÂMITAÇÃO) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                     <i class="glyphicon glyphicon-list-alt"></i>
                 </a>
 
-                <a href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                     <i class="fa fa-clipboard"></i>
                 </a>
             @endshield
 
             @if(Auth::user()->id === $lawsProject->users_id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.edit')
-                    <a href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                    <a @popper(ESTRUTURA DE LEI) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="fas fa-gavel"></i>
                     </a>
                 @endshield
             @endif
 
             @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
-                <a href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
+                <a @popper(ALTERAR NÚMERO/PROTOCOLO) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
                    <i class="fas fa-project-diagram"></i>
                 </a>
             @endshield
@@ -277,18 +277,18 @@
             @endif
 
             @if($lawsProject->voting)
-                <a type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
+                <a @popper(VOTAÇÃO) type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
                     <i class="fas fa-vote-yea"></i>
                 </a>
             @endif
 
-            <a href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-default btn-sm">
+            <a @popper(ANEXOS) href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-default btn-sm">
                 <i class="fas fa-paperclip"></i>
             </a>
 
             @if($lawsProject->user_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.edit')
-                    <a href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                    <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="glyphicon glyphicon-edit"></i>
                     </a>
                 @endshield
@@ -296,7 +296,7 @@
 
             @if(!$lawsProject->project_number && $lawsProject->user_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.delete')
-                    <a>
+                    <a @popper(REMOVER)>
                         {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
                     </a>
                 @endshield
