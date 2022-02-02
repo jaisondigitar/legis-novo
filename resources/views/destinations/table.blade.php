@@ -17,17 +17,17 @@
                         'method' => 'delete'
                     ]) !!}
                     @shield('destination.show')
-                        <a href="{!! route('destinations.show', [$destination->id]) !!}">
+                        <a @popper(Visualizar) href="{!! route('destinations.show', [$destination->id]) !!}">
                             <i class="fa fa-cogs icon-rounded icon-xs icon-info"></i>
                         </a>
                     @endshield
                     @shield('destination.edit')
-                        <a href="{!! route('destinations.edit', [$destination->id]) !!}">
+                        <a @popper(Editar) href="{!! route('destinations.edit', [$destination->id]) !!}">
                             <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
                         </a>
                     @endshield
                     @shield('destination.delete')
-                    {!! Form::button(
+                    <a @popper(Deletar) </a>{!! Form::button(
                         '<i
                             class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"
                         ></i>', [
