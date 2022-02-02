@@ -10,6 +10,11 @@ class TypesOfAttendance extends BaseModel
         'name',
     ];
 
+    public static $translation = [
+        'TYPESOFATTENDANCE' => 'TIPO DE ATENDIMENTO',
+        'name' => 'Nome',
+    ];
+
     public static $rules = [
         'name' => 'required',
     ];

@@ -2,15 +2,16 @@
 @section('content')
     <div class="wrapper">
         <div class="header">
-            <a class="login" href="/login">LOGIN</a>
+            <a class="login" href="/login"><i class="fa fa-sign-in" style="margin-right: 5px;"></i></i>ACESSO RESTRITO</a>
         </div>
+
         <div class="container">
             <div class="row">
                 <div class="col-md-12 centered">
                     <img
-                        src="/assets/images/genesis-black.png"
-                        alt="image"
-                        style="max-width: 100%; height: 50%;"
+                        src="/assets/images/gpl.png"
+                        alt="GPL"
+                        style="max-width: 40%; height: 50%;"
                     >
                     <div class="mtb">
                         <div>

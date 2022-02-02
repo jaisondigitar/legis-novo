@@ -77,6 +77,13 @@ class DocumentFiles extends BaseModel
         'filename',
     ];
 
+    public static $translation = [
+        'DOCUMENTFILES' => 'ARQUIVOS DOCUMENTO',
+        'document_id' => 'Id do Documento',
+        'filename' => 'Nome do Arquivo',
+        'id' => 'Id',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

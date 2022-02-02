@@ -6,6 +6,6 @@
     @include('sectors.show_fields')
 
     <div class="form-group">
-           <a href="{!! route('sectors.index') !!}" class="btn btn-default">Back</a>
+           <a href="{!! route('sectors.index') !!}" class="btn btn-default">Voltar</a>
     </div>
 @endsection

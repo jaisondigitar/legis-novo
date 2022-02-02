@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.4|^8.0",
         "ext-json": "*",
+        "andcarpi/laravel-popper": "^0.9.4",
         "artesaos/defender": "^0.10.0",
         "baum/baum": "v2.x-dev",
         "cmgmyr/messenger": "^2.22",

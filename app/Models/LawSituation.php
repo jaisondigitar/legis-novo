@@ -43,6 +43,11 @@ class LawSituation extends BaseModel
         'name',
     ];
 
+    public static $translation = [
+        'LAWSITUATION' => 'SITUAÇÃO DA LEI',
+        'name' => 'Nome',
+    ];
+
     /**
      * The attributes that should be casted to native tProtocolTypeypes.
      *

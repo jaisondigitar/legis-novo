@@ -17,6 +17,7 @@ use App\Models\DocumentFiles;
 use App\Models\DocumentModels;
 use App\Models\DocumentNumber;
 use App\Models\DocumentProtocol;
+use App\Models\DocumentSector;
 use App\Models\DocumentSituation;
 use App\Models\DocumentType;
 use App\Models\Log;
@@ -154,7 +155,7 @@ class DocumentController extends AppBaseController
 
         $documents = $documents_query->with([
                 'processingDocument' => function ($query) {
-                    return $query->orderByDesc('created_at')->first();
+                    return $query->orderByDesc('created_at')->get();
                 },
                 'processingDocument.statusProcessingDocument',
                 'processingDocument.destination',
@@ -211,7 +212,7 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
-        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+        $sector = Sector::where('external', 1)->pluck('name', 'id');
 
         $assemblymensList = $this->getAssemblymenList();
 
@@ -219,7 +220,9 @@ class DocumentController extends AppBaseController
 
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
-        return view('documents.create', compact('document', 'tramitacao'))
+        $sectors_default = [];
+
+        return view('documents.create', compact('document', 'tramitacao', 'sectors_default'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])
             ->with(compact('sector'))
@@ -245,28 +248,19 @@ class DocumentController extends AppBaseController
 
         $input = $request->all();
 
-        if (! $input['sector_id']) {
-            $input['sector_id'] = null;
-        }
-
-        $last_document = Document::where('document_type_id', $request->document_type_id)
-            ->whereYear('date', '=', Carbon::parse(str_replace('/', '-', $request->date))->year)
-            ->where('number', '!=', '')
-            ->orderBy('number', 'DESC')
-            ->first();
-
-        $input['number'] = $last_document ? $last_document->number + 1 : 0;
-
         $document = $this->documentRepository->create($input);
 
-        ProcessingDocument::create([
-            'document_id' => $document->id,
-            'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
-            'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
-                ->first()->id,
-            'processing_document_date' => now()->format('d/m/Y'),
-            'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
-        ]);
+        if (! empty($input['sectors'])) {
+            $sectorsIds = $input['sectors'];
+            $sectors = Sector::whereIn('id', $sectorsIds)->get();
+
+            $sectors->each(function ($sector) use ($document) {
+                $documentSector = new DocumentSector();
+                $documentSector->document()->associate($document);
+                $documentSector->sector()->associate($sector);
+                $documentSector->save();
+            });
+        }
 
         if (! empty($input['assemblymen'])) {
             foreach ($input['assemblymen'] as $assemblyman) {
@@ -308,6 +302,200 @@ class DocumentController extends AppBaseController
         /*$this->createTenantDirectoryIfNotExists();
 
         $this->pdfService->lib_pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
+
+                if ($count == 2 || $vereador === end($list)) {
+                    $html .= '</tr>';
+                    $count = 0;
+                } else {
+                    $count++;
+                }
+            }
+            $html .= '</tbody></table>';
+        }
+
+        $html2 = '';
+        $count = 0;
+
+        if (count($list) == 1) {
+            $html2 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+            $html2 .= '<tr style="height: 300px">';
+            $html2 .= '<td style="width:25%;"></td>';
+            $html2 .= '<td style="width:50%; text-align: center;  vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][2].' - '.$list[0][3].'<br><br><br></td>';
+            $html2 .= '<td style="width:25%;"></td>';
+            $html2 .= '</tr>';
+            $html2 .= '</tbody></table>';
+        } else {
+            $html2 .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 300px"><tbody>';
+            foreach ($list as $vereador) {
+                if ($count == 0) {
+                    $html2 .= '<tr style="height: 300px">';
+                }
+
+                $html2 .= '<td style="text-align: center; vertical-align: text-top">'.$vereador[0].'<br>'.$vereador[1].' - '.$vereador[3].'<br><br><br></td>';
+
+                if ($count == 2 || $vereador === end($list)) {
+                    $html2 .= '</tr>';
+                    $count = 0;
+                } else {
+                    $count++;
+                }
+            }
+            $html2 .= '</tbody></table>';
+        }
+
+        $html3 = '';
+        $count = 0;
+
+        if (count($list) == 1) {
+            $html3 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+            $html3 .= '<tr style="height: 300px">';
+            $html3 .= '<td style="width:25%;"></td>';
+            $html3 .= '<td style="width:50%; text-align: center;  vertical-align: text-top">'.$list[0][0].'<br>'.'<br><br><br></td>';
+            $html3 .= '<td style="width:25%;"></td>';
+            $html3 .= '</tr>';
+            $html3 .= '</tbody></table>';
+        } else {
+            $html3 .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 300px"><tbody>';
+            foreach ($list as $vereador) {
+                if ($count == 0) {
+                    $html3 .= '<tr style="height: 300px">';
+                }
+                $html3 .= '<td style="text-align: center; vertical-align: text-top">'.$vereador[0].'<br>'.'<br><br><br></td>';
+                if ($count == 2 || $vereador === end($list)) {
+                    $html3 .= '</tr>';
+                    $count = 0;
+                } else {
+                    $count++;
+                }
+            }
+            $html3 .= '</tbody></table>';
+        }
+
+        $tipo = '';
+        $tipo .= $document->document_type->parent_id ? $document->document_type->parent->name.' :: ' : '';
+        $tipo .= $document->document_type->name;
+        $docNum = $document->number == 0 ? '_______ ' : $document->number;
+
+        $document_internal_number = $document->getNumber();
+        $document_protocol_number = $document->document_protocol ? $document->document_protocol->number : '';
+        $document_protocol_date = $document->document_protocol ? date('d/m/Y', strtotime($document->document_protocol->created_at)) : '';
+        $document_protocol_hours = $document->document_protocol ? date('H:i', strtotime($document->document_protocol->created_at)) : '';
+
+        $data_USA = explode(' ', ucfirst(iconv('ISO-8859-1', 'UTF-8', strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date))))));
+
+        $mes['January'] = 'Janeiro';
+        $mes['February'] = 'Fevereiro';
+        $mes['March'] = 'Março';
+        $mes['April'] = 'Abril';
+        $mes['May'] = 'Maio';
+        $mes['June'] = 'Junho';
+        $mes['July'] = 'Julho';
+        $mes['August'] = 'Agosto';
+        $mes['September'] = 'Setembro';
+        $mes['October'] = 'Outubro';
+        $mes['November'] = 'Novembro';
+        $mes['December'] = 'Dezembro';
+
+        $mes_pt = isset($mes[$data_USA[2]]) ? $mes[$data_USA[2]] : $data_USA[2];
+
+        $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
+
+        $conteudo = $document->content;
+
+        if ($document_model) {
+            $content = str_replace(
+                ['[numero]', '[data_curta]', '[data_longa]', '[autores]', '[autores_vereador]', '[nome_vereadores]', '[responsavel]', '[assunto]', '[conteudo]',
+                    '[protocolo_numero]',
+                    '[protocolo_data]',
+                    '[protocolo_hora]',
+                    '[numero_interno]',
+                    '[numero_documento]', '[ano_documento]', '[tipo_documento]', ],
+                [
+                    '<b>'.$tipo.'</b>: '.$docNum.' / '.$document->getYear($document->date),
+                    ucfirst(strftime('%d/%m/%Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date)))),
+                    $data_ptbr,
+//                ucfirst(iconv('ISO-8859-1', 'UTF-8',strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date))))),
+                    $html,
+                    $html2,
+                    $html3,
+                    $document->owner->short_name,
+                    $document->content,
+                    $conteudo,
+                    $document_protocol_number,
+                    $document_protocol_date,
+                    $document_protocol_hours,
+                    $document_internal_number,
+                    $docNum,
+                    $document->getYear($document->date),
+                    $tipo, ],
+                $document_model->content
+            );
+
+            $pdf->writeHTML($content);
+        } else {
+            $pdf->writeHTML($conteudo);
+        }
+
+        if ($votacao) {
+            $pdf->AddPage();
+            $pdf->setListIndentWidth(5);
+            $html2 = '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+            $html2 .= '<tr style="height: 300px">';
+            $html2 .= '<td style="width:100%; text-align: center;"><h3> Votação </h3></td>';
+            $html2 .= '</tr>';
+            $html2 .= '</tbody></table>';
+            $html2 .= '<table style=" text-align: left;">';
+            foreach ($document->voting()->get() as $item) {
+                $html2 .= '<tr style=" text-align: left;">';
+                $html2 .= '<td style=" text-align: left;">Data da votação: '.date('d/m/Y', strtotime($item->open_at)).'</td>';
+                $html2 .= '<td style=" text-align: left;">Situação: ';
+                if ($item->situation($item)) {
+                    $html2 .= 'Votação Aprovada';
+                } else {
+                    $html2 .= 'Votação Reprovada';
+                }
+                $html2 .= '</td>';
+                $html2 .= '<br>';
+                $html2 .= '</tr>';
+            }
+
+            $html2 .= '</table>';
+            $html2 .= '<br>';
+            $pdf->writeHTML($html2);
+        }
+
+        if ($tramitacao) {
+            $pdf->AddPage();
+            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
+
+            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
+            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
+
+            $html1 .= '<tbody>';
+            foreach ($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing) {
+                $html1 .= '<hr>';
+                $html1 .= '<tr style=" text-align: left;">';
+                $html1 .= '<td width="130" style=" text-align: left;"><b>Data: </b> <br>'.$processing->created_at.'</td>';
+                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do documento: </b> <br>'.$processing->documentSituation->name.'</td>';
+                if ($processing->statusProcessingDocument) {
+                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
+                }
+                $html1 .= '</tr>';
+                if (strlen($processing->observation) > 0) {
+                    $html1 .= '<tr>';
+                    $html1 .= '<td width="630" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->observation.'</td>';
+                    $html1 .= '</tr>';
+                }
+            }
+
+            $html1 .= '</tbody></table>';
+
+            $pdf->writeHTML($html1);
+        }
+
+        $this->createTenantDirectoryIfNotExists();
+
+        $pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
 
         $this->attachFilesToSavedDoc($document);
 
@@ -358,7 +546,8 @@ class DocumentController extends AppBaseController
 
         $documentType = $novo;
 
-        $sector = Sector::where('external', 1)->pluck('name', 'id')->prepend('Selecione...', 0);
+        $sector = Sector::where('external', 1)->pluck('name', 'id');
+        $documentSectors = DocumentSector::where('document_id', $document->id)->get();
 
         $assemblymensList = $this->getAssemblymenList();
         $documentAssemblyman = DocumentAssemblyman::where('document_id', $id)->pluck('assemblyman_id');
@@ -367,12 +556,23 @@ class DocumentController extends AppBaseController
 
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
+        $translation = Document::$translation;
+
         $logs = Log::where('auditable_id', $document->id)
             ->where('auditable_type', Document::class)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs'))
+
+        foreach ($documentSectors as $items) {
+            $sectors_default[] = $items->sector_id;
+        }
+
+        if (empty($sectors_default)) {
+            $sectors_default = [];
+        }
+
+        return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs', 'translation', 'sectors_default'))
             ->with('document', $document)
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1])
@@ -401,10 +601,6 @@ class DocumentController extends AppBaseController
 
         $document_data = $request->validated();
 
-        if (! $document_data['sector_id']) {
-            $document_data['sector_id'] = null;
-        }
-
         if (empty($document)) {
             flash('Documento não encontrado')->error();
 
@@ -415,7 +611,23 @@ class DocumentController extends AppBaseController
 
         $this->documentRepository->update($document, $document_data);
 
-        DocumentAssemblyman::where('document_id', $id)->delete();
+        if (! empty($input['sectors'])) {
+            $sectorsIds = $input['sectors'];
+            $sectors = Sector::whereIn('id', $sectorsIds)->get();
+
+            $documentSectors = DocumentSector::where('document_id', $document->id);
+            $documentSectors->whereNotIn('sectorId', $sectorsIds)->delete();
+
+            $sectors->each(function ($sector) use ($document) {
+                $documentSector = new DocumentSector();
+                $documentSector->document()->associate($document);
+                $documentSector->sector()->associate($sector);
+                $documentSector->save();
+            });
+        }
+
+
+        $document_asseblyman_delete = DocumentAssemblyman::where('document_id', $id)->delete();
 
         if (! empty($document_data['assemblymen'])) {
             foreach ($document_data['assemblymen'] as $assemblyman) {
@@ -520,12 +732,14 @@ class DocumentController extends AppBaseController
         $doc_ids = DocumentFiles::withTrashed()->where('document_id', $document->id)->pluck('id')
             ->toArray();
 
+        $translation = DocumentFiles::$translation;
+
         $logs = Log::whereIn('auditable_id', $doc_ids)
             ->where('auditable_type', DocumentFiles::class)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('documents.attachament')->with(compact('document', 'document_files', 'logs'));
+        return view('documents.attachament')->with(compact('document', 'document_files', 'logs', 'translation'));
     }
 
     public function attachamentUpload($id, Request $request)
@@ -610,6 +824,15 @@ class DocumentController extends AppBaseController
 
         $document = Document::find($input['document_id']);
 
+        ProcessingDocument::create([
+            'document_id' => $document->id,
+            'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
+            'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
+                ->first()->id,
+            'processing_document_date' => now()->format('d/m/Y'),
+            'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
+        ]);
+
         $year = explode('/', $document->date);
         $year = $year[2];
 
@@ -655,7 +878,6 @@ class DocumentController extends AppBaseController
                     $date = explode('/', $input['protocol_date']);
                     $time = explode(' ', $date[2]);
 
-                    $document_protocol = $document_protocol;
                     $document_protocol->created_at = $time[0].'-'.$date[1].'-'.$date[0].$time[1];
                     $document_protocol->save();
 
@@ -786,7 +1008,6 @@ class DocumentController extends AppBaseController
             return redirect(route('documents.index'));
         }
 
-        $comission = Commission::active()->pluck('name', 'id');
         $tramitacao = Parameters::where('slug', 'realiza-tramite-em-documentos')->first()->value;
 
         $document_situation = DocumentSituation::pluck('name', 'id')->prepend('Selecione... ', 0);
@@ -796,16 +1017,46 @@ class DocumentController extends AppBaseController
 
         $destinations = Destination::pluck('name', 'id')->prepend('Selecione...', '');
 
+        $documents = $document->processingDocument()->orderBy('processing_document_date', 'desc')->get();
+        foreach ($documents as $key => $last) {
+            $array[] = $key;
+        }
+
+        $last_position = empty($array) ? [] : end($array);
+
         return view(
             'documents.advices',
             compact(
                 'document_situation',
-                'comission',
                 'tramitacao',
                 'advice_situation_document',
                 'advice_publication_document',
                 'status_processing_document',
+                'documents',
+                'last_position',
                 'destinations'
+            )
+        )
+            ->with(compact('document'));
+    }
+
+    public function legalOpinion($documentId)
+    {
+        setlocale(LC_ALL, 'pt_BR');
+        $document = $this->documentRepository->findByID($documentId);
+
+        if (empty($document)) {
+            flash('Documento não encontrado')->error();
+
+            return redirect(route('documents.index'));
+        }
+
+        $comission = Commission::active()->pluck('name', 'id');
+
+        return view(
+            'documents.legal-opinion',
+            compact(
+                'comission',
             )
         )
             ->with(compact('document'));

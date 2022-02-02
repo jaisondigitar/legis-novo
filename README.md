@@ -43,9 +43,18 @@ docker-compose down -v
 ```
 
 7. Executar para migrar o banco Legis:
-```shell
-./dartisan migrate
-```
+   1. Migrate geral
+      ```shell
+         ./dartisan migrate
+      ```
+   2. Tenants migrate
+      ```shell
+        ./dartisan tenants:migrate
+      ```
+   3. Tenants Seed
+      ```shell
+        ./dartisan tenants:seed
+      ```
 
 8. Abrir o Postman:
 

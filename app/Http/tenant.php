@@ -332,6 +332,10 @@ Route::middleware([
             'as' => 'lawsProjects.advices',
             'uses' => 'LawsProjectController@advices',
         ]);
+        Route::get('/lawsProjects/legal-opinion/{id}', [
+            'as' => 'lawsProjects.legal-opinion',
+            'uses' => 'LawsProjectController@legalOpinion',
+        ]);
 
         Route::get('law-file-delete/{id}', 'LawsProjectController@attachamentDelete');
         Route::post('/lawsProjects/{id}/attachament-upload', ['as' => 'lawsProjects.attachament.upload', 'uses' => 'LawsProjectController@attachamentUpload']);
@@ -343,6 +347,11 @@ Route::middleware([
         Route::get('/documents/advices/{id}', [
             'as' => 'documents.advices',
             'uses' => 'DocumentController@advices',
+        ]);
+
+        Route::get('/documents/legal-opinion/{id}', [
+            'as' => 'documents.legal-opinion',
+            'uses' => 'DocumentController@legalOpinion',
         ]);
 
         Route::resource('processings', 'ProcessingController');
@@ -422,6 +431,8 @@ Route::middleware([
         ]);
 
         Route::resource('users', 'UserController');
+        Route::get('/edit-password', 'UserController@editPassword');
+        Route::post('/update-password', 'UserController@updatePassword')->name('user.password-update');
         Route::get('/users/{id}/toggle', 'UserController@toggle');
         Route::get('/users/{id}/auditing', 'UserController@auditing');
         Route::get('users/{id}/delete', [

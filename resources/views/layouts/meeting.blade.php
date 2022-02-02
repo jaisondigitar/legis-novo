@@ -19,7 +19,7 @@
                     </div>
                     <ul class="list-group">
                         <li class="list-group-item text-left active">
-                            @shield('meetings.show')<a href="{!! route('meetings.show', [$meeting->id]) !!}" class="menu" style="color: #fff;"><i class="fa fa-home"></i> INICIO</a>@endshield
+                            @shield('meetings.show')<a href="{!! route('meetings.show', [$meeting->id]) !!}" class="menu" style="color: #fff;"><i class="fa fa-home"></i> INÍCIO</a>@endshield
                         </li>
                         <li class="list-group-item text-left">
                             @shield('meetings.edit')<a href="{!! route('meetings.newpauta', [$meeting->id]) !!}" class="menu"><i class="fa fa-book"></i> PAUTA</a>@endshield

@@ -122,6 +122,50 @@ class LawsProject extends BaseModel
         'comission_id',
     ];
 
+    public static $translation = [
+        'LAWSPROJECT' => 'PROJETO DE LEI',
+        'law_date' => 'Data projeto',
+        'law_type_id' => 'Tipo de le',
+        'reference_id' => 'Referente à',
+        'situation_id' => 'Situação Atual',
+        'date_presentation' => 'Data da Apresentação',
+        'comission_id' => 'Comissão',
+        'assemblyman_id' => 'Responsável',
+        'title' => 'Ementa',
+        'is_read' => 'Lido',
+        'law_place_id' => 'Local de publicação',
+        'law_date_publish' => 'Data de publicação',
+        'law_number' => 'Número da Lei',
+        'is_ready' => 'Aprovado pela câmara',
+        'sub_title' => ' Texto PREFIXO',
+        'sufix' => 'Texto OBSERVAÇÃO',
+        'justify' => 'Texto JUSTIFICATIVA',
+        'town_hall' => 'Prefeitura',
+        'id' => 'Id',
+        'project_number' => 'Número do Projeto',
+        'updated_at' => 'Data de Atualização',
+        'file' => 'Arquivo',
+        'law_file' => 'Arquivo de lei',
+        'protocol' => 'Protocolo',
+        'protocoldate' => 'Data do Protocolo',
+        'advice_situation_id' => 'ID de Situação de Conselho',
+        'advice_publication_id' => 'Id da Publicação do Conselho',
+        'advice_date' => 'Data do Conselho',
+        'first_discussion' => 'Primeira Discussão',
+        'second_discussion' => 'Segunda Discussão',
+        'third_discussion' => 'Terceira Discussão',
+        'single_discussion' => 'Quarta Discussão',
+        'special_urgency' => 'Urgência Especial',
+        'approved' => 'Aprovado',
+        'sanctioned' => 'Sancionado',
+        'Promulgated' => 'Promulgado',
+        'Rejected' => 'Rejeitado',
+        'Vetoed' => 'Votado',
+        'Filed' => 'Arquivos',
+        'sustained' => 'Sustentado',
+        'observation' => 'Observação',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *
@@ -303,12 +347,12 @@ class LawsProject extends BaseModel
 
     public function scopeApproved($query)
     {
-        return $query->whereNotNull('law_number');
+        return $query->where('town_hall', 1);
     }
 
     public function scopeUnRead($query)
     {
-        return $query->where('is_ready', 0);
+        return $query->where('is_read', 1);
     }
 
     // mutator parecer law

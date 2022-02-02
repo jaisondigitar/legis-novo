@@ -8,8 +8,8 @@
     <meta name="keywords" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>MakerLegis</title>
-    <link rel="shortcut icon" href="/assets/images/genesis.ico" type="image/png"/>
+    <title>GPL</title>
+    <link rel="shortcut icon" href="/assets/images/logoLegis.ico" type="image/png"/>
 
     <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -42,6 +42,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.css" rel="stylesheet">
 
     <!-- MAIN CSS (REQUIRED ALL PAGE)-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
     <link href="/assets/css/style-responsive.css" rel="stylesheet">
@@ -57,6 +58,9 @@
     <script src="/assets/pusher.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
         .log {
@@ -154,6 +158,13 @@
             color: red;
             padding-right: 3px;
         }
+        .resume {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            margin: 0;
+        }
 
         /* Tooltip configs */
         .tooltip-legis:hover::before {
@@ -182,6 +193,46 @@
         }
     </style>
     <script type="application/javascript">
+        const getDate = (number) => {
+            if (number <= 9)
+                return "0" + number;
+            else
+                return number;
+        }
+        let date = new Date();
+
+        Date.prototype.addDays = function(days) {
+            const date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        }
+
+        let newDate = date.addDays(10)
+        let newDateFive = date.addDays(5)
+
+        let dateForm = (
+            getDate(date.getDate().toString()) + "/"
+            + (getDate(date.getMonth()+1).toString()) + "/"
+            + date.getFullYear());
+
+        let dateTimeForm = (
+            getDate(date.getDate().toString()) + "/"
+            + (getDate(date.getMonth()+1).toString()) + "/"
+            + date.getFullYear() + " "
+            + getDate(date.getHours()) + ":"
+            + getDate(date.getMinutes()));
+
+        let someDateForm = (
+            getDate(newDate.getDate().toString()) + "/"
+            + (getDate(newDate.getMonth()+1).toString()) + "/"
+            + newDate.getFullYear());
+
+        let someDateFiveForm = (
+            getDate(newDateFive.getDate().toString()) + "/"
+            + (getDate(newDateFive.getMonth()+1).toString()) + "/"
+            + newDateFive.getFullYear());
+
+        let timeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
 
         jQuery.ajaxSetup({
             beforeSend: function() {
@@ -356,7 +407,7 @@
 </head>
 
 <body class="tooltips top-navigation">
-
+@include('popper::assets')
 
 <!--
 ===========================================================
@@ -372,7 +423,7 @@ BEGIN PAGE
             <a href="/admin">
                 <div class="logo-brand" style="padding: 5px 0">
                     <img
-                        src="/assets/images/not-name.png"
+                        src="/assets/images/gpl-not-description.png"
                         alt="Logo"
                         style="max-width: 100%;
                         height: 100%;"
@@ -392,7 +443,9 @@ BEGIN PAGE
                             <strong>{{ Auth::user()->name }}</strong>
                         </a>
                         <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
-                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a></li>
+                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a>
+                                <a href="/edit-password"><i class="fa fa-key"></i> Mudar senha </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -435,7 +488,7 @@ BEGIN PAGE
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/admin">MakerLegis</a>
+                    <a class="navbar-brand" href="/admin">GPL</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -896,8 +949,6 @@ Placed at the end of the document so the pages load faster
         });
     });
 </script>
-
-
 
 @if(Auth::check() && Auth::user()->sector->slug=='gabinete')
     <div class="modal fade" id="select_gabinete" tabindex="-1" role="dialog" aria-hidden="true">

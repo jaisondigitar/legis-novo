@@ -9,8 +9,19 @@ class LawFile extends BaseModel
         'filename',
     ];
 
+    public static $translation = [
+        'LAWFILE' => 'ARQUIVO DE LEI',
+        'laws_project_id' => 'Referente à',
+        'filename' => 'Nome do Arquivo',
+    ];
+
     public function law_project()
     {
         return $this->belongsTo(LawsProject::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

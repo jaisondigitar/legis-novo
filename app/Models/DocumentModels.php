@@ -58,6 +58,14 @@ class DocumentModels extends BaseModel
         'text_initial',
     ];
 
+    public static $translation = [
+        'DOCUMENTMODELS' => 'MODELOS DE DOCUMENTOS',
+        'document_type_id' => 'Tipo de Documento',
+        'name' => 'Nome',
+        'content' => 'Conteúdo',
+        'text_initial' => 'Texto Inicial',
+    ];
+
     /**
      * The attributes that should be casted to native types.
      *

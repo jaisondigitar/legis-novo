@@ -5,7 +5,6 @@
 @section('content')
     <div class="the-box rounded">
         <form method="GET">
-            <input type="hidden" name="has-filter" value="true">
             <div class="form-group col-md-2">
                 {!! Form::label('date', 'Registro:') !!}
                 {!!
@@ -16,7 +15,7 @@
                     ])
                 !!}
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-3">
                 {!! Form::label('owner_id', 'Tipo:') !!}
                 {!! Form::select(
                     'law_type_id',
@@ -26,7 +25,7 @@
                     $form->input('law_type_id'), ['class' => 'form-control'])
                 !!}
             </div>
-            <div class="form-group col-md-1">
+            <div class="form-group col-md-2">
                 {!! Form::label('date', 'Número:') !!}
                 {!! Form::input(
                     'number',
@@ -35,7 +34,7 @@
                     ['class' => 'form-control', 'min' => 0])
                 !!}
             </div>
-            <div class="form-group col-md-1">
+            <div class="form-group col-md-2">
                 {!! Form::label('date', 'Ano:') !!}
                 {!! Form::input(
                     'number',
@@ -53,7 +52,9 @@
                     ['class' => 'form-control'])
                 !!}
             </div>
+
             <div class="clearfix"></div>
+
             <div class="form-group col-md-10">
                 <button class="btn btn-block btn-primary"><i class="fa fa-search"></i> Pesquisar</button>
             </div>

@@ -26,24 +26,33 @@
 <!--- Email Field --->
 <div class="form-group col-sm-6 col-lg-6">
     {!! Form::label('email', 'Email:', ['class' => 'required']) !!}
-	{!! Form::email('email', null, ['class' => 'form-control', isset($user->email) ? 'disabled' : '']) !!}
+	{!! Form::email('email', null, ['class' => 'form-control']) !!}
 </div>
 
 <!--- Password Field --->
-<div class="form-group col-sm-6 col-lg-4">
+<div class="form-group col-sm-4 col-lg-4">
     {!! Form::label('password', 'Senha:') !!}
 	{!! Form::password('password', ['class' => 'form-control']) !!}
 </div>
 
 <!--- Active Field --->
-<div class="form-group col-sm-6 col-lg-2">
+<div class="form-group col-sm-1 col-lg-1">
     <span>Ativo</span><br>
     <label for="active">
-        <input name="active" id="active" class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal" type="checkbox"
+        <input
+            name="active"
+            id="active"
+            class="switch"
+            data-on-text="Sim"
+            data-off-text="Não"
+            data-off-color="danger"
+            data-on-color="success"
+            data-size="normal"
+            type="checkbox"
             @if(isset($user))
-                {!! $user->active>0?'checked':'' !!}
+               {!! $user->active>0?'checked':'' !!}
             @else
-                checked
+               checked
             @endif
         >
     </label>
@@ -59,19 +68,19 @@
             </tr>
             @foreach($levels as $value)
                 <?php
-                $teste = false;
-                if (isset($user)) {
-                    $teste = $user->hasRole($value->name);
-                }
+                    $teste = false;
+                    if (isset($user)) {
+                        $teste = $user->hasRole($value->name);
+                    }
                 ?>
-                    <tr>
-                        <td>
-                            <label>
-                                {!! Form::checkbox('roles[]', $value->id, $teste, ['class' => 'required']) !!}
-                                {!! $value->name !!}
-                            </label>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <label>
+                            {!! Form::checkbox('roles[]', $value->id, $teste) !!}
+                            {!! $value->name !!}
+                        </label>
+                    </td>
+                </tr>
             @endforeach
         </table>
         <div class="clearfix"></div>
@@ -88,16 +97,16 @@
             </tr>
             @foreach($assemblyman as $value)
                 <?php
-                    $teste = false;
+                    $test = false;
                     if (isset($user)) {
-                        $teste = $user->hasRole($value->name);
+                        $test = in_array($value->id, $user_assemblyman);
                     }
                 ?>
                 <tr>
                     <td>
                         <label>
-                            {!! Form::checkbox('assemblyman[]', $value->id, $teste) !!}
-                            {!! $value->short_name !!}
+                            {!! Form::checkbox('assemblyman[]', $value->id, $test) !!}
+                            {!! $value->short_name !!} {!! $value->id !!}
                         </label>
                     </td>
                 </tr>

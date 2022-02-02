@@ -22,6 +22,20 @@ class Processing extends BaseModel
         'obsevation',
         'processing_file',
         'destination_id',
+        'date_end',
+    ];
+
+    public static $translation = [
+        'PROCESSING' => 'EM PROCESSAMENTO',
+        'law_projects_id' => 'Id da Lei do Projeto',
+        'advice_publication_id' => 'ID de Publicação de Conselho',
+        'advice_situation_id' => 'Id da Situação do Conselho',
+        'status_processing_law_id' => 'Id de Lei de Processamento de Status',
+        'processing_date' => 'Processando Dados',
+        'obsevation' => 'Observação',
+        'processing_file' => 'Processando Arquivo',
+        'destination_id' => 'Id de Destino',
+        'date_end' => 'Prazo',
     ];
 
     /**
@@ -41,6 +55,14 @@ class Processing extends BaseModel
     }
 
     /**
+     * @return HasOne
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
      * @param $processing_date
      */
     public function setProcessingDateAttribute($processing_date)
@@ -55,6 +77,32 @@ class Processing extends BaseModel
     public function getProcessingDateAttribute($processing_date): string
     {
         return $this->asDateTime($processing_date)->format('d/m/Y');
+    }
+
+    /**
+     * @param $created_at
+     * @return string
+     */
+    public function getCreatedAtAttribute($created_at): string
+    {
+        return $this->asDateTime($created_at)->format('d/m/Y H:i');
+    }
+
+    /**
+     * @param $date_end
+     */
+    public function setDateEndAttribute($date_end)
+    {
+        $this->attributes['date_end'] = Carbon::createFromFormat('d/m/Y', $date_end);
+    }
+
+    /**
+     * @param $date_end
+     * @return string
+     */
+    public function getDateEndAttribute($date_end)
+    {
+        return isset($date_end) ? $this->asDateTime($date_end)->format('d/m/Y') : null;
     }
 
     /**

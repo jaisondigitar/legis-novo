@@ -78,7 +78,6 @@ class Document extends BaseModel
         'document_type_id',
         'users_id',
         'owner_id',
-        'sector_id',
         'number',
         'content',
         'date',
@@ -89,6 +88,23 @@ class Document extends BaseModel
         'resume',
         'original_file',
         'with_attachments_file',
+    ];
+
+    public static $translation = [
+        'DOCUMENT' => 'DOCUMENTO',
+        'document_type_id' => 'Tipo de Documento',
+        'owner_id' => 'Setor',
+        'date' => 'Data',
+        'sector_id' => 'Setor',
+        'resume' => 'Ementa',
+        'content' => 'Conteúdo',
+        'users_id' => 'Usuário',
+        'approved' => 'Aprovado',
+        'number' => 'Número',
+        'read' => 'Lido',
+        'id' => 'Id',
+        'session_date' => 'Data da Sessão',
+        'updated_at' => 'Data de Atualização',
     ];
 
     /**
@@ -157,6 +173,11 @@ class Document extends BaseModel
         return $this->hasMany('App\Models\DocumentFiles', 'document_id');
     }
 
+    public function documentsSectors()
+    {
+        return $this->hasMany(DocumentSector::class);
+    }
+
     public function processingDocument()
     {
         return $this->hasMany('App\Models\ProcessingDocument', 'document_id', 'id');
@@ -197,9 +218,9 @@ class Document extends BaseModel
         return $this->asDateTime($date)->format('d/m/Y');
     }
 
-    public function getDateC($date)
+    public function getCreatedAtAttribute($created_at): string
     {
-        return $this->asDateTime($date)->format('Y/m/d');
+        return $this->asDateTime($created_at)->format('d/m/Y H:i');
     }
 
     public function getYear($date)

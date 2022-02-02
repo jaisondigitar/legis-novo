@@ -8,8 +8,8 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Painel de Votação - MakerLegis</title>
-    <link rel="shortcut icon" href="assets/images/genesis.ico" type="image/png"/>
+    <title>Painel de Votação - GPL</title>
+    <link rel="shortcut icon" href="assets/images/logoLegis.ico" type="image/png"/>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>

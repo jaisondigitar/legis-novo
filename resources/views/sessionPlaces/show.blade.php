@@ -6,6 +6,6 @@
     @include('sessionPlaces.show_fields')
 
     <div class="form-group">
-           <a href="{!! route('sessionPlaces.index') !!}" class="btn btn-default">Back</a>
+           <a href="{!! route('sessionPlaces.index') !!}" class="btn btn-default">Voltar</a>
     </div>
 @endsection
