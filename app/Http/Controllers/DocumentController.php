@@ -135,6 +135,16 @@ class DocumentController extends AppBaseController
             }
         }
 
+        $user = Auth::user();
+        $sector = $user->sector;
+        if ($sector && $sector->external) {
+            $documents_query = $documents_query->where(
+                function ($query) use ($sector, $user) {
+                    $query->where('sector_id', $sector->id)->orWhere('users_id', $user->id);
+                }
+            );
+        }
+
         $documents = $documents_query->with([
                 'processingDocument' => function ($query) {
                     return $query->orderByDesc('created_at')->get();
