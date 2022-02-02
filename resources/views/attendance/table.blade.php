@@ -127,13 +127,13 @@
                     data: data,
                     method: 'PUT'
                 }).success((data) => {
-                    console.log(data);
+
                     data = JSON.parse(data);
 
-                    if (data) {
+                    if (data.success) {
                         toastr.success("Pedido salvo com sucesso!!");
-
                         window.location.reload()
+
                         $('#exit_date').modal('hide');
                     } else {
                         toastr.error("Erro ao salvar pedido!!");

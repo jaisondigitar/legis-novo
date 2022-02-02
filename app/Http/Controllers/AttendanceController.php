@@ -245,6 +245,10 @@ class AttendanceController extends Controller
 
         $this->attendanceRepository->update($attendance, $request->all());
 
+        if ($request->ajax()) {
+            return json_encode(['success' => true]);
+        }
+
         return redirect(route('attendance.index'));
     }
 
