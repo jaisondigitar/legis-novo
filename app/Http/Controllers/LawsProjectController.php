@@ -26,7 +26,6 @@ use App\Models\PartiesAssemblyman;
 use App\Models\Processing;
 use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
-use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
 use App\Services\StorageService;
@@ -40,7 +39,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
@@ -108,8 +106,6 @@ class LawsProjectController extends AppBaseController
      */
     public function index(Request $request)
     {
-        DB::enableQueryLog();
-
         if (! Defender::hasPermission('lawsProjects.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
@@ -149,6 +145,25 @@ class LawsProjectController extends AppBaseController
                 $query->whereIn('assemblyman_id', $offices_ids)
                     ->orWhere('protocol', '!=', '');
             });
+        }
+
+        $user = Auth::user();
+        if ($user->sector && $user->sector->external) {
+            $where = function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhereHas('user',
+                        function ($query) {
+                            $query->whereHas(
+                                'sector',
+                                function ($query) {
+                                    $query->where('external', 1);
+                                }
+                            );
+                        }
+                    );
+            };
+
+            $lawsProjects_query->where($where);
         }
 
         if (Auth::user()->can_request_legal_opinion && ! Auth::user()->hasRole('root')) {
