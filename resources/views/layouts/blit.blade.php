@@ -381,6 +381,7 @@
 </head>
 
 <body class="tooltips top-navigation">
+@include('popper::assets')
 
 <!--
 ===========================================================
