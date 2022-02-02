@@ -5,6 +5,7 @@
 @section('content')
     <div class="the-box rounded">
         <form method="GET">
+            <input type="hidden" name="has-filter" value="true">
             <div class="form-group col-md-2">
                 {!! Form::label('date', 'Registro:') !!}
                 {!!

@@ -116,73 +116,65 @@ class LawsProjectController extends AppBaseController
             return redirect('/admin');
         }
 
-        $parameters = Parameters::where('slug', 'sempre-usa-protocolo-externo')->first();
-
-        $externo = ! $parameters->value ? 'readonly' : '';
-
-        $lawsProjects_query = LawsProject::query();
+        $lawProjects_query = lawProjects::query();
 
         if (data_get($request->all(), 'has-filter')) {
-            $lawsProjects_query->filterByColumns();
-        }
-
-        $law_places = LawsPlace::pluck('name', 'id')->prepend('Selecione...', '');
-
-        $assemblymensList = $this->getAssemblymenList();
-
-        $references = LawsProject::all();
-
-        $references_project = [0 => 'Selecione'];
-
-        foreach ($references as $reference) {
-            $references_project[$reference->id] = $reference->project_number.'/'.$reference
-                    ->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
-        }
-
-        $lawsProjects_query->parecer = $request->parecer;
-
-        $offices = UserAssemblyman::where('users_id', Auth::user()->id)->get();
-        $offices_ids = $this->getAssembbyIds($offices);
-
-        if (Auth::user()->sector->slug === 'gabinete') {
-            $lawsProjects_query->where(function ($query) use ($offices_ids) {
-                $query->whereIn('assemblyman_id', $offices_ids)
-                    ->orWhere('protocol', '!=', '');
-            });
-        }
-
-        if (Auth::user()->can_request_legal_opinion && ! Auth::user()->hasRole('root')) {
-            $lawsProjects_query->whereHas('processing', function ($query) {
-                $query->where(
-                    'destination_id',
-                    Destination::where('name', 'JURÍDICO')->first()->id
+            $lawProjects_query = $lawProjects_query->filterByColumns()
+                ->filterByRelation(
+                    'lawProject_number',
+                    'date',
+                    'date',
+                    $request->get('reg')
                 );
-            })->with(['processing' => function ($query) {
-                $query->where(
-                    'destination_id',
-                    Destination::where('name', 'JURÍDICO')->first()->id
-                );
-            }]);
-        } else {
-            $lawsProjects_query->with(['processing' => function ($query) {
-                $query->orderByDesc('created_at')->get();
-            }]);
+
+            if (isset(lawProjectStatuses::$statuses[$request->get('status')])) {
+                if (
+                    lawProjectStatuses::$statuses[$request->get('status')] ===
+                    lawProjectStatuses::PROTOCOLED
+                ) {
+                    $lawProjects_query->hasRelation('lawProject_protocol');
+                } elseif (
+                    lawProjectStatuses::$statuses[$request->get('status')] ===
+                    lawProjectStatuses::OPENED
+                ) {
+                    $lawProjects_query->whereDoesntHave('lawProject_protocol');
+                }
+            }
         }
 
-        $lawsProjects = $lawsProjects_query->orderByDesc('created_at')
+        $lawProjects = $lawProjects_query->with([
+            'processinglawProject' => function ($query) {
+                return $query->orderByDesc('created_at')->get();
+            },
+            'processinglawProject.statusProcessinglawProject',
+            'processinglawProject.destination',
+            'externalSector',
+        ])
+            ->orderByDesc('created_at')
             ->paginate(20);
 
-        return view('lawsProjects.index', compact('externo'))
+        if (! Auth::user()->hasRoles(['root', 'admin'])) {
+            foreach ($lawProjects->items() as $index => $lawProjects) {
+                if (! $lawProjects->lawProjects_protocol && $lawProjects->users_id !== Auth::user()->id) {
+                    unset($lawProjects[$index]);
+                }
+            }
+        }
+
+        $protocol_types = ProtocolType::pluck('name', 'id');
+        $assemblymensList = $this->getAssemblymenList();
+
+        return view('lawProjects.index')
             ->with('assemblymensList', $assemblymensList[1])
             ->with('form', $request)
-            ->with('lawsProjects', $lawsProjects)
-            ->with('references_project', $references_project)
-            ->with('law_places', $law_places)
-            ->with('voting');
+            ->with('lawProjects', $lawProjects)
+            ->with('protocol_types', $protocol_types);
     }
 
     /**
-     * @return Application|Factory|RedirectResponse|Redirector|View
+     * Show the form for creating a new lawProject.
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
