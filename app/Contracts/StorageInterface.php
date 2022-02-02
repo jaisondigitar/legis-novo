@@ -8,7 +8,7 @@ interface StorageInterface
 
     public function inCompanyFolder();
 
-    public function inDocumentsFolder();
+    public function inDocumentsFolder(string $nested_folder = '');
 
     public function inLawProjectsFolder();
 
@@ -30,7 +30,7 @@ interface StorageInterface
 
     public function sendContent(string $content, string $ext = '.pdf');
 
-    public function send(bool $custom = true, string $filename = '');
+    public function send(bool $custom = true, string $file_name = null, string $suffix = '');
 
     public function getPath(string $filename);
 
@@ -39,4 +39,6 @@ interface StorageInterface
     public function removeOne(string $filename);
 
     public function removeMany(array $filenames);
+
+    public function removeFolder(string $path_to_folder);
 }

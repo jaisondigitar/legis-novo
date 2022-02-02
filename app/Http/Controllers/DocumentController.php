@@ -232,7 +232,7 @@ class DocumentController extends AppBaseController
      * @param CreateDocumentRequest $request
      *
      * @return Application|Redirector|RedirectResponse
-     * @throws BindingResolutionException
+     * @throws BindingResolutionException|Throwable
      */
     public function store(CreateDocumentRequest $request)
     {
@@ -255,7 +255,7 @@ class DocumentController extends AppBaseController
             ->orderBy('number', 'DESC')
             ->first();
 
-        $input['number'] = $last_document->number + 1;
+        $input['number'] = $last_document ? $last_document->number + 1 : 0;
 
         $document = $this->documentRepository->create($input);
 
@@ -283,7 +283,7 @@ class DocumentController extends AppBaseController
         $doc_number->save();
 
         $this->documentRepository->update($document, [
-            'file' => $this->documentService->saveFile(Document::find($document->id)),
+            'original_file' => $this->documentService->saveFile(Document::find($document->id)),
         ]);
 
         flash('Documento salvo com sucesso.')->success();
@@ -316,51 +316,6 @@ class DocumentController extends AppBaseController
         $files_to_remove[] = 'doc.pdf';
 
         $this->removeUnusedLocalFiles($files_to_remove);*/
-    }
-
-    private function attachFilesToSavedDoc(Document $document)
-    {
-        $pdfMerger = new PDFMerger;
-
-        $pdfMerger->addPDF(storage_path().'/app/documents/doc.pdf');
-
-        $document->documents
-            ->each(function ($doc) use ($pdfMerger) {
-                $file_content = (new StorageService())->usingDisk('digitalocean')
-                    ->inDocumentsFolder()
-                    ->getFile($doc->filename);
-
-                (new StorageService())->usingDisk('local')
-                    ->usingDisk('local')->inDocumentsFolder()
-                    ->sendContent($file_content)
-                    ->send(false, $doc->filename);
-
-                $pdfMerger->addPDF(
-                    storage_path().'/app/documents/'.$doc->filename
-                );
-            });
-
-        $pdfMerger->merge(
-            'string',
-            storage_path().'/app/documents/law-project.pdf'
-        );
-    }
-
-    public function removeUnusedLocalFiles(array $filenames)
-    {
-        (new StorageService())->usingDisk('local')
-            ->inDocumentsFolder()
-            ->removeMany($filenames);
-    }
-
-    /**
-     * @return void
-     */
-    private function createTenantDirectoryIfNotExists()
-    {
-        if (! Storage::exists(storage_path().'/app/documents')) {
-            Storage::makeDirectory('documents');
-        }
     }
 
     /**
@@ -416,7 +371,6 @@ class DocumentController extends AppBaseController
             ->where('auditable_type', Document::class)
             ->orderBy('created_at', 'desc')
             ->get();
-//
 
         return view('documents.edit', compact('status_processing_document', 'documentAssemblyman', 'document_situation', 'tramitacao', 'logs'))
             ->with('document', $document)
@@ -433,7 +387,7 @@ class DocumentController extends AppBaseController
      * @param UpdateDocumentRequest $request
      *
      * @return Application|Redirector|RedirectResponse
-     * @throws BindingResolutionException
+     * @throws BindingResolutionException|Throwable
      */
     public function update(int $id, UpdateDocumentRequest $request)
     {
@@ -478,7 +432,7 @@ class DocumentController extends AppBaseController
         $doc_number->save();
 
         $this->documentRepository->update($document, [
-            'file' => $this->documentService->saveFile($document),
+            'original_file' => $this->documentService->saveFile($document),
         ]);
 
         flash('Documento editado com sucesso')->success();
@@ -526,7 +480,8 @@ class DocumentController extends AppBaseController
     /**
      * Update status of specified Document from storage.
      *
-     * @param  int $id
+     * @param  int  $id
+     * @throws BindingResolutionException
      */
     public function toggleRead($id)
     {
@@ -582,14 +537,19 @@ class DocumentController extends AppBaseController
         }
 
         $document = Document::find($id);
+
+        throw_if(! $document->original_file, new Exception('Documento sem arquivo armazenado'));
+
         $files = $request->file('file');
 
         if ($files) {
             foreach ($files as $file) {
                 $filename = static::$storageService
-                    ->inDocumentsFolder()
+                    ->inDocumentsFolder(
+                        $this->documentService->takeFolderName($document->original_file)
+                    )
                     ->sendFile($file)
-                    ->send();
+                    ->send(true, '', '_attachment');
 
                 $document_files = new DocumentFiles();
                 $document_files->document_id = $document->id;
@@ -597,6 +557,12 @@ class DocumentController extends AppBaseController
                 $document_files->save();
             }
         }
+
+        $this->documentRepository->update($document, [
+           'with_attachments_file' => $this->documentService->attachFilesToDoc($document->fresh()),
+        ]);
+
+        dd($this->documentService->removeUnusedLocalFiles(storage_path()));
 
         return Redirect::route('documents.attachament', $document->id);
     }
@@ -743,8 +709,6 @@ class DocumentController extends AppBaseController
         $date1 = explode(' ', $date[2]);
 
         $date_res = $date1[0].'-'.$date[1].'-'.$date[0].' '.$date1[1];
-
-//        dd($date, $date1, $date_res);
 
         $documentVerify = DocumentProtocol::where('number', $input['protocolo'])->whereYear('created_at', '=', $date1[0])->get();
 

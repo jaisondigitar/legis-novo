@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\StorageInterface;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
@@ -42,9 +43,9 @@ class StorageService implements StorageInterface
     /**
      * @return $this
      */
-    public function inDocumentsFolder(): self
+    public function inDocumentsFolder(string $nested_folder = ''): self
     {
-        $this->folder = 'documents';
+        $this->folder = "documents/{$nested_folder}";
 
         return $this;
     }
@@ -149,7 +150,7 @@ class StorageService implements StorageInterface
      * @param  string  $ext
      * @return $this
      */
-    public function sendContent(string $content, string $ext = '.pdf'): self
+    public function sendContent(string $content, string $ext = 'pdf'): self
     {
         static::$file = $content;
 
@@ -160,20 +161,31 @@ class StorageService implements StorageInterface
 
     /**
      * @param  bool  $custom
-     * @param  string  $filename
+     * @param  string|null  $file_name
+     * @param  string  $suffix
      * @return string
      * @throws Throwable
      */
-    public function send(bool $custom = true, string $filename = ''): string
+    public function send(bool $custom = true, string $file_name = null, string $suffix = ''): string
     {
-        if ($custom) {
-            $filename = Str::random(32).'.'.static::$ext;
+        $random_string = $file_name ?: Str::random(32);
+        $filename = "{$random_string}{$suffix}.".static::$ext;
 
+        if ($custom) {
             $resp = Storage::disk($this->disk)
-                ->putFileAs($this->folder, static::$file, $filename, 'public');
+                ->putFileAs(
+                    $this->folder,
+                    static::$file,
+                    $filename,
+                    'public'
+                );
         } else {
             $resp = Storage::disk($this->disk)
-                ->put($this->folder.'/'.$filename, static::$file, 'public');
+                ->put(
+                    "{$this->folder}/{$filename}",
+                    static::$file,
+                    'public'
+                );
         }
 
         throw_if(! $resp, new Exception('Falha ao salvar arquivo'));
@@ -222,5 +234,14 @@ class StorageService implements StorageInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param  string  $path_to_folder
+     * @return bool
+     */
+    public function removeFolder(string $path_to_folder): bool
+    {
+        return File::deleteDirectory($path_to_folder);
     }
 }

@@ -10,7 +10,9 @@ use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Jurosh\PDFMerge\PDFMerger;
 use Throwable;
 
 class DocumentService
@@ -44,10 +46,12 @@ class DocumentService
     {
         $this->buildDocument($document);
 
+        $file_name = Str::random(32);
+
         return $this->storageService
-            ->inDocumentsFolder()
+            ->inDocumentsFolder($file_name)
             ->sendContent($this->pdfService->fileToString())
-            ->send(false, Str::random(32).'.pdf');
+            ->send(false, $file_name, '_original');
     }
 
     /**
@@ -57,9 +61,15 @@ class DocumentService
      */
     public function openFileInBrowser(Document $document): string
     {
-        throw_if(! $document->file, new Exception('Documento sem arquivo armazenado'));
+        throw_if(
+            ! $document->original_file,
+            new Exception('Documento sem arquivo armazenado')
+        );
 
-        return $this->storageService->inDocumentsFolder()->getPath($document->file);
+        return $this->storageService->inDocumentsFolder(
+            $this->takeFolderName($document->original_file)
+        )
+            ->getPath($document->with_attachments_file ?? $document->original_file);
     }
 
     /**
@@ -102,6 +112,82 @@ class DocumentService
                 $this->performVotes($document)
             );
         }
+    }
+
+    public function attachFilesToDoc(Document $document)
+    {
+        $pdf_merger = new PDFMerger;
+
+        $pdf_merger->addPDF($this->retrieveDocumentFromStorage($document->original_file));
+
+        $folder = $this->takeFolderName($document->original_file);
+
+        $document->documents
+            ->each(function ($doc) use ($pdf_merger, $folder) {
+                $file_content = (new StorageService())->usingDisk('digitalocean')
+                    ->inDocumentsFolder($folder)
+                    ->getFile($doc->filename);
+
+                $local_file_content = (new StorageService())->usingDisk('local')
+                    ->inDocumentsFolder($folder)
+                    ->sendContent($file_content)
+                    ->send(false, '', '_attachment');
+
+                $path_to_remote_file = storage_path().'/app/documents/'.
+                    "{$folder}/{$local_file_content}";
+
+                $pdf_merger->addPDF($path_to_remote_file);
+            });
+
+        $output_path = storage_path()."/app/documents/{$folder}/".
+            $this->takeFolderName($document->original_file).'_with_attachments.pdf';
+
+        $pdf_merger->merge(
+            'file',
+            $output_path
+        );
+
+        return $this->storageService->inDocumentsFolder($folder)
+            ->sendContent($output_path)
+            ->send(true, $folder, '_with_attachments');
+    }
+
+    public function removeUnusedLocalFiles(string $path_to_folder)
+    {
+        return (new StorageService())->usingDisk('local')
+            ->removeFolder($path_to_folder);
+    }
+
+    /**
+     * @return void
+     */
+    private function createTenantDirectoryIfNotExists()
+    {
+        if (! Storage::exists(storage_path().'/app/documents')) {
+            Storage::makeDirectory('documents');
+        }
+    }
+
+    private function retrieveDocumentFromStorage(string $file_name)
+    {
+        $folder_name = $this->takeFolderName($file_name);
+        $path_to_remote_file = "{$folder_name}/{$file_name}";
+
+        $file_content = $this->storageService->inDocumentsFolder()->getFile($path_to_remote_file);
+
+        (new StorageService())->usingDisk('local')
+            ->inDocumentsFolder($folder_name)
+            ->sendContent($file_content)
+            ->send(false, $folder_name, '_original');
+
+        return storage_path()."/app/documents/{$path_to_remote_file}";
+    }
+
+    public function takeFolderName(string $file_name)
+    {
+        $name_without_extension = explode('.', $file_name)[0];
+
+        return explode('_', $name_without_extension)[0];
     }
 
     /**
