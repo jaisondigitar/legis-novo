@@ -16,13 +16,13 @@
                     <input class="switch" onchange="changeStatus('{!! $company->id !!}')" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal" type="checkbox" {!! $company->active>0?'checked':'' !!}>
                 </td>
                 <td>
-                    <a href="{!! route('companies.show', [$company->id]) !!}">
+                    <a @popper(Visualizar) href="{!! route('companies.show', [$company->id]) !!}">
                         <i class="fa fa-cogs icon-rounded icon-xs icon-info"></i>
                     </a>
-                    <a href="{!! route('companies.edit', [$company->id]) !!}">
+                    <a @popper(Editar) href="{!! route('companies.edit', [$company->id]) !!}">
                         <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
                     </a>
-                    <a href="{!! route('config.companies.delete', [$company->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
+                    <a @popper(Deletar) href="{!! route('config.companies.delete', [$company->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
                         <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
                     </a>
                 </td>
