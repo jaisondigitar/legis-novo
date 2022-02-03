@@ -16,7 +16,7 @@
                 <div class='btn-group'>
                     @shield('documentTypes.show')<a @popper(Visualizar) href="{!! route('documentTypes.show', [$documentType->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
                     @shield('documentTypes.edit')<a @popper(Editar) href="{!! route('documentTypes.edit', [$documentType->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('documentTypes.delete')<a @popper(Deletar) </a>{!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('documentTypes.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
                 </div>
                 {!! Form::close() !!}
             </td>
@@ -31,7 +31,7 @@
                     <div class='btn-group'>
                         @shield('documentTypes.show')<a @popper(Visualizar) href="{!! route('documentTypes.show', [$doc->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
                         @shield('documentTypes.edit')<a @popper(Editar) href="{!! route('documentTypes.edit', [$doc->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                        @shield('documentTypes.delete')<a @popper(Deletar) </a>{!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                        @shield('documentTypes.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
                     </div>
                     {!! Form::close() !!}
                 </td>

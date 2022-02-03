@@ -21,7 +21,7 @@
                     </a>
                     @endshield
                     @shield('typesOfAttendance.delete')
-                    <a @popper(Deletar) </a>{!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [
+                    {!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', [
                         'type' => 'submit',
                         'class' => 'btn btn-danger btn-xs',
                         'onclick' => "return confirm('Deseja realmente remover esse registro?')"

@@ -16,7 +16,7 @@
                     @shield('version_pauta.show')<a @popper(Visualizar) href="{!! route('version_pauta.show', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
                     @shield('version_pauta.edit')<a @popper(Editar) href="{!! route('version_pauta.edit', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @if($versao_pauta->id > 1)
-                    @shield('version_pauta.delete')<a @popper(Deletar) </a>{!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('version_pauta.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
                     @endif
                 </div>
                 {!! Form::close() !!}

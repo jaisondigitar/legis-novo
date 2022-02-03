@@ -27,13 +27,11 @@
                         </a>
                     @endshield
                     @shield('destination.delete')
-                    <a @popper(Deletar) </a>{!! Form::button(
-                        '<i
-                            class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"
-                        ></i>', [
-                        'type' => 'submit',
-                        'style' => 'padding: 0; margin: 0; border: 0;',
-                        'onclick' => "return confirm('Deseja realmente remover esse registro?')"
+                    {!! Form::button(
+                        '<i @popper(Deletar) class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>', [
+                            'type' => 'submit',
+                            'style' => 'padding: 0; margin: 0; border: 0;',
+                            'onclick' => "return confirm('Deseja realmente remover esse registro?')"
                         ])
                     !!}
                     @endshield
