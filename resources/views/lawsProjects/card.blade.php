@@ -60,7 +60,7 @@
             <span>
                 <strong>Protocolo: </strong>
                 <span id="tdLawProtocol{{$lawsProject->id}}" style="color: #37BC9B" align="center">
-                    @if($lawsProject->project_number > 0)
+                    @if($lawsProject->protocol > 0)
                         {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
                     @elseif(Auth::user()->roleHasPermission('lawsProject.createLawProjectNumber'))
                         <button
@@ -226,7 +226,7 @@
         </div>
     </div>
     <div class="panel-footer">
-        @if(!$lawsProject->project_number)
+        @if(!$lawsProject->protocol)
             <span class="badge badge-warning pull-left">Aberto</span>
         @else
             <span class="badge badge-info pull-left">Protocolado</span>
@@ -294,7 +294,7 @@
                 @endshield
             @endif
 
-            @if(!$lawsProject->project_number && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
+            @if(!$lawsProject->protocol && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.delete')
                     <a @popper(REMOVER)>
                         {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
