@@ -169,7 +169,14 @@ class LawsProjectController extends AppBaseController
             }]);
         }
 
-        $lawsProjects = $lawsProjects_query->orderByDesc('created_at')
+        $lawsProjects = $lawsProjects_query->with([
+            'processing' => function ($query) {
+                return $query->orderByDesc('created_at')->get();
+            },
+            'processing.statusProcessingLaw',
+            'processing.destination',
+        ])
+            ->orderByDesc('created_at')
             ->paginate(20);
 
         return view('lawsProjects.index', compact('externo'))

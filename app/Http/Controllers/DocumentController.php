@@ -507,9 +507,9 @@ class DocumentController extends AppBaseController
 
         $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
 
-        $conteudo = 'Ementa: <p>'.$document->resume.'</p>';
+        $conteudo = '<p>'.$document->resume.'</p>';
         $conteudo .= '<br><br>';
-        $conteudo .= 'Conteúdo: <p>'.$document->content.'</p>';
+        $conteudo .= '<p>'.$document->content.'</p>';
 
         if ($document_model) {
             $content = str_replace(
