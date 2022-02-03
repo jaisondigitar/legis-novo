@@ -302,7 +302,7 @@
                 str1 += '<td>'+ texto +'<br>';
                 str1 += '<div class="document_list"> Observação - ' + observation + '</div>';
                 str1 += '</td> ';
-                str1 += '<td><button type="button" onclick="removeRow('+ id +')" class="btn btn-sm btn-danger">Remover</button></td> ' ;
+                str1 += '<td><button type="button" onclick="removeRow('+ id +')" class="btn btn-danger btn-xs">Remover</button></td> ' ;
                 str1 += '</tr>';
             tb.append(str1);
         }
@@ -480,7 +480,6 @@
                     if (data){
                         $('#document_row_' + id).fadeOut(400, function () {
                             $(this).remove();
-
                         });
                     }else{
                         toastr.error('Registro possui votação não pode ser excluido!');
@@ -490,7 +489,8 @@
 
         var removeRow = function (id)
         {
-            removeDoc(id);
+            if(confirm('Tem certeza que deseja remover este documento?')){
+                removeDoc(id);}
         };
 
         var getTemplate = function(id,number,type,obs)
@@ -520,7 +520,7 @@
                     str += '<div class="document_list">Observação - ' + obs + '</div>';
                 }
                 str +=  '</td> ' ;
-                str +=  '<td><button type="button" onclick="removeRow('+ mp_id +')" class="btn btn-sm btn-danger">Remover</button></td> ' ;
+                str +=  '<td><button type="button" onclick="removeRow('+ mp_id +')" class="btn btn-sm btn-danger">Remover</button></td>';
                 str +=  '</tr>';
 
                 return str;
@@ -560,7 +560,7 @@
                 //     str += '<div class="document_list">Observação - ' + obs + '</div>';
                 // }
                 str +=  '</td> ' ;
-                str +=  '<td><button type="button" onclick="removeRow('+ mp_id +')" class="btn btn-sm btn-danger">Remover</button></td> ' ;
+                str +=  '<td><button type="button" onclick="removeRow('+ mp_id +')" class="btn btn-danger btn-xs">Remover</button></td> ' ;
                 str +=  '</tr>';
 
                 return str;
@@ -599,7 +599,7 @@
                     str += '<div class="document_list">Observação - ' + obs + '</div>';
                 }
                 str += '</td> ';
-                str += '<td><button type="button" onclick="removeRow(' + mp_id + ')" class="btn btn-sm btn-danger">Remover</button></td> ';
+                str += '<td><button type="button" onclick="removeRow(' + mp_id + ')" class="btn btn-danger btn-xs">Remover</button></td> ';
                 str += '</tr>';
 
                 return str;
@@ -609,3 +609,35 @@
         };
     </script>
 @endsection
+
+<script type="text/javascript">
+    function deleteConfirmation(id) {
+        swal({
+            title: "Delete?",
+            text: "Please ensure and then confirm!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: !0
+        }).then(function (e) {
+            if (e.value === true) {
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/delete')}}/" + id,
+                    data: {_token: CSRF_TOKEN},
+                    dataType: 'JSON',
+                }).then((results) => {
+                    swal("Done!", results.message, "success");
+                }).catch((error) => {
+                    swal("Error!", results.message, "error");
+                });
+            } else {
+                e.dismiss;
+            }
+        }, function (dismiss) {
+            return false;
+        })
+    }
+</script>
