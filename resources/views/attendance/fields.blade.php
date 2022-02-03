@@ -16,7 +16,7 @@
         <!-- Name Field -->
         <div class="form-group col-sm-12">
             {!! Form::label('name', 'Nome:', ['class' => 'required']) !!}
-            {!! Form::text('name', $people->name ?? '', ['class' => 'form-control name']) !!}
+            {!! Form::text('name', $people->name ?? '', ['class' => 'form-control name', 'style' => 'text-transform: uppercase']) !!}
         </div>
 
         <!-- Celular Field -->
