@@ -25,10 +25,10 @@
                     </label>
                 </td>
                 <td>
-                    <a href="{!! route('modules.edit', [$module->id]) !!}">
+                    <a @popper(Editar) href="{!! route('modules.edit', [$module->id]) !!}">
                         <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
                     </a>
-                    <a href="{!! route('config.modules.delete', [$module->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
+                    <a @popper(Deletar) href="{!! route('config.modules.delete', [$module->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
                         <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
                     </a>
                 </td>

@@ -10,9 +10,9 @@
             <td>
                 {!! Form::open(['route' => ['statusProcessingDocuments.destroy', $statusProcessingDocument->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('statusProcessingDocuments.show')<a href="{!! route('statusProcessingDocuments.show', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
-                    @shield('statusProcessingDocuments.edit')<a href="{!! route('statusProcessingDocuments.edit', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('statusProcessingDocuments.delete'){!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('statusProcessingDocuments.show')<a @popper(Visualizar) href="{!! route('statusProcessingDocuments.show', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('statusProcessingDocuments.edit')<a @popper(Editar) href="{!! route('statusProcessingDocuments.edit', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('statusProcessingDocuments.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
                 </div>
                 {!! Form::close() !!}
             </td>

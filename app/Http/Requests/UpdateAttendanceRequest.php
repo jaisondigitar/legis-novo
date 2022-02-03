@@ -23,6 +23,13 @@ class UpdateAttendanceRequest extends Request
      */
     public function rules()
     {
+        if ($this->ajax()) {
+            return [
+                'date_exit' => 'required',
+                'time_exit' => 'required',
+            ];
+        }
+
         return Attendance::$rules;
     }
 }
