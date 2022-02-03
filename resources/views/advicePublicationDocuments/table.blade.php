@@ -10,9 +10,9 @@
             <td>
                 {!! Form::open(['route' => ['advicePublicationDocuments.destroy', $advicePublicationDocuments->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('advicePublicationDocuments.show')<a href="{!! route('advicePublicationDocuments.show', [$advicePublicationDocuments->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
-                    @shield('advicePublicationDocuments.edit')<a href="{!! route('advicePublicationDocuments.edit', [$advicePublicationDocuments->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('advicePublicationDocuments.delete'){!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('advicePublicationDocuments.show')<a @popper(Visualizar) href="{!! route('advicePublicationDocuments.show', [$advicePublicationDocuments->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('advicePublicationDocuments.edit')<a @popper(Editar) href="{!! route('advicePublicationDocuments.edit', [$advicePublicationDocuments->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('advicePublicationDocuments.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
                 </div>
                 {!! Form::close() !!}
             </td>

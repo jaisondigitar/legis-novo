@@ -12,9 +12,9 @@
             <td>
                 {!! Form::open(['route' => ['officeCommissions.destroy', $officeCommission->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('officeCommissions.show')<a href="{!! route('officeCommissions.show', [$officeCommission->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
-                    @shield('officeCommissions.edit')<a href="{!! route('officeCommissions.edit', [$officeCommission->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('officeCommissions.delete'){!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('officeCommissions.show')<a @popper(Visualizar) href="{!! route('officeCommissions.show', [$officeCommission->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('officeCommissions.edit')<a @popper(Editar) href="{!! route('officeCommissions.edit', [$officeCommission->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('officeCommissions.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
                 </div>
                 {!! Form::close() !!}
             </td>

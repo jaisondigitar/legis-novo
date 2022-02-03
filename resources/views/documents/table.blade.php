@@ -91,7 +91,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Protocolo de documento</h4>
+                <h4 class="modal-title">Editar protocolo de documento</h4>
             </div>
             <div class="modal-body">
                 <input type="hidden" name="document_id" id="document_id_edit">
@@ -124,7 +124,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Protocolo de documento</h4>
+                <h4 class="modal-title">Número de documento</h4>
             </div>
             <div class="modal-body">
                 <input type="hidden" name="document_id" id="document_id_edit_number">
