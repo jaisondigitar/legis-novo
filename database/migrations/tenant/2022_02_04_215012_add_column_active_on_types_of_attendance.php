@@ -14,7 +14,7 @@ class AddColumnActiveOnTypesOfAttendance extends Migration
     public function up()
     {
         Schema::table('types_of_attendance', function (Blueprint $table) {
-            $table->boolean('active')->nullable();
+            $table->boolean('active')->default(0);
         });
     }
 

@@ -51,7 +51,9 @@ class TypesOfAttendanceController extends Controller
 
         $input = $request->all();
 
-        $types_of_attendance = $this->typesOfAttendanceRepository->create($input);
+        $input['active'] = isset($request->active);
+
+        $this->typesOfAttendanceRepository->create($input);
 
         flash('Tipo de atendimento salvo com sucesso.')->success();
 
@@ -94,7 +96,15 @@ class TypesOfAttendanceController extends Controller
 
         $types_of_attendance = $this->typesOfAttendanceRepository->findById($id);
 
-        $this->typesOfAttendanceRepository->update($types_of_attendance, $request->all());
+        $input = $request->all();
+
+        $input['active'] = isset($request->active);
+
+        $this->typesOfAttendanceRepository->update($types_of_attendance, $input);
+
+        if ($request->ajax()) {
+            return json_encode(['success' => true]);
+        }
 
         return redirect(route('typesOfAttendance.index'));
     }
