@@ -589,6 +589,7 @@ class DocumentController extends AppBaseController
                 if ($processing->statusProcessingDocument) {
                     $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
                 }
+                $html1 .= '<td width="150" style=" text-align: left;"><b>Destinatario: </b> <br>'.$processing->destination->name.'</td>';
                 $html1 .= '</tr>';
                 if (strlen($processing->observation) > 0) {
                     $html1 .= '<tr>';
