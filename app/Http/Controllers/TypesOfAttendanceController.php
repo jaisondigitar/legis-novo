@@ -98,7 +98,7 @@ class TypesOfAttendanceController extends Controller
 
         $input = $request->all();
 
-        $input['active'] = isset($request->active);
+        $input['active'] = $input['active'] == 'true' ? 1 : 0;
 
         $this->typesOfAttendanceRepository->update($types_of_attendance, $input);
 
