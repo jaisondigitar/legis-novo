@@ -97,7 +97,19 @@ class AttendanceController extends Controller
             return redirect('/admin');
         }
 
-        $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
+        $types = TypesOfAttendance::pluck('name', 'id');
+
+        $type_array = [];
+
+        foreach ($types as $key => $value) {
+            $result = $type_array + [$key => $value];
+            $type_array = $result;
+        }
+
+        asort($type_array);
+
+        $type = ['' => 'Selecione..'] + $type_array;
+
         $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
 
         $states = $this->statesList();
