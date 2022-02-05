@@ -64,8 +64,6 @@
             _token : '{{csrf_token()}}'
         }
 
-        console.log(data);
-
         $.ajax({
             url: url,
             data : data,
