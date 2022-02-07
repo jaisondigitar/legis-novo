@@ -96,19 +96,7 @@ class AttendanceController extends Controller
 
             return redirect('/admin');
         }
-
-        $types = TypesOfAttendance::where('active', 1)->pluck('name', 'id');
-
-        $type_array = [];
-
-        foreach ($types as $key => $value) {
-            $result = $type_array + [$key => $value];
-            $type_array = $result;
-        }
-
-        asort($type_array);
-
-        $type = ['' => 'Selecione..'] + $type_array;
+        $type = TypesOfAttendance::where('active', 1)->orderBy('name')->pluck('name', 'id')->prepend('Selecione..', '');
 
         $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
 
@@ -210,18 +198,7 @@ class AttendanceController extends Controller
 
         $people = People::find($attendance->people_id);
 
-        $types = TypesOfAttendance::where('active', 1)->pluck('name', 'id');
-
-        $type_array = [];
-
-        foreach ($types as $key => $value) {
-            $result = $type_array + [$key => $value];
-            $type_array = $result;
-        }
-
-        asort($type_array);
-
-        $type = ['' => 'Selecione..'] + $type_array;
+        $type = TypesOfAttendance::where('active', 1)->orderBy('name')->pluck('name', 'id')->prepend('Selecione..', '');
 
         $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
 
