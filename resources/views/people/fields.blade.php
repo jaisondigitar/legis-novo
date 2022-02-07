@@ -3,7 +3,7 @@
         <h2 style="margin: 0">Dados Pessoais</h2><hr style="margin: 20px 0">
         <!-- Cpf Field -->
         <div class="form-group col-sm-6">
-            {!! Form::label('cpf', 'CPF:', ['class' => 'required']) !!}
+            {!! Form::label('cpf', 'CPF:') !!}
             {!! Form::text('cpf', null, ['class' => 'form-control cpf']) !!}
         </div>
 
