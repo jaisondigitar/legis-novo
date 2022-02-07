@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     zip \
     unzip \
-    nano
+    nano \
+    ghostscript
 
 # Install PHP extensions
 RUN apt-get install -y \
