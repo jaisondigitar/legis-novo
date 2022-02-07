@@ -8,14 +8,17 @@ class TypesOfAttendance extends BaseModel
 
     protected $fillable = [
         'name',
+        'active',
     ];
 
     public static $translation = [
         'TYPESOFATTENDANCE' => 'TIPO DE ATENDIMENTO',
         'name' => 'Nome',
+        'active' => 'Ativo',
     ];
 
     public static $rules = [
         'name' => 'required',
+        'active' => 'required',
     ];
 }

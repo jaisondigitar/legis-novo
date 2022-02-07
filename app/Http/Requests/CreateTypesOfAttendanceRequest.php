@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\TypesOfAttendance;
 
 class CreateTypesOfAttendanceRequest extends Request
 {
@@ -23,8 +24,13 @@ class CreateTypesOfAttendanceRequest extends Request
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        if ($this->ajax()) {
+            return [
+                'name' => 'nullable',
+                'active' => 'required',
+            ];
+        }
+
+        return TypesOfAttendance::$rules;
     }
 }

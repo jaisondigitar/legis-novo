@@ -24,6 +24,14 @@ class UpdateSectorRequest extends Request
      */
     public function rules()
     {
+        if ($this->ajax()) {
+            return [
+                'name' => 'nullable',
+                'external' => 'required',
+                'slug' => 'nullable',
+            ];
+        }
+
         return Sector::$rules;
     }
 }

@@ -51,7 +51,6 @@ class People extends BaseModel
      */
     public static $rules = [
         'name' => 'required',
-        'cpf' => 'required',
         'celular' => 'required',
     ];
 }
