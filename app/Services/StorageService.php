@@ -192,7 +192,11 @@ class StorageService implements StorageInterface
     {
         $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
 
-        return Storage::disk($this->disk)->url("app/{$file_name}");
+        if ($this->getFileExtension($filename)) {
+            return Storage::disk($this->disk)->url("app/{$file_name}");
+        }
+
+        return Storage::disk($this->disk)->url("{$file_name}");
     }
 
     /**
@@ -205,6 +209,11 @@ class StorageService implements StorageInterface
         $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
 
         return Storage::disk($this->disk)->get($file_name);
+    }
+
+    public function getFileExtension(string $filename): bool
+    {
+        return Str::endsWith($filename, ['.pdf', '.doc', '.docx', '.txt']);
     }
 
     /**
