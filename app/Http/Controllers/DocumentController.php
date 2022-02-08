@@ -30,6 +30,7 @@ use App\Models\Sector;
 use App\Models\StatusProcessingDocument;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
+use App\Services\PdfConverterService;
 use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
@@ -41,6 +42,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -517,7 +519,9 @@ class DocumentController extends AppBaseController
 
         $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
 
-        $conteudo = $document->content;
+        $conteudo = '<p>'.$document->resume.'</p>';
+        $conteudo .= '<br><br>';
+        $conteudo .= '<p>'.$document->content.'</p>';
 
         if ($document_model) {
             $content = str_replace(
@@ -597,6 +601,7 @@ class DocumentController extends AppBaseController
                 if ($processing->statusProcessingDocument) {
                     $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
                 }
+                $html1 .= '<td width="150" style=" text-align: left;"><b>Destinatario: </b> <br>'.$processing->destination->name.'</td>';
                 $html1 .= '</tr>';
                 if (strlen($processing->observation) > 0) {
                     $html1 .= '<tr>';
@@ -616,18 +621,20 @@ class DocumentController extends AppBaseController
 
         $this->attachFilesToSavedDoc($document);
 
-        $files_to_remove = $document->documents->pluck('filename')->toArray();
-
-        $files_to_remove[] = 'doc.pdf';
-
-        $this->removeUnusedLocalFiles($files_to_remove);
+        File::deleteDirectory(storage_path().'/app/documents');
+        File::deleteDirectory(storage_path().'/app/temp');
     }
 
     private function attachFilesToSavedDoc(Document $document)
     {
         $pdfMerger = new PDFMerger;
 
-        $pdfMerger->addPDF(storage_path().'/app/documents/doc.pdf');
+        $file_name = (new PdfConverterService(new StorageService()))
+            ->convertFromDecoded('documents/doc.pdf');
+
+        $path_to_file = (new StorageService())->usingDisk('local')->getPath($file_name);
+
+        $pdfMerger->addPDF(base_path().$path_to_file);
 
         $document->documents
             ->each(function ($doc) use ($pdfMerger) {
@@ -635,27 +642,24 @@ class DocumentController extends AppBaseController
                     ->inDocumentsFolder()
                     ->getFile($doc->filename);
 
-                (new StorageService())->usingDisk('local')
+                $file_name = (new StorageService())->usingDisk('local')
                     ->usingDisk('local')->inDocumentsFolder()
                     ->sendContent($file_content)
                     ->send(false, $doc->filename);
 
-                $pdfMerger->addPDF(
-                    storage_path().'/app/documents/'.$doc->filename
-                );
+                $file_name = (new PdfConverterService(new StorageService()))
+                    ->convertFromDecoded("documents/{$file_name}");
+
+                $path_to_file = (new StorageService())->usingDisk('local')
+                    ->getPath($file_name);
+
+                $pdfMerger->addPDF(base_path().$path_to_file);
             });
 
         $pdfMerger->merge(
             'browser',
-            storage_path().'/app/documents/law-project.pdf'
+            storage_path().'/app/documents/document.pdf'
         );
-    }
-
-    public function removeUnusedLocalFiles(array $filenames)
-    {
-        (new StorageService())->usingDisk('local')
-            ->inDocumentsFolder()
-            ->removeMany($filenames);
     }
 
     /**

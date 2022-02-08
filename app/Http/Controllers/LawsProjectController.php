@@ -28,6 +28,7 @@ use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
 use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
+use App\Services\PdfConverterService;
 use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
@@ -39,6 +40,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
@@ -184,7 +187,14 @@ class LawsProjectController extends AppBaseController
             }]);
         }
 
-        $lawsProjects = $lawsProjects_query->orderByDesc('created_at')
+        $lawsProjects = $lawsProjects_query->with([
+            'processing' => function ($query) {
+                return $query->orderByDesc('created_at')->get();
+            },
+            'processing.statusProcessingLaw',
+            'processing.destination',
+        ])
+            ->orderByDesc('created_at')
             ->paginate(20);
 
         return view('lawsProjects.index', compact('externo'))
@@ -197,7 +207,9 @@ class LawsProjectController extends AppBaseController
     }
 
     /**
-     * @return Application|Factory|RedirectResponse|Redirector|View
+     * Show the form for creating a new lawProject.
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -657,18 +669,20 @@ class LawsProjectController extends AppBaseController
 
         $this->attachFilesToSavedDoc($lawsProject);
 
-        $files_to_remove = $lawsProject->lawFiles->pluck('filename')->toArray();
-
-        $files_to_remove[] = 'doc.pdf';
-
-        $this->removeUnusedLocalFiles($files_to_remove);
+        File::deleteDirectory(storage_path().'/app/law-projects');
+        File::deleteDirectory(storage_path().'/app/temp');
     }
 
     private function attachFilesToSavedDoc(LawsProject $law_project)
     {
         $pdfMerger = new PDFMerger;
 
-        $pdfMerger->addPDF(storage_path().'/app/law-projects/doc.pdf');
+        $file_name = (new PdfConverterService(new StorageService()))
+            ->convertFromDecoded('law-projects/doc.pdf');
+
+        $path_to_file = (new StorageService())->usingDisk('local')->getPath($file_name);
+
+        $pdfMerger->addPDF(base_path().$path_to_file);
 
         $law_project->lawFiles
             ->each(function ($law_file) use ($pdfMerger) {
@@ -676,27 +690,24 @@ class LawsProjectController extends AppBaseController
                     ->inLawProjectsFolder()
                     ->getFile($law_file->filename);
 
-                (new StorageService())->usingDisk('local')
+                $file_name = (new StorageService())->usingDisk('local')
                     ->usingDisk('local')->inLawProjectsFolder()
                     ->sendContent($file_content)
                     ->send(false, $law_file->filename);
 
-                $pdfMerger->addPDF(
-                    storage_path().'/app/law-projects/'.$law_file->filename
-                );
+                $file_name = (new PdfConverterService(new StorageService()))
+                    ->convertFromDecoded("law-projects/{$file_name}");
+
+                $path_to_file = (new StorageService())->usingDisk('local')
+                    ->getPath($file_name);
+
+                $pdfMerger->addPDF(base_path().$path_to_file);
             });
 
         $pdfMerger->merge(
             'browser',
             storage_path().'/app/law-projects/law-project.pdf'
         );
-    }
-
-    public function removeUnusedLocalFiles(array $filenames)
-    {
-        (new StorageService())->usingDisk('local')
-            ->inLawProjectsFolder()
-            ->removeMany($filenames);
     }
 
     /**

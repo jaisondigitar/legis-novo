@@ -9,6 +9,8 @@ class Attendance extends BaseModel
     public $fillable = [
         'date',
         'time',
+        'date_exit',
+        'time_exit',
         'description',
         'type_id',
         'sector_id',
@@ -19,6 +21,8 @@ class Attendance extends BaseModel
         'ATTENDANCE' => 'ATENDIMENTO',
         'date' => 'Data',
         'time' => 'Horário',
+        'date_exit' => 'Data de Saída',
+        'time_exit' => 'Horário de Saída',
         'description' => 'Descrição',
         'type_id' => 'Id do Tipo',
         'sector_id' => 'Id do Setor',
@@ -31,7 +35,6 @@ class Attendance extends BaseModel
      * @var array
      */
     public static $rules = [
-        'cpf' => 'required',
         'date' => 'required',
         'time' => 'required',
         'description' => 'required',
