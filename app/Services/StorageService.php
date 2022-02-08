@@ -211,6 +211,10 @@ class StorageService implements StorageInterface
         return Storage::disk($this->disk)->get($file_name);
     }
 
+    /**
+     * @param  string  $filename
+     * @return bool
+     */
     public function isDocument(string $filename): bool
     {
         return Str::endsWith($filename, ['.pdf', '.doc', '.docx', '.txt']);
