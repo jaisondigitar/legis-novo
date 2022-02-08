@@ -18,8 +18,8 @@
             data-on-color="success"
             data-size="normal"
             type="checkbox"
-            @if(isset($sector))
-                {!! $sector->external> 0 ? 'checked' : '' !!}
+            @if(isset($sector->external))
+                {!! 'checked' !!}
             @endif
         >
     </label>

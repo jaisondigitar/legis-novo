@@ -131,6 +131,7 @@ class Document extends BaseModel
         'sector_id' => 'nullable|integer',
         'owner_id' => 'required',
         'content' => 'required',
+        'resume' => 'nullable|string',
     ];
 
     public function documentNumber()

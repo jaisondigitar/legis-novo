@@ -3,14 +3,14 @@
         <h2 style="margin: 0">Dados Pessoais</h2><hr style="margin: 20px 0">
         <!-- Cpf Field -->
         <div class="form-group col-sm-6">
-            {!! Form::label('cpf', 'CPF:', ['class' => 'required']) !!}
+            {!! Form::label('cpf', 'CPF:') !!}
             {!! Form::text('cpf', $people->cpf ?? '', ['class' => 'form-control cpf', 'onChange' => 'getPeople(cpf.value)']) !!}
         </div>
 
         <!-- Rg Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('rg', 'RG:') !!}
-            {!! Form::number('rg', $people->rg ?? '', ['class' => 'form-control rg', 'min' => 1000000, 'max' => 999999999]) !!}
+            {!! Form::text('rg', $people->rg ?? '', ['class' => 'form-control rg']) !!}
         </div>
 
         <!-- Name Field -->

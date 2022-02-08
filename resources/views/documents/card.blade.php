@@ -242,7 +242,7 @@
                     </label>
                 </span>
                 <br>
-                <label for="lido_{{$document->id}}">
+                <label>
                     <strong>Destinatário:</strong>
                     <span>
                         @if(count($document->processingDocument)===0)
