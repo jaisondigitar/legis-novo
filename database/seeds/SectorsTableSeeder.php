@@ -13,15 +13,10 @@ class SectorsTableSeeder extends Seeder
      */
     public function run()
     {
-        $sectors = [
-            ['name' => 'Secretaria', 'external' => 0],
-            ['name' => 'Gabinete', 'external' => 0],
-            ['name' => 'Jurídico', 'external' => 0],
-            ['name' => 'Externo', 'external' => 1],
-        ];
+        $sectors = ['Secretaria', 'Gabinete', 'Jurídico'];
 
         foreach ($sectors as $sector) {
-            Sector::firstOrCreate(['name' => $sector['name'], 'slug' => Str::slug($sector['name']), 'external' => $sector['external']]);
+            Sector::firstOrCreate(['name' => $sector, 'slug' => Str::slug($sector)]);
         }
     }
 }
