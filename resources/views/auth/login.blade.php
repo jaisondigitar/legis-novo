@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/structure.css') }}">
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         form {
             width: 20rem;
@@ -175,57 +178,71 @@
 </head>
 
 <body class="banner">
-    <div class="backLogin">
-        <div class="logoType">
-            <img
-                src="/assets/images/gpl.png"
-                class="img-responsive"
-                style="max-width: 75%; height: 50%;"
-                alt="Logo"
-            >
-        </div>
-        <div class="backFormat">
-            <div class="align">
-                <form action="login" method="post">
-                    <div class="errorLogin">
-                        @if($errors->any())
-                            @foreach($errors->all() as $error)
-                                <li style="color: gainsboro">{!! $error !!}</li>
-                            @endforeach
-                        @endif
-                        @csrf
-                    </div>
+<div class="backLogin">
+    <div class="logoType">
+        <img
+            src="/assets/images/gpl.png"
+            class="img-responsive"
+            style="max-width: 75%; height: 50%;"
+            alt="Logo"
+        >
+    </div>
+    <div class="backFormat">
+        <div class="align">
+            <form action="login" method="post">
+                <div class="errorLogin">
+                    @if($errors->any())
+                        @foreach($errors->all() as $error)
+                            <script>
+                                Swal.fire({
+                                    title: 'Ocorreu um erro!',
+                                    text: "{{$error}}",
+                                    icon: 'error',
+                                    showCancelButton: false,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Ok'
+                                })
+                            </script>
+                        @endforeach
+                    @endif
+                    @csrf
+                </div>
 
-                    <label>
-                        E-mail
-                        <input type="text" name="email" tabindex="1" placeholder="email">
-                    </label>
+                <label>
+                    E-mail
+                    <input type="email" name="email" tabindex="1" placeholder="email"
+                           required="required"
+                           oninvalid="this.setCustomValidity('insira um email valido!')"
+                           onvalid="this.setCustomValidity('')">
+                </label>
 
-                    <label>
-                        Senha
-                        <input type="password" name="password" placeholder="senha" tabindex="2">
-                    </label>
+                <label>
+                    Senha
+                    <input type="password" name="password" placeholder="senha" tabindex="2"
+                           required="required">
+                </label>
 
-                    <div class="forgot">
-                        <button type="submit">ENTRAR</button>
+                <div class="forgot">
+                    <button type="submit">ENTRAR</button>
 
-                        <a href="#" tabindex="5" id="forgot">Esqueceu a senha?</a>
-                    </div>
-                </form>
-            </div>
+                    <a href="#" tabindex="5" id="forgot">Esqueceu a senha?</a>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <footer id="main">
-        &copy; {{Date('Y')}}
-        <a href="https://www.genesis.tec.br/"
-           onMouseOver="this.style.color='#1abc9c'"
-           onMouseOut="this.style.color='white'"
-           style="color: white;"
-        >
-            Gênesis Tecnologia e Inovação
-        </a>. Todos os Direitos Reservados
-    </footer>
+<footer id="main">
+    &copy; {{Date('Y')}}
+    <a href="https://www.genesis.tec.br/"
+       onMouseOver="this.style.color='#1abc9c'"
+       onMouseOut="this.style.color='white'"
+       style="color: white;"
+    >
+        Gênesis Tecnologia e Inovação
+    </a>. Todos os Direitos Reservados
+</footer>
 </body>
 </html>
 
