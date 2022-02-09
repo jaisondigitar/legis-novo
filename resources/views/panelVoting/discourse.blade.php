@@ -12,10 +12,10 @@
             </div>
             <div class="col-md-8">
                 <h1 class="card-title text-center text-uppercase text_reset" id="assemblyman_discourse" style="font-size: 60px; color: #ccc"> - </h1>
-                <h1 class="card-title text-center text-uppercase text_reset text-info" id="assemblyman_responsibilities" style="font-size: 40px; "> - </h1>  
+                <h1 class="card-title text-center text-uppercase text_reset text-info" id="assemblyman_responsibilities" style="font-size: 40px; "> - </h1>
             </div>
         </div>
-        
+
 </div>
 @endsection
 <script src="/assets/js/jquery.min.js"></script>
@@ -34,7 +34,6 @@
                 async : false
             }).success(function (data) {
                 data = JSON.parse(data);
-                console.log(data)
 
                 @if(\App\Models\Parameters::where('slug', 'painel-digital-permitir-multi-sessoes')->first()->value)
                     getDataAssemblyman()
@@ -76,7 +75,7 @@
         slice = slice[0].toString().split('/');
         var html = data.meeting.session_type.name + ' ' + data.meeting.number + '/' + slice[2]
         $('#session_data').html(html);
-        $('#assemblyman_discourse').html(data.assemblyman_name);    
+        $('#assemblyman_discourse').html(data.assemblyman_name);
         $('#assemblyman_responsibilities').html(data.responsibility);
         if (data.image != "") {
             $('#assemblyman_discourse_img').prop('src', data.image);

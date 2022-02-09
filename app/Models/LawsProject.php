@@ -241,6 +241,11 @@ class LawsProject extends BaseModel
         return $this->belongsTo('App\Models\LawsProject', 'reference_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
     public function setLawDateAttribute($law_date)
     {
         $this->attributes['law_date'] = Carbon::createFromFormat('d/m/Y', $law_date);

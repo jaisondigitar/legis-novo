@@ -192,6 +192,10 @@ class StorageService implements StorageInterface
     {
         $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
 
+        if ($this->isDocument($filename)) {
+            return Storage::disk($this->disk)->url("app/{$file_name}");
+        }
+
         return Storage::disk($this->disk)->url($file_name);
     }
 
@@ -205,6 +209,15 @@ class StorageService implements StorageInterface
         $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
 
         return Storage::disk($this->disk)->get($file_name);
+    }
+
+    /**
+     * @param  string  $filename
+     * @return bool
+     */
+    public function isDocument(string $filename): bool
+    {
+        return Str::endsWith($filename, ['.pdf', '.doc', '.docx', '.txt']);
     }
 
     /**
