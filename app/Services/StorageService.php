@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\StorageInterface;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
@@ -115,6 +116,8 @@ class StorageService implements StorageInterface
      */
     public function inFolder(string $folder): self
     {
+        ! Storage::exists($folder) && Storage::makeDirectory($folder);
+
         $this->folder = $folder;
 
         return $this;
@@ -170,10 +173,10 @@ class StorageService implements StorageInterface
             $filename = Str::random(32).'.'.static::$ext;
 
             $resp = Storage::disk($this->disk)
-                ->putFileAs($this->folder, static::$file, $filename, 'public');
+                ->putFileAs($this->folder, static::$file, $filename, Filesystem::VISIBILITY_PUBLIC);
         } else {
             $resp = Storage::disk($this->disk)
-                ->put($this->folder.'/'.$filename, static::$file, 'public');
+                ->put("{$this->folder}/{$filename}", static::$file, Filesystem::VISIBILITY_PUBLIC);
         }
 
         throw_if(! $resp, new Exception('Falha ao salvar arquivo'));
@@ -197,7 +200,9 @@ class StorageService implements StorageInterface
      */
     public function getFile(string $filename): string
     {
-        return Storage::disk($this->disk)->get("{$this->folder}/{$filename}");
+        $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
+
+        return Storage::disk($this->disk)->get($file_name);
     }
 
     /**
