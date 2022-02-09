@@ -649,24 +649,20 @@ class LawsProjectController extends AppBaseController
 
         $this->createTenantDirectoryIfNotExists();
 
-        $pdf->Output(storage_path().'/app/law-projects/doc.pdf', 'F');
+        $pdf->Output(storage_path('app/temp/law-project.pdf'), 'F');
 
         $this->attachFilesToSavedDoc($lawsProject);
 
-        File::deleteDirectory(storage_path().'/app/law-projects');
-        File::deleteDirectory(storage_path().'/app/temp');
+        File::deleteDirectory(storage_path());
     }
 
     private function attachFilesToSavedDoc(LawsProject $law_project)
     {
         $pdfMerger = new PDFMerger;
 
-        $file_name = (new PdfConverterService(new StorageService()))
-            ->convertFromDecoded('law-projects/doc.pdf');
+        $file_path = (new PdfConverterService())->convertFromDecoded('temp/law-project.pdf');
 
-        $path_to_file = (new StorageService())->usingDisk('local')->getPath($file_name);
-
-        $pdfMerger->addPDF(base_path().$path_to_file);
+        $pdfMerger->addPDF(storage_path("app/{$file_path}"));
 
         $law_project->lawFiles
             ->each(function ($law_file) use ($pdfMerger) {
@@ -675,17 +671,13 @@ class LawsProjectController extends AppBaseController
                     ->getFile($law_file->filename);
 
                 $file_name = (new StorageService())->usingDisk('local')
-                    ->usingDisk('local')->inLawProjectsFolder()
+                    ->usingDisk('local')->inFolder('temp')
                     ->sendContent($file_content)
                     ->send(false, $law_file->filename);
 
-                $file_name = (new PdfConverterService(new StorageService()))
-                    ->convertFromDecoded("law-projects/{$file_name}");
+                $file_path = (new PdfConverterService())->convertFromDecoded("temp/{$file_name}");
 
-                $path_to_file = (new StorageService())->usingDisk('local')
-                    ->getPath($file_name);
-
-                $pdfMerger->addPDF(base_path().$path_to_file);
+                $pdfMerger->addPDF(storage_path("app/{$file_path}"));
             });
 
         $pdfMerger->merge(
@@ -699,9 +691,8 @@ class LawsProjectController extends AppBaseController
      */
     private function createTenantDirectoryIfNotExists()
     {
-        if (! Storage::exists(storage_path().'/app/law-projects')) {
-            Storage::makeDirectory('law-projects');
-        }
+        ! Storage::exists(storage_path('/app/temp')) &&
+        Storage::makeDirectory('temp');
     }
 
     public function loadAdvices($pdf, $lawsProjectId)
