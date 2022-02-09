@@ -152,7 +152,7 @@ class StorageService implements StorageInterface
      * @param  string  $ext
      * @return $this
      */
-    public function sendContent(string $content, string $ext = '.pdf'): self
+    public function sendContent(string $content, string $ext = 'pdf'): self
     {
         static::$file = $content;
 
@@ -169,9 +169,9 @@ class StorageService implements StorageInterface
      */
     public function send(bool $custom = true, string $filename = ''): string
     {
-        if ($custom) {
-            $filename = Str::random(32).'.'.static::$ext;
+        $filename = Str::random(32).'.'.static::$ext;
 
+        if ($custom) {
             $resp = Storage::disk($this->disk)
                 ->putFileAs($this->folder, static::$file, $filename, Filesystem::VISIBILITY_PUBLIC);
         } else {
@@ -190,7 +190,9 @@ class StorageService implements StorageInterface
      */
     public function getPath(string $filename): string
     {
-        return Storage::disk($this->disk)->url("{$this->folder}/{$filename}");
+        $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
+
+        return Storage::disk($this->disk)->url($file_name);
     }
 
     /**
