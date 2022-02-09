@@ -87,16 +87,6 @@
 ></script>
 
 <script>
-    const getDate = (number) => {
-        if (number <= 9)
-            return "0" + number;
-        else
-            return number;
-    }
-    let date = new Date();
-    let timeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
-
-
     $(document).ready(() => {
         setInterval(function () {
             $.ajax({
