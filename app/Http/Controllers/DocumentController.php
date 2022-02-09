@@ -607,24 +607,20 @@ class DocumentController extends AppBaseController
 
         $this->createTenantDirectoryIfNotExists();
 
-        $pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
+        $pdf->Output(storage_path('app/temp/doc.pdf'), 'F');
 
         $this->attachFilesToSavedDoc($document);
 
-        File::deleteDirectory(storage_path().'/app/documents');
-        File::deleteDirectory(storage_path().'/app/temp');
+        File::deleteDirectory(storage_path());
     }
 
     private function attachFilesToSavedDoc(Document $document)
     {
         $pdfMerger = new PDFMerger;
 
-        $file_name = (new PdfConverterService(new StorageService()))
-            ->convertFromDecoded('documents/doc.pdf');
+        $file_path = (new PdfConverterService())->convertFromDecoded('temp/doc.pdf');
 
-        $path_to_file = (new StorageService())->usingDisk('local')->getPath($file_name);
-
-        $pdfMerger->addPDF(base_path().$path_to_file);
+        $pdfMerger->addPDF(storage_path("app/{$file_path}"));
 
         $document->documents
             ->each(function ($doc) use ($pdfMerger) {
@@ -633,17 +629,13 @@ class DocumentController extends AppBaseController
                     ->getFile($doc->filename);
 
                 $file_name = (new StorageService())->usingDisk('local')
-                    ->usingDisk('local')->inDocumentsFolder()
+                    ->usingDisk('local')->inFolder('temp')
                     ->sendContent($file_content)
                     ->send(false, $doc->filename);
 
-                $file_name = (new PdfConverterService(new StorageService()))
-                    ->convertFromDecoded("documents/{$file_name}");
+                $file_path = (new PdfConverterService())->convertFromDecoded("temp/{$file_name}");
 
-                $path_to_file = (new StorageService())->usingDisk('local')
-                    ->getPath($file_name);
-
-                $pdfMerger->addPDF(base_path().$path_to_file);
+                $pdfMerger->addPDF(storage_path("app/{$file_path}"));
             });
 
         $pdfMerger->merge(
@@ -657,9 +649,8 @@ class DocumentController extends AppBaseController
      */
     private function createTenantDirectoryIfNotExists()
     {
-        if (! Storage::exists(storage_path().'/app/documents')) {
-            Storage::makeDirectory('documents');
-        }
+        ! Storage::exists(storage_path('/app/temp')) &&
+        Storage::makeDirectory('temp');
     }
 
     /**
