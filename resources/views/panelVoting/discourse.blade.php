@@ -8,26 +8,31 @@
             transform: translate(-50%, -50%);
             color: white;
         }
+
         .border_radios {
             border-radius: 25px;
             margin: 20px;
             width: 30rem;
         }
+
         .panel {
             display: flex;
             justify-content: space-evenly;
             align-items: stretch;
             margin-top: 3%;
         }
+
         .text_panel, .img_panel, .message_panel {
             color: white;
             background: #3ca7ee;
             border-radius: 20px;
         }
+
         .img_panel {
             margin-right: 30px;
             width: auto;
         }
+
         .message_panel {
             flex-grow: 2;
         }
@@ -92,39 +97,38 @@
             $.ajax({
                 url: '/get-stage-panel',
                 method: 'GET',
-                async : false
+                async: false
             }).success((data) => {
                 data = JSON.parse(data);
 
                 @if(\App\Models\Parameters::where('slug', 'painel-digital-permitir-multi-sessoes')->first()->value)
-                    postDataAssemblyman()
+                postDataAssemblyman()
                 @else
-                    if(data.stage !== 'discourse'){
-                        window.location.href = '/painel-votacao/' + data.stage;
-                    }else{
-                        postDataAssemblyman()
-                    }
+                if (data.stage !== 'discourse') {
+                    window.location.href = '/painel-votacao/' + data.stage;
+                } else {
+                    postDataAssemblyman()
+                }
                 @endif
             });
         }, 3000);
     });
 
 
-    var getDataAssemblyman = function(url)
-    {
-        data = {
-            _token : '{{csrf_token()}}'
+    const postDataAssemblyman = () => {
+        const data = {
+            _token: '{{csrf_token()}}'
         }
 
         $.ajax({
             url: "/pulpito/info",
             method: "POST",
-            data : data
+            data: data
         }).success(function (response) {
             response = JSON.parse(response);
-            if(response.status){
+            if (response.status) {
                 setDataAssemblyman(response);
-            }else{
+            } else {
                 resetPanel();
             }
         });
