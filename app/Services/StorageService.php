@@ -176,7 +176,7 @@ class StorageService implements StorageInterface
                 ->putFileAs($this->folder, static::$file, $filename, Filesystem::VISIBILITY_PUBLIC);
         } else {
             $resp = Storage::disk($this->disk)
-                ->put("{$this->folder}/{$filename}", static::$file, Filesystem::VISIBILITY_PUBLIC);
+                ->put($this->folder.'/'.$filename, static::$file, Filesystem::VISIBILITY_PUBLIC);
         }
 
         throw_if(! $resp, new Exception('Falha ao salvar arquivo'));
@@ -192,7 +192,7 @@ class StorageService implements StorageInterface
     {
         $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
 
-        return Storage::disk($this->disk)->url($file_name);
+        return Storage::disk($this->disk)->url("app/{$file_name}");
     }
 
     /**

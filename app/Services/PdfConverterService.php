@@ -2,22 +2,37 @@
 
 namespace App\Services;
 
+use App\Contracts\StorageInterface;
+use Exception;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class PdfConverterService
 {
+    /**
+     * @var
+     */
     private $pdf;
-    private StorageService $localStorageService;
 
-    public function __construct()
+    /**
+     * @var StorageInterface
+     */
+    private StorageInterface $localStorageService;
+
+    /**
+     * @param  StorageInterface  $storage
+     */
+    public function __construct(StorageInterface $storage)
     {
-        $this->localStorageService = new StorageService();
+        $this->localStorageService = $storage;
         $this->localStorageService->usingDisk('local');
     }
 
-    public function convertFromUploaded(UploadedFile $file)
+    /**
+     * @param  UploadedFile  $file
+     * @return string
+     * @throws Exception
+     */
+    public function convertFromUploaded(UploadedFile $file): string
     {
         $this->pdf = $file->getContent();
         $version = $this->getPdfVersion();
@@ -26,16 +41,19 @@ class PdfConverterService
             return $this->convertPdfToSafeVersion();
         }
 
-        return [
-            'content' => $this->pdf,
-            'size' => $file->getSize(),
-        ];
+        return $this->pdf;
     }
 
-    public function convertFromDecoded(string $pdf)
+    /**
+     * @param  string  $pdf
+     * @return string
+     * @throws Exception
+     */
+    public function convertFromDecoded(string $pdf): string
     {
-        $this->pdf = $this->localStorageService->getFile($pdf);
+        $file = (new StorageService())->usingDisk('local')->getFile($pdf);
 
+        $this->pdf = $file;
         $version = $this->getPdfVersion();
 
         if ($version > 1.4) {
@@ -45,7 +63,10 @@ class PdfConverterService
         return $pdf;
     }
 
-    private function getPdfVersion()
+    /**
+     * @return string
+     */
+    private function getPdfVersion(): string
     {
         $pdfHeader = substr($this->pdf, 0, 20);
         preg_match_all('!\d+!', $pdfHeader, $matches);
@@ -53,31 +74,44 @@ class PdfConverterService
         return implode('.', $matches[0]);
     }
 
-    private function convertPdfToSafeVersion()
+    /**
+     * @return string
+     * @throws Exception
+     */
+    private function convertPdfToSafeVersion(): string
     {
         $this->checkIfGsIsInstalled();
 
         $tempPdf = $this->savePdfTemporarily();
-        $tempPdfPath = storage_path("app/temp/{$tempPdf}");
+        $tempPdfPath = base_path().$this->localStorageService->inFolder('temp')
+                ->getPath($tempPdf);
         $convertedFileName = "{$tempPdf}-converted.pdf";
-        $convertedFilePath = storage_path("app/temp/{$convertedFileName}");
+        $convertedFilePath = base_path().$this->localStorageService->inFolder('temp')
+            ->getPath($convertedFileName);
 
         shell_exec("gs -dBATCH -dAutoRotatePages=/None -dNOPAUSE -q -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -sOutputFile=\"{$convertedFilePath}\" \"{$tempPdfPath}\"");
 
         return "temp/{$convertedFileName}";
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     private function checkIfGsIsInstalled()
     {
         if (! exec('gs --version')) {
-            throw new \Exception('GhostScript is not installed');
+            throw new Exception('GhostScript is not installed');
         }
     }
 
+    /**
+     * @return mixed
+     */
     private function savePdfTemporarily()
     {
         return $this->localStorageService->inFolder('temp')
             ->sendContent($this->pdf)
-            ->send(false, Str::random(32).'.pdf');
+            ->send(false);
     }
 }
