@@ -20,7 +20,7 @@
                 @if($documents->isEmpty())
                     <div class="well text-center">Sem dados. Insira um novo registro.</div>
                 @else
-                    <table class="table table-responsive" id="documents-table">
+                    <table class="table table-striped table-hover" id="documents-table">
                         <thead>
                             <tr>
                                 <th>Número interno</th>

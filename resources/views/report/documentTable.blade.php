@@ -1,4 +1,4 @@
-<table class="table table-responsive" id="documents-table">
+<table class="table table-striped table-hover" id="documents-table">
     <thead>
         <tr>
             <th>Número interno</th>

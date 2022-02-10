@@ -411,13 +411,13 @@ BEGIN PAGE
                 <!-- Begin user session nav -->
                 <ul class="nav-user navbar-right">
                     <li class="dropdown">
-                        <a href="#fakelink" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#fakelink" class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <strong>{{ Auth::user()->name }}</strong>
                         </a>
-                        <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
+                        <ul class="dropdown-menu">
                             <li>
-                                <a href="/edit-password"><i class="fa fa-key"></i> Mudar senha </a>
-                                <a href="/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a>
+                                <a class="dropdown-item" href="/edit-password"><i class="fa fa-key"></i> Mudar senha </a>
+                                <a class="dropdown-item" href="/logout"><i class="fa fa-sign-out"></i> Sair do sistema</a>
                             </li>
                         </ul>
                     </li>

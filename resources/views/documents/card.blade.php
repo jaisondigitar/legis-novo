@@ -1,5 +1,5 @@
-<div class="panel panel-default">
-    <div class="panel-heading" style="text-align: center; font-size: 15px;">
+<div class="card">
+    <div class="card-header" style="text-align: center; font-size: 15px;">
         <span class="panel-title text-uppercase">
             <span class="panel-title text-uppercase">
                 <label class="pull-right">
@@ -56,9 +56,9 @@
             </span>
         </span>
     </div>
-    <div class="panel-body">
-        <span style="padding: 0; font-size: 13px;">
-            <div class="col-sm-6" style="padding: 0">
+    <div class="card-body">
+        <span class="row" style="font-size: 13px;">
+            <div class="col-sm-6">
                 <span class="text-uppercase">
                     <label>
                         <i class="fa fa-user"></i> @if($document->owner) {!! $document->owner->short_name !!} @else - @endif <br>
@@ -195,7 +195,7 @@
                     </span>
                 </label>
             </div>
-            <div class="col-sm-12" style="padding: 0">
+            <div class="col-sm-12">
                 <label style="margin-top: 10px; min-height: 8rem">
                     <strong>Ementa:</strong>
                     <span>
@@ -209,7 +209,7 @@
                     </span>
                 </label>
             </div>
-            <div class="col-sm-12" style="padding: 0">
+            <div class="col-sm-12">
                 <span>
                     <label>
                         <strong>Data Tram.:</strong>
@@ -255,7 +255,7 @@
             </div>
         </span>
     </div>
-    <div class="panel-footer">
+    <div class="card-footer">
         @if(!$document->document_protocol)
             <span class="badge badge-warning pull-left">Aberto</span>
         @else

@@ -1,5 +1,5 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card">
+    <div class="card-header">
         <span class="panel-title text-uppercase" style="font-size: 15px;">
             <label>
                 <input type="checkbox" name="toDelete" value="{{$lawsProject->id}}" class="checkDelete " />
@@ -45,180 +45,182 @@
             </div>
         </span>
     </div>
-    <div class="panel-body" style="font-size: 12px; height: 260px">
-        <div class="col-md-4">
-            <span>
-                <strong>COD:</strong>
-                {!! $lawsProject->getNumberLaw() == 'false'  ? '-'  : $lawsProject->getNumberLaw() !!}
-            </span>
-            <br>
-            <span>
-                <strong>Data: </strong>
-                {{$lawsProject->law_date}}
-            </span>
-            <br>
-            <span>
-                <strong>Protocolo: </strong>
-                <span id="tdLawProtocol{{$lawsProject->id}}" style="color: #37BC9B" align="center">
-                    @if($lawsProject->protocol > 0)
-                        {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
-                    @elseif(Auth::user()->roleHasPermission('lawsProject.createLawProjectNumber'))
-                        <button
-                            type="button"
-                            class="btn btn-default btn-xs btn-protocol"
-                            value="{!! $lawsProject->id !!}"
-                        >
-                            <i class="glyphicon glyphicon-folder-open"></i>
-                        </button>
+    <div class="card-body" style="font-size: 12px;">
+        <div class="row">
+            <div class="col-md-5">
+                <span>
+                    <strong>COD:</strong>
+                    {!! $lawsProject->getNumberLaw() == 'false'  ? '-'  : $lawsProject->getNumberLaw() !!}
+                </span>
+                <br>
+                <span>
+                    <strong>Data: </strong>
+                    {{$lawsProject->law_date}}
+                </span>
+                <br>
+                <span>
+                    <strong>Protocolo: </strong>
+                    <span id="tdLawProtocol{{$lawsProject->id}}" style="color: #37BC9B" align="center">
+                        @if($lawsProject->protocol > 0)
+                            {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
+                        @elseif(Auth::user()->roleHasPermission('lawsProject.createLawProjectNumber'))
+                            <button type="button" class="btn btn-xs btn-protocol" value="{!! $lawsProject->id !!}" id="tdLawApproved{{$lawsProject->id}}">
+                                <span align="center">
+                                    <i class="fas fa-folder-open"></i>
+                                </span>
+                            </button>
+                        @endif
+                    </span>
+                </span>
+                <br>
+                <span>
+                    <strong> Aprovado: </strong>
+
+                    @if($lawsProject->is_ready >= 1)
+                        <span id="tdLawApproved_{{$lawsProject->id}}">
+                            {{$lawsProject->law_number}} - {{$lawsProject->law_date_publish}}
+                        </span>
+
+                        @shield('lawProject.approvedEdit')
+                            <button type="button" class="btn btn-xs" onclick="approvedEdit('{{ $lawsProject->id }}')">
+                                <span align="center">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            </button>
+                        @endshield
+                    @else
+                        @shield('lawsProject.approved')
+                            <button type="button" class="btn btn-xs btn-approved" value="{!! $lawsProject->id !!}" id="tdLawApproved{{$lawsProject->id}}">
+                                <span align="center">
+                                    <i class="fas fa-folder-open"></i>
+                                </span>
+                            </button>
+                        @endshield
                     @endif
                 </span>
-            </span>
-            <br>
-            <span>
-                <strong> Aprovado: </strong>
+            </div>
+            <div class="col-md-4">
+                <span>
+                    <strong>Responsável: </strong>
 
-                @if($lawsProject->is_ready >= 1)
-                    <span id="tdLawApproved_{{$lawsProject->id}}">
-                        {{$lawsProject->law_number}} - {{$lawsProject->law_date_publish}}
-                    </span>
+                    @if($lawsProject->owner)
+                        {{ $lawsProject->owner->short_name }}
+                    @else
+                        -
+                    @endif
+                </span>
+                <br>
+                <span>
+                    <strong>Comissão: </strong>
 
-                    @shield('lawProject.approvedEdit')
-                        <button type="button" class="btn btn-warning btn-xs" onclick="approvedEdit('{{ $lawsProject->id }}')">
-                            <i class="fa fa-pencil"></i>
-                        </button>
-                    @endshield
-                @else
-                    @shield('lawsProject.approved')
-                        <span id="tdLawApproved{{$lawsProject->id}}" align="center">
-                            <button type="button" class="btn btn-default btn-xs btn-approved" value="{!! $lawsProject->id !!}">
-                                <i class="glyphicon glyphicon-folder-open"></i>
-                            </button>
-                        </span>
-                    @endshield
-                @endif
-            </span>
-        </div>
-        <div class="col-md-6">
-            <span>
-                <strong>Responsável: </strong>
+                    @if($lawsProject->comission)
+                        {{ $lawsProject->comission->name }}
+                    @else
+                        -
+                    @endif
+                </span>
+                <br>
+                <span>
+                    <strong>Referente à: </strong>
 
-                @if($lawsProject->owner)
-                    {{ $lawsProject->owner->short_name }}
-                @else
-                    -
-                @endif
-            </span>
-            <br>
-            <span>
-                <strong>Comissão: </strong>
+                    @if($lawsProject->reference_id > 0)
+                        <a href="/lawsProjects/{{$lawsProject->reference_id}}" target="_blank">
+                            {{--{{ \App\Models\LawsProject::find($lawsProject->reference_id)->project_number}}/--}}
+                            {{--{{\App\Models\LawsProject::find($lawsProject->reference_id)->getYearLaw($lawsProject->law_date)}} ---}}
+                            {{--{{ \App\Models\LawsProject::find($lawsProject->reference_id)->law_type->name}}--}}
+                        </a>
+                    @endif
+                </span>
+                <br>
+                <span>
+                    <strong>Aprovado pela câmara: </strong>
 
-                @if($lawsProject->comission)
-                    {{ $lawsProject->comission->name }}
-                @else
-                    -
-                @endif
-            </span>
-            <br>
-            <span>
-                <strong>Referente à: </strong>
-
-                @if($lawsProject->reference_id > 0)
-                    <a href="/lawsProjects/{{$lawsProject->reference_id}}" target="_blank">
-                        {{--{{ \App\Models\LawsProject::find($lawsProject->reference_id)->project_number}}/--}}
-                        {{--{{\App\Models\LawsProject::find($lawsProject->reference_id)->getYearLaw($lawsProject->law_date)}} ---}}
-                        {{--{{ \App\Models\LawsProject::find($lawsProject->reference_id)->law_type->name}}--}}
-                    </a>
-                @endif
-            </span>
-            <br>
-            <span>
-                <strong>Aprovado pela câmara: </strong>
-
-                {{ $lawsProject->town_hall ? 'Sim' : 'Não' }}
-            </span>
-        </div>
-        <div class="col-md-2">
-            <span>
-                <strong>Aprovação:</strong>
-                <label>
-                    <input
-                        type="checkbox"
-                        id ='town_hall{{$lawsProject->id}}'
-                        onchange='toogleApproved({{$lawsProject->id }})'
-                        @if($lawsProject->town_hall == 1)
-                        checked
-                        @endif
-                    >
-                </label>
-            </span>
-            <br>
-            <span>
-                <strong>Lida:</strong>
-
-                @shield('lawsProject.read')
+                    {{ $lawsProject->town_hall ? 'Sim' : 'Não' }}
+                </span>
+            </div>
+            <div class="col-md-3">
+                <span>
                     <label>
+                        <strong>Aprovação:</strong>
                         <input
-                            onchange="changeRead('{!! $lawsProject->id !!}')"
-                            type="checkbox" {!! $lawsProject->is_read > 0 ? 'checked' : '' !!}
+                            type="checkbox"
+                            id ='town_hall{{$lawsProject->id}}'
+                            onchange='toogleApproved({{$lawsProject->id }})'
+                            @if($lawsProject->town_hall == 1)
+                            checked
+                            @endif
                         >
                     </label>
-                @endshield
-            </span>
-        </div>
+                </span>
+                <br>
+                <span>
+                    <strong>Lida:</strong>
 
-        <div class="col-md-12" style="height: 100px">
-            <br>
-            <span style="text-align: justify !important;" class="text-uppercase">
-                <strong>Ementa:</strong>
+                    @shield('lawsProject.read')
+                        <label>
+                            <input
+                                onchange="changeRead('{!! $lawsProject->id !!}')"
+                                type="checkbox" {!! $lawsProject->is_read > 0 ? 'checked' : '' !!}
+                            >
+                        </label>
+                    @endshield
+                </span>
+            </div>
 
-                @if($lawsProject->title === '')
-                    -
-                @else
-                    <p class="resume">
-                        {!! $lawsProject->title !!}
-                    </p>
-                @endif
-            </span>
-            <br>
-        </div>
-        <div class="col-md-12">
-            <span>
-                <strong>Data Tram.:</strong>
-                @if($lawsProject->processing->isEmpty())
-                    -
-                @else
-                    {!!
-                        $lawsProject->processing->first()->created_at
-                    !!}
-                @endif
-            </span>
-            <br>
-            <span>
-                <strong>Status:</strong>
+            <div class="col-md-12">
+                <br>
+                <span style="text-align: justify !important;" class="text-uppercase">
+                    <strong>Ementa:</strong>
 
-                @if($lawsProject->processing->isEmpty())
-                    -
-                @else
-                    {!!
-                        $lawsProject->processing->first()->adviceSituationLaw->name
-                    !!}
-                @endif
-            </span>
-            <br>
-            <span>
-                <strong>Destinatário:</strong>
+                    @if($lawsProject->title === '')
+                        -
+                    @else
+                        <p class="resume">
+                            {!! $lawsProject->title !!}
+                        </p>
+                    @endif
+                </span>
+                <br>
+            </div>
+            <div class="col-md-12">
+                <span>
+                    <strong>Data Tram.:</strong>
+                    @if($lawsProject->processing->isEmpty())
+                        -
+                    @else
+                        {!!
+                            $lawsProject->processing->first()->created_at
+                        !!}
+                    @endif
+                </span>
+                <br>
+                <span>
+                    <strong>Status:</strong>
 
-                @if($lawsProject->processing->isEmpty())
-                    -
-                @else
-                    {!!
-                        $lawsProject->processing->first()->destination->name
-                    !!}
-                @endif
-            </span>
+                    @if($lawsProject->processing->isEmpty())
+                        -
+                    @else
+                        {!!
+                            $lawsProject->processing->first()->adviceSituationLaw->name
+                        !!}
+                    @endif
+                </span>
+                <br>
+                <span>
+                    <strong>Destinatário:</strong>
+
+                    @if($lawsProject->processing->isEmpty())
+                        -
+                    @else
+                        {!!
+                            $lawsProject->processing->first()->destination->name
+                        !!}
+                    @endif
+                </span>
+            </div>
         </div>
     </div>
-    <div class="panel-footer">
+    <div class="card-footer">
         @if(!$lawsProject->protocol)
             <span class="badge badge-warning pull-left">Aberto</span>
         @else

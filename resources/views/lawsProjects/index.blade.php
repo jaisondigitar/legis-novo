@@ -4,6 +4,7 @@
 @endsection
 @section('content')
     <form method="GET">
+        <input type="hidden" name="has-filter" value="true">
         <div class="the-box rounded">
             <div class="row">
                 <div class="form-group col-md-2">

@@ -19,7 +19,7 @@
                 @if($lawsProjects->isEmpty())
                     <div class="well text-center">Sem dados. Insira um novo registro.</div>
                 @else
-                    <table class="table table-responsive" id="lawsProjects-table">
+                    <table class="table table-striped table-hover" id="lawsProjects-table">
                         <thead>
                             <tr>
                                 <th>#COD</th>

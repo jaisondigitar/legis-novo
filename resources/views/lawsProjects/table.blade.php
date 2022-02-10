@@ -36,7 +36,7 @@
 {!! $lawsProjects->appends(request()->input())->render() !!}
 
 <div class="modal fade" id="modalApproved" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Aprovar lei</h4>
@@ -72,12 +72,12 @@
     </div>
 </div>
 
-<div id="modalApprovedEdit" class="modal fade" role="dialog">
+<div class="modal fade" id="modalApprovedEdit" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Editar lei</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div align="center"><label class="label label-danger" id="labelmessageedit"></label></div>
@@ -93,19 +93,19 @@
             </div>
             <div class="clearfix"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-success pull-right" id="btn-edit-law">Salvar</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="modalProtocol" aria-hidden="true">
+<div class="modal fade" id="modalProtocol" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">Protocolo de lei</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h4 class="modal-title" id="staticBackdropLabel">Protocolo de lei</h4>
             </div>
             <div class="modal-body">
                 <div align="center"><label class="label label-danger" id="labelmessage2"></label></div>
@@ -125,19 +125,19 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-success pull-right" id="btn-save-protocol">Salvar</button>
             </div>
         </div>
     </div>
 </div>
 
-<div id="modalProtocolEdit" class="modal fade" role="dialog">
+<div class="modal fade" id="modalProtocolEdit" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Alterar - número / protocolo</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div align="center"><label class="label label-danger" id="labelmessage2"></label></div>
@@ -170,7 +170,7 @@
             </div>
             <div class="clearfix"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-success pull-right" onclick="editNumberProtocolSave()">Salvar</button>
             </div>
         </div>
@@ -389,7 +389,7 @@
                 $('#law_number').val(result.data.next_number);
                 $('#year_law').val(result.data.year);
                 $('#labelmessage').html('');
-                $('#modalApproved').on('shown.bs.modal', {});
+                $('#modalApproved').modal('show');
             });
         });
 
@@ -418,7 +418,7 @@
                         $('#tdLawPlace'+result.lawProject_id).html(result.lawProject_place);
                         $('#tdLawDate'+result.lawProject_id).html(result.lawProject_date_publish);
                         $('#tdLawApproved'+result.lawProject_id).html('<label class="label label-success">Sim</label>');
-                        modalApproval.addEventListener('hide.bs.modal', function () {})
+                        $('#modalApproved').modal('hide');
                     } else {
                         $('#labelmessage').html(result.message);
                         $('#law_number').val(result.next_number);

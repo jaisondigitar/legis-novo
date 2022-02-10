@@ -49,19 +49,14 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-top: 20px">
                 <div class="form-group col-md-10">
-                    <button
-                        class="btn btn-block btn-primary"
-                    >
+                    <button class="btn btn-block btn-primary" style="width: 100%">
                         <i class="fa fa-search"></i> Pesquisar
                     </button>
                 </div>
                 <div class="form-group col-md-2">
-                    <button
-                        type="reset"
-                        class="btn btn-block btn-warning"
-                    >
+                    <button type="reset" class="btn btn-block btn-warning" style="width: 100%">
                         <i class="fa fa-recycle"></i> Reset
                     </button>
                 </div>
@@ -92,16 +87,12 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <br>
-            <div class="col-md-12">
-                @include('flash::message')
-                @if($documents->isEmpty())
-                    <div class="well text-center">Sem dados. Insira um novo registro.</div>
-                @else
-                    @include('documents.table')
-                @endif
-            </div>
-        </div>
+        <br>
+        @include('flash::message')
+        @if($documents->isEmpty())
+            <div class="well text-center">Sem dados. Insira um novo registro.</div>
+        @else
+            @include('documents.table')
+        @endif
     </div>
 @endsection
