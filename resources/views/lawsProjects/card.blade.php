@@ -1,6 +1,6 @@
-<div class="panel panel-default">
+<div class="panel panel-default" style="font-size: 15px;">
     <div class="panel-heading">
-        <span class="panel-title text-uppercase" style="font-size: 15px;">
+        <span class="panel-title text-uppercase">
             <label>
                 <input type="checkbox" name="toDelete" value="{{$lawsProject->id}}" class="checkDelete " />
             </label>
@@ -45,8 +45,8 @@
             </div>
         </span>
     </div>
-    <div class="panel-body" style="font-size: 12px; height: 260px">
-        <div class="col-md-4">
+    <div class="panel-body">
+        <div class="col-md-4" style="padding: 0">
             <span>
                 <strong>COD:</strong>
                 {!! $lawsProject->getNumberLaw() == 'false'  ? '-'  : $lawsProject->getNumberLaw() !!}
@@ -173,9 +173,9 @@
             </span>
         </div>
 
-        <div class="col-md-12" style="height: 100px">
+        <div class="col-md-12" style="padding: 0">
             <br>
-            <span style="text-align: justify !important;" class="text-uppercase">
+            <span style="margin-top: 10px; min-height: 8rem; text-align: justify !important;" class="text-uppercase">
                 <strong>Ementa:</strong>
 
                 @if($lawsProject->title === '')
@@ -188,7 +188,7 @@
             </span>
             <br>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12" style="padding: 0">
             <span>
                 <strong>Data Tram.:</strong>
                 @if($lawsProject->processing->isEmpty())

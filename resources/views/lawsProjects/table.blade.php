@@ -6,7 +6,7 @@
     .container {
         width: 100%;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         grid-gap: 20px;
     }
 
@@ -23,14 +23,15 @@
     }
 </style>
 
+<div class="container">
 @foreach($lawsProjects as $lawsProject)
     @if (Auth::user()->can_request_legal_opinion_not_root && isset($lawsProject->advices->last()->legal_option))
     @else
-        <div class="col-lg-6">
-            @include('lawsProjects.card')
-        </div>
+        @include('lawsProjects.card')
     @endif
 @endforeach
+</div>
+
 {{--MODAL VOTAÇÃO--}}
 
 

@@ -1,259 +1,255 @@
-<div class="panel panel-default">
-    <div class="panel-heading" style="text-align: center; font-size: 15px;">
+<div class="panel panel-default" style="font-size: 15px;">
+    <div class="panel-heading" style="text-align: center;">
         <span class="panel-title text-uppercase">
-            <span class="panel-title text-uppercase">
-                <label class="pull-right">
-                    <input type="checkbox" name="toDelete" value="{{$document->id}}" class="checkDelete"/>
-                </label>
+            <label class="pull-right">
+                <input type="checkbox" name="toDelete" value="{{$document->id}}" class="checkDelete"/>
+            </label>
 
-                <label class="pull-left">
-                    <i class="fa fa-file" style="margin-right: 5px;"></i>
+            <label class="pull-left">
+                <i class="fa fa-file" style="margin-right: 5px;"></i>
 
-                    @if($document->document_type->parent_id)
-                        {{ $document->document_type->parent->name }} ::
-                    @endif
-                        {!! $document->document_type->name !!} -
-                    @if($document->number === 0)
-                        -
-                    @elseif($document->number !== 0)
-                        @if (Auth::user()->roleHasPermission('document.editnumero'))
-                            <a
-                                href="javascript:void(0)"
-                                id="numberEdit{{$document->id}}"
-                                onclick="alteraNumero('{{ $document->id }}');"
-                            >
-                                {!!
-                                    $document->number
-                                !!}{!!
-                                    '/' . $document->getYear($document->date)
-                                !!}
-                            </a>
-                        @else
-                            <span style="color: #37BC9B">
-                                {!!
-                                    $document->number
-                                !!}{!!
-                                    '/' . $document->getYear($document->date)
-                                !!}
-                            </span>
-                        @endif
+                @if($document->document_type->parent_id)
+                    {{ $document->document_type->parent->name }} ::
+                @endif
+                    {!! $document->document_type->name !!} -
+                @if($document->number === 0)
+                    -
+                @elseif($document->number !== 0)
+                    @if (Auth::user()->roleHasPermission('document.editnumero'))
+                        <a
+                            href="javascript:void(0)"
+                            id="numberEdit{{$document->id}}"
+                            onclick="alteraNumero('{{ $document->id }}');"
+                        >
+                            {!!
+                                $document->number
+                            !!}{!!
+                                '/' . $document->getYear($document->date)
+                            !!}
+                        </a>
                     @else
-                        @if (Auth::user()->roleHasPermission('document.editnumero'))
-                            <span style="color: #37BC9B">
-                                {!!
-                                    $document->number . '/' . $document->getYear($document->date)
-                                !!}
-                            </span>
-                        @endif
+                        <span style="color: #37BC9B">
+                            {!!
+                                $document->number
+                            !!}{!!
+                                '/' . $document->getYear($document->date)
+                            !!}
+                        </span>
                     @endif
-                </label>
+                @else
+                    @if (Auth::user()->roleHasPermission('document.editnumero'))
+                        <span style="color: #37BC9B">
+                            {!!
+                                $document->number . '/' . $document->getYear($document->date)
+                            !!}
+                        </span>
+                    @endif
+                @endif
+            </label>
 
-                <label>
-                    <span>
-                        {!! $document->date !!}
-                    </span>
-                </label>
-            </span>
+            <label>
+                <span>
+                    {!! $document->date !!}
+                </span>
+            </label>
         </span>
     </div>
     <div class="panel-body">
-        <span style="padding: 0; font-size: 13px;">
-            <div class="col-sm-6" style="padding: 0">
-                <span class="text-uppercase">
-                    <label>
-                        <i class="fa fa-user"></i> @if($document->owner) {!! $document->owner->short_name !!} @else - @endif <br>
-                    </label>
-                </span>
-                <br>
-                <span>
-                    <label>
-                        <strong>Número:</strong>
-                        <span id="tdnumber{{$document->id}}">
-                            @if($document->number === 0)
-                                -
-                            @elseif($document->number !== 0)
-                                @if (Auth::user()->roleHasPermission('document.editnumero'))
-                                    <a
-                                        href="javascript:void(0)"
-                                        id="numberEdit{{$document->id}}"
-                                        onclick="alteraNumero('{{$document->id}}');"
-                                    >
-                                        {!!
-                                            $document->number !!}{!!'/' . $document->getYear($document->date)
-                                        !!}
-                                    </a>
-                                @else
-                                    <span style="color: #37BC9B">
-                                        {!!
-                                            $document->number
-                                        !!}{!!
-                                            '/' . $document->getYear($document->date)
-                                        !!}
-                                    </span>
-                                @endif
-                            @else
-                                @if (Auth::user()->roleHasPermission('document.editnumero'))
-                                    <span style="color: #37BC9B">
-                                        {!!
-                                            $document->number
-                                        !!}{!!
-                                            '/' . $document->getYear($document->date)
-                                        !!}
-                                    </span>
-                                @endif
-                            @endif
-                        </span>
-                    </label>
-                </span>
-                <br>
-                <span>
-                    <label>
-                        <strong>Protocolo: </strong>
-                        <span id="tdprotocol{{$document->id}}">
-                            @if (
-                                !$document->document_protocol &&
-                                !Auth::user()->roleHasPermission('document.createProtocolNumber')
-                            )
-                                -
-                            @elseif (
-                                !$document->document_protocol &&
-                                Auth::user()->roleHasPermission('document.createProtocolNumber')
-                            )
-                                <button
-                                    type="button"
-                                    class='btn btn-default btn-xs btn-protocol'
-                                    value="{!! $document->id !!}"
+        <div class="col-sm-6" style="padding: 0">
+            <span class="text-uppercase">
+                <label>
+                    <i class="fa fa-user"></i> @if($document->owner) {!! $document->owner->short_name !!} @else - @endif <br>
+                </label>
+            </span>
+            <br>
+            <span>
+                <label>
+                    <strong>Número:</strong>
+                    <span id="tdnumber{{$document->id}}">
+                        @if($document->number === 0)
+                            -
+                        @elseif($document->number !== 0)
+                            @if (Auth::user()->roleHasPermission('document.editnumero'))
+                                <a
+                                    href="javascript:void(0)"
+                                    id="numberEdit{{$document->id}}"
+                                    onclick="alteraNumero('{{$document->id}}');"
                                 >
-                                    <i class="glyphicon glyphicon-folder-open"></i>
-                                </button>
+                                    {!!
+                                        $document->number !!}{!!'/' . $document->getYear($document->date)
+                                    !!}
+                                </a>
                             @else
-                                @if (Auth::user()->roleHasPermission('document.editprotocol'))
-                                    <a
-                                        href="javascript:void(0)"
-                                        id='linkProtocolo{{$document->id}}'
-                                        onclick="alteraProtocolo(
-                                            '{!!$document->id!!}',
-                                            '{{
-                                                date('d/m/Y H:i:s',
-                                                strtotime(
-                                                    $document->document_protocol->created_at
-                                                ))
-                                            }}'
-                                            );"
-                                    >
-                                        @if($document->document_protocol)
-                                            {{$document->document_protocol->number}}
-                                        @endif
-                                    </a>
-                                @else
-                                    <span style="color: #37BC9B">
-                                        @if($document->document_protocol)
-                                            {{$document->document_protocol->number}}
-                                        @endif
-                                    </span>
-                                @endif
+                                <span style="color: #37BC9B">
+                                    {!!
+                                        $document->number
+                                    !!}{!!
+                                        '/' . $document->getYear($document->date)
+                                    !!}
+                                </span>
                             @endif
-                        </span>
-                    </label>
-                </span>
-            </div>
-            <div class="col-md-6">
-                @shield('document.read')
-                    <label for="lido_{{$document->id}}">
-                        <strong>Lido:</strong>
-                        <input id="lido_{{$document->id}}" type="checkbox" onclick="changeRead('{!! $document->id !!}')" {!! $document->read > 0 ? 'checked' : '' !!}>
-                    </label>
-                @endshield
-                @shield('document.approved')
-                    <span>
-                        <label>
-                        <strong>Aprovado:</strong>
-                            <input onchange="changeApproved('{!! $document->id !!}')" type="checkbox" {!! $document->approved > 0 ? 'checked' : '' !!} >
-                        </label>
+                        @else
+                            @if (Auth::user()->roleHasPermission('document.editnumero'))
+                                <span style="color: #37BC9B">
+                                    {!!
+                                        $document->number
+                                    !!}{!!
+                                        '/' . $document->getYear($document->date)
+                                    !!}
+                                </span>
+                            @endif
+                        @endif
                     </span>
-                @endshield
-                <br>
+                </label>
+            </span>
+            <br>
+            <span>
                 <label>
-                    <strong>Data Prot.:</strong>
-                    <span>
-                        @if($document->document_protocol)
-                            {{date('d/m/Y', strtotime($document->document_protocol->created_at))}}
-                        @else
+                    <strong>Protocolo: </strong>
+                    <span id="tdprotocol{{$document->id}}">
+                        @if (
+                            !$document->document_protocol &&
+                            !Auth::user()->roleHasPermission('document.createProtocolNumber')
+                        )
                             -
+                        @elseif (
+                            !$document->document_protocol &&
+                            Auth::user()->roleHasPermission('document.createProtocolNumber')
+                        )
+                            <button
+                                type="button"
+                                class='btn btn-default btn-xs btn-protocol'
+                                value="{!! $document->id !!}"
+                            >
+                                <i class="glyphicon glyphicon-folder-open"></i>
+                            </button>
+                        @else
+                            @if (Auth::user()->roleHasPermission('document.editprotocol'))
+                                <a
+                                    href="javascript:void(0)"
+                                    id='linkProtocolo{{$document->id}}'
+                                    onclick="alteraProtocolo(
+                                        '{!!$document->id!!}',
+                                        '{{
+                                            date('d/m/Y H:i:s',
+                                            strtotime(
+                                                $document->document_protocol->created_at
+                                            ))
+                                        }}'
+                                        );"
+                                >
+                                    @if($document->document_protocol)
+                                        {{$document->document_protocol->number}}
+                                    @endif
+                                </a>
+                            @else
+                                <span style="color: #37BC9B">
+                                    @if($document->document_protocol)
+                                        {{$document->document_protocol->number}}
+                                    @endif
+                                </span>
+                            @endif
                         @endif
                     </span>
                 </label>
-                <br>
-                <label>
-                    <strong>Setor:</strong>
-                    <span>
-                        @if($document->externalSector)
-                            {{$document->externalSector->name}}
-                        @else
-                            -
-                        @endif
-                    </span>
+            </span>
+        </div>
+        <div class="col-md-6">
+            @shield('document.read')
+                <label for="lido_{{$document->id}}">
+                    <strong>Lido:</strong>
+                    <input id="lido_{{$document->id}}" type="checkbox" onclick="changeRead('{!! $document->id !!}')" {!! $document->read > 0 ? 'checked' : '' !!}>
                 </label>
-            </div>
-            <div class="col-sm-12" style="padding: 0">
-                <label style="margin-top: 10px; min-height: 8rem">
-                    <strong>Ementa:</strong>
-                    <span>
-                        @if($document->resume === '')
-                            -
-                        @else
-                            <p class="resume">
-                                {!! $document->resume !!}
-                            </p>
-                        @endif
-                    </span>
-                </label>
-            </div>
-            <div class="col-sm-12" style="padding: 0">
+            @endshield
+            @shield('document.approved')
                 <span>
                     <label>
-                        <strong>Data Tram.:</strong>
-                        <span>
-                            @if(count($document->processingDocument)===0)
-                                -
-                            @else
-                                {!!
-                                    $document->processingDocument->first()
-                                        ->processing_document_date
-                                !!}
-                            @endif
-                        </span>
+                    <strong>Aprovado:</strong>
+                        <input onchange="changeApproved('{!! $document->id !!}')" type="checkbox" {!! $document->approved > 0 ? 'checked' : '' !!} >
                     </label>
                 </span>
-                <br>
+            @endshield
+            <br>
+            <label>
+                <strong>Data Prot.:</strong>
                 <span>
-                    <label>
-                        <strong>Status:</strong>
-                        <span>
-                            @if(count($document->processingDocument)===0)
-                                -
-                            @else
-                                {!!
-                                    $document->processingDocument->first()
-                                        ->documentSituation->name
-                                !!}
-                            @endif
-                        </span>
-                    </label>
+                    @if($document->document_protocol)
+                        {{date('d/m/Y', strtotime($document->document_protocol->created_at))}}
+                    @else
+                        -
+                    @endif
                 </span>
-                <br>
+            </label>
+            <br>
+            <label>
+                <strong>Setor:</strong>
+                <span>
+                    @if($document->externalSector)
+                        {{$document->externalSector->name}}
+                    @else
+                        -
+                    @endif
+                </span>
+            </label>
+        </div>
+        <div class="col-sm-12" style="padding: 0">
+            <label style="margin-top: 10px; min-height: 8rem">
+                <strong>Ementa:</strong>
+                <span>
+                    @if($document->resume === '')
+                        -
+                    @else
+                        <p class="resume">
+                            {!! $document->resume !!}
+                        </p>
+                    @endif
+                </span>
+            </label>
+        </div>
+        <div class="col-sm-12" style="padding: 0">
+            <span>
                 <label>
-                    <strong>Destinatário:</strong>
+                    <strong>Data Tram.:</strong>
                     <span>
                         @if(count($document->processingDocument)===0)
                             -
                         @else
-                            {!! $document->processingDocument->first()->destination->name !!}
+                            {!!
+                                $document->processingDocument->first()
+                                    ->processing_document_date
+                            !!}
                         @endif
                     </span>
                 </label>
-            </div>
-        </span>
+            </span>
+            <br>
+            <span>
+                <label>
+                    <strong>Status:</strong>
+                    <span>
+                        @if(count($document->processingDocument)===0)
+                            -
+                        @else
+                            {!!
+                                $document->processingDocument->first()
+                                    ->documentSituation->name
+                            !!}
+                        @endif
+                    </span>
+                </label>
+            </span>
+            <br>
+            <label>
+                <strong>Destinatário:</strong>
+                <span>
+                    @if(count($document->processingDocument)===0)
+                        -
+                    @else
+                        {!! $document->processingDocument->first()->destination->name !!}
+                    @endif
+                </span>
+            </label>
+        </div>
     </div>
     <div class="panel-footer">
         @if(!$document->document_protocol)
