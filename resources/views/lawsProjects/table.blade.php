@@ -6,7 +6,7 @@
     .container {
         width: 100%;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         grid-gap: 20px;
     }
 
@@ -22,26 +22,25 @@
         margin-right: 4px;
     }
 </style>
-
-@foreach($lawsProjects as $lawsProject)
-    @if (Auth::user()->can_request_legal_opinion_not_root && isset($lawsProject->advices->last()->legal_option))
-    @else
-        <div class="col-lg-6">
+<div class="container">
+    @foreach($lawsProjects as $lawsProject)
+        @if (Auth::user()->can_request_legal_opinion_not_root && isset($lawsProject->advices->last()->legal_option))
+        @else
             @include('lawsProjects.card')
-        </div>
-    @endif
-@endforeach
+        @endif
+    @endforeach
+</div>
 {{--MODAL VOTAÇÃO--}}
 
 
 {!! $lawsProjects->appends(request()->input())->render() !!}
 
-<div id="modalApproved" class="modal fade" role="dialog">
+<div class="modal fade" id="modalApproved" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Aprovar lei</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div align="center"><label class="label label-danger" id="labelmessage"></label></div>
@@ -66,7 +65,7 @@
             </div>
             <div class="clearfix"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-success pull-right" id="btn-save-law">Salvar</button>
             </div>
         </div>
@@ -101,12 +100,12 @@
     </div>
 </div>
 
-<div id="modalProtocol" class="modal fade" role="dialog">
+<div class="modal fade" id="modalProtocol" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Protocolo de lei</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title" id="staticBackdropLabel">Protocolo de lei</h4>
             </div>
             <div class="modal-body">
                 <div align="center"><label class="label label-danger" id="labelmessage2"></label></div>
@@ -125,7 +124,6 @@
                     <label class="label label-info">*Campo não pode ser alterado.</label>
                 </div>
             </div>
-            <div class="clearfix"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-success pull-right" id="btn-save-protocol">Salvar</button>
@@ -334,10 +332,9 @@
 
     $(document).ready(function () {
         $('.btn-protocol').on('click', function () {
-
-            data = getData();
-
+            const data = getData();
             const id = this.value;
+
             $.ajax({
                 method: "GET",
                 url: "{{ url('lawProjectProtocol') }}/"+ id,
@@ -381,6 +378,8 @@
 
         $('.btn-approved').on('click', function () {
             const id = this.value;
+            const modalApproval = document.getElementById('modalApproved')
+
             $.ajax({
                 method: "GET",
                 url: "{{ url('lawProjectApproved') }}/"+ id,
@@ -390,11 +389,13 @@
                 $('#law_number').val(result.data.next_number);
                 $('#year_law').val(result.data.year);
                 $('#labelmessage').html('');
-                $('#modalApproved').modal('show');
+                $('#modalApproved').on('shown.bs.modal', {});
             });
         });
 
         $('#btn-save-law').on('click', function () {
+            const modalApproval = document.getElementById('modalApproved')
+
             if($('#law_place_id').val() === '') {
                 $('#labelmessage').html('Selecione um local de publicação de protocolo');
             }else if ($('#date_publish').val() === ''){
@@ -417,7 +418,7 @@
                         $('#tdLawPlace'+result.lawProject_id).html(result.lawProject_place);
                         $('#tdLawDate'+result.lawProject_id).html(result.lawProject_date_publish);
                         $('#tdLawApproved'+result.lawProject_id).html('<label class="label label-success">Sim</label>');
-                        $('#modalApproved').modal('hide');
+                        modalApproval.addEventListener('hide.bs.modal', function () {})
                     } else {
                         $('#labelmessage').html(result.message);
                         $('#law_number').val(result.next_number);

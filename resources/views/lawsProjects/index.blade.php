@@ -3,68 +3,68 @@
     {!! Breadcrumbs::render('lawsProjects.list') !!}
 @endsection
 @section('content')
-    <div class="the-box rounded">
-        <form method="GET">
-            <input type="hidden" name="has-filter" value="true">
-            <div class="form-group col-md-2">
-                {!! Form::label('date', 'Registro:') !!}
-                {!!
-                    Form::text('created_at', $form->input('updated_at'), [
-                        'class' => 'form-control datepicker text-center',
-                        'minlength' => '10',
-                        'maxlength' => '10',
-                    ])
-                !!}
-            </div>
-            <div class="form-group col-md-3">
-                {!! Form::label('owner_id', 'Tipo:') !!}
-                {!! Form::select(
-                    'law_type_id',
-                    App\Models\LawsType::where('is_active', true)
-                        ->pluck('name', 'id')
-                        ->prepend('Selecione...', ''),
-                    $form->input('law_type_id'), ['class' => 'form-control'])
-                !!}
-            </div>
-            <div class="form-group col-md-2">
-                {!! Form::label('date', 'Número:') !!}
-                {!! Form::input(
-                    'number',
-                    'project_number',
-                    $form->input('project_number'),
-                    ['class' => 'form-control', 'min' => 0])
-                !!}
-            </div>
-            <div class="form-group col-md-2">
-                {!! Form::label('date', 'Ano:') !!}
-                {!! Form::input(
-                    'number',
-                    'law_date',
-                    $form->input('law_date'),
-                    ['class' => 'form-control', 'min' => 1000, 'max' => 9999])
-                !!}
-            </div>
-            <div class="form-group col-md-3">
-                {!! Form::label('owner_id', 'Responsável:') !!}
-                {!! Form::select(
-                    'assemblyman_id',
-                    $assemblymensList,
-                    $form->input('assemblyman_id'),
-                    ['class' => 'form-control'])
-                !!}
+    <form method="GET">
+        <div class="the-box rounded">
+            <div class="row">
+                <div class="form-group col-md-2">
+                    {!! Form::label('date', 'Registro:') !!}
+                    {!!
+                        Form::text('created_at', $form->input('updated_at'), [
+                            'class' => 'form-control datepicker text-center',
+                            'minlength' => '10',
+                            'maxlength' => '10',
+                        ])
+                    !!}
+                </div>
+                <div class="form-group col-md-3">
+                    {!! Form::label('owner_id', 'Tipo:') !!}
+                    {!! Form::select(
+                        'law_type_id',
+                        App\Models\LawsType::where('is_active', true)
+                            ->pluck('name', 'id')
+                            ->prepend('Selecione...', ''),
+                        $form->input('law_type_id'), ['class' => 'form-control'])
+                    !!}
+                </div>
+                <div class="form-group col-md-2">
+                    {!! Form::label('date', 'Número:') !!}
+                    {!! Form::input(
+                        'number',
+                        'project_number',
+                        $form->input('project_number'),
+                        ['class' => 'form-control', 'min' => 0])
+                    !!}
+                </div>
+                <div class="form-group col-md-2">
+                    {!! Form::label('date', 'Ano:') !!}
+                    {!! Form::input(
+                        'number',
+                        'law_date',
+                        $form->input('law_date'),
+                        ['class' => 'form-control', 'min' => 1000, 'max' => 9999])
+                    !!}
+                </div>
+                <div class="form-group col-md-3">
+                    {!! Form::label('owner_id', 'Responsável:') !!}
+                    {!! Form::select(
+                        'assemblyman_id',
+                        $assemblymensList,
+                        $form->input('assemblyman_id'),
+                        ['class' => 'form-control'])
+                    !!}
+                </div>
             </div>
 
-            <div class="clearfix"></div>
-
-            <div class="form-group col-md-10">
-                <button class="btn btn-block btn-primary"><i class="fa fa-search"></i> Pesquisar</button>
+            <div class="row" style="margin-top: 20px">
+                <div class="form-group col-md-10">
+                    <button class="btn btn-block btn-primary" style="width: 100%"><i class="fa fa-search"></i> Pesquisar</button>
+                </div>
+                <div class="form-group col-md-2">
+                    <button type="reset" class="btn btn-block btn-warning" style="width: 100%"><i class="fa fa-recycle"></i> Reset</button>
+                </div>
             </div>
-            <div class="form-group col-md-2">
-                <button type="reset" class="btn btn-block btn-warning"><i class="fa fa-recycle"></i> Reset</button>
-            </div>
-        </form>
-        <div class="clearfix"></div>
-    </div>
+        </div>
+    </form>
     <div class="the-box rounded">
         <div class="row">
             <div class="col-md-12">

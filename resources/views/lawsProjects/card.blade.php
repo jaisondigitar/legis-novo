@@ -140,18 +140,11 @@
         <div class="col-md-2">
             <span>
                 <strong>Aprovação:</strong>
-                <br>
                 <label>
                     <input
                         type="checkbox"
                         id ='town_hall{{$lawsProject->id}}'
                         onchange='toogleApproved({{$lawsProject->id }})'
-                        class='form-control switch'
-                        data-on-text='Sim'
-                        data-off-text='Não'
-                        data-off-color='danger'
-                        data-on-color='success'
-                        data-size='normal'
                         @if($lawsProject->town_hall == 1)
                         checked
                         @endif
