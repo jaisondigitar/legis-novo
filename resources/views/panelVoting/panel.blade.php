@@ -15,7 +15,7 @@
 
     <style>
         #panelVoting {
-            background-image: url("/assets/images/suave-onda.jpg");
+            background-image: url("/assets/images/suave-onda.svg");
             height: 100%;
             background-position: center;
             background-repeat: no-repeat;
