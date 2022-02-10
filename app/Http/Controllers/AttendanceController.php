@@ -96,8 +96,8 @@ class AttendanceController extends Controller
 
             return redirect('/admin');
         }
+        $type = TypesOfAttendance::where('active', 1)->orderBy('name')->pluck('name', 'id')->prepend('Selecione..', '');
 
-        $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
         $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
 
         $states = $this->statesList();
@@ -198,7 +198,8 @@ class AttendanceController extends Controller
 
         $people = People::find($attendance->people_id);
 
-        $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
+        $type = TypesOfAttendance::where('active', 1)->orderBy('name')->pluck('name', 'id')->prepend('Selecione..', '');
+
         $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
 
         $states = $this->statesList();
@@ -216,7 +217,7 @@ class AttendanceController extends Controller
      * @param UpdateAttendanceRequest $request
      * @param  int  $id
      *
-     * @return Application|Redirector|RedirectResponse
+     * @return false|Application|RedirectResponse|Redirector|string
      * @throws BindingResolutionException
      */
     public function update(UpdateAttendanceRequest $request, $id)
@@ -244,6 +245,10 @@ class AttendanceController extends Controller
         $attendance = $this->attendanceRepository->findById($id);
 
         $this->attendanceRepository->update($attendance, $request->all());
+
+        if ($request->ajax()) {
+            return json_encode(['success' => true]);
+        }
 
         return redirect(route('attendance.index'));
     }

@@ -26,9 +26,9 @@ use App\Models\PartiesAssemblyman;
 use App\Models\Processing;
 use App\Models\StatusProcessingLaw;
 use App\Models\StructureLaws;
-use App\Models\User;
 use App\Models\UserAssemblyman;
 use App\Repositories\LawsProjectRepository;
+use App\Services\PdfConverterService;
 use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
@@ -41,6 +41,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Jurosh\PDFMerge\PDFMerger;
@@ -108,8 +109,6 @@ class LawsProjectController extends AppBaseController
      */
     public function index(Request $request)
     {
-        DB::enableQueryLog();
-
         if (! Defender::hasPermission('lawsProjects.index')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
@@ -151,6 +150,26 @@ class LawsProjectController extends AppBaseController
             });
         }
 
+        $user = Auth::user();
+        if ($user->sector && $user->sector->external) {
+            $where = function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhereHas(
+                        'user',
+                        function ($query) {
+                            $query->whereHas(
+                                'sector',
+                                function ($query) {
+                                    $query->where('external', 1);
+                                }
+                            );
+                        }
+                    );
+            };
+
+            $lawsProjects_query->where($where);
+        }
+
         if (Auth::user()->can_request_legal_opinion && ! Auth::user()->hasRole('root')) {
             $lawsProjects_query->whereHas('processing', function ($query) {
                 $query->where(
@@ -169,7 +188,14 @@ class LawsProjectController extends AppBaseController
             }]);
         }
 
-        $lawsProjects = $lawsProjects_query->orderByDesc('created_at')
+        $lawsProjects = $lawsProjects_query->with([
+            'processing' => function ($query) {
+                return $query->orderByDesc('created_at')->get();
+            },
+            'processing.statusProcessingLaw',
+            'processing.destination',
+        ])
+            ->orderByDesc('created_at')
             ->paginate(20);
 
         return view('lawsProjects.index', compact('externo'))
@@ -182,7 +208,9 @@ class LawsProjectController extends AppBaseController
     }
 
     /**
-     * @return Application|Factory|RedirectResponse|Redirector|View
+     * Show the form for creating a new lawProject.
+     *
+     * @return Application|Factory|Redirector|RedirectResponse|View
      */
     public function create()
     {
@@ -638,22 +666,20 @@ class LawsProjectController extends AppBaseController
 
         $this->createTenantDirectoryIfNotExists();
 
-        $pdf->Output(storage_path().'/app/law-projects/doc.pdf', 'F');
+        $pdf->Output(storage_path('app/temp/law-project.pdf'), 'F');
 
         $this->attachFilesToSavedDoc($lawsProject);
 
-        $files_to_remove = $lawsProject->lawFiles->pluck('filename')->toArray();
-
-        $files_to_remove[] = 'doc.pdf';
-
-        $this->removeUnusedLocalFiles($files_to_remove);
+        File::deleteDirectory(storage_path());
     }
 
     private function attachFilesToSavedDoc(LawsProject $law_project)
     {
         $pdfMerger = new PDFMerger;
 
-        $pdfMerger->addPDF(storage_path().'/app/law-projects/doc.pdf');
+        $file_path = (new PdfConverterService())->convertFromDecoded('temp/law-project.pdf');
+
+        $pdfMerger->addPDF(storage_path("app/{$file_path}"));
 
         $law_project->lawFiles
             ->each(function ($law_file) use ($pdfMerger) {
@@ -661,14 +687,14 @@ class LawsProjectController extends AppBaseController
                     ->inLawProjectsFolder()
                     ->getFile($law_file->filename);
 
-                (new StorageService())->usingDisk('local')
-                    ->usingDisk('local')->inLawProjectsFolder()
+                $file_name = (new StorageService())->usingDisk('local')
+                    ->usingDisk('local')->inFolder('temp')
                     ->sendContent($file_content)
                     ->send(false, $law_file->filename);
 
-                $pdfMerger->addPDF(
-                    storage_path().'/app/law-projects/'.$law_file->filename
-                );
+                $file_path = (new PdfConverterService())->convertFromDecoded("temp/{$file_name}");
+
+                $pdfMerger->addPDF(storage_path("app/{$file_path}"));
             });
 
         $pdfMerger->merge(
@@ -677,21 +703,13 @@ class LawsProjectController extends AppBaseController
         );
     }
 
-    public function removeUnusedLocalFiles(array $filenames)
-    {
-        (new StorageService())->usingDisk('local')
-            ->inLawProjectsFolder()
-            ->removeMany($filenames);
-    }
-
     /**
      * @return void
      */
     private function createTenantDirectoryIfNotExists()
     {
-        if (! Storage::exists(storage_path().'/app/law-projects')) {
-            Storage::makeDirectory('law-projects');
-        }
+        ! Storage::exists(storage_path('/app/temp')) &&
+        Storage::makeDirectory('temp');
     }
 
     public function loadAdvices($pdf, $lawsProjectId)

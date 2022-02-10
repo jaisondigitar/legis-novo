@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\StorageInterface;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -116,6 +117,8 @@ class StorageService implements StorageInterface
      */
     public function inFolder(string $folder): self
     {
+        ! Storage::exists($folder) && Storage::makeDirectory($folder);
+
         $this->folder = $folder;
 
         return $this;
@@ -199,7 +202,13 @@ class StorageService implements StorageInterface
      */
     public function getPath(string $filename): string
     {
-        return Storage::disk($this->disk)->url("{$this->folder}/{$filename}");
+        $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
+
+        if ($this->isDocument($filename)) {
+            return Storage::disk($this->disk)->url("app/{$file_name}");
+        }
+
+        return Storage::disk($this->disk)->url($file_name);
     }
 
     /**
@@ -209,7 +218,18 @@ class StorageService implements StorageInterface
      */
     public function getFile(string $filename): string
     {
-        return Storage::disk($this->disk)->get("{$this->folder}/{$filename}");
+        $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
+
+        return Storage::disk($this->disk)->get($file_name);
+    }
+
+    /**
+     * @param  string  $filename
+     * @return bool
+     */
+    public function isDocument(string $filename): bool
+    {
+        return Str::endsWith($filename, ['.pdf', '.doc', '.docx', '.txt']);
     }
 
     /**

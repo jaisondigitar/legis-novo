@@ -1484,12 +1484,14 @@ class MeetingController extends AppBaseController
             if (isset($assemblyman->image) && file_exists(public_path().$assemblyman->image) && $assemblyman->image != '') {
                 $data['image'] = $assemblyman->image;
             } else {
-                $data['image'] = '/uploads/company/'.Auth::user()->company->image;
+                $data['image'] = (new \App\Services\StorageService())->inAssemblymanFolder()
+                    ->getPath($assemblyman->image);
             }
         } else {
             $data['status'] = false;
             $data['assemblyman_name'] = '-';
-            $data['image'] = '/uploads/company/'.Auth::user()->company->image;
+            $data['image'] = (new \App\Services\StorageService())->inAssemblymanFolder()
+                ->getPath($assemblyman->image);
             $data['responsibility'] = '-';
         }
 

@@ -43,8 +43,7 @@
 <div class="form-group col-sm-12">
     {!! Form::label('resume', 'Ementa', ['class' => 'required']) !!}
     {!! Form::textarea('resume', null, [
-            'class' => 'form-control resume',
-            'rows' => 3,
+            'class' => 'form-control resume ckeditor',
             'maxlength' => 680
     ]) !!}
 </div>

@@ -31,6 +31,7 @@ use App\Models\StatusProcessingDocument;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
 use App\Services\DocumentService;
+use App\Services\PdfConverterService;
 use App\Services\PDFService;
 use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
@@ -43,6 +44,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -151,6 +153,16 @@ class DocumentController extends AppBaseController
                     $documents_query->whereDoesntHave('document_protocol');
                 }
             }
+        }
+
+        $user = Auth::user();
+        $sector = $user->sector;
+        if ($sector && $sector->external) {
+            $documents_query = $documents_query->where(
+                function ($query) use ($sector, $user) {
+                    $query->where('sector_id', $sector->id)->orWhere('users_id', $user->id);
+                }
+            );
         }
 
         $documents = $documents_query->with([
@@ -400,7 +412,9 @@ class DocumentController extends AppBaseController
 
         $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
 
-        $conteudo = $document->content;
+        $conteudo = '<p>'.$document->resume.'</p>';
+        $conteudo .= '<br><br>';
+        $conteudo .= '<p>'.$document->content.'</p>';
 
         if ($document_model) {
             $content = str_replace(
@@ -480,6 +494,7 @@ class DocumentController extends AppBaseController
                 if ($processing->statusProcessingDocument) {
                     $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
                 }
+                $html1 .= '<td width="150" style=" text-align: left;"><b>Destinatario: </b> <br>'.$processing->destination->name.'</td>';
                 $html1 .= '</tr>';
                 if (strlen($processing->observation) > 0) {
                     $html1 .= '<tr>';
@@ -495,7 +510,7 @@ class DocumentController extends AppBaseController
 
         $this->createTenantDirectoryIfNotExists();
 
-        $pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
+        $pdf->Output(storage_path('app/temp/doc.pdf'), 'F');
 
         $this->attachFilesToSavedDoc($document);
 

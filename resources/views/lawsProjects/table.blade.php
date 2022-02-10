@@ -117,7 +117,7 @@
                 </div>
                 <div class="form-group col-sm-12">
                     {!! Form::label('project_number', 'Número projeto de lei:') !!}
-                    {!! Form::text('project_number', null, ['class' => 'form-control', 'id' => 'project_number']) !!}
+                    {!! Form::text('project_number', null, ['class' => 'form-control', 'id' => 'project_number', 'disabled']) !!}
                 </div>
                 <div class="form-group col-sm-12">
                     {!! Form::label('protocol', 'Protocolo:') !!}
@@ -146,15 +146,9 @@
                 <input type="hidden" name="law_project_id" id="law_project_protocol_id_edit">
 
                 @shield('lawsProject.editnumerolei')
-                <div class="form-group col-sm-12">
-                    {!! Form::label('project_number_edit', 'Número projeto de lei:') !!}
-                    {!! Form::text('project_number_edit', null, ['class' => 'form-control', 'id' => 'project_number_edit']) !!}
-                </div>
-                @else
                     <div class="form-group col-sm-12">
                         {!! Form::label('project_number_edit', 'Número projeto de lei:') !!}
-                        {!! Form::text('project_number_edit', null, ['class' => 'form-control', 'id' => 'project_number_edit', 'readonly']) !!}
-                        <label class="label label-info">*Sem permissão para alterar.</label>
+                        {!! Form::text('project_number_edit', null, ['class' => 'form-control', 'id' => 'project_number_edit', 'disabled']) !!}
                     </div>
                 @endshield
 
