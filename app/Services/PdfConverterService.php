@@ -19,6 +19,8 @@ class PdfConverterService
 
     public function convertFromUploaded(UploadedFile $file)
     {
+        ! Storage::exists('temp') && Storage::makeDirectory('temp');
+
         $this->pdf = $file->getContent();
         $version = $this->getPdfVersion();
 

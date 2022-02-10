@@ -642,7 +642,7 @@ class DocumentController extends AppBaseController
         }
 
 
-        $document_asseblyman_delete = DocumentAssemblyman::where('document_id', $id)->delete();
+        DocumentAssemblyman::where('document_id', $id)->delete();
 
         if (! empty($document_data['assemblymen'])) {
             foreach ($document_data['assemblymen'] as $assemblyman) {
@@ -791,7 +791,8 @@ class DocumentController extends AppBaseController
            'with_attachments_file' => $this->documentService->attachFilesToDoc($document->fresh()),
         ]);
 
-        dd($this->documentService->removeUnusedLocalFiles(storage_path()));
+        $this->documentService->removeUnusedLocalFiles(storage_path('app/documents'));
+        $this->documentService->removeUnusedLocalFiles(storage_path('app/temp'));
 
         return Redirect::route('documents.attachament', $document->id);
     }

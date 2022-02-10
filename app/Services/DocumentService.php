@@ -69,7 +69,7 @@ class DocumentService
         return $this->storageService->inDocumentsFolder(
             $this->takeFolderName($document->original_file)
         )
-            ->getPath($document->with_attachments_file ?? $document->original_file);
+            ->getPath($document->with_attachments_file ?: $document->original_file);
     }
 
     /**
@@ -133,14 +133,16 @@ class DocumentService
                     ->sendContent($file_content)
                     ->send(false, '', '_attachment');
 
-                $path_to_remote_file = storage_path().'/app/documents/'.
-                    "{$folder}/{$local_file_content}";
+                $file_path = (new PdfConverterService())
+                    ->convertFromDecoded("documents/{$folder}/{$local_file_content}");
 
-                $pdf_merger->addPDF($path_to_remote_file);
+                $pdf_merger->addPDF(storage_path("app/{$file_path}"));
             });
 
-        $output_path = storage_path()."/app/documents/{$folder}/".
-            $this->takeFolderName($document->original_file).'_with_attachments.pdf';
+        $output_path = storage_path(
+            "app/documents/{$folder}/".
+            $this->takeFolderName($document->original_file).'_with_attachments.pdf'
+        );
 
         $pdf_merger->merge(
             'file',
@@ -158,16 +160,6 @@ class DocumentService
             ->removeFolder($path_to_folder);
     }
 
-    /**
-     * @return void
-     */
-    private function createTenantDirectoryIfNotExists()
-    {
-        if (! Storage::exists(storage_path().'/app/documents')) {
-            Storage::makeDirectory('documents');
-        }
-    }
-
     private function retrieveDocumentFromStorage(string $file_name)
     {
         $folder_name = $this->takeFolderName($file_name);
@@ -180,7 +172,10 @@ class DocumentService
             ->sendContent($file_content)
             ->send(false, $folder_name, '_original');
 
-        return storage_path()."/app/documents/{$path_to_remote_file}";
+        $converted_file_name = (new PdfConverterService())
+            ->convertFromDecoded("documents/{$path_to_remote_file}");
+
+        return storage_path("app/{$converted_file_name}");
     }
 
     public function takeFolderName(string $file_name)

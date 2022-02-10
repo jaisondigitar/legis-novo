@@ -19,7 +19,7 @@ class StorageService implements StorageInterface
 
     protected static string $ext = '';
 
-    private string $folder;
+    private string $folder = '';
 
     /**
      * @return $this
@@ -180,14 +180,14 @@ class StorageService implements StorageInterface
                     $this->folder,
                     static::$file,
                     $filename,
-                    'public'
+                    Filesystem::VISIBILITY_PUBLIC
                 );
         } else {
             $resp = Storage::disk($this->disk)
                 ->put(
                     "{$this->folder}/{$filename}",
                     static::$file,
-                    'public'
+                    Filesystem::VISIBILITY_PUBLIC
                 );
         }
 
@@ -204,10 +204,6 @@ class StorageService implements StorageInterface
     {
         $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
 
-        if ($this->isDocument($filename)) {
-            return Storage::disk($this->disk)->url("app/{$file_name}");
-        }
-
         return Storage::disk($this->disk)->url($file_name);
     }
 
@@ -221,15 +217,6 @@ class StorageService implements StorageInterface
         $file_name = $this->folder ? "{$this->folder}/{$filename}" : $filename;
 
         return Storage::disk($this->disk)->get($file_name);
-    }
-
-    /**
-     * @param  string  $filename
-     * @return bool
-     */
-    public function isDocument(string $filename): bool
-    {
-        return Str::endsWith($filename, ['.pdf', '.doc', '.docx', '.txt']);
     }
 
     /**

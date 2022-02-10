@@ -106,6 +106,7 @@ return [
         'disks' => [
             'local',
             'public',
+            'digitalocean',
         ],
 
         /*
