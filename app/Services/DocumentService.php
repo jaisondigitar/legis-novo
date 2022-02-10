@@ -10,7 +10,7 @@ use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 use Jurosh\PDFMerge\PDFMerger;
 use Throwable;
@@ -114,7 +114,13 @@ class DocumentService
         }
     }
 
-    public function attachFilesToDoc(Document $document)
+    /**
+     * @param  Document  $document
+     * @return string
+     * @throws Throwable
+     * @throws FileNotFoundException
+     */
+    public function attachFilesToDoc(Document $document): string
     {
         $pdf_merger = new PDFMerger;
 
@@ -154,13 +160,23 @@ class DocumentService
             ->send(true, $folder, '_with_attachments');
     }
 
-    public function removeUnusedLocalFiles(string $path_to_folder)
+    /**
+     * @param  string  $path_to_folder
+     * @return bool
+     */
+    public function removeUnusedLocalFiles(string $path_to_folder): bool
     {
         return (new StorageService())->usingDisk('local')
             ->removeFolder($path_to_folder);
     }
 
-    private function retrieveDocumentFromStorage(string $file_name)
+    /**
+     * @param  string  $file_name
+     * @return string
+     * @throws FileNotFoundException
+     * @throws Throwable
+     */
+    private function retrieveDocumentFromStorage(string $file_name): string
     {
         $folder_name = $this->takeFolderName($file_name);
         $path_to_remote_file = "{$folder_name}/{$file_name}";
@@ -178,6 +194,10 @@ class DocumentService
         return storage_path("app/{$converted_file_name}");
     }
 
+    /**
+     * @param  string  $file_name
+     * @return mixed|string
+     */
     public function takeFolderName(string $file_name)
     {
         $name_without_extension = explode('.', $file_name)[0];
@@ -364,16 +384,6 @@ class DocumentService
         $parameters = new Parameters();
 
         return (bool) $parameters->perform_docs_advices;
-    }
-
-    /**
-     * @return bool
-     */
-    public function showVotesPage(): bool
-    {
-        $parameters = new Parameters();
-
-        return (bool) $parameters->show_docs_votes;
     }
 
     /**

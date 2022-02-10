@@ -2,13 +2,23 @@
 
 namespace App\Services;
 
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Throwable;
 
 class PdfConverterService
 {
+    /**
+     * @var
+     */
     private $pdf;
+
+    /**
+     * @var StorageService
+     */
     private StorageService $localStorageService;
 
     public function __construct()
@@ -17,6 +27,11 @@ class PdfConverterService
         $this->localStorageService->usingDisk('local');
     }
 
+    /**
+     * @param  UploadedFile  $file
+     * @return array|string
+     * @throws Throwable
+     */
     public function convertFromUploaded(UploadedFile $file)
     {
         ! Storage::exists('temp') && Storage::makeDirectory('temp');
@@ -34,7 +49,12 @@ class PdfConverterService
         ];
     }
 
-    public function convertFromDecoded(string $pdf)
+    /**
+     * @param  string  $pdf
+     * @return string
+     * @throws FileNotFoundException|Throwable
+     */
+    public function convertFromDecoded(string $pdf): string
     {
         $this->pdf = $this->localStorageService->getFile($pdf);
 
@@ -47,7 +67,10 @@ class PdfConverterService
         return $pdf;
     }
 
-    private function getPdfVersion()
+    /**
+     * @return string
+     */
+    private function getPdfVersion(): string
     {
         $pdfHeader = substr($this->pdf, 0, 20);
         preg_match_all('!\d+!', $pdfHeader, $matches);
@@ -55,7 +78,11 @@ class PdfConverterService
         return implode('.', $matches[0]);
     }
 
-    private function convertPdfToSafeVersion()
+    /**
+     * @return string
+     * @throws Exception|Throwable
+     */
+    private function convertPdfToSafeVersion(): string
     {
         $this->checkIfGsIsInstalled();
 
@@ -69,14 +96,22 @@ class PdfConverterService
         return "temp/{$convertedFileName}";
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     private function checkIfGsIsInstalled()
     {
         if (! exec('gs --version')) {
-            throw new \Exception('GhostScript is not installed');
+            throw new Exception('GhostScript is not installed');
         }
     }
 
-    private function savePdfTemporarily()
+    /**
+     * @return string
+     * @throws Throwable
+     */
+    private function savePdfTemporarily(): string
     {
         return $this->localStorageService->inFolder('temp')
             ->sendContent($this->pdf)

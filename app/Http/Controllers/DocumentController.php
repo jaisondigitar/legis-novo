@@ -310,226 +310,17 @@ class DocumentController extends AppBaseController
         return response()->redirectTo(
             $this->documentService->openFileInBrowser($document)
         );
-
-        /*$this->createTenantDirectoryIfNotExists();
-
-        $this->pdfService->lib_pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
-
-                if ($count == 2 || $vereador === end($list)) {
-                    $html .= '</tr>';
-                    $count = 0;
-                } else {
-                    $count++;
-                }
-            }
-            $html .= '</tbody></table>';
-        }
-
-        $html2 = '';
-        $count = 0;
-
-        if (count($list) == 1) {
-            $html2 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
-            $html2 .= '<tr style="height: 300px">';
-            $html2 .= '<td style="width:25%;"></td>';
-            $html2 .= '<td style="width:50%; text-align: center;  vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][2].' - '.$list[0][3].'<br><br><br></td>';
-            $html2 .= '<td style="width:25%;"></td>';
-            $html2 .= '</tr>';
-            $html2 .= '</tbody></table>';
-        } else {
-            $html2 .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 300px"><tbody>';
-            foreach ($list as $vereador) {
-                if ($count == 0) {
-                    $html2 .= '<tr style="height: 300px">';
-                }
-
-                $html2 .= '<td style="text-align: center; vertical-align: text-top">'.$vereador[0].'<br>'.$vereador[1].' - '.$vereador[3].'<br><br><br></td>';
-
-                if ($count == 2 || $vereador === end($list)) {
-                    $html2 .= '</tr>';
-                    $count = 0;
-                } else {
-                    $count++;
-                }
-            }
-            $html2 .= '</tbody></table>';
-        }
-
-        $html3 = '';
-        $count = 0;
-
-        if (count($list) == 1) {
-            $html3 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
-            $html3 .= '<tr style="height: 300px">';
-            $html3 .= '<td style="width:25%;"></td>';
-            $html3 .= '<td style="width:50%; text-align: center;  vertical-align: text-top">'.$list[0][0].'<br>'.'<br><br><br></td>';
-            $html3 .= '<td style="width:25%;"></td>';
-            $html3 .= '</tr>';
-            $html3 .= '</tbody></table>';
-        } else {
-            $html3 .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 300px"><tbody>';
-            foreach ($list as $vereador) {
-                if ($count == 0) {
-                    $html3 .= '<tr style="height: 300px">';
-                }
-                $html3 .= '<td style="text-align: center; vertical-align: text-top">'.$vereador[0].'<br>'.'<br><br><br></td>';
-                if ($count == 2 || $vereador === end($list)) {
-                    $html3 .= '</tr>';
-                    $count = 0;
-                } else {
-                    $count++;
-                }
-            }
-            $html3 .= '</tbody></table>';
-        }
-
-        $tipo = '';
-        $tipo .= $document->document_type->parent_id ? $document->document_type->parent->name.' :: ' : '';
-        $tipo .= $document->document_type->name;
-        $docNum = $document->number == 0 ? '_______ ' : $document->number;
-
-        $document_internal_number = $document->getNumber();
-        $document_protocol_number = $document->document_protocol ? $document->document_protocol->number : '';
-        $document_protocol_date = $document->document_protocol ? date('d/m/Y', strtotime($document->document_protocol->created_at)) : '';
-        $document_protocol_hours = $document->document_protocol ? date('H:i', strtotime($document->document_protocol->created_at)) : '';
-
-        $data_USA = explode(' ', ucfirst(iconv('ISO-8859-1', 'UTF-8', strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date))))));
-
-        $mes['January'] = 'Janeiro';
-        $mes['February'] = 'Fevereiro';
-        $mes['March'] = 'Março';
-        $mes['April'] = 'Abril';
-        $mes['May'] = 'Maio';
-        $mes['June'] = 'Junho';
-        $mes['July'] = 'Julho';
-        $mes['August'] = 'Agosto';
-        $mes['September'] = 'Setembro';
-        $mes['October'] = 'Outubro';
-        $mes['November'] = 'Novembro';
-        $mes['December'] = 'Dezembro';
-
-        $mes_pt = isset($mes[$data_USA[2]]) ? $mes[$data_USA[2]] : $data_USA[2];
-
-        $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
-
-        $conteudo = '<p>'.$document->resume.'</p>';
-        $conteudo .= '<br><br>';
-        $conteudo .= '<p>'.$document->content.'</p>';
-
-        if ($document_model) {
-            $content = str_replace(
-                ['[numero]', '[data_curta]', '[data_longa]', '[autores]', '[autores_vereador]', '[nome_vereadores]', '[responsavel]', '[assunto]', '[conteudo]',
-                    '[protocolo_numero]',
-                    '[protocolo_data]',
-                    '[protocolo_hora]',
-                    '[numero_interno]',
-                    '[numero_documento]', '[ano_documento]', '[tipo_documento]', ],
-                [
-                    '<b>'.$tipo.'</b>: '.$docNum.' / '.$document->getYear($document->date),
-                    ucfirst(strftime('%d/%m/%Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date)))),
-                    $data_ptbr,
-//                ucfirst(iconv('ISO-8859-1', 'UTF-8',strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $document->date))))),
-                    $html,
-                    $html2,
-                    $html3,
-                    $document->owner->short_name,
-                    $document->content,
-                    $conteudo,
-                    $document_protocol_number,
-                    $document_protocol_date,
-                    $document_protocol_hours,
-                    $document_internal_number,
-                    $docNum,
-                    $document->getYear($document->date),
-                    $tipo, ],
-                $document_model->content
-            );
-
-            $pdf->writeHTML($content);
-        } else {
-            $pdf->writeHTML($conteudo);
-        }
-
-        if ($votacao) {
-            $pdf->AddPage();
-            $pdf->setListIndentWidth(5);
-            $html2 = '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
-            $html2 .= '<tr style="height: 300px">';
-            $html2 .= '<td style="width:100%; text-align: center;"><h3> Votação </h3></td>';
-            $html2 .= '</tr>';
-            $html2 .= '</tbody></table>';
-            $html2 .= '<table style=" text-align: left;">';
-            foreach ($document->voting()->get() as $item) {
-                $html2 .= '<tr style=" text-align: left;">';
-                $html2 .= '<td style=" text-align: left;">Data da votação: '.date('d/m/Y', strtotime($item->open_at)).'</td>';
-                $html2 .= '<td style=" text-align: left;">Situação: ';
-                if ($item->situation($item)) {
-                    $html2 .= 'Votação Aprovada';
-                } else {
-                    $html2 .= 'Votação Reprovada';
-                }
-                $html2 .= '</td>';
-                $html2 .= '<br>';
-                $html2 .= '</tr>';
-            }
-
-            $html2 .= '</table>';
-            $html2 .= '<br>';
-            $pdf->writeHTML($html2);
-        }
-
-        if ($tramitacao) {
-            $pdf->AddPage();
-            $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
-
-            $html1 .= '<h3 style="width:100%; text-align: center;"> Tramitação </h3>';
-            $html1 .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  ">';
-
-            $html1 .= '<tbody>';
-            foreach ($document->processingDocument()->orderBy('processing_document_date', 'desc')->get() as $processing) {
-                $html1 .= '<hr>';
-                $html1 .= '<tr style=" text-align: left;">';
-                $html1 .= '<td width="130" style=" text-align: left;"><b>Data: </b> <br>'.$processing->created_at.'</td>';
-                $html1 .= '<td width="150" style=" text-align: left;"><b>Situação do documento: </b> <br>'.$processing->documentSituation->name.'</td>';
-                if ($processing->statusProcessingDocument) {
-                    $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
-                }
-                $html1 .= '<td width="150" style=" text-align: left;"><b>Destinatario: </b> <br>'.$processing->destination->name.'</td>';
-                $html1 .= '</tr>';
-                if (strlen($processing->observation) > 0) {
-                    $html1 .= '<tr>';
-                    $html1 .= '<td width="630" style=" text-align: justify; "><b>Observação: </b> <br>'.$processing->observation.'</td>';
-                    $html1 .= '</tr>';
-                }
-            }
-
-            $html1 .= '</tbody></table>';
-
-            $pdf->writeHTML($html1);
-        }
-
-        $this->createTenantDirectoryIfNotExists();
-
-        $pdf->Output(storage_path('app/temp/doc.pdf'), 'F');
-
-        $this->attachFilesToSavedDoc($document);
-
-        $files_to_remove = $document->documents->pluck('filename')->toArray();
-
-        $files_to_remove[] = 'doc.pdf';
-
-        $this->removeUnusedLocalFiles($files_to_remove);*/
     }
 
     /**
      * Show the form for editing the specified Document.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return Application|Factory|RedirectResponse|Redirector|View
      * @throws BindingResolutionException
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if (! Defender::hasPermission('documents.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -670,12 +461,12 @@ class DocumentController extends AppBaseController
     /**
      * Remove the specified Document from storage.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (! Defender::hasPermission('documents.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -708,9 +499,10 @@ class DocumentController extends AppBaseController
      * Update status of specified Document from storage.
      *
      * @param  int  $id
+     * @return false|string
      * @throws BindingResolutionException
      */
-    public function toggleRead($id)
+    public function toggleRead(int $id)
     {
         if (! Defender::hasPermission('document.read')) {
             return json_encode(false);
@@ -734,6 +526,10 @@ class DocumentController extends AppBaseController
         return json_encode(true);
     }
 
+    /**
+     * @param $id
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     */
     public function attachament($id)
     {
         if (! Defender::hasPermission('documents.edit')) {
@@ -757,6 +553,12 @@ class DocumentController extends AppBaseController
         return view('documents.attachament')->with(compact('document', 'document_files', 'logs', 'translation'));
     }
 
+    /**
+     * @param $id
+     * @param  Request  $request
+     * @return Application|RedirectResponse|Redirector
+     * @throws Throwable
+     */
     public function attachamentUpload($id, Request $request)
     {
         if (! Defender::hasPermission('documents.edit')) {
@@ -797,7 +599,11 @@ class DocumentController extends AppBaseController
         return Redirect::route('documents.attachament', $document->id);
     }
 
-    public function attachamentDelete($id)
+    /**
+     * @param $id
+     * @return string
+     */
+    public function attachamentDelete($id): string
     {
         $file = DocumentFiles::find($id);
         $file->delete();
@@ -805,7 +611,11 @@ class DocumentController extends AppBaseController
         return 'true';
     }
 
-    public function documentProtocol($id)
+    /**
+     * @param $id
+     * @return array
+     */
+    public function documentProtocol($id): array
     {
         $document = Document::find($id);
 
@@ -834,6 +644,9 @@ class DocumentController extends AppBaseController
         }
     }
 
+    /**
+     * @return array|void
+     */
     public function documentProtocolSave()
     {
         $input = \Illuminate\Support\Facades\Request::all();
@@ -919,6 +732,10 @@ class DocumentController extends AppBaseController
         }
     }
 
+    /**
+     * @param  Request  $request
+     * @return false|string
+     */
     public function deleteBash(Request $request)
     {
         $input = $request->all();
@@ -928,15 +745,10 @@ class DocumentController extends AppBaseController
         return json_encode($input['ids']);
     }
 
-    public function findTextInitial(Request $request)
-    {
-        $input = $request->all();
-
-        $obj = DocumentModels::where('document_type_id', $input['id'])->first();
-
-        return json_encode($obj);
-    }
-
+    /**
+     * @param  Request  $request
+     * @return false|string
+     */
     public function alteraProtocolo(Request $request)
     {
         $input = $request->all();
@@ -966,7 +778,11 @@ class DocumentController extends AppBaseController
         return json_encode(false);
     }
 
-    public function alteraNumero(Request $request)
+    /**
+     * @param  Request  $request
+     * @return array|void
+     */
+    public function alteraNumero()
     {
         $input = \Illuminate\Support\Facades\Request::all();
 
@@ -1005,7 +821,6 @@ class DocumentController extends AppBaseController
         } else {
             $document = Document::find($input['document_id']);
             $document->number = $input['doc_number'];
-//            $document->version = $input['version'];
 
             if ($document->save()) {
                 return ['success' => true, 'message' => 'Número foi atualizado!', 'next_number' => $input['doc_number'].'/'.$year, 'id' => $document->id];
@@ -1013,6 +828,11 @@ class DocumentController extends AppBaseController
         }
     }
 
+    /**
+     * @param $documentId
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
+     */
     public function advices($documentId)
     {
         setlocale(LC_ALL, 'pt_BR');
@@ -1056,6 +876,11 @@ class DocumentController extends AppBaseController
             ->with(compact('document'));
     }
 
+    /**
+     * @param $documentId
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     * @throws BindingResolutionException
+     */
     public function legalOpinion($documentId)
     {
         setlocale(LC_ALL, 'pt_BR');
@@ -1078,6 +903,9 @@ class DocumentController extends AppBaseController
             ->with(compact('document'));
     }
 
+    /**
+     * @return Application|RedirectResponse|Redirector
+     */
     public function importNumber()
     {
         $documents = Document::all();
