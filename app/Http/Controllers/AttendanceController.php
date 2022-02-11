@@ -127,9 +127,10 @@ class AttendanceController extends Controller
         $attendance_data = $request->only(['date', 'time', 'sector_id', 'description', 'type_id']);
 
         $people = People::firstOrCreate(
-            ['cpf' => $request->cpf],
+            ['name' => $request->name],
             [
                 'name' => $request->name,
+                'rg' => $request->rg,
                 'email' => $request->email,
                 'celular' => $request->celular,
                 'zipcode' => $request->zipcode,
@@ -222,13 +223,15 @@ class AttendanceController extends Controller
      */
     public function update(UpdateAttendanceRequest $request, $id)
     {
+//        dd($request->all());
+
         if (! Defender::hasPermission('attendance.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
             return redirect('/');
         }
 
-        People::where('cpf', $request->get('cpf'))
+        People::where('celular', $request->get('celular'))
             ->update($request->only([
                 'name',
                 'email',
