@@ -28,7 +28,7 @@
     <link href="/assets/plugins/validator/bootstrapValidator.min.css" rel="stylesheet">
     <link href="/assets/plugins/summernote/summernote.min.css" rel="stylesheet">
     <link href="/assets/plugins/markdown/bootstrap-markdown.min.css" rel="stylesheet">
-    <link href="/assets/plugins/datatable/css/bootstrap.datatable.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.4/af-2.3.7/datatables.min.css"/>
     <link href="/assets/plugins/morris-chart/morris.min.css" rel="stylesheet">
     <link href="/assets/plugins/c3-chart/c3.min.css" rel="stylesheet">
     <link href="/assets/plugins/slider/slider.min.css" rel="stylesheet">
@@ -54,7 +54,6 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="https://js.pusher.com/3.0/pusher.min.js"></script>
     <script src="/assets/pusher.js"></script>
 
@@ -222,6 +221,34 @@
         }
     </style>
     <script type="application/javascript">
+        $(document).ready(function() {
+            $('.permissionDataTable').DataTable({
+                "language": {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+            });
+        });
+
         const getDate = (number) => {
             if (number <= 9)
                 return "0" + number;
@@ -700,8 +727,7 @@ Placed at the end of the document so the pages load faster
 <script src="/assets/plugins/timepicker/bootstrap-timepicker.js"></script>
 <script src="/assets/plugins/mask/jquery.mask.min.js"></script>
 <script src="/assets/plugins/validator/bootstrapValidator.min.js"></script>
-<script src="/assets/plugins/datatable/js/jquery.dataTables.js"></script>
-<script src="/assets/plugins/datatable/js/bootstrap.datatable.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.4/af-2.3.7/datatables.min.js"></script>
 <script src="/assets/plugins/summernote/summernote.min.js"></script>
 <script src="/assets/plugins/markdown/markdown.js"></script>
 <script src="/assets/plugins/markdown/to-markdown.js"></script>
