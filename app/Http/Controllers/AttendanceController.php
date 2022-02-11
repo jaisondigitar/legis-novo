@@ -129,10 +129,12 @@ class AttendanceController extends Controller
         $people = People::firstOrCreate(
             ['name' => $request->name],
             [
-                'name' => $request->name,
+                'cpf' => $request->cpf,
                 'rg' => $request->rg,
-                'email' => $request->email,
+                'name' => $request->name,
                 'celular' => $request->celular,
+                'telephone' => $request->telephone,
+                'email' => $request->email,
                 'zipcode' => $request->zipcode,
                 'street' => $request->street,
                 'number' => $request->number,
@@ -233,9 +235,12 @@ class AttendanceController extends Controller
 
         People::where('celular', $request->get('celular'))
             ->update($request->only([
+                'cpf',
+                'rg',
                 'name',
-                'email',
                 'celular',
+                'telephone',
+                'email',
                 'zipcode',
                 'street',
                 'number',
