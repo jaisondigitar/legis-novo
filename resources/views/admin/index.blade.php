@@ -4,6 +4,10 @@
 @endsection
 @section('content')
     <style>
+        a {
+            text-decoration: none;
+        }
+
         .alert>p, .alert>ul {
             font-weight: 300;
         }
@@ -17,62 +21,61 @@
     </style>
     <h1 class="page-heading" style="margin-top: 0;">DASHBOARD <small>Algumas informações úteis</small></h1>
 
-    <div class="col-lg-3">
-        <div class="alert alert-info alert-block square fade in">
-            <p><strong>Bem vindo(a)!</strong></p>
-            <p style="text-align: justify">O GPL é um software para Gestão de Processos Legislativos. </p>
-            <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis.</p>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="alert alert-info">
+                <p><strong>Bem vindo(a)!</strong></p>
+                <p style="text-align: justify">O GPL é um software para Gestão de Processos Legislativos. </p>
+                <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis.</p>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <a href="/lawsProjects">
+            <div class="card text-center">
+                <div class="card-header bg-danger">
+                    <h3 class="panel-title">PROJETOS DE LEI</h3>
+                </div>
+                <div class="panel-body">
+                    <h1 class="bolded tiles-number text-danger">{{ $projLeiAll }}</h1>
+                    <p class="text-muted"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></p>
+                </div>
+            </div>
+            </a>
+        </div>
+
+        <div class="col-lg-3">
+            <a href="/documents">
+                <div class="card text-center">
+                    <div class="card-header bg-info">
+                        <h3 class="panel-title">DOCUMENTOS</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h1 class="bolded tiles-number text-info">{{ $docAll }}</h1>
+                        <p class="text-muted"><small>LIDOS: <strong>{{ $docRead }}</strong></small></p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-3">
+            <a href="/admin/commissions">
+                <div class="card text-center">
+                    <div class="card-header bg-success">
+                        <h3 class="panel-title">COMISSÕES</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h1
+                            class="bolded tiles-number text-success">
+                            {{ isset($commissions)  ? count($commissions) : '0' }}
+                        </h1>
+                        <p class="text-muted">
+                            <small>LISTA DAS COMISSÕES ATIVAS</small>
+                        </p>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
-    <a href="/lawsProjects">
-    <div class="col-lg-3">
-        <!-- BEGIN TODAY VISITOR TILES -->
-        <div class="panel panel-danger panel-square panel-no-border text-center">
-            <div class="panel-heading">
-                <h3 class="panel-title">PROJETOS DE LEI</h3>
-            </div>
-            <div class="panel-body">
-                <h1 class="bolded tiles-number text-danger">{{ $projLeiAll }}</h1>
-                <p class="text-muted"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></p>
-            </div><!-- /.panel-body -->
-        </div><!-- /.panel panel-success panel-block-color -->
-    </div>
-    </a>
-
-    <a href="/documents">
-    <div class="col-lg-3">
-        <div class="panel panel-info panel-square panel-no-border text-center">
-            <div class="panel-heading">
-                <h3 class="panel-title">DOCUMENTOS</h3>
-            </div>
-            <div class="panel-body">
-                <h1 class="bolded tiles-number text-info">{{ $docAll }}</h1>
-                <p class="text-muted"><small>LIDOS: <strong>{{ $docRead }}</strong></small></p>
-            </div><!-- /.panel-body -->
-        </div><!-- /.panel panel-success panel-block-color -->
-    </div>
-    </a>
-
-    <a href="/admin/commissions">
-    <div class="col-lg-3">
-        <div class="panel panel-primary panel-square panel-no-border text-center">
-            <div class="panel-heading">
-                <h3 class="panel-title">COMISSÕES</h3>
-            </div>
-            <div class="panel-body">
-                <h1
-                    class="bolded tiles-number text-primary">
-                        {{ isset($commissions)  ? count($commissions) : '0' }}
-                </h1>
-                <p class="text-muted">
-                    <small>LISTA DAS COMISSÕES ATIVAS</small>
-                </p>
-            </div><!-- /.panel-body -->
-        </div><!-- /.panel panel-success panel-block-color -->
-    </div>
-    </a>
-    <div class="clearfix"></div>
-
 
     {{--@if(isset($commissions))--}}
     {{--@foreach($commissions as $c)--}}
