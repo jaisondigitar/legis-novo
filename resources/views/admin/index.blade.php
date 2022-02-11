@@ -4,10 +4,6 @@
 @endsection
 @section('content')
     <style>
-        a {
-            text-decoration: none;
-        }
-
         .alert>p, .alert>ul {
             font-weight: 300;
         }

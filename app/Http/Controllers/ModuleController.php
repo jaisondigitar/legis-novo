@@ -57,6 +57,8 @@ class ModuleController extends AppBaseController
      */
     public function store(CreateModuleRequest $request)
     {
+        $request['active'] = isset($request->active) ? 1 : 0;
+
         $input = $request->all();
 
         $this->moduleRepository->create($input);
@@ -126,6 +128,8 @@ class ModuleController extends AppBaseController
 
             return redirect(route('modules.index'));
         }
+
+        $request['active'] = isset($request->active) ? 1 : 0;
 
         $this->moduleRepository->update($module, [
             'name' => $request->get('name'),

@@ -12,24 +12,26 @@
                 <td>{!! $module->name !!}</td>
                 <td>
                     <label>
-                        <input
-                            class="switch"
-                            onchange="changeStatus('{!! $module->id !!}')"
-                            data-on-text="Sim"
-                            data-off-text="Não"
-                            data-off-color="danger"
-                            data-on-color="success"
-                            data-size="normal"
-                            type="checkbox" {!! $module->active>0?'checked':'' !!}
-                        >
+                        <div class="form-check form-switch form-switch-lg">
+                            <input
+                                onchange="changeStatus('{!! $module->id !!}')"
+                                id="active"
+                                name="active"
+                                class="form-check-input"
+                                type="checkbox"
+                                @if($module->active)
+                                checked
+                                @endif
+                            >
+                        </div>
                     </label>
                 </td>
                 <td>
                     <a @popper(Editar) href="{!! route('modules.edit', [$module->id]) !!}">
-                        <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
+                        <i class="fas fa-pencil-alt icon-rounded icon-xs icon-warning"></i>
                     </a>
                     <a @popper(Deletar) href="{!! route('config.modules.delete', [$module->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
-                        <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
+                        <i class="fas fa-trash icon-rounded icon-xs icon-danger"></i>
                     </a>
                 </td>
             </tr>

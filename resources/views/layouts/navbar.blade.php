@@ -7,7 +7,6 @@
     }
     .navbar {
         border-radius: 0;
-        padding: inherit;
     }
     .dropdown-item {
         font-size: 15px;
