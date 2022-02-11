@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped table-hover table-responsive">
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Name</th>

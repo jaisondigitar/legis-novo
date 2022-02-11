@@ -3,14 +3,14 @@
         margin-left: 50px;
     }
 
-    .container {
+    .containerLawProject {
         width: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 20px;
     }
 
-    .container:before {
+    .containerLawProject:before {
         display: none;
     }
 
@@ -22,7 +22,7 @@
         margin-right: 4px;
     }
 </style>
-<div class="container">
+<div class="containerLawProject">
     @foreach($lawsProjects as $lawsProject)
         @if (Auth::user()->can_request_legal_opinion_not_root && isset($lawsProject->advices->last()->legal_option))
         @else

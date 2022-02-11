@@ -3,14 +3,14 @@
         margin-left: 50px;
     }
 
-    .container {
+    .containerDocument {
         width: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-gap: 20px;
     }
 
-    .container:before {
+    .containerDocument:before {
         display: none;
     }
 
@@ -23,7 +23,7 @@
     }
 </style>
 
-<div class="container">
+<div class="containerDocument">
     @foreach($documents as $document)
         @if(!$document->document_protocol)
             @include('documents.card')

@@ -528,27 +528,9 @@ BEGIN PAGE
     </div><!-- /.top-navbar -->
     <!-- END TOP NAV -->
 
-
-
-    <!-- BEGIN TOP MAIN NAVIGATION -->
     <div class="top-main-navigation" style="border: none;">
-        <!-- Collect the nav links, forms, and other content for toggling -->
             {!! View::make('layouts.navbar') !!}
-
-        {{--<nav class="navbar square navbar-default no-border" role="navigation">--}}
-            {{--<div class="container-fluid">--}}
-
-                {{--<!-- Collect the nav links, forms, and other content for toggling -->--}}
-                {{--<div class="collapse navbar-collapse" id="top-main-navigation">--}}
-                    {{--{!! View::make('layouts.navbar') !!}--}}
-                {{--</div><!-- /.navbar-collapse -->--}}
-            {{--</div><!-- /.container-fluid -->--}}
-        {{--</nav>--}}
-        <!-- End inverse navbar -->
-    </div><!-- /.top-main-navigation -->
-    <!-- END TOP MAIN NAVIGATION -->
-
-
+    </div>
 
     <!-- BEGIN SIDEBAR RIGHT HEADING -->
     <div class="sidebar-right-heading">

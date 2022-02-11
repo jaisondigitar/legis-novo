@@ -6,11 +6,18 @@
     <div class="the-box rounded">
         <div class="row">
             <div class="col-md-12">
-                <ul class="nav nav-pills" style="margin-bottom: 10px">
-                    <li><a href="{!! route('modules.create') !!}">Novo Registro</a></li>
-                </ul>
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group">
+                        <a href="{!! route('modules.create') !!}">
+                            <button type="button" class="btn btn-default">
+                                <i class="fa fa-plus-circle"></i> Novo registro
+                            </button>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+        <hr class="hr">
         <div class="row">
             <div class="col-md-12">
                 @if($modules->isEmpty())
