@@ -503,26 +503,14 @@ BEGIN PAGE
                         </ul>
                     </li>
                 </ul>
-                <!-- End user session nav -->
 
                 <!-- Begin Collapse menu nav -->
-                <div class="collapse navbar-collapse" id="main-fixed-nav">
-                    <ul class="nav navbar-nav navbar-left">
-                        <!-- Begin nav notification -->
-                        <li class="menu">
-                            <div>
-                                <p style="margin-top: 7px;color: #FFFFFF;">
-                                    {{ Auth::user()->company->shortName }}
-                                    <br><span style="color: #CCCCCC;">{{ Auth::user()->company->fullName }} - {{ Auth::user()->company->cnpjCpf }}</span>
-                                </p>
-                            </div>
+                <div style="padding: 5px 15px">
+                    <span style="color: #FFFFFF;">{{ Auth::user()->company->shortName }}</span>
+                    <br>
+                    <span style="color: #CCCCCC;">{{ Auth::user()->company->fullName }} - {{ Auth::user()->company->cnpjCpf }}</span>
+                </div>
 
-                        </li>
-                        <!-- End nav friend requuest -->
-                    </ul>
-
-                </div><!-- /.navbar-collapse -->
-                <!-- End Collapse menu nav -->
             </div><!-- /.top-nav-content -->
         </div><!-- /.top-navbar-inner -->
     </div><!-- /.top-navbar -->
@@ -652,11 +640,8 @@ BEGIN PAGE
                     {{ Session::get('flash_notification')->first()->message }}
                 </div>
             @endif
-
             @yield('content')
         </div><!-- /.container-fluid -->
-
-
     </div><!-- /.page-content -->
 </div><!-- /.wrapper -->
 <!-- END PAGE CONTENT -->
