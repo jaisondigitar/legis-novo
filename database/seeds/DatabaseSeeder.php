@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ModuleTableSeeder::class);
         $this->call(DocumentTypesTableSeeder::class);
         //$this->call(StatesTableSeeder::class);
-        $this->call(CitiesTableSeeder::class);
+        //$this->call(CitiesTableSeeder::class);
         $this->call(DocumentProtocolTypeTableSeeder::class);
         $this->call(ParametersTableSeeder::class);
         $this->call(PlacesTypesTableSeeder::class);
