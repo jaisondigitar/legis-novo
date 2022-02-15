@@ -24,7 +24,7 @@
 </style>
 
 @foreach($lawsProjects as $lawsProject)
-    @if (Auth::user()->can_request_legal_opinion_not_root && isset($lawsProject->advices->last()->legal_option))
+    @if (Auth::user()->can_request_legal_option_not_root && isset($lawsProject->advices->last()->legal_option))
     @else
         <div class="col-lg-6">
             @include('lawsProjects.card')

@@ -585,6 +585,27 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($html2);
         }
 
+        if ($document->advices->last()) {
+            $pdf->AddPage();
+            $pdf->setListIndentWidth(5);
+            $content = '<h3 style="text-align: center">PARECER JURÍDICO</h3>';
+
+            $content .= '<p>'.$document->advices->last()->legal_option.'</p>';
+
+            $html = '<table cellspacing="10" cellpadding="10" style="margin-top: 300px; width:100%;"><tbody>';
+            $html .= '<tr style="height: 300px">';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '<td style="width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][1].'<br><br><br></td>';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '</tr>';
+            $html .= '</tbody></table>';
+
+            $content .= '<br><br>';
+            $content .= '<div>'.$html.'</div>';
+
+            $pdf->writeHTML($content);
+        }
+
         if ($tramitacao) {
             $pdf->AddPage();
             $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
@@ -1183,7 +1204,7 @@ class DocumentController extends AppBaseController
             ->with(compact('document'));
     }
 
-    public function legalOpinion($documentId)
+    public function legalOption($documentId)
     {
         setlocale(LC_ALL, 'pt_BR');
         $document = $this->documentRepository->findByID($documentId);
@@ -1197,7 +1218,7 @@ class DocumentController extends AppBaseController
         $comission = Commission::active()->pluck('name', 'id');
 
         return view(
-            'documents.legal-opinion',
+            'documents.legal-option',
             compact(
                 'comission',
             )

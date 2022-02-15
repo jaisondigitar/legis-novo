@@ -275,7 +275,7 @@
                     <i class="glyphicon glyphicon-list-alt"></i>
                 </a>
 
-                <a @popper(PARECERES) href="{!! route('documents.legal-opinion', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                <a @popper(PARECERES) href="{!! route('documents.legal-option', [$document->id]) !!}" class='btn btn-default btn-xs'>
                     <i class="fa fa-clipboard"></i>
                 </a>
             @endshield

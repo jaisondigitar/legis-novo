@@ -245,7 +245,7 @@
                     <i class="glyphicon glyphicon-list-alt"></i>
                 </a>
 
-                <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                <a @popper(PARECERES) href="{!! route('lawsProjects.legal-option', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                     <i class="fa fa-clipboard"></i>
                 </a>
             @endshield

@@ -51,7 +51,7 @@ class Advice extends BaseModel
         'to_id',
         'laws_projects_id',
         'description',
-        'legal_opinion',
+        'legal_option',
     ];
 
     public static $translation = [
@@ -61,7 +61,7 @@ class Advice extends BaseModel
         'type' => 'Tipo',
         'laws_projects_id' => 'Id da Lei do Projeto',
         'to_id' => 'Para',
-        'legal_opinion' => 'Parecer Jurídico',
+        'legal_option' => 'Parecer Jurídico',
     ];
 
     /**

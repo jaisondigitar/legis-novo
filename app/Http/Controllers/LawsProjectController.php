@@ -170,7 +170,7 @@ class LawsProjectController extends AppBaseController
             $lawsProjects_query->where($where);
         }
 
-        if (Auth::user()->can_request_legal_opinion && ! Auth::user()->hasRole('root')) {
+        if (Auth::user()->can_request_legal_option && ! Auth::user()->hasRole('root')) {
             $lawsProjects_query->whereHas('processing', function ($query) {
                 $query->where(
                     'destination_id',
@@ -1477,7 +1477,7 @@ class LawsProjectController extends AppBaseController
      * @return Application|Factory|RedirectResponse|Redirector|View
      * @throws BindingResolutionException
      */
-    public function legalOpinion(int $id)
+    public function legalOption(int $id)
     {
         $lawsProject = $this->lawsProjectRepository->findByID($id);
 
@@ -1487,6 +1487,7 @@ class LawsProjectController extends AppBaseController
             return redirect(route('lawsProjects.index'));
         }
 
-        return view('lawsProjects.legal-opinion', ['lawsProject' => $lawsProject]);
+
+        return view('lawsProjects.legal-option', ['lawsProject' => $lawsProject]);
     }
 }

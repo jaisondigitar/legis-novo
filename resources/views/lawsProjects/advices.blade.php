@@ -118,10 +118,6 @@
         @endif
 
         <script>
-            const contMax = (value) => {
-                console.log(value);
-            }
-
             document.querySelector('#new_date_processing').value = dateForm
 
             $(document).ready(function () {
@@ -155,7 +151,7 @@
                     to_id: to_id,
                     type: type,
                     description: CKEDITOR.instances['comissionDescriprion'].getData(),
-                    legal_opinion: CKEDITOR.instances['legalOpinion'].getData(),
+                    legal_option: CKEDITOR.instances['legalOption'].getData(),
                     date_end: $('#date_end').val(),
                 }
 
