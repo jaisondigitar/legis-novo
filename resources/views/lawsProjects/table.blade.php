@@ -178,11 +178,11 @@
 </div>
 
 <script>
-    const toogleApproved = function (id) {
+    const toggleApproved = function (id) {
 
-        url = '/lawproject/' + id + '/toogleApproved';
+        const url = '/lawproject/' + id + '/toogleApproved';
 
-        data = {
+        const data = {
             town_hall : $('#town_hall'+id).is(':checked'),
             _token : '{{csrf_token()}}'
         }

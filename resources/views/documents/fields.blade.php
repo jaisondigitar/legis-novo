@@ -5,71 +5,83 @@
         max-width: 100%;
         min-width: 100%;
     }
+    .select2.select2-container .select2-selection {
+        border: 1px solid #ddd;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        height: 34px;
+        margin-bottom: 15px;
+        outline: none !important;
+        transition: all .15s ease-in-out;
+    }
 </style>
 
-<!-- Document Type Id Field -->
-<div class="form-group col-sm-4">
-    {!! Form::label('document_type_id', 'Tipo de documento', ['class' => 'required']) !!}
-    {!! Form::select('document_type_id', $documentType, null, ['class' => 'form-control']) !!}
+<div class="row">
+    <!-- Document Type Id Field -->
+    <div class="form-group col-sm-4">
+        {!! Form::label('document_type_id', 'Tipo de documento', ['class' => 'required']) !!}
+        {!! Form::select('document_type_id', $documentType, null, ['class' => 'form-control']) !!}
+    </div>
+
+    <!-- Owner Id Field -->
+    <div class="form-group col-sm-4">
+        {!! Form::label('owner_id', 'Parlamentar responsável', ['class' => 'required']) !!}
+        {!! Form::select('owner_id', $assemblymensList, null, ['class' => 'form-control']) !!}
+    </div>
+
+    <!-- From Field -->
+    <div class="form-group col-sm-4">
+        {!! Form::label('date', 'Data', ['class' => 'required']) !!}
+        {!! Form::text('date', null, ['class' => 'form-control datepicker', 'minlength' => '10']) !!}
+    </div>
+
+    <!-- Sector Field -->
+    <div class="form-group col-sm-12">
+        {!! Form::label('sectors[]', 'Destinatário Final') !!}
+        <select class="js-example-basic-multiple col-sm-12" name="sectors[]" multiple="multiple">
+            @foreach($sector as $key => $name)
+                @if(in_array($key, $sectors_default))
+                    <option value="{{ $key }}" selected>{{$name}}</option>
+                @else
+                    <option value="{{ $key }}">{{$name}}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+
+    <!-- Resume Field -->
+    <div class="form-group col-sm-12">
+        {!! Form::label('resume', 'Ementa', ['class' => 'required']) !!}
+        {!! Form::textarea('resume', null, [
+                'class' => 'form-control resume ckeditor',
+                'maxlength' => 680
+        ]) !!}
+    </div>
+
+    <!-- Content Field -->
+    <div class="form-group col-sm-12">
+        {!! Form::label('content', 'Conteúdo', ['class' => 'required']) !!}
+        {!! Form::textarea('content', null, ['class' => 'form-control ckeditor']) !!}
+    </div>
+
+    <!-- Assemblymen Field -->
+    <div class="form-group col-sm-12">
+        {!! Form::label('assemblymen', 'Parlamentares Assinando') !!}
+        {!! Form::select('assemblymen[]', $assemblymen, null, ['class' => 'chosen-select', 'multiple', 'style' => 'width:100%;', 'data-placeholder' => 'Selecione o parlamentar...']) !!}
+    </div>
+
+    <!-- Submit Field -->
+    <div class="form-group col-sm-12 mt-3">
+        {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
+        <a href="{!! route('documents.index') !!}" class="btn btn-default">Cancelar</a>
+    </div>
 </div>
 
-<!-- Owner Id Field -->
-<div class="form-group col-sm-4">
-    {!! Form::label('owner_id', 'Parlamentar responsável', ['class' => 'required']) !!}
-    {!! Form::select('owner_id', $assemblymensList, null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- From Field -->
-<div class="form-group col-sm-4">
-    {!! Form::label('date', 'Data', ['class' => 'required']) !!}
-    {!! Form::text('date', null, ['class' => 'form-control datepicker', 'minlength' => '10']) !!}
-</div>
-
-<!-- Sector Field -->
-<div class="form-group col-sm-12">
-    {!! Form::label('sectors[]', 'Destinatário Final') !!}
-    <select class="js-example-basic-multiple col-sm-12" name="sectors[]" multiple="multiple">
-        @foreach($sector as $key => $name)
-            @if(in_array($key, $sectors_default))
-                <option value="{{ $key }}" selected>{{$name}}</option>
-            @else
-                <option value="{{ $key }}">{{$name}}</option>
-            @endif
-        @endforeach
-    </select>
-</div>
-
-<!-- Resume Field -->
-<div class="form-group col-sm-12">
-    {!! Form::label('resume', 'Ementa', ['class' => 'required']) !!}
-    {!! Form::textarea('resume', null, [
-            'class' => 'form-control resume ckeditor',
-            'maxlength' => 680
-    ]) !!}
-</div>
-
-<!-- Content Field -->
-<div class="form-group col-sm-12">
-    {!! Form::label('content', 'Conteúdo', ['class' => 'required']) !!}
-    {!! Form::textarea('content', null, ['class' => 'form-control ckeditor']) !!}
-</div>
-
-<!-- Assemblymen Field -->
-<div class="form-group col-sm-12">
-    {!! Form::label('assemblymen', 'Parlamentares Assinando') !!}
-    {!! Form::select('assemblymen[]', $assemblymen, null, ['class' => 'chosen-select', 'multiple', 'style' => 'width:100%;', 'data-placeholder' => 'Selecione o parlamentar...']) !!}
-</div>
-
-<!-- Submit Field -->
-<div class="form-group col-sm-12">
-    {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
-    <a href="{!! route('documents.index') !!}" class="btn btn-default">Cancelar</a>
-</div>
 <style href="{{ url('assets/plugins/chosen/chosen.min.css') }}"></style>
 <script src="{{ url('assets/plugins/chosen/chosen.jquery.min.js') }}"></script>
 
 @if(!isset($document))
-
     <script>
         $(document).ready(function(){
 
@@ -96,21 +108,7 @@
             });
         });
     </script>
-
 @endif
-
-<style>
-    .select2.select2-container .select2-selection {
-        border: 1px solid #ddd;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        height: 34px;
-        margin-bottom: 15px;
-        outline: none !important;
-        transition: all .15s ease-in-out;
-    }
-</style>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -147,9 +145,7 @@
             $(".chosen-select").val({!! (isset($documentAssemblyman) ? $documentAssemblyman : '') !!}).trigger('chosen:updated');
         @endif
     });
-</script>
 
-<script>
     var save_processing = function() {
 
         url = '{{route('processingDocuments.store')}}';

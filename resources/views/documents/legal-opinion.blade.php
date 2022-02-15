@@ -11,31 +11,31 @@
         @if(isset($document))
             <div class="the-box rounded">
                 <div class="form-group col-sm-12">
-                    <div class="panel panel-square panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> PEDIDO DE PARECERES</h3>
-                            <div class="right-content">
-                                <div class="btn-group btn-group-xs">
-                                    <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                            data-target="#newParecer" onclick="addChosen()">
-                                        <i class="fa fa-plus"></i> SOLICITAR PARECER
-                                    </button>
+                    <div class="card card-square card-default">
+                        <div class="card-header">
+                            <div class="row">
+                                <h4 class="card-title col-md-10"><i class="fa fa-angle-double-right"></i> PEDIDO DE PARECERES</h4>
+                                <div class="right-content col-md-2">
+                                    <div class="btn-group btn-group-xs">
+                                        <button type="button" class="btn btn-default btn-xs" data-bs-toggle="modal" data-bs-target="#newParecer" style="font-size: 13px">
+                                            <i class="fa fa-plus"></i> SOLICITAR PARECER
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-body">
+                        <div class="card-body">
                             @include('documents.tramites_table')
-                        </div><!-- /.panel-body -->
+                        </div><!-- /.card-body -->
                     </div>
                 </div>
 
-                <div class="modal fade" id="newParecer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal fade" id="newParecer" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                        aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">PEDIDO DE DESTINO</h4>
+                                <h4 class="modal-title">PEDIDO DE DESTINO</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <label>Selecione a comissão:</label>
@@ -51,10 +51,8 @@
                                           class="form-control descricao ckeditor"></textarea>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                <button type="button" class="btn btn-primary" onclick="newAdvice({{ $document->id }})">
-                                    SOLICITAR
-                                </button>
+                                <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">FECHAR</button>
+                                <button type="button" class="btn btn-success pull-right" onclick="newAdvice({{ $document->id }})">SOLICITAR</button>
                             </div>
                         </div>
                     </div>
@@ -65,17 +63,7 @@
     </div>
 
     <script>
-        $(document).ready(function () {
-            setTimeout(function () {
-                $('#comissao').addClass('chosen-select')
-            }, 500);
-        });
-
-        var addChosen = function () {
-            $('#comissao').addClass('chosen-select')
-        };
-
-        var newAdvice = function (document_id) {
+        const newAdvice = (document_id) => {
             var url = "/advice/create";
             var document_id = document_id;
             var to_id = [];
@@ -115,14 +103,14 @@
             }
         }
 
-        function dataAtualFormatada(data) {
-            var dia = data.getDate();
-            if (dia.toString().length == 1)
+        const dataAtualFormatada = (data) => {
+            let dia = data.getDate();
+            if (dia.toString().length === 1)
                 dia = "0" + dia;
-            var mes = data.getMonth() + 1;
-            if (mes.toString().length == 1)
+            let mes = data.getMonth() + 1;
+            if (mes.toString().length === 1)
                 mes = "0" + mes;
-            var ano = data.getFullYear();
+            let ano = data.getFullYear();
             return dia + "/" + mes + "/" + ano;
         }
     </script>

@@ -119,12 +119,10 @@
                                 !$document->document_protocol &&
                                 Auth::user()->roleHasPermission('document.createProtocolNumber')
                             )
-                                <button
-                                    type="button"
-                                    class='btn btn-default btn-xs btn-protocol'
-                                    value="{!! $document->id !!}"
-                                >
-                                    <i class="glyphicon glyphicon-folder-open"></i>
+                                <button type="button" class="btn btn-xs btn-protocol" value="{!! $document->id !!}">
+                                    <span align="center">
+                                        <i class="fas fa-folder-open"></i>
+                                    </span>
                                 </button>
                             @else
                                 @if (Auth::user()->roleHasPermission('document.editprotocol'))
@@ -272,7 +270,7 @@
 
             @shield('documents.advices')
                 <a @popper(TRÂMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                    <i class="glyphicon glyphicon-list-alt"></i>
+                    <i class="fas fa-list-alt"></i>
                 </a>
 
                 <a @popper(PARECERES) href="{!! route('documents.legal-opinion', [$document->id]) !!}" class='btn btn-default btn-xs'>
@@ -289,7 +287,7 @@
             @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('documents.edit')
                     <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-edit"></i>
+                        <i class="fas fa-pencil-alt"></i>
                     </a>
                 @endshield
             @endif
@@ -297,7 +295,7 @@
             @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                 @shield('documents.delete')
                    <a @popper(REMOVER)>
-                       {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                       {!! Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                    </a>
                 @endshield
             @endif

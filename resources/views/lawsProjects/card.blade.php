@@ -139,19 +139,21 @@
                 </span>
             </div>
             <div class="col-md-3">
-                <span>
-                    <label>
-                        <strong>Aprovação:</strong>
+                <label>
+                    Aprovação:
+                    <div class="form-check form-switch form-switch-lg">
                         <input
-                            type="checkbox"
+                            onchange='toggleApproved({{$lawsProject->id }})'
                             id ='town_hall{{$lawsProject->id}}'
-                            onchange='toogleApproved({{$lawsProject->id }})'
+                            name="active"
+                            class="form-check-input"
+                            type="checkbox"
                             @if($lawsProject->town_hall == 1)
                             checked
                             @endif
                         >
-                    </label>
-                </span>
+                    </div>
+                </label>
                 <br>
                 <span>
                     <strong>Lida:</strong>
@@ -237,7 +239,7 @@
 
             @shield('lawsProject.advices')
                 <a @popper(TRÂMITAÇÃO) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    <i class="glyphicon glyphicon-list-alt"></i>
+                    <i class="fas fa-list-alt"></i>
                 </a>
 
                 <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
@@ -284,7 +286,7 @@
             @if($lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.edit')
                     <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                        <i class="glyphicon glyphicon-edit"></i>
+                        <i class="fas fa-pencil-alt"></i>
                     </a>
                 @endshield
             @endif
@@ -292,7 +294,7 @@
             @if(!$lawsProject->protocol && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.delete')
                     <a @popper(REMOVER)>
-                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+                        {!! Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
                     </a>
                 @endshield
             @endif
