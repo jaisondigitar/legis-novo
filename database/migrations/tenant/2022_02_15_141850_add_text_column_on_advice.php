@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnLegalOptionOnDocuments extends Migration
+class AddTextColumnOnAdvice extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnLegalOptionOnDocuments extends Migration
      */
     public function up()
     {
-        Schema::table('documents', function (Blueprint $table) {
-            $table->string('legal_option')->nullable();
+        Schema::table('advices', function (Blueprint $table) {
+            $table->text('legal_option')->nullable()->change();
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnLegalOptionOnDocuments extends Migration
      */
     public function down()
     {
-        Schema::table('documents', function (Blueprint $table) {
-            $table->dropColumn('legal_option');
+        Schema::table('advices', function (Blueprint $table) {
+            $table->string('legal_option')->change();
         });
     }
 }
