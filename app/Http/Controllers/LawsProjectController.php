@@ -154,7 +154,8 @@ class LawsProjectController extends AppBaseController
         if ($user->sector && $user->sector->external) {
             $where = function ($query) use ($user) {
                 $query->where('user_id', $user->id)
-                    ->orWhereHas('user',
+                    ->orWhereHas(
+                        'user',
                         function ($query) {
                             $query->whereHas(
                                 'sector',

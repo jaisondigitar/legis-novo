@@ -151,8 +151,6 @@
             method: "GET",
             url: url,
             dataType: "json"
-        }).success(function(result,textStatus,jqXHR) {
-            console.log(result);
         });
     }
 
@@ -347,7 +345,6 @@
                     dataType: 'json',
                 })
                 .done(function(result) {
-                    console.log(result);
                     $( ".listResult" ).append( $( "<h2>Responsabilidades</h2>" ) );
                     $( ".listResult" ).append( $( '<input type="hidden" name="assemblyman_id" value='+assemblyman_id+'>') );
                     $( ".listResult" ).append( $( '<div>' ) );

@@ -47,8 +47,6 @@
                 toastr.error("Erro, pode esta vinculado a uma pauta!");
             }
 
-            console.log(data);
-
         });
     }
 </script>

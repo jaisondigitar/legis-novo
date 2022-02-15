@@ -154,7 +154,7 @@
             headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
             method: 'POST'
         })
-        console.log(resp)
+
         if (resp.status === 200) {
             $(".logo-inst").fadeOut(300, () => $(".upload").fadeIn(300))
         } else {

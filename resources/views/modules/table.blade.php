@@ -43,8 +43,6 @@
             method: "GET",
             url: url,
             dataType: "json"
-        }).success(function(result) {
-            console.log(result);
-        });
+        })
     }
 </script>

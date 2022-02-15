@@ -160,15 +160,12 @@
                 date_end: $('#date_end').val(),
             };
 
-            console.log(data);
-
             if(to_id.length > 0) {
                 $.ajax({
                     url: url,
                     data: data,
                     method: 'POST'
                 }).success((data) => {
-                    console.log(data);
                     if (data) {
                         toastr.success("Pedido salvo com sucesso!!");
                         window.location.reload()
