@@ -240,6 +240,12 @@
                 </a>
             @endshield
 
+            @if($lawsProject->town_hall == 1 && $lawsProject->is_read > 0 && Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
+                <a @popper(RESPONDER) onclick="answer()" class='btn btn-default btn-sm answer'>
+                    <i class="fa fa-reply"></i>
+                </a>
+            @endif
+
             @shield('lawsProject.advices')
                 <a @popper(TRÂMITAÇÃO) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                     <i class="glyphicon glyphicon-list-alt"></i>
