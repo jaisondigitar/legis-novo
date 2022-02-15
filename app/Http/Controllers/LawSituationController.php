@@ -179,7 +179,7 @@ class LawSituationController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('lawSituations.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -196,6 +196,10 @@ class LawSituationController extends AppBaseController
         }
 
         $this->lawSituationRepository->delete($lawSituation);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Situação Jurídica removido com sucesso.')->success();
 

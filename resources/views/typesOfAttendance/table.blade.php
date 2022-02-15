@@ -21,12 +21,14 @@
                     </a>
                     @endshield
                     @shield('typesOfAttendance.delete')
-                    {!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', [
-                        'type' => 'submit',
-                        'class' => 'btn btn-danger btn-xs',
-                        'onclick' => "return confirm('Deseja realmente remover esse registro?')"
-                        ])
-                    !!}
+                    <button
+                        @popper(Deletar)
+                        type = 'submit'
+                        class = 'btn btn-danger btn-xs'
+                        onclick="sweet(event, {!! $type->id !!})"
+                    >
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </button>
                     @endshield
                 </div>
                 {!! Form::close() !!}
@@ -35,3 +37,14 @@
     @endforeach
     </tbody>
 </table>
+<script>
+    const sweet = (e, id) => {
+        const url = `/types-of-attendance/${id}`;
+
+        const data = null
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, data, method)
+    }
+</script>

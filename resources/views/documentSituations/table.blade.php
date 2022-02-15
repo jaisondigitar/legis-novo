@@ -14,7 +14,16 @@
                 <div class='btn-group'>
                     @shield('documentSituations.show')<a @popper(Visualizar) href="{!! route('documentSituations.show', [$documentSituation->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
                     @shield('documentSituations.edit')<a @popper(Editar) href="{!! route('documentSituations.edit', [$documentSituation->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('documentSituations.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('documentSituations.delete')
+                       <button
+                           @popper(Deletar)
+                           type='submit'
+                           class='btn btn-danger btn-xs'
+                           onclick="sweet(event, {!! $documentSituation->id !!})"
+                       >
+                           <i class="glyphicon glyphicon-trash"></i>
+                       </button>
+                    @endshield
                 </div>
                 {!! Form::close() !!}
             </td>
@@ -22,3 +31,14 @@
     @endforeach
     </tbody>
 </table>
+<script>
+    const sweet = (e, id) => {
+        const url = `/documentSituations/${id}`;
+
+        const data = null
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, data, method)
+    }
+</script>

@@ -191,7 +191,7 @@ class SectorController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('sectors.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -208,6 +208,10 @@ class SectorController extends AppBaseController
         }
 
         $this->sectorRepository->delete($sector);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Setor removido com sucesso.')->success();
 

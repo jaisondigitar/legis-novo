@@ -12,7 +12,7 @@
                 <div class='btn-group'>
                     @shield('advicePublicationDocuments.show')<a @popper(Visualizar) href="{!! route('advicePublicationDocuments.show', [$advicePublicationDocuments->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
                     @shield('advicePublicationDocuments.edit')<a @popper(Editar) href="{!! route('advicePublicationDocuments.edit', [$advicePublicationDocuments->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('advicePublicationDocuments.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => 'sweetDelete(event)' ]) !!}@endshield
+                    @shield('advicePublicationDocuments.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => 'sweet(event)' ]) !!}@endshield
                 </div>
                 {!! Form::close() !!}
             </td>
@@ -21,32 +21,14 @@
     </tbody>
 </table>
 <script>
-    const sweetDelete=(e) =>{
-        e.preventDefault();
-        Swal.fire({
-            title: 'Excluir Documento?',
-            text: "Não será possivel desfazer!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const url = `/advicePublicationDocuments/{{$advicePublicationDocuments->id}}`;
+    const sweet = (e) => {
+        const url = `/advicePublicationDocuments/{{$advicePublicationDocuments->id}}`;
 
-                const data = {
-                    '_token' : '{{csrf_token()}}'
-                };
+        const data = {
+            '_token' : '{{csrf_token()}}'
+        };
 
-                $.ajax({
-                    url : url,
-                    data : data,
-                    method : 'POST'
-                }).success(() => {
-                    window.location.reload()
-                });
-            }
-        })
+        sweetDelete(e, url, data)
     }
 </script>
+

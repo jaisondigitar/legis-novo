@@ -181,7 +181,7 @@ class ComissionSituationController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('comissionSituations.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -198,6 +198,10 @@ class ComissionSituationController extends AppBaseController
         }
 
         $this->comissionSituationRepository->delete($comissionSituation);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Situação da Comissão removida com sucesso.')->success();
 

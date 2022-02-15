@@ -239,7 +239,7 @@
             "hideMethod": "fadeOut"
         };
 
-        const sweetDelete=(e, url, data) =>{
+        const sweetDelete=(e, url, data, method) =>{
             e.preventDefault();
             Swal.fire({
                 title: 'Excluir Documento?',
@@ -254,7 +254,7 @@
                     $.ajax({
                         url : url,
                         data : data,
-                        method : 'POST'
+                        method : method ?? 'POST'
                     }).success(() => {
                         window.location.reload()
                     });

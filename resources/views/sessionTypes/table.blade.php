@@ -14,7 +14,16 @@
                 <div class='btn-group'>
                     @shield('sessionTypes.show')<a @popper(Visualizar) href="{!! route('sessionTypes.show', [$sessionType->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
                     @shield('sessionTypes.edit')<a @popper(Editar) href="{!! route('sessionTypes.edit', [$sessionType->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('sessionTypes.delete'){!! Form::button('<i @popper(Editar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('sessionTypes.delete')
+                        <button
+                            @popper(Editar)
+                            type = 'submit'
+                            class = 'btn btn-danger btn-xs'
+                            onclick="sweet(event, {!! $sessionType->id !!})"
+                        >
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </button>
+                    @endshield
                 </div>
                 {!! Form::close() !!}
             </td>
@@ -22,3 +31,14 @@
     @endforeach
     </tbody>
 </table>
+<script>
+    const sweet = (e, id) => {
+        const url = `/sessionTypes/${id}`;
+
+        const data = null
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, data, method)
+    }
+</script>

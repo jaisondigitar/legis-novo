@@ -99,7 +99,7 @@ class TypesOfAttendanceController extends Controller
         return redirect(route('typesOfAttendance.index'));
     }
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('parties.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -110,6 +110,10 @@ class TypesOfAttendanceController extends Controller
         $types_of_attendance = $this->typesOfAttendanceRepository->findById($id);
 
         $this->typesOfAttendanceRepository->delete($types_of_attendance);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         return redirect(route('typesOfAttendance.index'));
     }

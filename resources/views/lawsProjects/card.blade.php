@@ -297,7 +297,7 @@
             @if(!$lawsProject->project_number && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                 @shield('lawsProjects.delete')
                     <a @popper(REMOVER)>
-                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'sweetDelete(event)' ]) !!}
+                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'sweet(event)' ]) !!}
                     </a>
                 @endshield
             @endif
@@ -351,32 +351,13 @@
     </div>
 @endif
 <script>
-    const sweetDelete=(e) =>{
-        e.preventDefault();
-        Swal.fire({
-            title: 'Excluir Projeto de Lei?',
-            text: "Não será possivel desfazer!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const url = `/lawsProject/{{$lawsProject->id}}`;
+    const sweet = (e) => {
+        const url = `/lawsProject/{{$lawsProject->id}}`;
 
-                const data = {
-                    '_token' : '{{csrf_token()}}'
-                };
+        const data = {
+            '_token' : '{{csrf_token()}}'
+        };
 
-                $.ajax({
-                    url : url,
-                    data : data,
-                    method : 'POST'
-                }).success(() => {
-                    window.location.reload()
-                });
-            }
-        })
+        sweetDelete(e, url, data)
     }
 </script>

@@ -259,7 +259,7 @@ class AttendanceController extends Controller
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('attendance.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -270,6 +270,10 @@ class AttendanceController extends Controller
         $attendance = $this->attendanceRepository->findById($id);
 
         $this->attendanceRepository->delete($attendance);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         return redirect(route('attendance.index'));
     }

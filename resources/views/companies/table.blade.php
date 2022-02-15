@@ -22,9 +22,11 @@
                     <a @popper(Editar) href="{!! route('companies.edit', [$company->id]) !!}">
                         <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
                     </a>
-                    <a @popper(Deletar) href="{!! route('config.companies.delete', [$company->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
+                    <button
+                        @popper(Deletar) href="{!! route('config.companies.delete', [$company->id]) !!}"
+                        onclick="sweet(event, {!! $company->id !!})"
                         <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
-                    </a>
+                    </button>
                 </td>
             </tr>
         @endforeach
@@ -45,5 +47,16 @@
         }).success(function(result) {
             console.log(result);
         });
+    }
+</script>
+<script>
+    const sweet = (e, id) => {
+        const url = `/companies/${id}`;
+
+        const data = null
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, data, method)
     }
 </script>

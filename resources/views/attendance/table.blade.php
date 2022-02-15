@@ -40,7 +40,14 @@
                     @endshield
 
                     @shield('attendance.delete')
-                        {!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                      <button
+                            @popper(Deletar)
+                            type = 'submit'
+                            class = 'btn btn-danger btn-xs'
+                            onclick="sweet(event, {!! $attend->id !!})"
+                      >
+                          <i class="glyphicon glyphicon-trash"></i>
+                      </button>
                     @endshield
                 </div>
                 {!! Form::close() !!}
@@ -145,3 +152,15 @@
     }
 
 </script>
+<script>
+    const sweet = (e, id) => {
+        const url = `/attendance/${id}`;
+
+        const data = null
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, data, method)
+    }
+</script>
+
