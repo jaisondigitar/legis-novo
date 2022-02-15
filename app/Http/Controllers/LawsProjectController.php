@@ -618,9 +618,6 @@ class LawsProjectController extends AppBaseController
             $html .= '</tr>';
             $html .= '</tbody></table>';
 
-            $content .= '<br><br>';
-            $content .= '<div>'.$html.'</div>';
-
             $pdf->writeHTML($content);
         }
 
