@@ -22,11 +22,14 @@
                     <a @popper(Editar) href="{!! route('companies.edit', [$company->id]) !!}">
                         <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
                     </a>
-                    <button
-                        @popper(Deletar) href="{!! route('config.companies.delete', [$company->id]) !!}"
+                    <a
+                        style="cursor: pointer"
+                        @popper(Deletar)
+                        type="submit"
                         onclick="sweet(event, {!! $company->id !!})"
+                    >
                         <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
-                    </button>
+                    </a>
                 </td>
             </tr>
         @endforeach
@@ -51,12 +54,10 @@
 </script>
 <script>
     const sweet = (e, id) => {
-        const url = `/companies/${id}`;
+        const url = `companies/${id}`;
 
-        const data = null
+        const method = 'DELETE';
 
-        const method = 'DELETE'
-
-        sweetDelete(e, url, data, method)
+        sweetDelete(e, url, null, method);
     }
 </script>

@@ -469,28 +469,34 @@
             });
         };
 
-        var removeDoc = function (id) {
-            url = '/meetings/removeDocument/' + id  ;
+        const removeRow = (id) => {
+            const url = `/meetings/removeDocument/${id}`  ;
 
-            $.ajax({
-                method: "GET",
-                url: url
-                }).success(function (data) {
-                    data = JSON.parse(data);
-                    if (data){
-                        $('#document_row_' + id).fadeOut(400, function () {
-                            $(this).remove();
-                        });
-                    }else{
-                        toastr.error('Registro possui votação não pode ser excluido!');
-                    }
-            });
-        }
-
-        var removeRow = function (id)
-        {
-            if(confirm('Tem certeza que deseja remover este documento?')){
-                removeDoc(id);}
+            Swal.fire({
+                title: 'Excluir Documento?',
+                text: "Não será possivel desfazer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        method: "GET"
+                    }).success(function (data) {
+                        data = JSON.parse(data);
+                        if (data){
+                            $('#document_row_' + id).fadeOut(400, function () {
+                                $(this).remove();
+                            });
+                        }else{
+                            toastr.error('Registro possui votação, não pode ser excluido!');
+                        }
+                    });
+                }
+            })
         };
 
         var getTemplate = function(id,number,type,obs)

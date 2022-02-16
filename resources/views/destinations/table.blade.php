@@ -27,16 +27,27 @@
                         </a>
                     @endshield
                     @shield('destination.delete')
-                    {!! Form::button(
-                        '<i @popper(Deletar) class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>', [
-                            'type' => 'submit',
-                            'style' => 'padding: 0; margin: 0; border: 0;',
-                            'onclick' => "return confirm('Deseja realmente remover esse registro?')"
-                        ])
-                    !!}
+                    <button
+                        @popper(Deletar)
+                        type = "submit"
+                        style = 'padding: 0; margin: 0; border: 0;'
+                        onclick="sweet(event, {!! $destination->id !!})"
+                    >
+                        <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
+                    </button>
                     @endshield
                 </td>
             </tr>
         @endforeach
     </tbody>
 </table>
+<script>
+    const sweet = (e, id) => {
+        const url = `/destinations/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
+</script>
+

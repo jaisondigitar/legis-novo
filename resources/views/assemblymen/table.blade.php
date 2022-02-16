@@ -60,14 +60,14 @@
                     @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @shield('assemblymen.delete')
                         {!! Form::open(['route' => ['assemblymen.destroy', $assemblyman->id], 'method' => 'delete']) !!}
-                        <button
+                        <a
                             @popper(Deletar)
-                            type = 'submit'
+                            type = "submit"
                             class = 'btn btn-danger btn-xs'
                             onclick="sweet(event, {!! $assemblyman->id !!})"
                         >
                             <i class="glyphicon glyphicon-trash"></i>
-                        </button>
+                        </a>
                         {!! Form::close() !!}
                     @endshield
                 </div>
@@ -370,14 +370,13 @@
     });
 </script>
 <script>
-    const sweet = (e) => {
-        const url = `/deleteAssemblyman/{{$assemblyman->id}}`;
+    const sweet = (e, id) => {
+        const url = `assemblymen/${id}`;
 
-        const data = {
-            '_token' : '{{csrf_token()}}'
-        };
+        const method = 'DELETE'
 
-        sweetDelete(e, url, data)
+        sweetDelete(e, url, null, method)
     }
 </script>
+
 
