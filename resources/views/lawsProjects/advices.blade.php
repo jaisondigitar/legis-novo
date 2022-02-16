@@ -200,8 +200,10 @@
 <script>
     if ({{Auth::user()->can_request_secretary}}) {
         $('body').on('change', '#destination_id', () => {
-            if ($('#destination_id').val() == 4) {
+            if ($('#destination_id').val() === '4') {
                 document.querySelector('#date_end').value = someDateForm
+            } else if ($('#destination_id').val() === '6') {
+                document.querySelector('#date_end').value = someDateTwentyForm
             } else {
                 document.querySelector('#date_end').value = ''
             }
