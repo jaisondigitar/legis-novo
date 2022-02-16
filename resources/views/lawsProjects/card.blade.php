@@ -246,66 +246,68 @@
                 </a>
             @endif
 
-            @shield('lawsProject.advices')
-                <a @popper(TRÂMITAÇÃO) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    <i class="glyphicon glyphicon-list-alt"></i>
-                </a>
+            @if(!Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
+                @shield('lawsProject.advices')
+                    <a @popper(TRÂMITAÇÃO) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                    </a>
 
-                <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                    <i class="fa fa-clipboard"></i>
-                </a>
-            @endshield
-
-            @if(Auth::user()->id == $lawsProject->owner->id || Auth::user()->hasRole('root'))
-                @shield('lawsProjects.edit')
-                    <a @popper(ESTRUTURA DE LEI) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                        <i class="fas fa-gavel"></i>
+                    <a @popper(PARECERES) href="{!! route('lawsProjects.legal-opinion', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        <i class="fa fa-clipboard"></i>
                     </a>
                 @endshield
-            @endif
 
-            @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
-                <a @popper(ALTERAR NÚMERO/PROTOCOLO) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
-                   <i class="fas fa-project-diagram"></i>
-                </a>
-            @endshield
+                @if(Auth::user()->id == $lawsProject->owner->id || Auth::user()->hasRole('root'))
+                    @shield('lawsProjects.edit')
+                        <a @popper(ESTRUTURA DE LEI) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                            <i class="fas fa-gavel"></i>
+                        </a>
+                    @endshield
+                @endif
 
-            @if($lawsProject->law_file)
-                <a href="/laws/{{ $lawsProject->law_file }}" target="_blank" class='btn btn-default btn-sm'>
-                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                </a>
-            @endif
-
-            @if($lawsProject->file)
-                <a href="/laws/{{ $lawsProject->file }}" target="_blank" class='btn btn-default btn-sm'>
-                    <i class="fa fa-paperclip"></i>
-                </a>
-            @endif
-
-            @if($lawsProject->voting)
-                <a @popper(VOTAÇÃO) type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
-                    <i class="fas fa-vote-yea"></i>
-                </a>
-            @endif
-
-            <a @popper(ANEXOS) href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-default btn-sm">
-                <i class="fas fa-paperclip"></i>
-            </a>
-
-            @if($lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
-                @shield('lawsProjects.edit')
-                    <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                        <i class="glyphicon glyphicon-edit"></i>
+                @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
+                    <a @popper(ALTERAR NÚMERO/PROTOCOLO) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
+                       <i class="fas fa-project-diagram"></i>
                     </a>
                 @endshield
-            @endif
 
-            @if(!$lawsProject->protocol && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
-                @shield('lawsProjects.delete')
-                    <a @popper(REMOVER)>
-                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+                @if($lawsProject->law_file)
+                    <a href="/laws/{{ $lawsProject->law_file }}" target="_blank" class='btn btn-default btn-sm'>
+                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                     </a>
-                @endshield
+                @endif
+
+                @if($lawsProject->file)
+                    <a href="/laws/{{ $lawsProject->file }}" target="_blank" class='btn btn-default btn-sm'>
+                        <i class="fa fa-paperclip"></i>
+                    </a>
+                @endif
+
+                @if($lawsProject->voting)
+                    <a @popper(VOTAÇÃO) type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
+                        <i class="fas fa-vote-yea"></i>
+                    </a>
+                @endif
+
+                <a @popper(ANEXOS) href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-default btn-sm">
+                    <i class="fas fa-paperclip"></i>
+                </a>
+
+                @if($lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
+                    @shield('lawsProjects.edit')
+                        <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                    @endshield
+                @endif
+
+                @if(!$lawsProject->protocol && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
+                    @shield('lawsProjects.delete')
+                        <a @popper(REMOVER)>
+                            {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+                        </a>
+                    @endshield
+                @endif
             @endif
         </div>
         <div class="clearfix"></div>
