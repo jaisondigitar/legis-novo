@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('backup:clean', ['--disable-notifications'])->daily();
 
-        $schedule->command('backup:run')->daily()->at('19:00');
+        $schedule->command('backup:run', ['--disable-notifications'])->daily()->at('19:00');
     }
 
     /**
