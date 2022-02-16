@@ -193,7 +193,7 @@ class ParametersController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('parameters.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -210,6 +210,10 @@ class ParametersController extends AppBaseController
         }
 
         $this->parametersRepository->delete($parameters);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Parâmetro excluído com sucesso.')->success();
 
