@@ -33,10 +33,8 @@
     const sweet = (e, id) => {
         const url = `/lawSituations/${id}`;
 
-        const data = null
-
         const method = 'DELETE'
 
-        sweetDelete(e, url, data, method)
+        sweetDelete(e, url, null, method)
     }
 </script>
