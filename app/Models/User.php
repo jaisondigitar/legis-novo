@@ -87,7 +87,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * @return bool
      */
-    public function getCanRequestLegalOpinionAttribute(): bool
+    public function getCanRequestLegalOptionAttribute(): bool
     {
         if ($this->sector) {
             return $this->sector->name === 'Jurídico' || $this->hasRole('root');
@@ -111,7 +111,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * @return bool
      */
-    public function getCanRequestLegalOpinionNotRootAttribute(): bool
+    public function getCanRequestLegalOptionNotRootAttribute(): bool
     {
         if ($this->sector) {
             return $this->sector->name === 'Jurídico';

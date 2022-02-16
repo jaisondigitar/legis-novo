@@ -585,6 +585,16 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($html2);
         }
 
+        if ($document->advices->last()) {
+            $pdf->AddPage();
+            $pdf->setListIndentWidth(5);
+            $content = '<h3 style="text-align: center">PARECER JURÍDICO</h3>';
+
+            $content .= '<p>'.$document->advices->last()->legal_option.'</p>';
+
+            $pdf->writeHTML($content);
+        }
+
         if ($tramitacao) {
             $pdf->AddPage();
             $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
@@ -1183,7 +1193,7 @@ class DocumentController extends AppBaseController
             ->with(compact('document'));
     }
 
-    public function legalOpinion($documentId)
+    public function legalOption($documentId)
     {
         setlocale(LC_ALL, 'pt_BR');
         $document = $this->documentRepository->findByID($documentId);
@@ -1197,7 +1207,7 @@ class DocumentController extends AppBaseController
         $comission = Commission::active()->pluck('name', 'id');
 
         return view(
-            'documents.legal-opinion',
+            'documents.legal-option',
             compact(
                 'comission',
             )
