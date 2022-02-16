@@ -30,6 +30,7 @@ use App\Models\Sector;
 use App\Models\StatusProcessingDocument;
 use App\Models\UserAssemblyman;
 use App\Repositories\DocumentRepository;
+use App\Services\PdfConverterService;
 use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
 use Carbon\Carbon;
@@ -41,6 +42,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -133,6 +135,16 @@ class DocumentController extends AppBaseController
                     $documents_query->whereDoesntHave('document_protocol');
                 }
             }
+        }
+
+        $user = Auth::user();
+        $sector = $user->sector;
+        if ($sector && $sector->external) {
+            $documents_query = $documents_query->where(
+                function ($query) use ($sector, $user) {
+                    $query->where('sector_id', $sector->id)->orWhere('users_id', $user->id);
+                }
+            );
         }
 
         $documents = $documents_query->with([
@@ -507,7 +519,9 @@ class DocumentController extends AppBaseController
 
         $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
 
-        $conteudo = $document->content;
+        $conteudo = '<p>'.$document->resume.'</p>';
+        $conteudo .= '<br><br>';
+        $conteudo .= '<p>'.$document->content.'</p>';
 
         if ($document_model) {
             $content = str_replace(
@@ -571,6 +585,16 @@ class DocumentController extends AppBaseController
             $pdf->writeHTML($html2);
         }
 
+        if ($document->advices->last()) {
+            $pdf->AddPage();
+            $pdf->setListIndentWidth(5);
+            $content = '<h3 style="text-align: center">PARECER JURÍDICO</h3>';
+
+            $content .= '<p>'.$document->advices->last()->legal_option.'</p>';
+
+            $pdf->writeHTML($content);
+        }
+
         if ($tramitacao) {
             $pdf->AddPage();
             $html1 = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" >';
@@ -587,6 +611,7 @@ class DocumentController extends AppBaseController
                 if ($processing->statusProcessingDocument) {
                     $html1 .= '<td width="150" style=" text-align: left;"><b>Status do tramite: </b> <br>'.$processing->statusProcessingDocument->name.'</td>';
                 }
+                $html1 .= '<td width="150" style=" text-align: left;"><b>Destinatario: </b> <br>'.$processing->destination->name.'</td>';
                 $html1 .= '</tr>';
                 if (strlen($processing->observation) > 0) {
                     $html1 .= '<tr>';
@@ -602,22 +627,20 @@ class DocumentController extends AppBaseController
 
         $this->createTenantDirectoryIfNotExists();
 
-        $pdf->Output(storage_path().'/app/documents/doc.pdf', 'F');
+        $pdf->Output(storage_path('app/temp/doc.pdf'), 'F');
 
         $this->attachFilesToSavedDoc($document);
 
-        $files_to_remove = $document->documents->pluck('filename')->toArray();
-
-        $files_to_remove[] = 'doc.pdf';
-
-        $this->removeUnusedLocalFiles($files_to_remove);
+        File::deleteDirectory(storage_path());
     }
 
     private function attachFilesToSavedDoc(Document $document)
     {
         $pdfMerger = new PDFMerger;
 
-        $pdfMerger->addPDF(storage_path().'/app/documents/doc.pdf');
+        $file_path = (new PdfConverterService())->convertFromDecoded('temp/doc.pdf');
+
+        $pdfMerger->addPDF(storage_path("app/{$file_path}"));
 
         $document->documents
             ->each(function ($doc) use ($pdfMerger) {
@@ -625,27 +648,20 @@ class DocumentController extends AppBaseController
                     ->inDocumentsFolder()
                     ->getFile($doc->filename);
 
-                (new StorageService())->usingDisk('local')
-                    ->usingDisk('local')->inDocumentsFolder()
+                $file_name = (new StorageService())->usingDisk('local')
+                    ->usingDisk('local')->inFolder('temp')
                     ->sendContent($file_content)
                     ->send(false, $doc->filename);
 
-                $pdfMerger->addPDF(
-                    storage_path().'/app/documents/'.$doc->filename
-                );
+                $file_path = (new PdfConverterService())->convertFromDecoded("temp/{$file_name}");
+
+                $pdfMerger->addPDF(storage_path("app/{$file_path}"));
             });
 
         $pdfMerger->merge(
             'browser',
-            storage_path().'/app/documents/law-project.pdf'
+            storage_path('app/documents/document.pdf')
         );
-    }
-
-    public function removeUnusedLocalFiles(array $filenames)
-    {
-        (new StorageService())->usingDisk('local')
-            ->inDocumentsFolder()
-            ->removeMany($filenames);
     }
 
     /**
@@ -653,9 +669,8 @@ class DocumentController extends AppBaseController
      */
     private function createTenantDirectoryIfNotExists()
     {
-        if (! Storage::exists(storage_path().'/app/documents')) {
-            Storage::makeDirectory('documents');
-        }
+        ! Storage::exists(storage_path('/app/temp')) &&
+        Storage::makeDirectory('temp');
     }
 
     /**
@@ -1178,7 +1193,7 @@ class DocumentController extends AppBaseController
             ->with(compact('document'));
     }
 
-    public function legalOpinion($documentId)
+    public function legalOption($documentId)
     {
         setlocale(LC_ALL, 'pt_BR');
         $document = $this->documentRepository->findByID($documentId);
@@ -1192,7 +1207,7 @@ class DocumentController extends AppBaseController
         $comission = Commission::active()->pluck('name', 'id');
 
         return view(
-            'documents.legal-opinion',
+            'documents.legal-option',
             compact(
                 'comission',
             )

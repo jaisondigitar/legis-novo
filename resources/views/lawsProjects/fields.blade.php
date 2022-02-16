@@ -19,13 +19,13 @@
 </div>
 
 <div class="form-group col-sm-3">
-    {!! Form::label('assemblyman_id', 'Responsável', ['class' => 'required']) !!}
+    {!! Form::label('assemblyman_id', 'Parlamentar Responsável', ['class' => 'required']) !!}
     {!! Form::select('assemblyman_id', $assemblymensList ,null, ['class' => 'form-control', 'id' => 'owner_id']) !!}
 </div>
 
 <div class="form-group col-sm-12">
     {!! Form::label('title', 'Ementa:', ['class' => 'required']) !!}
-    {!! Form::textarea('title', null, ['class' => 'form-control', 'rows'=>5]) !!}
+    {!! Form::textarea('title', null, ['class' => 'form-control ckeditor', 'maxlength' => 680]) !!}
 </div>
 
 <div class="clearfix"></div>

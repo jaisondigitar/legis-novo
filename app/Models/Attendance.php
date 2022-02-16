@@ -35,7 +35,6 @@ class Attendance extends BaseModel
      * @var array
      */
     public static $rules = [
-        'cpf' => 'required',
         'date' => 'required',
         'time' => 'required',
         'description' => 'required',

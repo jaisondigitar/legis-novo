@@ -10,11 +10,22 @@
         <tr>
             <td>{!! $sector->name !!}</td>
             <td>
-                @if($sector->external)
-                    Sim
-                @else
-                    Não
-                @endif
+                <label>
+                    <input
+                        type="checkbox"
+                        id="external-{{$sector->id}}"
+                        onchange="statusExternal('{!! $sector->id !!}')"
+                        class='form-control switch'
+                        data-on-text='Sim'
+                        data-off-text='Não'
+                        data-off-color='danger'
+                        data-on-color='success'
+                        data-size='normal'
+                        @if($sector->external == 1)
+                            checked
+                        @endif
+                    >
+                </label>
             </td>
             <td>{!! $sector->slug !!}</td>
             <td>
@@ -46,5 +57,22 @@
         const method = 'DELETE'
 
         sweetDelete(e, url, null, method)
+    }
+
+    const statusExternal = (id) => {
+        const url = `/sectors/${id}`;
+
+        const data = {
+            external: $('#external-'+id).is(':checked'),
+            _token : '{{csrf_token()}}'
+        }
+
+        $.ajax({
+            url: url,
+            data : data,
+            method: "PATCH"
+        }).success(() => {
+            toastr.success("Setor alterado com secesso");
+        });
     }
 </script>

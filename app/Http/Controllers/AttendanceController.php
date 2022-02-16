@@ -96,8 +96,8 @@ class AttendanceController extends Controller
 
             return redirect('/admin');
         }
+        $type = TypesOfAttendance::where('active', 1)->orderBy('name')->pluck('name', 'id')->prepend('Selecione..', '');
 
-        $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
         $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
 
         $states = $this->statesList();
@@ -127,11 +127,14 @@ class AttendanceController extends Controller
         $attendance_data = $request->only(['date', 'time', 'sector_id', 'description', 'type_id']);
 
         $people = People::firstOrCreate(
-            ['cpf' => $request->cpf],
+            ['name' => $request->name],
             [
+                'cpf' => $request->cpf,
+                'rg' => $request->rg,
                 'name' => $request->name,
-                'email' => $request->email,
                 'celular' => $request->celular,
+                'telephone' => $request->telephone,
+                'email' => $request->email,
                 'zipcode' => $request->zipcode,
                 'street' => $request->street,
                 'number' => $request->number,
@@ -198,7 +201,8 @@ class AttendanceController extends Controller
 
         $people = People::find($attendance->people_id);
 
-        $type = TypesOfAttendance::pluck('name', 'id')->prepend('Selecione..', '');
+        $type = TypesOfAttendance::where('active', 1)->orderBy('name')->pluck('name', 'id')->prepend('Selecione..', '');
+
         $sector = Sector::pluck('name', 'id')->prepend('Selecione..', '');
 
         $states = $this->statesList();
@@ -216,22 +220,27 @@ class AttendanceController extends Controller
      * @param UpdateAttendanceRequest $request
      * @param  int  $id
      *
-     * @return Application|Redirector|RedirectResponse
+     * @return false|Application|RedirectResponse|Redirector|string
      * @throws BindingResolutionException
      */
     public function update(UpdateAttendanceRequest $request, $id)
     {
+//        dd($request->all());
+
         if (! Defender::hasPermission('attendance.edit')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 
             return redirect('/');
         }
 
-        People::where('cpf', $request->get('cpf'))
+        People::where('celular', $request->get('celular'))
             ->update($request->only([
+                'cpf',
+                'rg',
                 'name',
-                'email',
                 'celular',
+                'telephone',
+                'email',
                 'zipcode',
                 'street',
                 'number',

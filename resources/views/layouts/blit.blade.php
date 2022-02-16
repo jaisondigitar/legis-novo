@@ -184,6 +184,7 @@
 
         let newDate = date.addDays(10)
         let newDateFive = date.addDays(5)
+        let newDateTwenty = date.addDays(20)
 
         let dateForm = (
             getDate(date.getDate().toString()) + "/"
@@ -206,6 +207,11 @@
             getDate(newDateFive.getDate().toString()) + "/"
             + (getDate(newDateFive.getMonth()+1).toString()) + "/"
             + newDateFive.getFullYear());
+
+        let someDateTwentyForm = (
+            getDate(newDateTwenty.getDate().toString()) + "/"
+            + (getDate(newDateTwenty.getMonth()+1).toString()) + "/"
+            + newDateTwenty.getFullYear());
 
         let timeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
 
@@ -753,9 +759,16 @@ Placed at the end of the document so the pages load faster
 
 <script type="application/javascript">
     $( document ).ready(function() {
-        var SPMaskBehavior = function (val) {return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';},
+        const SPMaskBehavior = function (val) {return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';},
                 spOptions = {onKeyPress: function(val, e, field, options) {field.mask(SPMaskBehavior.apply({}, arguments), options);}};
         $('.phone').mask(SPMaskBehavior, spOptions);
+
+        /* Mask rg not used */
+        /*
+        const RGMask = function (val) {return val.replace(/\D/g, '').length === 9 ? '000.000.099' : '0.000.00099';},
+                rgOptions = {onKeyPress: function(val, e, field, options) {field.mask(RGMask.apply({}, arguments), options);}};
+        $('.rg').mask(RGMask, rgOptions);
+        */
 
         $('.tableData').dataTable();
         $('.currency').maskMoney();

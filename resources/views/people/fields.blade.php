@@ -3,20 +3,20 @@
         <h2 style="margin: 0">Dados Pessoais</h2><hr style="margin: 20px 0">
         <!-- Cpf Field -->
         <div class="form-group col-sm-6">
-            {!! Form::label('cpf', 'CPF:', ['class' => 'required']) !!}
+            {!! Form::label('cpf', 'CPF:') !!}
             {!! Form::text('cpf', null, ['class' => 'form-control cpf']) !!}
         </div>
 
         <!-- Rg Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('rg', 'RG:') !!}
-            {!! Form::number('rg', null, ['class' => 'form-control', 'min' => 1000000, 'max' => 999999999]) !!}
+            {!! Form::text('rg', null, ['class' => 'form-control rg']) !!}
         </div>
 
         <!-- Name Field -->
         <div class="form-group col-sm-12">
             {!! Form::label('name', 'Nome:', ['class' => 'required']) !!}
-            {!! Form::text('name', null, ['class' => 'form-control']) !!}
+            {!! Form::text('name', null, ['class' => 'form-control name', 'style' => 'text-transform: uppercase']) !!}
         </div>
 
         <!-- Celular Field -->

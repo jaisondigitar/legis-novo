@@ -174,11 +174,15 @@ class SectorController extends AppBaseController
 
         $input['slug'] = Str::slug($request->name);
 
-        $input['external'] = isset($request->external);
+        $input['external'] = $input['external'] == 'true' ? 1 : 0;
 
         $this->sectorRepository->update($sector, $input);
 
         flash('Setor atualizado com sucesso.')->success();
+
+        if ($request->ajax()) {
+            return json_encode(['success' => true]);
+        }
 
         return redirect(route('sectors.index'));
     }

@@ -30,7 +30,7 @@
                         @popper(Hora de saida)
                         type="button"
                         class="btn btn-default btn-xs"
-                        onclick="modal_exit({!! $attend->id !!})"
+                        onclick="modal_exit({{ $attend }})"
                     >
                         <i class="fa fa-sign-out"></i>
                     </button>
@@ -115,15 +115,19 @@
 </div>
 
 <script>
-    document.querySelector('#date_exit').value = dateForm
-    document.querySelector('#time_exit').value = timeForm
+    const modal_exit = (values) => {
+        values.date_exit ?
+            document.querySelector('#date_exit').value = values.date_exit :
+            document.querySelector('#date_exit').value = dateForm;
+        values.time_exit ?
+            document.querySelector('#time_exit').value = values.time_exit :
+            document.querySelector('#time_exit').value = timeForm;
 
-    const modal_exit = (id) => {
         $(document).ready(function () {
             $('#exit_date').modal('show');
 
             $('#date_modal_exit').click(function () {
-                const url = `/attendance/${id}`;
+                const url = `/attendance/${values.id}`;
 
                 const data = {
                     date_exit: $('#date_exit').val(),
