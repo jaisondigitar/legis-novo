@@ -118,10 +118,6 @@
         @endif
 
         <script>
-            const contMax = (value) => {
-                console.log(value);
-            }
-
             document.querySelector('#new_date_processing').value = dateForm
 
             $(document).ready(function () {

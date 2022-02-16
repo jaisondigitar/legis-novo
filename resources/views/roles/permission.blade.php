@@ -70,7 +70,7 @@
             method: 'GET',
             url: '/gerencial/roles/toggle/permission/'+role+'/'+perm,
             dataType: 'json'
-        }).success(result => console.log(result))
+        })
     }
 </script>
 @endsection

@@ -82,7 +82,6 @@
 
                 var str='';
                 $.each(response, function (index, value) {
-console.log(value);
                     if(index > 0) {
                         yes = yes + value.yes;
                         no = no + value.no;

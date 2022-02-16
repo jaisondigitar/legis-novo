@@ -245,7 +245,6 @@
             dataType : 'json'
         }).success(function(result){
             if(result.success === true){
-                console.log('entro');
                 $('#tdLawNumber'+result.lawProject_id).html(result.law_number + '/' + result.year);
                 $('#tdLawPlace'+result.lawProject_id).html(result.lawProject_place);
                 $('#tdLawDate'+result.lawProject_id).html(result.lawProject_date_publish);
@@ -343,7 +342,6 @@
                 url: "{{ url('lawProjectProtocol') }}/"+ id,
                 dataType: "json"
             }).success(function (result) {
-                console.log(result);
                 $('#law_project_protocol_id').val(id);
                 $('#project_number').val(result.project_number);
                 $('#protocol').val(result.protocol);

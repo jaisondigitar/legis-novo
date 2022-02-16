@@ -549,8 +549,6 @@
                 mp_id = id;
             }
 
-            console.log(type);
-
             if($('#document_row_'+ mp_id).length == 0) {
                 var str =   '<tr id="document_row_'+ mp_id +'"> ' ;
                 str +=  '<td>';

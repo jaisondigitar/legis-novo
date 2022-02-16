@@ -105,7 +105,6 @@
             $('.type').html(data.meeting.type);
             $('#assemblyman_voting').html(data.assemblyman.name);
             var assemblyan = '{{$id}}';
-            console.log(data);
 
             if(assemblyan == data.assemblyman.id){
                 $('.assemblyman_vote').attr('disabled', true);

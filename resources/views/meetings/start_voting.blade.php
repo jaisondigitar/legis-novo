@@ -21,19 +21,50 @@
     <div class="clearfix"></div>
     <hr>
     <div class="col-lg-12" style="margin-bottom: 20px;">
-        <label>
-            <input type="radio" class="pull-left radioBox1" id="contactChoice0" name="assemblyman" value="nenhum" style="margin-right: 5px;" onclick="disable_vote()">
-            DESMARCAR PARLAMENTAR
+        <label for="active">
+            <input
+                name="active"
+                id="active"
+                class="switch"
+                data-on-text="Sim"
+                data-off-text="Não"
+                data-off-color="danger"
+                data-on-color="success"
+                data-size="normal"
+                type="checkbox"
+                onchange="enableVotes()"
+            >
         </label>
+        <span style="text-transform: uppercase; margin-left: 5px">Iniciar votação</span>
+        {{--<label style="text-transform: uppercase">
+            <input
+                type="checkbox"
+                class="pull-left radioBox1"
+                id="contactChoice0"
+                name="assemblyman"
+                value="nenhum"
+                style="margin-right: 5px"
+                onclick="disable_vote()"
+            >
+            Iniciar votação
+        </label>--}}
     </div>
 
     <div class="clearfix"></div>
     @foreach($meeting->assemblyman()->orderBy('short_name')->get() as $item)
     <div class="col-sm-3">
         <div class="panel panel-info">
-            <div class="panel-heading" style="min-height: 70px;">
+            <div
+                class="panel-heading"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 70px;
+                "
+            >
                 <label>
-                    <input type="radio" class="pull-left radioBox1" id="contactChoice{{$item->id}}" name="assemblyman" value="{{$item->short_name}}" style="margin-right: 5px;" onclick="enable_vote('{{$item->id}}')">
+{{--                    <input type="radio" class="pull-left radioBox1" id="contactChoice{{$item->id}}" name="assemblyman" value="{{$item->short_name}}" style="margin-right: 5px;" onclick="enable_vote('{{$item->id}}')">--}}
                     {{ mb_strtoupper($item->short_name) }}
                 </label>
             </div>
@@ -92,6 +123,12 @@
     </div>
 
     <script>
+        const enableVotes = () => {
+            const isChecked = document.querySelector('#active').checked
+
+            disable_vote(isChecked)
+        }
+
         var enable_vote = function (assemblyman_id) {
             if($('#contactChoice'+assemblyman_id).is(':checked')) {
                 for(var i = 1 ; i<=4 ; i++) {
@@ -120,28 +157,20 @@
             }
         };
 
-        var disable_vote = function () {
-            $('.radioBox').attr('disabled', true);
+        const disable_vote = async isChecked => {
+            const body = new FormData();
+            body.append('isChecked', isChecked);
 
-            url = '{{route('meetings.updateAssemblyman',[$meeting->id, $voting->id])}}';
-            data = {
-                assemblyman_id : null,
-                _token : '{{csrf_token()}}'
-            }
-
-            $.ajax({
-                url : url,
-                data : data,
-                method : 'POST'
-            }).success(function (data) {
-                data = JSON.parse(data);
-                console.log(data);
-                if(data == null){
-                    toastr.success('Nenhum paralamentar selecionado!');
-                }else{
-                    toastr.error('Falha ao desmarcar parlamentar');
+            const resp = await fetch(
+                "{{ route('meetings.enableVote', [$voting->id]) }}",
+                {
+                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
+                    method: 'POST',
+                    body
                 }
-            })
+            ).catch(() => { toastr.error('Falha ao habilitar votação') })
+
+            await resp.json() ? toastr.success('Votação aberta') : toastr.success('Votação fechada')
         }
 
         var votes = function (t, id) {
@@ -174,7 +203,7 @@
                 $(".radioBox1").attr('disabled', true);
             @endif
 
-            setInterval(function (args)
+            setInterval(function ()
             {
 
                 $.ajax({
@@ -194,7 +223,6 @@
 
                             if (value.abstention == 1)
                                 $('#vote_' + value.assemblyman_id + '_3').attr('checked', true);
-                            console.log(value);
                         })
                     }
                 })

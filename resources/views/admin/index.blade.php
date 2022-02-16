@@ -320,7 +320,6 @@
             }).success(function(data){
 
                 data = JSON.parse(data);
-                console.log(data);
 
                 if(data){
                     $('#date').text(data.date);

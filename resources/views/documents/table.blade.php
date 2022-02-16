@@ -464,9 +464,7 @@
             method: "GET",
             url: url,
             dataType: "json"
-        }).success(function(result,textStatus,jqXHR) {
-           // console.log(result);
-        });
+        })
     }
 
     var changeApproved = function(id){
@@ -475,9 +473,7 @@
             method: "GET",
             url: url,
             dataType: "json"
-        }).success(function(result,textStatus,jqXHR) {
-//            console.log(result);
-        });
+        })
     }
 
 

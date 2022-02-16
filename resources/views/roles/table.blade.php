@@ -24,8 +24,6 @@
             method: "GET",
             url: url,
             dataType: "json"
-        }).success(function(result,textStatus,jqXHR) {
-            console.log(result);
-        });
+        })
     }
 </script>

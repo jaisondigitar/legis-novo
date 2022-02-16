@@ -1115,7 +1115,7 @@ class MeetingController extends AppBaseController
         return view('meetings.voting', compact('doc_voting', 'law_voting', 'ata_voting', 'type_voting', 'docs', 'laws', 'last_voting', 'advices', 'advice_voting'))->with('meeting', $meeting);
     }
 
-    public function votingCreate(Request $request)
+    public function votingCreate()
     {
         $input = request()->except('_token');
         $meeting = Meeting::find($input['meeting_id']);
@@ -1128,14 +1128,12 @@ class MeetingController extends AppBaseController
         $ata_voting = Parameters::where('slug', 'realiza-votacao-de-ata')->first()->value;
         Parameters::where('slug', 'realiza-votacao-de-parecer')->first()->value;
 
-        $type_voting = TypeVoting::pluck('name', 'id')->prepend('Selecione', 0);
+        TypeVoting::pluck('name', 'id')->prepend('Selecione', 0);
 
         if (Voting::whereNotNull('open_at')->whereNull('closed_at')->first()) {
             flash('Existe votação em aberto!')->warning();
 
             return redirect(route('meetings.voting', $meeting->id));
-//            return view('meetings.voting',
-//                compact('voting', 'meeting', 'assemblyman', 'doc_voting', 'law_voting', 'type_voting', 'last_voting', 'ata_voting'));
         }
         $input['version_pauta_id'] = $meeting->version_pauta_id;
         $voting = Voting::firstOrCreate($input);
@@ -1181,6 +1179,27 @@ class MeetingController extends AppBaseController
         $assemblyman = Assemblyman::where('active', 1)->get();
 
         return view('meetings.start_voting', compact('voting', 'meeting', 'assemblyman'));
+    }
+
+    /**
+     * @param  Request  $request
+     * @param  int  $id
+     * @return false|string
+     * @throws Exception
+     */
+    public function enableVote(Request $request, int $id)
+    {
+        $is_checked = $request->get('isChecked') === 'true';
+
+        $voting = Voting::find($id);
+        $voting->update(['is_open_for_voting' => $is_checked]);
+        $voting = $voting->fresh();
+
+        if ($voting->save()) {
+            return json_encode($is_checked);
+        }
+
+        throw new Exception('Falha ao habilitar votação');
     }
 
     public function updateAssemblyman($meeting_id, $voting_id, Request $request)
@@ -1259,7 +1278,6 @@ class MeetingController extends AppBaseController
         Assemblyman::where('active', 1)->orderBy('short_name')->get();
 
         return redirect(route('meetings.voting', $meeting->id));
-//        return view('meetings.show', compact('meeting', 'assemblyman'));
     }
 
     public function painel()
@@ -1355,7 +1373,6 @@ class MeetingController extends AppBaseController
                 }
             }
 
-//            $data['name'] = ($voting->law_id ? $voting->getName() : $voting->getName());
             $data['status'] = true;
             $voting->votes()->where('voting_id', $voting->id)->first();
 
@@ -1372,7 +1389,12 @@ class MeetingController extends AppBaseController
             }
         }
 
-        $data['active'] = ! (Meeting::find($voting->meeting_id)->assemblyman()->find($id) == null);
+        $data['active'] = (
+            ! Meeting::find($voting->meeting_id)
+                ->assemblyman()
+                ->find($id) == null
+        ) &&
+            Voting::find($voting->id)->is_open_for_voting;
 
         return json_encode($data);
     }
@@ -1383,7 +1405,7 @@ class MeetingController extends AppBaseController
         $assemblyman = UserAssemblyman::where('users_id', Auth::user()->id)->where('assemblyman_id', $id)->first();
 
         if ($assemblyman == null) {
-            flash('Paralamentar inválido!')->warning();
+            flash('Parlamentar inválido!')->warning();
 
             return redirect(url('/admin'));
         }
@@ -1425,7 +1447,7 @@ class MeetingController extends AppBaseController
     {
         $voting = Voting::open();
 
-        if ($voting->count() > 0 && $voting->votes()->get()->count() > 0) {
+        if (! empty($voting) && $voting->votes()->get()->isNotEmpty()) {
             return json_encode($voting->votes);
         }
 
@@ -1505,10 +1527,6 @@ class MeetingController extends AppBaseController
     {
         $voting = Voting::lastVoting();
 
-//        if ($voting->count() > 0){
-//            return json_encode(false);
-//        }else{
-//            $voting = Voting::all()->last();
         $votes = $voting->votes()->with('assemblyman')->with('voting')->get();
 
         if ($voting->ata_id > 0) {
@@ -1524,7 +1542,6 @@ class MeetingController extends AppBaseController
         }
 
         return json_encode($votes);
-//        }
     }
 
     public function showResume($id)

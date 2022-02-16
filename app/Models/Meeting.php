@@ -79,14 +79,14 @@ class Meeting extends BaseModel
         'number' => 'string',
     ];
 
+    protected $appends = ['test'];
+
     /**
      * Validation rules.
      *
      * @var array
      */
-    public static $rules = [
-
-    ];
+    public static $rules = [];
 
     public function session_type()
     {
@@ -221,5 +221,10 @@ class Meeting extends BaseModel
         $data = $ano.'-'.$mes.'-'.$dia;
 
         return $data;
+    }
+
+    public function getTestAttribute()
+    {
+        return 'test';
     }
 }

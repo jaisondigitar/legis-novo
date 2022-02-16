@@ -184,7 +184,6 @@
                         table = $('#table_processing').empty();
 
                         data.forEach(function (valor, chave) {
-                            console.log(valor);
                             str = '<tr id="line_' + valor.id + '"> ';
                             str += "<td>";
                             str += valor.document_situation.name;
