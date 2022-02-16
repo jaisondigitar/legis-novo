@@ -239,7 +239,7 @@
             "hideMethod": "fadeOut"
         };
 
-        const sweetDelete=(e, url, data, method) =>{
+        const sweetDelete = (e, url, data, method) => {
             e.preventDefault();
             Swal.fire({
                 title: 'Excluir Documento?',
