@@ -35,6 +35,40 @@
 
 
 {!! $lawsProjects->appends(request()->input())->render() !!}
+<div id="answer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Responder Projeto de Lei</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="document_id" id="document_id">
+                <input type="hidden" name="next_number_origin" id="next_number_origin">
+
+                <div class="form-group col-sm-12">
+                    <label>
+                        Descrição:
+                        <textarea
+                            name="comissionDescriprion"
+                            class="form-control descricao ckeditor"
+                        ></textarea>
+                    </label>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    {!! Form::label('file[]', 'Enexo de Resposta:') !!}
+                    {!! Form::file('file[]', array('multiple'=>true, 'class' => 'file')) !!}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success pull-right" id="btn-save-protocol">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="modalApproved" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -180,6 +214,11 @@
 </div>
 
 <script>
+    const answer = () => {
+        $('#answer').modal();
+    };
+
+
     const toogleApproved = function (id) {
 
         url = '/lawproject/' + id + '/toogleApproved';
