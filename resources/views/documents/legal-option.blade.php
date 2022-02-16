@@ -38,17 +38,32 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <label>Selecione a comissão:</label>
-                                <select class="form-control destination" multiple name="comission" id="comissao">
-                                    <optgroup label="Comissões">
-                                        @foreach(\App\Models\Commission::active()->get() as $comission)
-                                            <option value="c{{ $comission->id }}">{{ $comission->name }}</option>
-                                        @endforeach
-                                    </optgroup>
-                                </select>
-                                <label>Descrição:</label>
-                                <textarea name="comissionDescriprion"
-                                          class="form-control descricao ckeditor"></textarea>
+                                <label style="width: 100%">
+                                    Selecione a comissão:
+                                    <select class="form-control destination" multiple name="comission" id="comissao">
+                                        <optgroup label="Comissões">
+                                            @foreach(\App\Models\Commission::active()->get() as $comission)
+                                                <option value="c{{ $comission->id }}">{{ $comission->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                    </select>
+                                </label>
+
+                                <label>
+                                    Descrição:
+                                    <textarea
+                                        name="comissionDescriprion"
+                                        class="form-control descricao ckeditor"
+                                    ></textarea>
+                                </label>
+
+                                <label>
+                                    Parecer Jurídico:
+                                    <textarea
+                                        name="legal_option"
+                                        class="form-control descricao ckeditor"
+                                    ></textarea>
+                                </label>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">FECHAR</button>
@@ -82,6 +97,7 @@
                 to_id: to_id,
                 type: type,
                 description: CKEDITOR.instances['comissionDescriprion'].getData(),
+                legal_option: CKEDITOR.instances['legal_option'].getData(),
                 date_end: null,
             };
 
