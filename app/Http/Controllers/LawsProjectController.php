@@ -20,6 +20,7 @@ use App\Models\LawsProjectAssemblyman;
 use App\Models\LawsStructure;
 use App\Models\LawsType;
 use App\Models\Log;
+use App\Models\Meeting;
 use App\Models\MeetingPauta;
 use App\Models\Parameters;
 use App\Models\PartiesAssemblyman;
@@ -766,6 +767,270 @@ class LawsProjectController extends AppBaseController
         File::deleteDirectory(storage_path());
     }
 
+    /**
+     * @param $id
+     * @return Application|RedirectResponse|Redirector|void
+     */
+    public function autograph($id)
+    {
+        setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+
+        $lawsProject = LawsProject::find($id);
+        $lawsProjectReference = LawsProject::where('reference_id', $lawsProject->id)->get();
+
+        if (empty($lawsProject)) {
+            flash('Projeto de Leis não encontrado')->error();
+
+            return redirect(route('lawsProjects.index'));
+        }
+
+        // load Parameters
+        $showAdvices = Parameters::where('slug', 'mostra-historico-de-tramites-no-front')->first()->value;
+        $showHeader = Parameters::where('slug', 'mostra-cabecalho-em-pdf-de-documentos-e-projetos')->first()->value;
+        $marginHeader = Parameters::where('slug', 'espaco-entre-texto-e-cabecalho')->first()->value;
+        $margemSuperior = Parameters::where('slug', 'margem-superior-de-documentos')->first()->value;
+        $margemInferior = Parameters::where('slug', 'margem-inferior-de-documentos')->first()->value;
+        $margemEsquerda = Parameters::where('slug', 'margem-esquerda-de-documentos')->first()->value;
+        $margemDireita = Parameters::where('slug', 'margem-direita-de-documentos')->first()->value;
+        $tramitacao = Parameters::where('slug', 'exibe-detalhe-de-tramitacao')->first()->value;
+        $votacao = Parameters::where('slug', 'mostra-votacao-em-projeto-de-lei')->first()->value;
+
+        require_once public_path().'/tcpdf/mypdf.php';
+
+        $pdf = new \MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('MakerLegis');
+
+        $pdf->SetPrintHeader($showHeader);
+        $pdf->setFooterData($lawsProject->getNumberLaw(), [0, 64, 0]);
+        $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+        $pdf->SetMargins($margemEsquerda, $marginHeader, $margemDireita);
+        $pdf->SetHeaderMargin($margemSuperior);
+        $pdf->SetFooterMargin($margemInferior);
+        $pdf->SetAutoPageBreak(true, $margemInferior + 10);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+        $pdf->SetFont('times', '', 11, '', true);
+        $pdf->SetTitle($lawsProject->name);
+
+        $pdf->AddPage();
+
+        $pdf->setListIndentWidth(5);
+
+        $assemblymen = LawsProjectAssemblyman::where('law_project_id', $lawsProject->id)->orderBy('id')->get();
+        $date = explode('/', $lawsProject->law_date);
+        $date = $date[2].'-'.$date[1].'-'.$date[0];
+
+        $list = [];
+        $list[0][0] = $lawsProject->owner->short_name;
+        $list[0][1] = count($lawsProject->owner->responsibility_assemblyman) > 1 ? $lawsProject->owner->responsibility_assemblyman()->where('date', '<=', $date)->get()->last()->responsibility->name.'(a) ' : $lawsProject->owner->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
+
+        if (! empty($assemblymen)) {
+            foreach ($assemblymen as $key => $assemblyman) {
+                $list[$key + 1][0] = $assemblyman->assemblyman->short_name;
+                if (count($assemblyman->assemblyman->responsibility_assemblyman) > 1) {
+                    $list[$key + 1][1] = $this->getResponsability($assemblyman, $date);
+                } else {
+                    $list[$key + 1][1] = count($assemblyman->assemblyman->responsibility_assemblyman) == 0 ? '-' : $assemblyman->assemblyman->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
+                }
+            }
+        }
+
+        $html = '';
+        $count = 0;
+
+        if (count($list) == 1) {
+            $html .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+            $html .= '<tr style="height: 300px">';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '<td style="width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$list[0][0].'<br>'.$list[0][1].'<br><br><br></td>';
+            $html .= '<td style="width:25%;"></td>';
+            $html .= '</tr>';
+            $html .= '</tbody></table>';
+        } else {
+            $html .= '<table cellspacing="10" cellpadding="10" style="position:absolute; width: 100%; margin-top: 300px"><tbody>';
+            foreach ($list as $vereador) {
+                if ($count == 0) {
+                    $html .= '<tr style="height: 300px">';
+                }
+
+                $html .= '<td style="text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$vereador[0].'<br>'.$vereador[1].'<br><br><br></td>';
+
+                if ($count == 2 || $vereador === end($list)) {
+                    $html .= '</tr>';
+                    $count = 0;
+                } else {
+                    $count++;
+                }
+            }
+            $html .= '</tbody></table>';
+        }
+
+        $structure = StructureLaws::where('law_id', $lawsProject->id)->isRoot()->get();
+        $content = '<h3 style="text-align: center">'.mb_strtoupper($lawsProject->law_type->name, 'UTF-8').' '.$lawsProject->project_number.'/'.$lawsProject->getYearLawPublish($lawsProject->law_date).'</h3>';
+
+        $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+        $content .= '<tr style="height: 300px">';
+        $content .= '<td style="width:25%;"></td>';
+        $content .= '<td style="width:15%;"></td>';
+        $content .= '<td style="width:65%; text-align: justify; text-justify: inter-word ">'.$lawsProject->title.'</td>';
+        $content .= '</tr>';
+        $content .= '</tbody></table>';
+
+        $content .= '<br>';
+
+        $content .= '<p>'.($lawsProject->sub_title).'</p>';
+
+        $content .= "<p><ul style='list-style-type:none; list-style: none;counter-reset: num; margin-bottom: 300px'>";
+
+        foreach ($structure as $reg) {
+            $content .= $this->renderNode($reg, 0, 0);
+        }
+
+        $content .= '</ul></p>';
+
+        $content .= '<br><br>';
+        $content .= '<p>'.($lawsProject->sufix).'</p>';
+
+        $lawsProject->situation_id1 = $lawsProject->advice_situation_id > 0 ? $lawsProject->adviceSituationLaw->name : '-';
+        $lawsProject->advice_publication_id1 = $lawsProject->advice_publication_id > 0 ? $lawsProject->advicePublicationLaw->name : '-';
+        $lawsProject->observation = $lawsProject->observation == null ? '-' : $lawsProject->observation;
+
+        $data_USA = explode(' ', ucfirst(iconv('ISO-8859-1', 'UTF-8', strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $lawsProject->law_date))))));
+
+        $mes['January'] = 'Janeiro';
+        $mes['February'] = 'Fevereiro';
+        $mes['March'] = 'Março';
+        $mes['April'] = 'Abril';
+        $mes['May'] = 'Maio';
+        $mes['June'] = 'Junho';
+        $mes['July'] = 'Julho';
+        $mes['August'] = 'Agosto';
+        $mes['September'] = 'Setembro';
+        $mes['October'] = 'Outubro';
+        $mes['November'] = 'Novembro';
+        $mes['December'] = 'Dezembro';
+
+        $mes_pt = $mes[$data_USA[2]] ?? $data_USA[2];
+        $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
+
+        $dataProject = $data_ptbr;
+
+        $cidade = Company::first()->getCity->name.'/'.Company::first()->getState->uf;
+
+        $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+        $content .= '<tr style="height: 300px">';
+        $content .= '<td style="width:25%;"></td>';
+        $content .= '<td style="width:75%; text-align: right">'.$cidade.', '.$dataProject.'</td>';
+        $content .= '</tr>';
+        $content .= '</tbody></table>';
+
+        if ($lawsProject->comission) {
+            $content .= '<span style="width:75%; text-align: center"> '.$lawsProject->comission->name.'</span>';
+        }
+
+        $content .= '<br><br><br><br>'.$html;
+
+        $pdf->writeHTML($content);
+
+        if (count($lawsProjectReference) > 0) {
+            foreach ($lawsProjectReference as $reference) {
+                dd($reference);
+                $meeting = Meeting::find($meeting);
+
+                $meetingRef = $meeting::situation($reference->id, 'law');
+//                $reference->voting()->where('meeting_id', $meeting->id)->first()->closed_at;
+
+                $listReference = [];
+                $listReference[0][0] = $reference->owner->short_name;
+                $listReference[0][1] = count($reference->owner->responsibility_assemblyman) > 1 ? $lawsProject->owner->responsibility_assemblyman()->where('date', '<=', $date)->get()->last()->responsibility->name.'(a) ' : $lawsProject->owner->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
+
+                $pdf->AddPage();
+                $pdf->setListIndentWidth(5);
+                $content = '<h3 style="text-align: center">'.mb_strtoupper($reference->law_type->name, 'UTF-8').' '.$reference->project_number.'/'.$reference->getYearLawPublish($reference->law_date).'</h3>';
+                $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+                $content .= '<tr style="height: 300px">';
+                $content .= '<td style="width:25%;"></td>';
+                $content .= '<td style="width:15%;"></td>';
+                $content .= '<td style="width:65%; text-align: justify; text-justify: inter-word ">'.$reference->title.'</td>';
+                $content .= '</tr>';
+                $content .= '</tbody></table>';
+
+                $content .= '<br>';
+
+                $content .= '<p>'.($reference->sub_title).'</p>';
+
+                $content .= "<p><ul style='list-style-type:none; list-style: none;counter-reset: num; margin-bottom: 300px'>";
+
+                foreach ($structure as $reg) {
+                    $content .= $this->renderNode($reg, 0, 0);
+                }
+
+                $content .= '</ul></p>';
+
+                $content .= '<br><br>';
+                $content .= '<p>'.($reference->sufix).'</p>';
+
+                $reference->situation_id1 = $reference->advice_situation_id > 0 ? $reference->adviceSituationLaw->name : '-';
+                $reference->advice_publication_id1 = $reference->advice_publication_id > 0 ? $reference->advicePublicationLaw->name : '-';
+                $reference->observation = $reference->observation == null ? '-' : $reference->observation;
+
+                $data_USA = explode(' ', ucfirst(iconv('ISO-8859-1', 'UTF-8', strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $reference->law_date))))));
+
+                $mes['January'] = 'Janeiro';
+                $mes['February'] = 'Fevereiro';
+                $mes['March'] = 'Março';
+                $mes['April'] = 'Abril';
+                $mes['May'] = 'Maio';
+                $mes['June'] = 'Junho';
+                $mes['July'] = 'Julho';
+                $mes['August'] = 'Agosto';
+                $mes['September'] = 'Setembro';
+                $mes['October'] = 'Outubro';
+                $mes['November'] = 'Novembro';
+                $mes['December'] = 'Dezembro';
+
+                $mes_pt = $mes[$data_USA[2]] ?? $data_USA[2];
+                $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
+
+                $dataProject = $data_ptbr;
+
+                $cidade = Company::first()->getCity->name.'/'.Company::first()->getState->uf;
+
+                $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+                $content .= '<tr style="height: 300px">';
+                $content .= '<td style="width:25%;"></td>';
+                $content .= '<td style="width:75%; text-align: right">'.$cidade.', '.$dataProject.'</td>';
+                $content .= '</tr>';
+                $content .= '</tbody></table>';
+
+                if ($reference->comission) {
+                    $content .= '<span style="width:75%; text-align: center"> '.$reference->comission->name.'</span>';
+                }
+
+                $html = '<table cellspacing="10" cellpadding="10" style="margin-top: 300px; width:100%;"><tbody>';
+                $html .= '<tr style="height: 300px">';
+                $html .= '<td style="width:25%;"></td>';
+                $html .= '<td style="width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$listReference[0][0].'<br>'.$listReference[0][1].'<br><br><br></td>';
+                $html .= '<td style="width:25%;"></td>';
+                $html .= '</tr>';
+                $html .= '</tbody></table>';
+
+                $content .= '<br><br><br><br>'.$html;
+                $pdf->writeHTML($content);
+            }
+        }
+
+        $this->createTenantDirectoryIfNotExists();
+
+        $pdf->Output(storage_path('app/temp/law-project.pdf'), 'F');
+
+        $this->attachFilesToNotDoc($lawsProject);
+
+        File::deleteDirectory(storage_path());
+    }
+
     private function attachFilesToSavedDoc(LawsProject $law_project)
     {
         $pdfMerger = new PDFMerger;
@@ -789,6 +1054,20 @@ class LawsProjectController extends AppBaseController
 
                 $pdfMerger->addPDF(storage_path("app/{$file_path}"));
             });
+
+        $pdfMerger->merge(
+            'browser',
+            storage_path().'/app/law-projects/law-project.pdf'
+        );
+    }
+
+    private function attachFilesToNotDoc(LawsProject $law_project)
+    {
+        $pdfMerger = new PDFMerger;
+
+        $file_path = (new PdfConverterService())->convertFromDecoded('temp/law-project.pdf');
+
+        $pdfMerger->addPDF(storage_path("app/{$file_path}"));
 
         $pdfMerger->merge(
             'browser',

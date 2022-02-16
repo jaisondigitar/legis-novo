@@ -318,6 +318,7 @@ Route::middleware([
 
         Route::resource('lawsProjects', 'LawsProjectController');
         Route::get('lawProlawProjectNextNumber/{law_type}', 'LawsProjectController@lawProjectNextNumber');
+        Route::get('/lawsProjects/{id}/autograph', 'LawsProjectController@autograph');
         Route::get('/lawsProjects-approved/{id}/toggle', 'LawsProjectController@toggleApproved');
         Route::get('/lawsProjects-read/{id}/toggle', 'LawsProjectController@toggleRead');
         Route::get('/lawProjectProtocol/{id}', 'LawsProjectController@lawProjectProtocol');
