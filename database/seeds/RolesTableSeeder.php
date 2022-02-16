@@ -28,6 +28,10 @@ class RolesTableSeeder extends Seeder
 
         $rolePodePedirParecer = Defender::roleExists('Solicita parecer') ? Defender::findRole('Solicita parecer') : Defender::createRole('Solicita parecer');
 
+        $isVoter = Defender::roleExists('Vota nas sessões') ?
+            Defender::findRole('Vota nas sessões') :
+            Defender::createRole('Vota nas sessões');
+
         /*
          *  PERMISSOES ROOT
          */
@@ -290,6 +294,10 @@ class RolesTableSeeder extends Seeder
         $perm['company'][] = Defender::permissionExists('version_pauta.delete') ? Defender::findPermission('version_pauta.delete') : Defender::createPermission('version_pauta.delete', 'Excluir status do tipo de versão de pauta');
         $perm['company'][] = Defender::permissionExists('version_pauta.show') ? Defender::findPermission('version_pauta.show') : Defender::createPermission('version_pauta.show', 'Detalhe do tipo de versão de pauta');
 
+        $perm['company'][] = Defender::permissionExists('meetings.voter') ?
+            Defender::findPermission('meetings.voter') :
+            Defender::createPermission('meetings.voter', 'É usuário votante nas sessões');
+
         //Permissões especiais
         $perm['readDocument'][] = Defender::permissionExists('document.read') ? Defender::findPermission('document.read') : Defender::createPermission('document.read', 'Mudar documento leitura');
         $perm['approvedDocument'][] = Defender::permissionExists('document.approved') ? Defender::findPermission('document.approved') : Defender::createPermission('document.approved', 'Mudar documento aprovação');
@@ -417,5 +425,14 @@ class RolesTableSeeder extends Seeder
             $roleRoot->attachPermission($item);
             $roleAdmin->attachPermission($item);
         }
+
+        $isVoter
+            ->attachPermission(
+                collect($perm['company'])
+                    ->filter(function ($permission) {
+                        return $permission->name === 'meetings.voter';
+                    })
+                    ->first()
+            );
     }
 }
