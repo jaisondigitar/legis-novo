@@ -183,6 +183,7 @@
 
         let newDate = date.addDays(10)
         let newDateFive = date.addDays(5)
+        let newDateTwenty = date.addDays(20)
 
         let dateForm = (
             getDate(date.getDate().toString()) + "/"
@@ -205,6 +206,11 @@
             getDate(newDateFive.getDate().toString()) + "/"
             + (getDate(newDateFive.getMonth()+1).toString()) + "/"
             + newDateFive.getFullYear());
+
+        let someDateTwentyForm = (
+            getDate(newDateTwenty.getDate().toString()) + "/"
+            + (getDate(newDateTwenty.getMonth()+1).toString()) + "/"
+            + newDateTwenty.getFullYear());
 
         let timeForm = (getDate(date.getHours()) + ":" + getDate(date.getMinutes()));
 
