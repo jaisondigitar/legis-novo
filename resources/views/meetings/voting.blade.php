@@ -561,9 +561,7 @@
                 name = name + doc.number + '/' +  new Date(date_finish).getFullYear();
             }
 
-            console.log(doc.owner_id);
-
-            $('#author_name').val('{{$docs[0]->owner->short_name}}');
+            $('#author_name').val('{!! $docs[0]->owner->short_name ?? '' !!}');
             var meeting_id = $('#document_name').val(name);
         }
 
