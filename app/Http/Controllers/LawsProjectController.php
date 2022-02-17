@@ -936,89 +936,91 @@ class LawsProjectController extends AppBaseController
 
         if (count($lawsProjectReference) > 0) {
             foreach ($lawsProjectReference as $reference) {
-                dd($reference);
-                $meeting = Meeting::find($meeting);
+                $voting = $reference->voting()->where('law_id', $reference->id)->first();
 
-                $meetingRef = $meeting::situation($reference->id, 'law');
-//                $reference->voting()->where('meeting_id', $meeting->id)->first()->closed_at;
+                if (isset($voting->closed_at)) {
+                    $meeting = Meeting::find($voting->meeting_id);
 
-                $listReference = [];
-                $listReference[0][0] = $reference->owner->short_name;
-                $listReference[0][1] = count($reference->owner->responsibility_assemblyman) > 1 ? $lawsProject->owner->responsibility_assemblyman()->where('date', '<=', $date)->get()->last()->responsibility->name.'(a) ' : $lawsProject->owner->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
+                    if ($meeting->situation($reference->id, 'law')) {
+                        $listReference = [];
+                        $listReference[0][0] = $reference->owner->short_name;
+                        $listReference[0][1] = count($reference->owner->responsibility_assemblyman) > 1 ? $lawsProject->owner->responsibility_assemblyman()->where('date', '<=', $date)->get()->last()->responsibility->name.'(a) ' : $lawsProject->owner->responsibility_assemblyman()->first()->responsibility->name.'(a) ';
 
-                $pdf->AddPage();
-                $pdf->setListIndentWidth(5);
-                $content = '<h3 style="text-align: center">'.mb_strtoupper($reference->law_type->name, 'UTF-8').' '.$reference->project_number.'/'.$reference->getYearLawPublish($reference->law_date).'</h3>';
-                $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
-                $content .= '<tr style="height: 300px">';
-                $content .= '<td style="width:25%;"></td>';
-                $content .= '<td style="width:15%;"></td>';
-                $content .= '<td style="width:65%; text-align: justify; text-justify: inter-word ">'.$reference->title.'</td>';
-                $content .= '</tr>';
-                $content .= '</tbody></table>';
+                        $pdf->AddPage();
+                        $pdf->setListIndentWidth(5);
+                        $content = '<h3 style="text-align: center">'.mb_strtoupper($reference->law_type->name, 'UTF-8').' '.$reference->project_number.'/'.$reference->getYearLawPublish($reference->law_date).'</h3>';
+                        $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+                        $content .= '<tr style="height: 300px">';
+                        $content .= '<td style="width:25%;"></td>';
+                        $content .= '<td style="width:15%;"></td>';
+                        $content .= '<td style="width:65%; text-align: justify; text-justify: inter-word ">'.$reference->title.'</td>';
+                        $content .= '</tr>';
+                        $content .= '</tbody></table>';
 
-                $content .= '<br>';
+                        $content .= '<br>';
 
-                $content .= '<p>'.($reference->sub_title).'</p>';
+                        $content .= '<p>'.($reference->sub_title).'</p>';
 
-                $content .= "<p><ul style='list-style-type:none; list-style: none;counter-reset: num; margin-bottom: 300px'>";
+                        $content .= "<p><ul style='list-style-type:none; list-style: none;counter-reset: num; margin-bottom: 300px'>";
 
-                foreach ($structure as $reg) {
-                    $content .= $this->renderNode($reg, 0, 0);
+                        foreach ($structure as $reg) {
+                            $content .= $this->renderNode($reg, 0, 0);
+                        }
+
+                        $content .= '</ul></p>';
+
+                        $content .= '<br><br>';
+                        $content .= '<p>'.($reference->sufix).'</p>';
+
+                        $reference->situation_id1 = $reference->advice_situation_id > 0 ? $reference->adviceSituationLaw->name : '-';
+                        $reference->advice_publication_id1 = $reference->advice_publication_id > 0 ? $reference->advicePublicationLaw->name : '-';
+                        $reference->observation = $reference->observation == null ? '-' : $reference->observation;
+
+                        $data_USA = explode(' ', ucfirst(iconv('ISO-8859-1', 'UTF-8', strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $reference->law_date))))));
+
+                        $mes['January'] = 'Janeiro';
+                        $mes['February'] = 'Fevereiro';
+                        $mes['March'] = 'Março';
+                        $mes['April'] = 'Abril';
+                        $mes['May'] = 'Maio';
+                        $mes['June'] = 'Junho';
+                        $mes['July'] = 'Julho';
+                        $mes['August'] = 'Agosto';
+                        $mes['September'] = 'Setembro';
+                        $mes['October'] = 'Outubro';
+                        $mes['November'] = 'Novembro';
+                        $mes['December'] = 'Dezembro';
+
+                        $mes_pt = $mes[$data_USA[2]] ?? $data_USA[2];
+                        $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
+
+                        $dataProject = $data_ptbr;
+
+                        $cidade = Company::first()->getCity->name.'/'.Company::first()->getState->uf;
+
+                        $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
+                        $content .= '<tr style="height: 300px">';
+                        $content .= '<td style="width:25%;"></td>';
+                        $content .= '<td style="width:75%; text-align: right">'.$cidade.', '.$dataProject.'</td>';
+                        $content .= '</tr>';
+                        $content .= '</tbody></table>';
+
+                        if ($reference->comission) {
+                            $content .= '<span style="width:75%; text-align: center"> '.$reference->comission->name.'</span>';
+                        }
+
+                        $html = '<table cellspacing="10" cellpadding="10" style="margin-top: 300px; width:100%;"><tbody>';
+                        $html .= '<tr style="height: 300px">';
+                        $html .= '<td style="width:25%;"></td>';
+                        $html .= '<td style="width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$listReference[0][0].'<br>'.$listReference[0][1].'<br><br><br></td>';
+                        $html .= '<td style="width:25%;"></td>';
+                        $html .= '</tr>';
+                        $html .= '</tbody></table>';
+
+                        $content .= '<br><br><br><br>'.$html;
+                        $pdf->writeHTML($content);
+                    }
                 }
-
-                $content .= '</ul></p>';
-
-                $content .= '<br><br>';
-                $content .= '<p>'.($reference->sufix).'</p>';
-
-                $reference->situation_id1 = $reference->advice_situation_id > 0 ? $reference->adviceSituationLaw->name : '-';
-                $reference->advice_publication_id1 = $reference->advice_publication_id > 0 ? $reference->advicePublicationLaw->name : '-';
-                $reference->observation = $reference->observation == null ? '-' : $reference->observation;
-
-                $data_USA = explode(' ', ucfirst(iconv('ISO-8859-1', 'UTF-8', strftime('%d de %B de %Y', strtotime(Carbon::createFromFormat('d/m/Y', $reference->law_date))))));
-
-                $mes['January'] = 'Janeiro';
-                $mes['February'] = 'Fevereiro';
-                $mes['March'] = 'Março';
-                $mes['April'] = 'Abril';
-                $mes['May'] = 'Maio';
-                $mes['June'] = 'Junho';
-                $mes['July'] = 'Julho';
-                $mes['August'] = 'Agosto';
-                $mes['September'] = 'Setembro';
-                $mes['October'] = 'Outubro';
-                $mes['November'] = 'Novembro';
-                $mes['December'] = 'Dezembro';
-
-                $mes_pt = $mes[$data_USA[2]] ?? $data_USA[2];
-                $data_ptbr = $data_USA[0].' '.$data_USA[1].' '.$mes_pt.' '.$data_USA[3].' '.$data_USA[4];
-
-                $dataProject = $data_ptbr;
-
-                $cidade = Company::first()->getCity->name.'/'.Company::first()->getState->uf;
-
-                $content .= '<table cellspacing="10" cellpadding="10" style=" margin-top: 300px; width:100%;  "><tbody>';
-                $content .= '<tr style="height: 300px">';
-                $content .= '<td style="width:25%;"></td>';
-                $content .= '<td style="width:75%; text-align: right">'.$cidade.', '.$dataProject.'</td>';
-                $content .= '</tr>';
-                $content .= '</tbody></table>';
-
-                if ($reference->comission) {
-                    $content .= '<span style="width:75%; text-align: center"> '.$reference->comission->name.'</span>';
-                }
-
-                $html = '<table cellspacing="10" cellpadding="10" style="margin-top: 300px; width:100%;"><tbody>';
-                $html .= '<tr style="height: 300px">';
-                $html .= '<td style="width:25%;"></td>';
-                $html .= '<td style="width:50%; text-align: center; border-top: 1px solid #000000; vertical-align: text-top">'.$listReference[0][0].'<br>'.$listReference[0][1].'<br><br><br></td>';
-                $html .= '<td style="width:25%;"></td>';
-                $html .= '</tr>';
-                $html .= '</tbody></table>';
-
-                $content .= '<br><br><br><br>'.$html;
-                $pdf->writeHTML($content);
             }
         }
 

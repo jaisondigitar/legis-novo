@@ -157,4 +157,9 @@ class Voting extends BaseModel
 
         return $meeting->number.'/'.Carbon::createFromFormat('d/m/Y H:i', $meeting->date_start)->year;
     }
+
+    public function meeting()
+    {
+        return $this->hasOne(Meeting::class);
+    }
 }
