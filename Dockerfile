@@ -12,15 +12,17 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
+    libzip-dev \
     zip \
     unzip \
     nano \
-    ghostscript
+    ghostscript \
+    default-mysql-client
 
 # Install PHP extensions
 RUN apt-get install -y \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install pdo pdo_pgsql pdo_mysql mysqli mbstring exif pcntl bcmath gd soap
+    && docker-php-ext-install pdo pdo_pgsql pdo_mysql mysqli mbstring exif zip pcntl bcmath gd soap
 
 ## Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
