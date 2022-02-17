@@ -24,7 +24,7 @@
 </style>
 
 @foreach($lawsProjects as $lawsProject)
-    @if (Auth::user()->can_request_legal_opinion_not_root && isset($lawsProject->advices->last()->legal_option))
+    @if (Auth::user()->can_request_legal_option_not_root && isset($lawsProject->advices->last()->legal_option))
     @else
         <div class="col-lg-6">
             @include('lawsProjects.card')
@@ -64,7 +64,7 @@
             <div class="clearfix"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-success pull-right" id="btn-save-protocol">Salvar</button>
+                <button type="button" class="btn btn-success pull-right">Salvar</button>
             </div>
         </div>
     </div>
@@ -373,7 +373,7 @@
     $(document).ready(function () {
         $('.btn-protocol').on('click', function () {
 
-            data = getData();
+            const data = getData();
 
             const id = this.value;
             $.ajax({
@@ -386,7 +386,7 @@
                 $('#protocol').val(result.protocol);
                 $('#date_protocol').val(data);
                 $('#labelmessage2').html('');
-                $('#modalProtocol').modal('show');
+                $('#modalProtocol').modal();
             });
         });
 

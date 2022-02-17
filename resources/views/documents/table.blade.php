@@ -66,7 +66,7 @@
             <div class="clearfix"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-success pull-right" id="btn-save-protocol">Salvar</button>
+                <button type="button" class="btn btn-success pull-right">Salvar</button>
             </div>
         </div>
     </div>

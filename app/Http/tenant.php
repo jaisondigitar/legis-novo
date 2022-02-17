@@ -336,9 +336,9 @@ Route::middleware([
             'as' => 'lawsProjects.advices',
             'uses' => 'LawsProjectController@advices',
         ]);
-        Route::get('/lawsProjects/legal-opinion/{id}', [
-            'as' => 'lawsProjects.legal-opinion',
-            'uses' => 'LawsProjectController@legalOpinion',
+        Route::get('/lawsProjects/legal-option/{id}', [
+            'as' => 'lawsProjects.legal-option',
+            'uses' => 'LawsProjectController@legalOption',
         ]);
 
         Route::get('law-file-delete/{id}', 'LawsProjectController@attachamentDelete');
@@ -353,9 +353,9 @@ Route::middleware([
             'uses' => 'DocumentController@advices',
         ]);
 
-        Route::get('/documents/legal-opinion/{id}', [
-            'as' => 'documents.legal-opinion',
-            'uses' => 'DocumentController@legalOpinion',
+        Route::get('/documents/legal-option/{id}', [
+            'as' => 'documents.legal-option',
+            'uses' => 'DocumentController@legalOption',
         ]);
 
         Route::resource('processings', 'ProcessingController');

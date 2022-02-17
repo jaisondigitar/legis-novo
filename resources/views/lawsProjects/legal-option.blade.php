@@ -17,7 +17,7 @@
                         ></i>PARECERES
                     </h3>
                     <div class="right-content">
-                        @if (Auth::user()->can_request_legal_opinion)
+                        @if (Auth::user()->can_request_legal_option)
                             <div class="btn-group btn-group-xs">
                                 <button
                                     type="button"
