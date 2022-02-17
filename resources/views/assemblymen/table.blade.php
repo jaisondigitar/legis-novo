@@ -40,27 +40,27 @@
                 <div class='btn-group' style="min-width: 200px">
                     @shield('assemblymen.show')
                         <button
-                            @popper(Legislaturas) type="button" class='btn btn-default btn-xs listLegislatures' value="{{$assemblyman->id}}">
+                            @popper(Legislaturas) type="button" class='btn btn-default btn-sm listLegislatures' value="{{$assemblyman->id}}">
                             L
                         </button>
                     @endshield
                     @shield('assemblymen.show')
                     <button
-                        @popper(Partidos) type="button" class='btn btn-default btn-xs listParties' value="{{$assemblyman->id}}">
+                        @popper(Partidos) type="button" class='btn btn-default btn-sm listParties' value="{{$assemblyman->id}}">
                         P
                     </button>
                     @endshield
                     @shield('assemblymen.show')
                     <button
-                        @popper(Responsabilidades) type="button" class='btn btn-default btn-xs listResponsibilities' value="{{$assemblyman->id}}">
+                        @popper(Responsabilidades) type="button" class='btn btn-default btn-sm listResponsibilities' value="{{$assemblyman->id}}">
                         R
                     </button>
                     @endshield
-                    @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
-                    @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>@endshield
+                    @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>@endshield
                     @shield('assemblymen.delete')
                         {!! Form::open(['route' => ['assemblymen.destroy', $assemblyman->id], 'method' => 'delete']) !!}
-                        {!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    <button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>
                         {!! Form::close() !!}
                     @endshield
                 </div>

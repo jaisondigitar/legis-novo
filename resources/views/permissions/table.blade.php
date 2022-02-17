@@ -13,11 +13,13 @@
                 <td>{!! $permission->readable_name !!}</td>
                 <td>
                     @is('root')
-                        <a @popper(Editar) href="{!! route('permissions.edit', [$permission->id]) !!}">
-                            <i class="fas fa-pencil-alt icon-rounded icon-xs icon-warning"></i>
+                        <a @popper(Editar) href="{!! route('permissions.edit', [$permission->id]) !!}"
+                            class="btn btn-default btn-sm">
+                            <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <a @popper(Deletar) href="{!! route('config.permissions.delete', [$permission->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
-                            <i class="fas fa-trash icon-rounded icon-xs icon-danger"></i>
+                        <a @popper(Deletar) href="{!! route('config.permissions.delete', [$permission->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"
+                            class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i>
                         </a>
                     @endis
                 </td>

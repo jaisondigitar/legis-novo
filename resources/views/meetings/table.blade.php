@@ -18,10 +18,10 @@
             <td>
                 {!! Form::open(['route' => ['meetings.destroy', $meeting->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('meetings.show')<a @popper(Visualizar) href="{!! route('meetings.show', [$meeting->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
-                    @shield('meetings.edit')<a @popper(Anexos) href="{!! route('meetings.attachament', [$meeting->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-paperclip"></i></a>@endshield
-                    @shield('meetings.edit')<a @popper(Editar) href="{!! route('meetings.edit', [$meeting->id]) !!}" class='btn btn-warning btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('meetings.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('meetings.show')<a @popper(Visualizar) href="{!! route('meetings.show', [$meeting->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>@endshield
+                    @shield('meetings.edit')<a @popper(Anexos) href="{!! route('meetings.attachament', [$meeting->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-paperclip"></i></a>@endshield
+                    @shield('meetings.edit')<a @popper(Editar) href="{!! route('meetings.edit', [$meeting->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>@endshield
+                    @shield('meetings.delete')<button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>@endshield
                 </div>
                 {!! Form::close() !!}
             </td>

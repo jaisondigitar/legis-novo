@@ -264,7 +264,7 @@
         <div class='btn-group action' id="tdoptions{{$document->id}}">
             @shield('documents.show')
                 <a @popper(GERAR PDF) href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
-                    <i class="far fa-eye"></i>
+                    <i class="fa fa-file-pdf-o"></i>
                 </a>
             @endshield
 
@@ -276,24 +276,24 @@
 
             @if(!Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
                 @shield('documents.advices')
-                    <a @popper(TRÂMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="fas fa-list-alt"></i>
+                    <a @popper(TRÂMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-sm'>
+                        <i class="fa fa-list-alt"></i>
                     </a>
 
-                    <a @popper(PARECERES) href="{!! route('documents.legal-option', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                    <a @popper(PARECERES) href="{!! route('documents.legal-option', [$document->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="fa fa-clipboard"></i>
                     </a>
                 @endshield
 
                 @shield('documents.edit')
-                    <a @popper(ANEXAR ARQUIVO) href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                    <a @popper(ANEXAR ARQUIVO) href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="fas fa-paperclip"></i>
                     </a>
                 @endshield
 
                 @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.edit')
-                        <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                        <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-sm'>
                             <i class="fas fa-pencil-alt"></i>
                         </a>
                     @endshield
@@ -301,8 +301,8 @@
 
                 @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.delete')
-                       <a @popper(REMOVER)>
-                           {!! Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                       <a @popper(REMOVER)
+                           type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i>
                        </a>
                     @endshield
                 @endif

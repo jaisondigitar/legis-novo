@@ -10,9 +10,9 @@
             <td>
                 {!! Form::open(['route' => ['lawsTags.destroy', $lawsTag->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('lawsTags.show')<a @popper(Visualizar) href="{!! route('lawsTags.show', [$lawsTag->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
-                    @shield('lawsTags.edit')<a @popper(Editar) href="{!! route('lawsTags.edit', [$lawsTag->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('lawsTags.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('lawsTags.show')<a @popper(Visualizar) href="{!! route('lawsTags.show', [$lawsTag->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>@endshield
+                    @shield('lawsTags.edit')<a @popper(Editar) href="{!! route('lawsTags.edit', [$lawsTag->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>@endshield
+                    @shield('lawsTags.delete')<button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>@endshield
                 </div>
                 {!! Form::close() !!}
             </td>

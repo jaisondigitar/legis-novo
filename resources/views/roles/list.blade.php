@@ -6,18 +6,18 @@
             <i class="fa fa-angle-double-right"></i> {{ $role->name }}
             <span class="pull-right">
                 @shield('roles.show')
-                    <a href="{!! route('gerencial.roles.permission', [$role->id])!!}">
-                        <button type="button" class="btn btn-xs btn-primary"><i class="fa fa-list-ol"></i> Permissões</button>
+                    <a @popper(Permissões) href="{!! route('gerencial.roles.permission', [$role->id])!!}">
+                        <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-list-ol"></i></button>
                     </a>
                 @endshield
                 @shield('roles.edit')
-                    <a href="{!! route('roles.edit', [$role->id]) !!}">
-                        <button type="button" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> Editar</button>
+                    <a @popper(Editar) href="{!! route('roles.edit', [$role->id]) !!}">
+                        <button type="button" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></button>
                     </a>
                 @endshield
                 @shield('roles.delete')
-                    <a href="{!! route('gerencial.roles.delete', [$role->id])!!}" onclick="return confirm('Deseja deletar este registro?')">
-                        <button type="button" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i>Deletar</button>
+                    <a @popper(Deletar) href="{!! route('gerencial.roles.delete', [$role->id])!!}" onclick="return confirm('Deseja deletar este registro?')">
+                        <button type="button" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                     </a>
                 @endshield
             </span>

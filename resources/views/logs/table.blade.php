@@ -18,7 +18,7 @@
             <td>
                 {!! Form::open(['route' => ['logs.destroy', $log->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('logs.show') <button @popper(Visualizar) id="advice_{{$log->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="getLog({{$log}})"><i class="glyphicon glyphicon-eye-open"></i></button>@endshield
+                    @shield('logs.show') <button @popper(Visualizar) id="advice_{{$log->id}}" type="button" class="btn btn-default btn-sm" data-bs-toggle="modal" data-bs-target="#myModal" onclick="getLog({{$log}})"><i class="fas fa-eye"></i></button>@endshield
 
                     {{--@shield('logs.show')<a href="{!! route('logs.show', [$log->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield--}}
                 </div>
@@ -33,14 +33,14 @@
 
 <div class="container">
     <!-- Modal -->
-    <div class="modal fade " id="myModal" role="dialog">
+    <div class="modal fade " id="myModal"  tabindex="-1" aria-hidden="true">
         <div class="modal-dialog  modal-lg">
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Detalhes do Log</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="col-md-12">
@@ -95,10 +95,9 @@
                             <p id="log_new_value"></p>
                         </div>
                     </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
+                    <div class="clearfix"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
 

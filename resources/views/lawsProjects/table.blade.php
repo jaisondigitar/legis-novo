@@ -35,12 +35,12 @@
 
 
 {!! $lawsProjects->appends(request()->input())->render() !!}
-<div id="answer" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+<div id="answer" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Responder Projeto de Lei</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <input type="hidden" name="document_id" id="document_id">
@@ -63,7 +63,7 @@
             </div>
             <div class="clearfix"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-success pull-right">Salvar</button>
             </div>
         </div>
@@ -136,7 +136,7 @@
 </div>
 
 <div class="modal fade" id="modalProtocol" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Protocolo de lei</h4>
@@ -214,7 +214,7 @@
 
 <script>
     const answer = () => {
-        $('#answer').modal();
+        $('#answer').modal('show');
     };
 
 
@@ -323,7 +323,7 @@
             }
         });
 
-        $('#modalProtocolEdit').modal('show');
+        $('#modalProtocolEdit').modal();
 
     };
 
@@ -386,7 +386,7 @@
                 $('#protocol').val(result.protocol);
                 $('#date_protocol').val(data);
                 $('#labelmessage2').html('');
-                $('#modalProtocol').modal();
+                $('#modalProtocol').modal('show');
             });
         });
 

@@ -14,18 +14,30 @@
             text-align: left;
             list-style-type: none;
         }
-    </style>
-    <h1 class="page-heading" style="margin-top: 0;">DASHBOARD <small>Algumas informações úteis</small></h1>
 
-    <div class="row">
-        <div class="col-lg-3">
+        .card {
+            transition: all 0.2s ease;
+            cursor: pointer
+        }
+
+        .card:hover {
+            box-shadow: 3px 4px 4px 2px #e9ecef;
+            transform: scale(1.07)
+        }
+    </style>
+    <h1 class="page-heading" style="margin-top: 15px;">DASHBOARD <small>Algumas informações úteis</small></h1>
+
+    <div class="row justify-content-start">
+        <div class="col-sm-12">
             <div class="alert alert-info">
                 <p><strong>Bem vindo(a)!</strong></p>
                 <p style="text-align: justify">O GPL é um software para Gestão de Processos Legislativos. </p>
                 <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis.</p>
             </div>
         </div>
-        <div class="col-lg-3">
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-sm-4">
             <a href="/lawsProjects">
             <div class="card text-center">
                 <div class="card-header bg-danger">
@@ -39,7 +51,7 @@
             </a>
         </div>
 
-        <div class="col-lg-3">
+        <div class="col-sm-4">
             <a href="/documents">
                 <div class="card text-center">
                     <div class="card-header bg-info">
@@ -53,7 +65,7 @@
             </a>
         </div>
 
-        <div class="col-lg-3">
+        <div class="col-sm-4">
             <a href="/admin/commissions">
                 <div class="card text-center">
                     <div class="card-header bg-success">

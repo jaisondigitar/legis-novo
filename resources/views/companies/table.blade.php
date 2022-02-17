@@ -16,14 +16,17 @@
                     <input class="switch" onchange="changeStatus('{!! $company->id !!}')" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal" type="checkbox" {!! $company->active>0?'checked':'' !!}>
                 </td>
                 <td>
-                    <a @popper(Visualizar) href="{!! route('companies.show', [$company->id]) !!}">
-                        <i class="fa fa-cogs icon-rounded icon-xs icon-info"></i>
+                    <a @popper(Visualizar) href="{!! route('companies.show', [$company->id]) !!}"
+                        class="btn btn-default btn-sm">
+                        <i class="fas fa-eye"></i>
                     </a>
-                    <a @popper(Editar) href="{!! route('companies.edit', [$company->id]) !!}">
-                        <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
+                    <a @popper(Editar) href="{!! route('companies.edit', [$company->id]) !!}"
+                        class="btn btn-default btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
                     </a>
-                    <a @popper(Deletar) href="{!! route('config.companies.delete', [$company->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
-                        <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
+                    <a @popper(Deletar) href="{!! route('config.companies.delete', [$company->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"
+                        class="btn btn-default btn-sm">
+                        <i class="fas fa-trash"></i>
                     </a>
                 </td>
             </tr>

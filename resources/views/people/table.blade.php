@@ -15,17 +15,13 @@
                 {!! Form::open(['route' => ['people.destroy', $p->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('people.show')
-                    <a @popper(Visualizar) href="{!! route('people.show', [$p->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-eye-open"></i>
-                    </a>
+                    <a @popper(Visualizar) href="{!! route('people.show', [$p->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>
                     @endshield
                     @shield('people.edit')
-                    <a @popper(Editar) href="{!! route('people.edit', [$p->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-edit"></i>
-                    </a>
+                    <a @popper(Editar) href="{!! route('people.edit', [$p->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>
                     @endshield
                     @shield('people.delete')
-                        {!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    <button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>
                     @endshield
                 </div>
                 {!! Form::close() !!}

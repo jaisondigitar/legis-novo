@@ -17,23 +17,27 @@
                         'method' => 'delete'
                     ]) !!}
                     @shield('destination.show')
-                        <a @popper(Visualizar) href="{!! route('destinations.show', [$destination->id]) !!}">
-                            <i class="fa fa-cogs icon-rounded icon-xs icon-info"></i>
+                        <a @popper(Visualizar) href="{!! route('destinations.show', [$destination->id]) !!}"
+                            class="btn btn-default btn-sm">
+                            <i class="fas fa-eye"></i>
                         </a>
                     @endshield
                     @shield('destination.edit')
-                        <a @popper(Editar) href="{!! route('destinations.edit', [$destination->id]) !!}">
-                            <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
+                        <a @popper(Editar) href="{!! route('destinations.edit', [$destination->id]) !!}"
+                            class="btn btn-default btn-sm">
+                            <i class="fas fa-pencil-alt"></i>
                         </a>
                     @endshield
                     @shield('destination.delete')
-                    {!! Form::button(
-                        '<i @popper(Deletar) class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>', [
-                            'type' => 'submit',
-                            'style' => 'padding: 0; margin: 0; border: 0;',
-                            'onclick' => "return confirm('Deseja realmente remover esse registro?')"
-                        ])
-                    !!}
+                    <button
+                        @popper(Deletar)
+                        class="btn btn-danger btn-sm"
+                        type = 'submit'
+                        onclick = "return confirm('Deseja realmente remover esse registro?')"
+                    >
+                        <i class="fas fa-trash"></i>
+
+                    </button>
                     @endshield
                 </td>
             </tr>

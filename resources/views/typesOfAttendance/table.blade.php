@@ -30,22 +30,13 @@
                 {!! Form::open(['route' => ['typesOfAttendance.destroy', $type->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('typesOfAttendance.show')
-                    <a @popper(Visualizar) href="{!! route('typesOfAttendance.show', [$type->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-eye-open"></i>
-                    </a>
+                    <a @popper(Visualizar) href="{!! route('typesOfAttendance.show', [$type->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>
                     @endshield
                     @shield('typesOfAttendance.edit')
-                    <a @popper(Editar) href="{!! route('typesOfAttendance.edit', [$type->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-edit"></i>
-                    </a>
+                    <a @popper(Editar) href="{!! route('typesOfAttendance.edit', [$type->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>
                     @endshield
                     @shield('typesOfAttendance.delete')
-                    {!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', [
-                        'type' => 'submit',
-                        'class' => 'btn btn-danger btn-xs',
-                        'onclick' => "return confirm('Deseja realmente remover esse registro?')"
-                        ])
-                    !!}
+                    <button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>
                     @endshield
                 </div>
                 {!! Form::close() !!}

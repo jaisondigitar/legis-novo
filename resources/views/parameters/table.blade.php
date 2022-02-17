@@ -20,7 +20,7 @@
                     <a
                         @popper(Visualizar)
                         href="{!! route('parameters.show', [$parameters->id]) !!}"
-                        class='btn btn-default btn-xs'
+                        class='btn btn-default btn-sm'
                     >
                         <i class="fas fa-eye"></i>
                     </a>
@@ -29,13 +29,13 @@
                     <a
                         @popper(Editar)
                         href="{!! route('parameters.edit', [$parameters->id]) !!}"
-                        class='btn btn-default btn-xs'
+                        class='btn btn-default btn-sm'
                     >
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                     @endshield
                     @shield('parameters.delete')
-                        {!! Form::button('<i @popper(Deletar) class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                        {!! Form::button('<i @popper(Deletar) class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     @endshield
                 </div>
                 {!! Form::close() !!}

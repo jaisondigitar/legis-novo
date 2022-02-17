@@ -23,3 +23,4 @@
         @include('common.paginate', ['records' => $companies])
     </div>
 @endsection
+

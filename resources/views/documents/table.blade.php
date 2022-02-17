@@ -41,8 +41,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Responder Documento</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <input type="hidden" name="document_id" id="document_id">
@@ -65,8 +65,8 @@
             </div>
             <div class="clearfix"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-success pull-right">Salvar</button>
+                <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success pull-right" onclick="editNumberProtocolSave()">Salvar</button>
             </div>
         </div>
     </div>
@@ -271,7 +271,7 @@
     };
 
     const answer = () => {
-        $('#answer').modal();
+        $('#answer').modal('show');
     };
 
     var alteraProtocolo = function(id, date){
