@@ -270,36 +270,44 @@
                 </a>
             @endshield
 
-            @shield('documents.advices')
-                <a @popper(TRÂMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                    <i class="glyphicon glyphicon-list-alt"></i>
+            @if($document->read > 0 && $document->approved > 0 && Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
+                <a @popper(RESPONDER) onclick="answer()" class='btn btn-default btn-xs answer'>
+                    <i class="fa fa-reply"></i>
                 </a>
-
-                <a @popper(PARECERES) href="{!! route('documents.legal-opinion', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                    <i class="fa fa-clipboard"></i>
-                </a>
-            @endshield
-
-            @shield('documents.edit')
-                <a @popper(ANEXAR ARQUIVO) href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                    <i class="fas fa-paperclip"></i>
-                </a>
-            @endshield
-
-            @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
-                @shield('documents.edit')
-                    <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-edit"></i>
-                    </a>
-                @endshield
             @endif
 
-            @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
-                @shield('documents.delete')
-                   <a @popper(REMOVER)>
-                       {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                   </a>
+            @if(!Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
+                @shield('documents.advices')
+                    <a @popper(TRÂMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                    </a>
+
+                    <a @popper(PARECERES) href="{!! route('documents.legal-option', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                        <i class="fa fa-clipboard"></i>
+                    </a>
                 @endshield
+
+                @shield('documents.edit')
+                    <a @popper(ANEXAR ARQUIVO) href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                        <i class="fas fa-paperclip"></i>
+                    </a>
+                @endshield
+
+                @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
+                    @shield('documents.edit')
+                        <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                    @endshield
+                @endif
+
+                @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
+                    @shield('documents.delete')
+                       <a @popper(REMOVER)>
+                           {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                       </a>
+                    @endshield
+                @endif
             @endif
         </div>
         <div class="clearfix"></div>

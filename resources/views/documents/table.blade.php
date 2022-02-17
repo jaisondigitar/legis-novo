@@ -37,6 +37,41 @@
 
 {!! $documents->appends(request()->input())->render() !!}
 
+<div id="answer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Responder Documento</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="document_id" id="document_id">
+                <input type="hidden" name="next_number_origin" id="next_number_origin">
+
+                <div class="form-group col-sm-12">
+                    <label>
+                        Descrição:
+                        <textarea
+                            name="comissionDescriprion"
+                            class="form-control descricao ckeditor"
+                        ></textarea>
+                    </label>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    {!! Form::label('file[]', 'Enexo de Resposta:') !!}
+                    {!! Form::file('file[]', array('multiple'=>true, 'class' => 'file')) !!}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success pull-right">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modalProtocol" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -119,7 +154,7 @@
     </div>
 </div>
 
-<div id="modalNumerolEdit" class="modal fade" role="dialog">
+<div id="modalNumberEdit" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -145,8 +180,8 @@
         </div>
     </div>
 </div>
-<script>
 
+<script>
     $(document).ready(function(){
         $('#protocol_date').datetimepicker({format: 'DD/MM/YYYY HH:mm:ss'});
         $('#protocol_date_edit').datetimepicker({format: 'DD/MM/YYYY HH:mm:ss'});
@@ -235,6 +270,10 @@
 
     };
 
+    const answer = () => {
+        $('#answer').modal();
+    };
+
     var alteraProtocolo = function(id, date){
 
         $('#document_id_edit').val(id);
@@ -249,7 +288,7 @@
 
         limpaedit();
         $('#document_id_edit_number').val(id);
-        $('#modalNumerolEdit').modal();
+        $('#modalNumberEdit').modal();
 
     };
 
@@ -321,7 +360,7 @@
             }).success(function (result) {
 
                 if (result.success) {
-                    $('#modalNumerolEdit').modal('hide');
+                    $('#modalNumberEdit').modal('hide');
                     $('#numberEdit' + result.id).html(result.next_number);
 
                 } else {
