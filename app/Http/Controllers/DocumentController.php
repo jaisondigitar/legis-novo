@@ -876,12 +876,7 @@ class DocumentController extends AppBaseController
             ->with(compact('document'));
     }
 
-    /**
-     * @param $documentId
-     * @return Application|Factory|RedirectResponse|Redirector|View
-     * @throws BindingResolutionException
-     */
-    public function legalOpinion($documentId)
+    public function legalOption($documentId)
     {
         setlocale(LC_ALL, 'pt_BR');
         $document = $this->documentRepository->findByID($documentId);
@@ -895,7 +890,7 @@ class DocumentController extends AppBaseController
         $comission = Commission::active()->pluck('name', 'id');
 
         return view(
-            'documents.legal-opinion',
+            'documents.legal-option',
             compact(
                 'comission',
             )
