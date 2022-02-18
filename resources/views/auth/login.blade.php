@@ -10,6 +10,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/structure.css') }}">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+
     <style>
         form {
             width: 20rem;
@@ -191,13 +193,7 @@
                     <div class="errorLogin">
                         @if($errors->any())
                             @foreach($errors->all() as $error)
-                                <script>
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'E-mail e/ou senha incorretos',
-                                        text: 'Verifique seu e-mail e senha',
-                                    })
-                                </script>
+                                <div id="error"></div>
                             @endforeach
                         @endif
                         @csrf
@@ -236,4 +232,14 @@
     </footer>
 </body>
 </html>
-
+<script>
+    $(document).ready(() => {
+        if($('#error').is(":visible")) {
+            Swal.fire({
+                icon: 'error',
+                title: 'E-mail e/ou senha incorretos',
+                text: 'Verifique seu e-mail e senha',
+            })
+        }
+    });
+</script>
