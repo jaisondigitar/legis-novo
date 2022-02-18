@@ -9,12 +9,11 @@
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group">
                         @shield('sessionTypes.create')
-                            <a href="{!! route('sessionTypes.create') !!}">
-                                <button type="button" class="btn btn-default">
-
-                                    </i> Novo registro
-                                </button>
-                            </a>
+                                <a href="{!! route('sessionTypes.create') !!}">
+                                    <button type="button" class="btn btn-default">
+                                        <i class="fa fa-plus-circle"></i> Novo registro
+                                    </button>
+                                </a>
                         @endshield
                     </div>
                 </div>

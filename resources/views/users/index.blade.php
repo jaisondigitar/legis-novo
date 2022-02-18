@@ -10,7 +10,9 @@
                     @shield('users.create')
                         <li>
                             <a href="{!! route('users.create') !!}">
-                                Novo Registro
+                                <button type="button" class="btn btn-default">
+                                    <i class="fa fa-plus-circle"></i> Novo registro
+                                </button>
                             </a>
                         </li>
                     @endshield

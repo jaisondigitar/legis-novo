@@ -78,7 +78,7 @@
                         @endshield
                         @shield('documents.create')
                             <a href="{!! route('documents.create') !!}">
-                                <button type="button" class="btn btn-info">
+                                <button type="button" class="btn btn-default">
                                     <i class="fa fa-plus-circle"></i> Novo registro
                                 </button>
                             </a>

@@ -7,7 +7,11 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-pills" style="margin-bottom: 10px">
-                    <li><a href="{!! route('companies.create') !!}">Novo Registro</a></li>
+                    <a href="{!! route('companies.create') !!}">
+                        <button type="button" class="btn btn-default">
+                            <i class="fa fa-plus-circle"></i> Novo registro
+                        </button>
+                    </a>
                 </ul>
             </div>
         </div>

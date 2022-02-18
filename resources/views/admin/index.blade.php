@@ -24,20 +24,24 @@
             box-shadow: 3px 4px 4px 2px #e9ecef;
             transform: scale(1.07)
         }
+        .row {
+            align-items: center;
+        }
     </style>
-    <h1 class="page-heading" style="margin-top: 15px;">DASHBOARD <small>Algumas informações úteis</small></h1>
+{{--    <h1 class="page-heading" style="margin-top: 15px;">DASHBOARD <small>Algumas informações úteis</small></h1>--}}
 
     <div class="row justify-content-start">
         <div class="col-sm-12">
-            <div class="alert alert-info">
-                <p><strong>Bem vindo(a)!</strong></p>
-                <p style="text-align: justify">O GPL é um software para Gestão de Processos Legislativos. </p>
-                <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis.</p>
+{{--            <div class="alert alert-info">--}}
+                <h1>Bem vindo(a)!</h1>
+{{--                <p style="text-align: justify">O GPL é um software para Gestão de Processos Legislativos. </p>--}}
+{{--                <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis./p>--}}
             </div>
         </div>
     </div>
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-sm-4">
+            <div style="padding-left: 10px"
             <a href="/lawsProjects">
             <div class="card text-center">
                 <div class="card-header bg-danger">
@@ -49,6 +53,7 @@
                 </div>
             </div>
             </a>
+            </div>
         </div>
 
         <div class="col-sm-4">
@@ -66,6 +71,7 @@
         </div>
 
         <div class="col-sm-4">
+            <div style="padding-right: 10px"
             <a href="/admin/commissions">
                 <div class="card text-center">
                     <div class="card-header bg-success">
@@ -81,7 +87,8 @@
                         </p>
                     </div>
                 </div>
-            </a>
+                </a>
+            </div>
         </div>
     </div>
 

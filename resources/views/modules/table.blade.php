@@ -12,7 +12,7 @@
                 <td>{!! $module->name !!}</td>
                 <td>
                     <label>
-                        <div class="form-check form-switch form-switch-lg">
+                        <div class="form-check form-switch form-switch-md">
                             <input
                                 onchange="changeStatus('{!! $module->id !!}')"
                                 id="active"
