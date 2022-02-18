@@ -13,8 +13,8 @@
                 {!! Form::open(['route' => ['version_pauta.destroy', $versao_pauta->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('version_pauta.create')<a @popper(Criar) href="{!! route('version_pauta.createStructure', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="glyphicon glyphicon-th-list"></i></a>@endshield
-                    @shield('version_pauta.show')<a @popper(Visualizar) href="{!! route('version_pauta.show', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
-                    @shield('version_pauta.edit')<a @popper(Editar) href="{!! route('version_pauta.edit', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('version_pauta.show')<a @popper(Visualizar) href="{!! route('version_pauta.show', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="fa fa-eye"></i></a>@endshield
+                    @shield('version_pauta.edit')<a @popper(Editar) href="{!! route('version_pauta.edit', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="fa fa-edit"></i></a>@endshield
                     @if($versao_pauta->id > 1)
                     @shield('version_pauta.delete')
                         <button

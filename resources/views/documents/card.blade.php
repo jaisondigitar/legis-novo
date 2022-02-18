@@ -296,7 +296,7 @@
                 @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.edit')
                         <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                            <i class="glyphicon glyphicon-edit"></i>
+                            <i class="fa fa-edit"></i>
                         </a>
                     @endshield
                 @endif

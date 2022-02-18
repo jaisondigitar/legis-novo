@@ -13,7 +13,7 @@
                 {!! Form::open(['route' => ['sessionPlaces.destroy', $sessionPlace->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('sessionPlaces.show')<a href="{!! route('sessionPlaces.show', [$sessionPlace->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('sessionPlaces.edit')<a href="{!! route('sessionPlaces.edit', [$sessionPlace->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('sessionPlaces.edit')<a href="{!! route('sessionPlaces.edit', [$sessionPlace->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
                     @shield('sessionPlaces.delete'){!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
                 </div>
                 {!! Form::close() !!}

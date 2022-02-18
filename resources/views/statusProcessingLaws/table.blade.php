@@ -11,7 +11,7 @@
                 {!! Form::open(['route' => ['statusProcessingLaws.destroy', $statusProcessingLaw->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('statusProcessingLaws.show')<a @popper(Visualizar) href="{!! route('statusProcessingLaws.show', [$statusProcessingLaw->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('statusProcessingLaws.edit')<a @popper(Editar) href="{!! route('statusProcessingLaws.edit', [$statusProcessingLaw->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('statusProcessingLaws.edit')<a @popper(Editar) href="{!! route('statusProcessingLaws.edit', [$statusProcessingLaw->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
                     @shield('statusProcessingLaws.delete')
                     <button
                         @popper(Deletar)

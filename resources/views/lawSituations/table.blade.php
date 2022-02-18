@@ -11,7 +11,7 @@
                 {!! Form::open(['route' => ['lawSituations.destroy', $lawSituation->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('lawSituations.show')<a @popper(Visualizar) href="{!! route('lawSituations.show', [$lawSituation->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('lawSituations.edit')<a @popper(Editar) href="{!! route('lawSituations.edit', [$lawSituation->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('lawSituations.edit')<a @popper(Editar) href="{!! route('lawSituations.edit', [$lawSituation->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
                     @shield('lawSituations.delete')
                         <button
                             @popper(Deletar)

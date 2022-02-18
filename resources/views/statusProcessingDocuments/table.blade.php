@@ -11,7 +11,7 @@
                 {!! Form::open(['route' => ['statusProcessingDocuments.destroy', $statusProcessingDocument->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('statusProcessingDocuments.show')<a @popper(Visualizar) href="{!! route('statusProcessingDocuments.show', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('statusProcessingDocuments.edit')<a @popper(Editar) href="{!! route('statusProcessingDocuments.edit', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('statusProcessingDocuments.edit')<a @popper(Editar) href="{!! route('statusProcessingDocuments.edit', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
                     @shield('statusProcessingDocuments.delete')
                     <button
                         @popper(Deletar)

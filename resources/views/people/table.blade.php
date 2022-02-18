@@ -21,7 +21,7 @@
                     @endshield
                     @shield('people.edit')
                     <a @popper(Editar) href="{!! route('people.edit', [$p->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-edit"></i>
+                        <i class="fa fa-edit"></i>
                     </a>
                     @endshield
                     @shield('people.delete')

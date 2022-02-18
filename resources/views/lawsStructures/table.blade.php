@@ -13,7 +13,7 @@
                 {!! Form::open(['route' => ['lawsStructures.destroy', $lawsStructure->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('lawsStructures.show')<a @popper(Visualizar) href="{!! route('lawsStructures.show', [$lawsStructure->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('lawsStructures.edit')<a @popper(Editar) href="{!! route('lawsStructures.edit', [$lawsStructure->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('lawsStructures.edit')<a @popper(Editar) href="{!! route('lawsStructures.edit', [$lawsStructure->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
                     @shield('lawsStructures.delete')
                     <button
                         @popper(Deletar)

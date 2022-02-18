@@ -36,7 +36,7 @@
                     </button>
 
                     @shield('attendance.edit')
-                        <a @popper(Editar) href="{!! route('attendance.edit', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                        <a @popper(Editar) href="{!! route('attendance.edit', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>
                     @endshield
 
                     @shield('attendance.delete')

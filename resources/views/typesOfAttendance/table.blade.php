@@ -36,7 +36,7 @@
                     @endshield
                     @shield('typesOfAttendance.edit')
                     <a @popper(Editar) href="{!! route('typesOfAttendance.edit', [$type->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-edit"></i>
+                        <i class="fa fa-edit"></i>
                     </a>
                     @endshield
                     @shield('typesOfAttendance.delete')

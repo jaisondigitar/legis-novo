@@ -296,7 +296,7 @@
                 @if($lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.edit')
                         <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                            <i class="glyphicon glyphicon-edit"></i>
+                            <i class="fa fa-edit"></i>
                         </a>
                     @endshield
                 @endif

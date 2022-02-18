@@ -15,7 +15,7 @@
                 {!! Form::open(['route' => ['$ROUTES_AS_PREFIX$advices.destroy', $advice->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('advices.show')<a href="{!! route('$ROUTES_AS_PREFIX$advices.show', [$advice->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('advices.edit')<a href="{!! route('$ROUTES_AS_PREFIX$advices.edit', [$advice->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
+                    @shield('advices.edit')<a href="{!! route('$ROUTES_AS_PREFIX$advices.edit', [$advice->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
                     @shield('advices.delete'){!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
                 </div>
                 {!! Form::close() !!}
