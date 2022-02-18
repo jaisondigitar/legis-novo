@@ -19,7 +19,7 @@
                     @endis
                     @is('root')
                         <a
-                            style="cursor: pointer"
+                            class="pointer"
                             @popper(Deletar)
                             onclick="sweet(event, {!! $permission->id !!})"
                         >

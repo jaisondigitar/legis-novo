@@ -30,7 +30,7 @@
                     @shield('users.edit')<a @popper(Editar) href="{!! route('users.edit', [$user->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>@endshield
                     @shield('users.delete')
                         <a
-                            style="cursor: pointer"
+                            class="pointer"
                             @popper(Deletar)
                             type="submit"
                             onclick="sweet(event, {!! $user->id !!})"

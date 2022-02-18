@@ -29,7 +29,7 @@
                         <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
                     </a>
                     <a
-                        style="cursor: pointer"
+                        class="pointer"
                         @popper(Deletar)
                         type="submit"
                         onclick="sweet(event, {!! $module->id !!})"
