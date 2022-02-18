@@ -304,7 +304,7 @@
                 @if(!$lawsProject->protocol && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.delete')
                         <a @popper(REMOVER)>
-                            {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'sweet(event)']) !!}
+                            {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'sweet(event)']) !!}
                         </a>
                     @endshield
                 @endif

@@ -20,7 +20,7 @@
                         onclick="sweet(event, {!! $advicePublicationLaw->id !!})"
                         class = 'btn btn-danger btn-xs'
                     >
-                        <i class="glyphicon glyphicon-trash"></i>
+                        <i class="fa fa-trash"></i>
                     </button>
                     @endshield
                 </div>

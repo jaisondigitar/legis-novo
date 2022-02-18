@@ -21,7 +21,7 @@
                         class = 'btn btn-danger btn-xs'
                         onclick="sweet(event, {!! $party->id !!})"
                     >
-                        <i class="glyphicon glyphicon-trash"></i>
+                        <i class="fa fa-trash"></i>
                     </button>
                     @endshield
                 </div>

@@ -23,7 +23,7 @@
                             @popper(Deletar)
                             onclick="sweet(event, {!! $permission->id !!})"
                         >
-                            <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
+                            <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
                         </a>
                     @endis
                 </td>

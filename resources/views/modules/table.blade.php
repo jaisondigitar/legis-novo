@@ -34,7 +34,7 @@
                         type="submit"
                         onclick="sweet(event, {!! $module->id !!})"
                     >
-                        <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
+                        <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
                     </a>
                 </td>
             </tr>

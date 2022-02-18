@@ -23,7 +23,7 @@
                             class='btn btn-danger btn-xs'
                             onclick="sweet(event, {!! $documentType->id !!})"
                         >
-                            <i class="glyphicon glyphicon-trash"></i>
+                            <i class="fa fa-trash"></i>
                         </button>
                     @endshield
                 </div>
@@ -46,7 +46,7 @@
                                 class='btn btn-danger btn-xs'
                                 onclick="sweet(event, {!! $doc->id !!})"
                             >
-                                <i class="glyphicon glyphicon-trash"></i>
+                                <i class="fa fa-trash"></i>
                             </button>
                         @endshield
                     </div>

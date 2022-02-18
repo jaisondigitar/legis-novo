@@ -21,7 +21,7 @@
                             class = 'btn btn-danger btn-xs'
                             onclick="sweet(event, {!! $sessionType->id !!})"
                         >
-                            <i class="glyphicon glyphicon-trash"></i>
+                            <i class="fafa-trash"></i>
                         </button>
                     @endshield
                 </div>

@@ -66,7 +66,7 @@
                             class = 'btn btn-danger btn-xs'
                             onclick="sweet(event, {!! $assemblyman->id !!})"
                         >
-                            <i class="glyphicon glyphicon-trash"></i>
+                            <i class="fa fa-trash"></i>
                         </a>
                         {!! Form::close() !!}
                     @endshield

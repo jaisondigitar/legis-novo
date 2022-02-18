@@ -14,7 +14,7 @@
                 <div class='btn-group'>
                     @shield('protocolTypes.show')<a href="{!! route('protocolTypes.show', [$protocolType->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                     @shield('protocolTypes.edit')<a href="{!! route('protocolTypes.edit', [$protocolType->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
-                    @shield('protocolTypes.delete'){!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('protocolTypes.delete'){!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
                 </div>
                 {!! Form::close() !!}
             </td>

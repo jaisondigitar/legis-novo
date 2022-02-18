@@ -33,7 +33,7 @@
                         style = 'padding: 0; margin: 0; border: 0;'
                         onclick="sweet(event, {!! $destination->id !!})"
                     >
-                        <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
+                        <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
                     </button>
                     @endshield
                 </td>
