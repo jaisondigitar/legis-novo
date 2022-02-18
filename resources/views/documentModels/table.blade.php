@@ -12,7 +12,7 @@
             <td>
                 {!! Form::open(['route' => ['documentModels.destroy', $documentModel->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('documentModels.show')<a @popper(Visualizar) href="{!! route('documentModels.show', [$documentModel->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('documentModels.show')<a @popper(Visualizar) href="{!! route('documentModels.show', [$documentModel->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                     @shield('documentModels.edit')<a @popper(Editar) href="{!! route('documentModels.edit', [$documentModel->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @shield('documentModels.delete')
                         <button

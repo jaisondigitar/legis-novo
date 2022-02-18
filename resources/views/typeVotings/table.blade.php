@@ -14,7 +14,7 @@
             <td>
                 {!! Form::open(['route' => ['typeVotings.destroy', $type->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('typeVotings.show')<a @popper(Visualizar) href="{!! route('typeVotings.show', [$type->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('typeVotings.show')<a @popper(Visualizar) href="{!! route('typeVotings.show', [$type->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                     @shield('typeVotings.edit')<a @popper(Editar) href="{!! route('typeVotings.edit', [$type->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @shield('typeVotings.delete')
                     <button

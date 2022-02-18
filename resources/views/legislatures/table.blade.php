@@ -12,7 +12,7 @@
             <td>
                 {!! Form::open(['route' => ['legislatures.destroy', $legislature->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('legislatures.show')<a @popper(Visualizar) href="{!! route('legislatures.show', [$legislature->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('legislatures.show')<a @popper(Visualizar) href="{!! route('legislatures.show', [$legislature->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                     @shield('legislatures.edit')<a @popper(Editar) href="{!! route('legislatures.edit', [$legislature->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @shield('legislatures.delete')
                     <button

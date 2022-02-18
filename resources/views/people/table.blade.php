@@ -16,7 +16,7 @@
                 <div class='btn-group'>
                     @shield('people.show')
                     <a @popper(Visualizar) href="{!! route('people.show', [$p->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-eye-open"></i>
+                        <i class="fa fa-eye"></i>
                     </a>
                     @endshield
                     @shield('people.edit')

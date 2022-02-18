@@ -31,7 +31,7 @@
                 <div class='btn-group'>
                     @shield('typesOfAttendance.show')
                     <a @popper(Visualizar) href="{!! route('typesOfAttendance.show', [$type->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-eye-open"></i>
+                        <i class="fa fa-eye"></i>
                     </a>
                     @endshield
                     @shield('typesOfAttendance.edit')

@@ -23,7 +23,7 @@
                 {!! Form::open(['route' => ['attendance.destroy', $attend->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('attendance.show')
-                        <a @popper(Visualizar) href="{!! route('attendance.show', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                        <a @popper(Visualizar) href="{!! route('attendance.show', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>
                     @endshield
 
                     <button

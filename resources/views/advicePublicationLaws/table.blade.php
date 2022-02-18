@@ -11,7 +11,7 @@
             <td>
                 {!! Form::open(['route' => ['advicePublicationLaws.destroy', $advicePublicationLaw->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('advicePublicationLaws.show')<a @popper(Visualizar) href="{!! route('advicePublicationLaws.show', [$advicePublicationLaw->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('advicePublicationLaws.show')<a @popper(Visualizar) href="{!! route('advicePublicationLaws.show', [$advicePublicationLaw->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                     @shield('advicePublicationLaws.edit')<a @popper(Editar) href="{!! route('advicePublicationLaws.edit', [$advicePublicationLaw->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @shield('advicePublicationLaws.delete')
                     <button

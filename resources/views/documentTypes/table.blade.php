@@ -14,7 +14,7 @@
             <td>
                 {!! Form::open(['route' => ['documentTypes.destroy', $documentType->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('documentTypes.show')<a @popper(Visualizar) href="{!! route('documentTypes.show', [$documentType->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('documentTypes.show')<a @popper(Visualizar) href="{!! route('documentTypes.show', [$documentType->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                     @shield('documentTypes.edit')<a @popper(Editar) href="{!! route('documentTypes.edit', [$documentType->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @shield('documentTypes.delete')
                         <button
@@ -37,7 +37,7 @@
                 <td>{!! $doc->slug !!}</td>
                 <td>
                     <div class='btn-group'>
-                        @shield('documentTypes.show')<a @popper(Visualizar) href="{!! route('documentTypes.show', [$doc->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                        @shield('documentTypes.show')<a @popper(Visualizar) href="{!! route('documentTypes.show', [$doc->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                         @shield('documentTypes.edit')<a @popper(Editar) href="{!! route('documentTypes.edit', [$doc->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                         @shield('documentTypes.delete')
                             <button

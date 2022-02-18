@@ -56,7 +56,7 @@
                         R
                     </button>
                     @endshield
-                    @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                     @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @shield('assemblymen.delete')
                         {!! Form::open(['route' => ['assemblymen.destroy', $assemblyman->id], 'method' => 'delete']) !!}

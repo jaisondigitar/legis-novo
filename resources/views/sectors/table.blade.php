@@ -31,7 +31,7 @@
             <td>
                 {!! Form::open(['route' => ['sectors.destroy', $sector->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('sectors.show')<a @popper(Visualizar) href="{!! route('sectors.show', [$sector->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('sectors.show')<a @popper(Visualizar) href="{!! route('sectors.show', [$sector->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                     @shield('sectors.edit')<a @popper(Editar) href="{!! route('sectors.edit', [$sector->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @shield('sectors.delete')
                     <button

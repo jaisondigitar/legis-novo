@@ -16,7 +16,7 @@
             <td>
                 {!! Form::open(['route' => ['parameters.destroy', $parameters->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('parameters.show')<a @popper(Visualizar) href="{!! route('parameters.show', [$parameters->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
+                    @shield('parameters.show')<a @popper(Visualizar) href="{!! route('parameters.show', [$parameters->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
                     @shield('parameters.edit')<a @popper(Editar) href="{!! route('parameters.edit', [$parameters->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
                     @shield('parameters.delete')
                     <button
