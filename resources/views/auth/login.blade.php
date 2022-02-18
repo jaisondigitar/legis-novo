@@ -176,7 +176,6 @@
 </head>
 
 <body class="banner">
-    @include('sweetalert::alert')
     <div class="backLogin">
         <div class="logoType">
             <img
