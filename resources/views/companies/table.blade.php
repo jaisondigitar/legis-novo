@@ -23,12 +23,12 @@
                         <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
                     </a>
                     <a
-                        style="cursor: pointer"
+                        class="pointer"
                         @popper(Deletar)
                         type="submit"
                         onclick="sweet(event, {!! $company->id !!})"
                     >
-                        <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
+                        <i class="fa fa-trash icon-rounded icon-xs icon-danger"></i>
                     </a>
                 </td>
             </tr>
