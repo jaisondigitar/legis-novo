@@ -3,11 +3,14 @@
     {!! Breadcrumbs::render('home') !!}
 @endsection
 @section('content')
-
-
     <div class="col-sm-12">
         <div class="the-box bg-default no-border">
             <h4 class="small-title">INFORMAÇÕES</h4>
+            <p>
+                Autor: {{$advice->project->owner->short_name}}<br>
+                Data: {{$advice->project->law_date}}<br>
+                Número: {{$advice->project->project_number}}/{{$advice->project->getYearLawPublish($advice->project->law_date)}}
+            </p>
             <hr>
 
             <div class="col-sm-12">
