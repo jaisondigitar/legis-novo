@@ -11,7 +11,7 @@
     <div class="form-group col-sm-6 col-lg-4">
         {!! Form::label('token', 'Token:', ['class' => 'required']) !!}
         {!! Form::text('token', null, ['class' => 'form-control']) !!}
-        <a href="#" onclick="createHash('{{ $module ?? ''->name ?? time() }}');return false;"><span class="btn btn-info">Criar token</span></a>
+        <a href="#" onclick="createHfdgash('{{ $module->name ?? time() }}');return false;"><span class="btn btn-info">Criar token</span></a>
     </div>
 
     <!--- Active Field --->
@@ -24,7 +24,7 @@
                     name="active"
                     class="form-check-input"
                     type="checkbox"
-                    @if($module ?? ''->active)
+                    @if(isset($module->active))
                         checked
                     @endif
                 >
