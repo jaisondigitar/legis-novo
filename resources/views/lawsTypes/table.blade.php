@@ -47,8 +47,7 @@
         }).success(function(result) {
         });
     };
-</script>
-<script>
+
     const sweet = (e, id) => {
         const url = `/lawsTypes/${id}`;
 

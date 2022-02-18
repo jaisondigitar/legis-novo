@@ -368,8 +368,7 @@
                 });
         });
     });
-</script>
-<script>
+
     const sweet = (e, id) => {
         const url = `assemblymen/${id}`;
 

@@ -155,8 +155,6 @@
         });
     }
 
-</script>
-<script>
     const sweet = (e, id) => {
         const url = `/attendance/${id}`;
 

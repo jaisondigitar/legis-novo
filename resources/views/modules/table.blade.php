@@ -52,8 +52,7 @@
             console.log(result);
         });
     }
-</script>
-<script>
+
     const sweet = (e, id) => {
         const url = `/config/modules/${id}`;
 
