@@ -96,7 +96,7 @@
                                 @shield('destination.index')
                                     <li>
                                         <a class="dropdown-item" href="{{ url('/destinations', $parameters = [], $secure = null) }}">
-                                            <i class="glyphicon glyphicon-user space"></i>Destinatários
+                                            <i class="fa fa-user space"></i>Destinatários
                                         </a>
                                     </li>
                                 @endshield
