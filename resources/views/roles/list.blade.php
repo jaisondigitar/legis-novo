@@ -16,7 +16,10 @@
                     </a>
                 @endshield
                 @shield('roles.delete')
-                    <a href="{!! route('gerencial.roles.delete', [$role->id])!!}" onclick="return confirm('Deseja deletar este registro?')">
+                    <a @popper(deletar)
+                       type="submit"
+                       onclick="sweet(event, {!! $role->id !!})"
+                    >
                         <button type="button" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i>Deletar</button>
                     </a>
                 @endshield
@@ -25,3 +28,13 @@
         @endif
     @endforeach
 </ul>
+<script>
+    const sweet = (e, id) => {
+        const url = `/gerencial/roles/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
+</script>
+

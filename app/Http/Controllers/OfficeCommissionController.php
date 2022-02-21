@@ -176,7 +176,7 @@ class OfficeCommissionController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('officeCommissions.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -193,6 +193,10 @@ class OfficeCommissionController extends AppBaseController
         }
 
         $this->officeCommissionRepository->delete($officeCommission);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Cargo de comissão excluído com sucesso')->success();
 

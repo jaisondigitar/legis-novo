@@ -68,6 +68,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -343,7 +344,7 @@ class UserController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('users.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -360,6 +361,10 @@ class UserController extends AppBaseController
         }
 
         $this->userRepository->delete($user);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Registro deletado com sucesso!')->success();
 
