@@ -14,6 +14,27 @@
             text-align: left;
             list-style-type: none;
         }
+
+        .text-card {
+            text-align: start;
+            margin-left: 50px;
+        }
+
+        .display-count-danger {
+            display: none;
+        }
+
+        .panel-danger:hover .display-count-danger {
+            display: block;
+        }
+
+        .display-count-info {
+            display: none;
+        }
+
+        .panel-info:hover .display-count-info {
+            display: block;
+        }
     </style>
     <h1 class="page-heading" style="margin-top: 0;">DASHBOARD <small>Algumas informações úteis</small></h1>
 
@@ -27,6 +48,13 @@
                 <div class="panel-body">
                     <h1 class="bolded tiles-number text-danger">{{ $projLeiAll }}</h1>
                     <p class="text-muted"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></p>
+                    <div class="display-count-danger">
+                        @foreach($countType as $key => $items)
+                            @if($items)
+                                <p class="text-muted text-card"><small><strong>{{ $key }}: {{ $items }}</strong></small></p>
+                            @endif
+                        @endforeach
+                    </div>
                 </div><!-- /.panel-body -->
             </div><!-- /.panel panel-success panel-block-color -->
         </div>
@@ -41,6 +69,13 @@
                 <div class="panel-body">
                     <h1 class="bolded tiles-number text-info">{{ $docAll }}</h1>
                     <p class="text-muted"><small>LIDOS: <strong>{{ $docRead }}</strong></small></p>
+                    <div class="display-count-info">
+                        @foreach($countDoc as $key => $items)
+                            @if($items)
+                                <p class="text-muted text-card"><small><strong>{{ $key }}: {{ $items }}</strong></small></p>
+                            @endif
+                        @endforeach
+                    </div>
                 </div><!-- /.panel-body -->
             </div><!-- /.panel panel-success panel-block-color -->
         </div>
