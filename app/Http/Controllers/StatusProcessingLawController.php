@@ -172,7 +172,7 @@ class StatusProcessingLawController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('statusProcessingLaws.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -189,6 +189,10 @@ class StatusProcessingLawController extends AppBaseController
         }
 
         $this->statusProcessingLawRepository->delete($statusProcessingLaw);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Status do Tramite removido com sucesso.')->success();
 

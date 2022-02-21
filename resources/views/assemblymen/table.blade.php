@@ -56,11 +56,18 @@
                         R
                     </button>
                     @endshield
-                    @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>@endshield
-                    @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>@endshield
+                    @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
+                    @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
                     @shield('assemblymen.delete')
                         {!! Form::open(['route' => ['assemblymen.destroy', $assemblyman->id], 'method' => 'delete']) !!}
-                    <button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>
+                        <a
+                            @popper(Deletar)
+                            type = "submit"
+                            class = 'btn btn-danger btn-xs'
+                            onclick="sweet(event, {!! $assemblyman->id !!})"
+                        >
+                            <i class="fa fa-trash"></i>
+                        </a>
                         {!! Form::close() !!}
                     @endshield
                 </div>
@@ -361,4 +368,14 @@
                 });
         });
     });
+
+    const sweet = (e, id) => {
+        const url = `assemblymen/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
 </script>
+
+

@@ -24,9 +24,13 @@
                         class="btn btn-default btn-sm">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
-                    <a @popper(Deletar) href="{!! route('config.companies.delete', [$company->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"
-                        class="btn btn-default btn-sm">
-                        <i class="fas fa-trash"></i>
+                    <a
+                        class="pointer"
+                        @popper(Deletar)
+                        type="submit"
+                        onclick="sweet(event, {!! $company->id !!})"
+                    >
+                        <i class="fa fa-trash icon-rounded icon-xs icon-danger"></i>
                     </a>
                 </td>
             </tr>
@@ -48,5 +52,14 @@
         }).success(function(result) {
             console.log(result);
         });
+    }
+</script>
+<script>
+    const sweet = (e, id) => {
+        const url = `companies/${id}`;
+
+        const method = 'DELETE';
+
+        sweetDelete(e, url, null, method);
     }
 </script>

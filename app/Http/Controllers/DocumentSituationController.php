@@ -183,7 +183,7 @@ class DocumentSituationController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('documentSituations.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -200,6 +200,10 @@ class DocumentSituationController extends AppBaseController
         }
 
         $this->documentSituationRepository->delete($documentSituation);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Situção de Documento removido com sucesso.')->success();
 

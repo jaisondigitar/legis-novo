@@ -12,9 +12,18 @@
             <td>
                 {!! Form::open(['route' => ['parties.destroy', $party->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('parties.show')<a @popper(Visualizar) href="{!! route('parties.show', [$party->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>@endshield
-                    @shield('parties.edit')<a @popper(Editar) href="{!! route('parties.edit', [$party->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>@endshield
-                    @shield('parties.delete')<button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>@endshield
+                    @shield('parties.show')<a @popper(Visualizar) href="{!! route('parties.show', [$party->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
+                    @shield('parties.edit')<a @popper(Editar) href="{!! route('parties.edit', [$party->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
+                    @shield('parties.delete')
+                    <button
+                        @popper(Deletar)
+                        type = 'submit'
+                        class = 'btn btn-danger btn-xs'
+                        onclick="sweet(event, {!! $party->id !!})"
+                    >
+                        <i class="fa fa-trash"></i>
+                    </button>
+                    @endshield
                 </div>
                 {!! Form::close() !!}
             </td>
@@ -22,3 +31,12 @@
     @endforeach
     </tbody>
 </table>
+<script>
+    const sweet = (e, id) => {
+        const url = `/parties/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
+</script>

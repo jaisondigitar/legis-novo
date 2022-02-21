@@ -12,11 +12,20 @@
             <td>
                 {!! Form::open(['route' => ['version_pauta.destroy', $versao_pauta->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('version_pauta.create')<a @popper(Criar) href="{!! route('version_pauta.createStructure', [$versao_pauta->id]) !!}" class='btn btn-default btn-sm' @if($versao_pauta->id == 1) disabled @endif><i class="fa fa-th-list"></i></a>@endshield
-                    @shield('version_pauta.show')<a @popper(Visualizar) href="{!! route('version_pauta.show', [$versao_pauta->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>@endshield
-                    @shield('version_pauta.edit')<a @popper(Editar) href="{!! route('version_pauta.edit', [$versao_pauta->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>@endshield
+                    @shield('version_pauta.create')<a @popper(Criar) href="{!! route('version_pauta.createStructure', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="glyphicon glyphicon-th-list"></i></a>@endshield
+                    @shield('version_pauta.show')<a @popper(Visualizar) href="{!! route('version_pauta.show', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="fa fa-eye"></i></a>@endshield
+                    @shield('version_pauta.edit')<a @popper(Editar) href="{!! route('version_pauta.edit', [$versao_pauta->id]) !!}" class='btn btn-default btn-xs' @if($versao_pauta->id == 1) disabled @endif><i class="fa fa-edit"></i></a>@endshield
                     @if($versao_pauta->id > 1)
-                    @shield('version_pauta.delete')<button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>@endshield
+                    @shield('version_pauta.delete')
+                        <button
+                            @popper(Deletar)
+                            type = 'submit'
+                            class = 'btn btn-danger btn-xs'
+                            onclick="sweet(event, {!! $versao_pauta->id !!})"
+                        >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    @endshield
                     @endif
                 </div>
                 {!! Form::close() !!}
@@ -25,3 +34,13 @@
     @endforeach
     </tbody>
 </table>
+<script>
+    const sweet = (e, id) => {
+        const url = `/version_pauta/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
+</script>
+

@@ -31,12 +31,11 @@
                     @shield('destination.delete')
                     <button
                         @popper(Deletar)
-                        class="btn btn-danger btn-sm"
-                        type = 'submit'
-                        onclick = "return confirm('Deseja realmente remover esse registro?')"
+                        type = "submit"
+                        style = 'padding: 0; margin: 0; border: 0;'
+                        onclick="sweet(event, {!! $destination->id !!})"
                     >
-                        <i class="fas fa-trash"></i>
-
+                        <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
                     </button>
                     @endshield
                 </td>
@@ -44,3 +43,13 @@
         @endforeach
     </tbody>
 </table>
+<script>
+    const sweet = (e, id) => {
+        const url = `/destinations/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
+</script>
+

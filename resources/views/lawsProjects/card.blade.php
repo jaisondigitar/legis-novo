@@ -293,7 +293,7 @@
                 @if($lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.edit')
                         <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                            <i class="fas fa-pencil-alt"></i>
+                            <i class="fa fa-edit"></i>
                         </a>
                     @endshield
                 @endif
@@ -301,7 +301,7 @@
                 @if(!$lawsProject->protocol && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.delete')
                         <a @popper(REMOVER)>
-                            {!! Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+                            {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'sweet(event)']) !!}
                         </a>
                     @endshield
                 @endif
@@ -355,3 +355,14 @@
         </div><!-- /.modal-dialog -->
     </div>
 @endif
+<script>
+    const sweet = (e) => {
+        const url = `/lawsProject/{{$lawsProject->id}}`;
+
+        const data = {
+            '_token' : '{{csrf_token()}}'
+        };
+
+        sweetDelete(e, url, data)
+    }
+</script>

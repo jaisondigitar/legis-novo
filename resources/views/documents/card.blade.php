@@ -293,16 +293,16 @@
 
                 @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.edit')
-                        <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-sm'>
-                            <i class="fas fa-pencil-alt"></i>
+                        <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                            <i class="fa fa-edit"></i>
                         </a>
                     @endshield
                 @endif
 
                 @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.delete')
-                       <a @popper(REMOVER)
-                           type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i>
+                       <a @popper(REMOVER)>
+                           {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => 'sweet(event)']) !!}
                        </a>
                     @endshield
                 @endif
@@ -312,3 +312,14 @@
         {!! Form::close() !!}
     </div>
 </div>
+<script>
+    const sweet = (e) => {
+        const url = `/documents/{{$document->id}}`;
+
+        const data = {
+            '_token' : '{{csrf_token()}}'
+        };
+
+        sweetDelete(e, url, data)
+    }
+</script>

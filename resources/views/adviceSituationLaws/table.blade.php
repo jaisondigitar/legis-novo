@@ -11,9 +11,18 @@
             <td>
                 {!! Form::open(['route' => ['adviceSituationLaws.destroy', $adviceSituationLaw->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('adviceSituationLaws.show')<a @popper(Visualizar) href="{!! route('adviceSituationLaws.show', [$adviceSituationLaw->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>@endshield
-                    @shield('adviceSituationLaws.edit')<a @popper(Editar) href="{!! route('adviceSituationLaws.edit', [$adviceSituationLaw->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>@endshield
-                    @shield('adviceSituationLaws.delete')<button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>@endshield
+                    @shield('adviceSituationLaws.show')<a @popper(Visualizar) href="{!! route('adviceSituationLaws.show', [$adviceSituationLaw->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
+                    @shield('adviceSituationLaws.edit')<a @popper(Editar) href="{!! route('adviceSituationLaws.edit', [$adviceSituationLaw->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
+                    @shield('adviceSituationLaws.delete')
+                    <button
+                        @popper(Deletar)
+                        type = "submit"
+                        class = 'btn btn-danger btn-xs'
+                        onclick="sweet(event, {!! $adviceSituationLaw->id !!})"
+                    >
+                        <i class="fa fa-trash"></i>
+                    </button>
+                    @endshield
                 </div>
                 {!! Form::close() !!}
             </td>
@@ -21,3 +30,12 @@
     @endforeach
     </tbody>
 </table>
+<script>
+    const sweet = (e, id) => {
+        const url = `/adviceSituationLaws/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
+</script>

@@ -30,13 +30,24 @@
                 {!! Form::open(['route' => ['typesOfAttendance.destroy', $type->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('typesOfAttendance.show')
-                    <a @popper(Visualizar) href="{!! route('typesOfAttendance.show', [$type->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>
+                    <a @popper(Visualizar) href="{!! route('typesOfAttendance.show', [$type->id]) !!}" class='btn btn-default btn-xs'>
+                        <i class="fa fa-eye"></i>
+                    </a>
                     @endshield
                     @shield('typesOfAttendance.edit')
-                    <a @popper(Editar) href="{!! route('typesOfAttendance.edit', [$type->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>
+                    <a @popper(Editar) href="{!! route('typesOfAttendance.edit', [$type->id]) !!}" class='btn btn-default btn-xs'>
+                        <i class="fa fa-edit"></i>
+                    </a>
                     @endshield
                     @shield('typesOfAttendance.delete')
-                    <button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>
+                    <button
+                        @popper(Deletar)
+                        type = 'submit'
+                        class = 'btn btn-danger btn-xs'
+                        onclick="sweet(event, {!! $type->id !!})"
+                    >
+                        <i class="fa fa-trash"></i>
+                    </button>
                     @endshield
                 </div>
                 {!! Form::close() !!}
@@ -45,8 +56,15 @@
     @endforeach
     </tbody>
 </table>
-
 <script>
+    const sweet = (e, id) => {
+        const url = `/types-of-attendance/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
+
     const statusActive = (id) => {
         const url = `/types-of-attendance/${id}`;
 

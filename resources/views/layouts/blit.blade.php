@@ -61,8 +61,12 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
+        .pointer{
+            cursor:pointer;
+        }
         .width {
             width: 100%;
         }
@@ -332,6 +336,29 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
+
+        const sweetDelete = (e, url, data, method) => {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Excluir Documento?',
+                text: "Não será possivel desfazer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url : url,
+                        data : data,
+                        method : method ?? 'POST'
+                    }).success(() => {
+                        window.location.reload()
+                    });
+                }
+            })
+        }
 
         const viaCep = async value => {
             const cep = parseInt(value.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''));

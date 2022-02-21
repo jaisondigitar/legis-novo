@@ -17,9 +17,14 @@
                             class="btn btn-default btn-sm">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <a @popper(Deletar) href="{!! route('config.permissions.delete', [$permission->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"
-                            class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i>
+                    @endis
+                    @is('root')
+                        <a
+                            class="pointer"
+                            @popper(Deletar)
+                            onclick="sweet(event, {!! $permission->id !!})"
+                        >
+                            <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
                         </a>
                     @endis
                 </td>
@@ -37,5 +42,14 @@
         }).success(function(result) {
             console.log(result);
         });
+    }
+</script>
+<script>
+    const sweet = (e, id) => {
+        const url = `/config/permissions/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
     }
 </script>

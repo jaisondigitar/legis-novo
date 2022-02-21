@@ -25,10 +25,19 @@
                     @shield('users.edit')<input class="switch" onchange="changeStatus('{!! $user->id !!}')" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" {!! $user->active>0?'checked':'' !!}>@endshield
                 </td>
                 <td>
-                    @is(['admin','root']) <a @popper(Hístorico) href="/users/{!! $user->id !!}/auditing"><i class="fa fa-user-secret icon-rounded btn-sm icon-dark"></i></a>@endis
-                    @shield('users.show')<a @popper(Visualizar) href="{!! route('users.show', [$user->id]) !!}" class="btn-default btn-sm"><i class="fas fa-eye"></i></a>@endshield
-                    @shield('users.edit')<a @popper(Editar) href="{!! route('users.edit', [$user->id]) !!}" class="btn-default btn-sm"><i class="fas fa-pencil-alt"></i></a>@endshield
-                    @shield('users.delete')<a @popper(Deletar) href="{!! route('users.delete', [$user->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"class="btn-danger btn-sm"><i class="fas fa-trash"></i></a>@endshield
+                    @is(['admin','root']) <a @popper(Hístorico) href="/users/{!! $user->id !!}/auditing"><i class="fa fa-user-secret icon-rounded icon-xs icon-dark"></i></a>@endis
+                    @shield('users.show')<a @popper(Visualizar) href="{!! route('users.show', [$user->id]) !!}"><i class="fa fa-eye icon-rounded icon-xs icon-info"></i></a>@endshield
+                    @shield('users.edit')<a @popper(Editar) href="{!! route('users.edit', [$user->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>@endshield
+                    @shield('users.delete')
+                        <a
+                            class="pointer"
+                            @popper(Deletar)
+                            type="submit"
+                            onclick="sweet(event, {!! $user->id !!})"
+                        >
+                            <i class="fa fa-trash icon-rounded icon-xs icon-danger"></i>
+                        </a>
+                    @endshield
                 </td>
             </tr>
             @endif
@@ -45,5 +54,14 @@
         }).success(function(result) {
             console.log(result);
         });
+    }
+</script>
+<script>
+    const sweet = (e, id) => {
+        const url = `users/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
     }
 </script>

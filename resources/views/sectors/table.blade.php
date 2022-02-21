@@ -31,9 +31,18 @@
             <td>
                 {!! Form::open(['route' => ['sectors.destroy', $sector->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('sectors.show')<a @popper(Visualizar) href="{!! route('sectors.show', [$sector->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-eye"></i></a>@endshield
-                    @shield('sectors.edit')<a @popper(Editar) href="{!! route('sectors.edit', [$sector->id]) !!}" class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i></a>@endshield
-                    @shield('sectors.delete')<button @popper(Deletar) type = 'submit' class = 'btn btn-danger btn-sm' onclick = "return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>@endshield
+                    @shield('sectors.show')<a @popper(Visualizar) href="{!! route('sectors.show', [$sector->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
+                    @shield('sectors.edit')<a @popper(Editar) href="{!! route('sectors.edit', [$sector->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
+                    @shield('sectors.delete')
+                    <button
+                        @popper(Deletar)
+                        type = 'submit'
+                        class = 'btn btn-danger btn-xs'
+                        onclick="sweet(event, {!! $sector->id !!})"
+                    >
+                        <i class="fa fa-trash"></i>
+                    </button>
+                    @endshield
                 </div>
                 {!! Form::close() !!}
             </td>
@@ -41,8 +50,15 @@
     @endforeach
     </tbody>
 </table>
-
 <script>
+    const sweet = (e, id) => {
+        const url = `/sectors/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
+
     const statusExternal = (id) => {
         const url = `/sectors/${id}`;
 
