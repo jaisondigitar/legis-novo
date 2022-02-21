@@ -825,7 +825,7 @@ class LawsProjectController extends AppBaseController
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
 
-            $return = '<h3 style="text-align: center">'.mb_strtoupper($advice->destination->name, 'UTF-8').'</h3>';
+            $return = '<h3 style="text-align: center">'.mb_strtoupper($advice->destination->name ?? '', 'UTF-8').'</h3>';
             $return .= '<p><strong>Solicitação: </strong>'.$advice->date.'<br><strong>Descrição: </strong>'.$advice->description.'</p>';
 
             foreach ($advice->awnser as $resp) {
