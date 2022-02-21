@@ -60,6 +60,18 @@
                                     $html .= '<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_law\','.$node->id.')" '.($node->add_law ? 'checked' : '').'> <label>Insere Projeto de lei?</label></p>';
                                     $html .= '<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_advice\','.$node->id.')" '.($node->add_advice ? 'checked' : '').'> <label>Insere parecer?</label></p>';
                                     $html .= '<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_obs\','.$node->id.')" '.($node->add_obs ? 'checked' : '').'> <label>Insere Campo de Obs?</label></p>';
+                                    $html .= '<p>
+                                                <input
+                                                    class="switch"
+                                                    data-on-text="Sim"
+                                                    data-off-text="Não"
+                                                    data-off-color="danger"
+                                                    data-on-color="success"
+                                                    data-size="normal"
+                                                    type="checkbox"
+                                                    onchange="toggle(\'vote_in_block\','.$node->id.')" '.($node->vote_in_block ? 'checked' : '').'
+                                                >
+                                                <label>Votar em bloco?</label></p>';
                                 }
 
                                 $html .= '<div class="editable">

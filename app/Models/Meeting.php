@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -78,8 +79,6 @@ class Meeting extends BaseModel
         'session_place_id' => 'integer',
         'number' => 'string',
     ];
-
-    protected $appends = ['test'];
 
     /**
      * Validation rules.
@@ -223,8 +222,11 @@ class Meeting extends BaseModel
         return $data;
     }
 
-    public function getTestAttribute()
+    /**
+     * @return HasMany
+     */
+    public function manyVotes(): HasMany
     {
-        return 'test';
+        return $this->hasMany(Voting::class);
     }
 }

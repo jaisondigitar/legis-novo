@@ -134,6 +134,11 @@ class Document extends BaseModel
         'resume' => 'nullable|string',
     ];
 
+    /**
+     * @var string[]
+     */
+    protected $appends = ['label', 'model'];
+
     public function documentNumber()
     {
         return $this->belongsTo(DocumentNumber::class, 'document_id');
@@ -275,5 +280,26 @@ class Document extends BaseModel
         }
 
         return $str;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabelAttribute(): string
+    {
+        $type = $this->document_type->name;
+        $number = $this->number;
+        $year = Carbon::parse(str_replace('/', '-', $this->date))
+            ->format('Y');
+
+        return "Documento: {$type} - {$number}/{$year}";
+    }
+
+    /**
+     * @return string
+     */
+    public function getModelAttribute(): string
+    {
+        return 'Document';
     }
 }

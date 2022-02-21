@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Baum\Node;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Structurepautum.
@@ -35,4 +36,24 @@ class Structurepautum extends Node
     public static $rules = [
         'name' => 'required',
     ];
+
+    protected $appends = ['has_open_voting'];
+
+    /**
+     * @return HasMany
+     */
+    public function meeting(): HasMany
+    {
+        return $this->hasMany(MeetingPauta::class, 'structure_id', 'id');
+    }
+
+    public function getHasOpenVotingAttribute()
+    {
+        if ($this->meeting->isNotEmpty()) {
+            return $this->meeting->first()
+                ->meeting->first()
+                ->manyVotes->whereNull('closed_at')
+                ->isNotEmpty();
+        }
+    }
 }

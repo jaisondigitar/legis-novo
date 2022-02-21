@@ -84,7 +84,7 @@ class Voting extends BaseModel
             return $name;
         } else {
             $name = 'DOCUMENTO : ';
-
+//            dd($this->document);
             if ($this->document->document_type->parent_id) {
                 $name = $name.$this->document->document_type->parent->name.'::';
             }

@@ -2,7 +2,6 @@
 @section('content-meeting')
     @if(isset($voting->closed_at))
         <div class="alert alert-danger alert-block fade in alert-dismissable ">
-            {{--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>--}}
             <strong> <h3 class="text-center">VOTAÇÃO ENCERRADA</h3></strong>
         </div>
         <hr>

@@ -1086,11 +1086,21 @@ class MeetingController extends AppBaseController
     {
         $meeting = Meeting::find($meeting);
 
-        $struct = Structurepautum::where('version_pauta_id', $meeting->version_pauta_id)->pluck('id')->toArray();
+        $structurepautas = Structurepautum::whereNull('parent_id')
+            ->where('version_pauta_id', $meeting->version_pauta_id)
+            ->with(['children' => function ($query) use ($meeting) {
+                $query->with(['meeting' => function ($query) use ($meeting) {
+                    return $query->whereHas('document')
+                        ->orWhereHas('law')
+                        ->orWhereHas('advices')
+                        ->with(['document', 'law', 'advices'])
+                        ->where('meeting_pauta.meeting_id', $meeting->id);
+                }]);
+            }])->get();
 
-        $doc_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $struct)->whereNotNull('document_id')->pluck('document_id')->toArray();
-        $law_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $struct)->whereNotNull('law_id')->pluck('law_id')->toArray();
-        $advice_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $struct)->whereNotNull('advice_id')->pluck('advice_id')->toArray();
+        $doc_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $structurepautas)->whereNotNull('document_id')->pluck('document_id')->toArray();
+        $law_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $structurepautas)->whereNotNull('law_id')->pluck('law_id')->toArray();
+        $advice_ids = MeetingPauta::where('meeting_id', $meeting->id)->whereIn('structure_id', $structurepautas)->whereNotNull('advice_id')->pluck('advice_id')->toArray();
 
         $docs = Document::whereIn('id', $doc_ids)->get();
         $laws = LawsProject::whereIn('id', $law_ids)->get();
@@ -1103,6 +1113,7 @@ class MeetingController extends AppBaseController
 
         $type_voting = TypeVoting::pluck('name', 'id')->prepend('Selecione', 0);
         $last_voting = Meeting::where('id', '<', $meeting->id)->get()->last();
+
         if ($meeting->voting()->count() > 0) {
             foreach ($meeting->voting()->where('meeting_id', $meeting->id)->get() as $voting) {
                 if ($voting->version_pauta_id == null) {
@@ -1112,7 +1123,7 @@ class MeetingController extends AppBaseController
             }
         }
 
-        return view('meetings.voting', compact('doc_voting', 'law_voting', 'ata_voting', 'type_voting', 'docs', 'laws', 'last_voting', 'advices', 'advice_voting'))->with('meeting', $meeting);
+        return view('meetings.voting', compact('doc_voting', 'structurepautas', 'law_voting', 'ata_voting', 'type_voting', 'docs', 'laws', 'last_voting', 'advices', 'advice_voting'))->with('meeting', $meeting);
     }
 
     public function votingCreate()
@@ -1135,8 +1146,59 @@ class MeetingController extends AppBaseController
 
             return redirect(route('meetings.voting', $meeting->id));
         }
+
         $input['version_pauta_id'] = $meeting->version_pauta_id;
         $voting = Voting::firstOrCreate($input);
+
+        $assemblyman = Assemblyman::where('active', 1)->get();
+
+        return view('meetings.start_voting', compact('voting', 'meeting', 'assemblyman', 'last_voting', 'ata_voting'));
+    }
+
+    /**
+     * @param  Request  $request
+     * @param $id
+     * @return Application|Factory|RedirectResponse|Redirector|View
+     */
+    public function initVoteForManyDocs(Request $request, $id)
+    {
+        $request->except('_token');
+
+        $last_voting = Meeting::where('id', '<', $id)->get()->last();
+
+        $ata_voting = Parameters::where('slug', 'realiza-votacao-de-ata')->first()->value;
+
+        if (Voting::whereNotNull('open_at')->whereNull('closed_at')->first()) {
+            flash('Existe votação em aberto!')->warning();
+
+            return redirect(route('meetings.voting', $id));
+        }
+
+        $meeting = Meeting::find($id);
+
+        $voting = null;
+
+        foreach ($request->except('_token') as $key => $document_id) {
+            $voting_data = [
+                'meeting_id' => $id,
+                'document_id' => $document_id,
+                'version_pauta_id' => $meeting->version_pauta_id,
+            ];
+
+            $type_of_doc = explode('-', $key)[0];
+
+            switch ($type_of_doc) {
+                case 'document_id':
+                    $voting_data['document_id'] = $document_id;
+                break;
+
+                case 'law_id':
+                    $voting_data['law_id'] = $document_id;
+                break;
+            }
+
+            $voting = Voting::firstOrCreate($voting_data);
+        }
 
         $assemblyman = Assemblyman::where('active', 1)->get();
 
@@ -1202,6 +1264,42 @@ class MeetingController extends AppBaseController
         throw new Exception('Falha ao habilitar votação');
     }
 
+    public function votingManyFiles($meeting_id, $struct_id)
+    {
+        $meeting = Meeting::find($meeting_id);
+        $has_many_docs = $meeting->meeting_pauta
+            ->where('structure_id', '=', $struct_id)->first()
+            ->struct->vote_in_block;
+        $is_closed = $meeting->meeting_pauta
+            ->where('structure_id', '=', $struct_id)->first()->meeting->whereNotNull('closed_at')
+            ->isNotEmpty();
+        $votings = Voting::where('meeting_id', $meeting_id)->whereNotNull('closed_at')->get();
+        $files = $meeting->meeting_pauta->where('structure_id', '=', $struct_id)->load([
+            'document',
+            'law',
+            'advices',
+        ])->map(function ($item) {
+            $data = [];
+
+            $item->document->isNotEmpty() && $data[] = $item->document;
+            $item->law->isNotEmpty() && $data[] = $item->law;
+            $item->advices->isNotEmpty() && $data[] = $item->advices;
+
+            return $data;
+        })->flatten();
+
+        $assemblyman = Assemblyman::where('active', 1)->get();
+
+        return view('meetings.start_many_voting', compact(
+            'meeting',
+            'votings',
+            'has_many_docs',
+            'assemblyman',
+            'is_closed',
+            'files'
+        ));
+    }
+
     public function updateAssemblyman($meeting_id, $voting_id, Request $request)
     {
         $input = $request->all();
@@ -1251,7 +1349,7 @@ class MeetingController extends AppBaseController
         if ($voting->where('meeting_id', $meeting->id)->whereNull('closed_at')->first()->votes->count() < $meeting->assemblyman()->count()) {
             flash('Existe voto em aberto!')->warning();
 
-            return view('meetings.start_voting', compact('voting', 'meeting', 'assemblyman'));
+            return view('meetings.start_voting', compact('voting', 'meeting'));
         } else {
             $voting->closed_at = Carbon::now();
             $voting->assemblyman_active = null;

@@ -196,6 +196,11 @@ class LawsProject extends BaseModel
         'situation_id' => 'required',
     ];
 
+    /**
+     * @var string[]
+     */
+    protected $appends = ['label', 'model'];
+
     public function owner()
     {
         return $this->belongsTo('App\Models\Assemblyman', 'assemblyman_id');
@@ -622,5 +627,26 @@ class LawsProject extends BaseModel
     public function getName()
     {
         return ! $this->law_type ? $this->law_type_id : mb_strtoupper($this->law_type->name, 'UTF-8');
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabelAttribute(): string
+    {
+        $type = $this->law_type->name;
+        $number = $this->project_number;
+        $year = Carbon::parse(str_replace('/', '-', $this->law_date))
+            ->format('Y');
+
+        return "Projeto de Lei: {$type} - {$number}/{$year}";
+    }
+
+    /**
+     * @return string
+     */
+    public function getModelAttribute(): string
+    {
+        return 'LawProject';
     }
 }

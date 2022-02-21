@@ -288,10 +288,12 @@ Route::middleware([
         Route::get('/meetings/presences/{id}/pdf', 'MeetingController@presencePDF')->name('meetings.presencePDF');
         Route::get('/meetings/{meeting}/voting', 'MeetingController@voting')->name('meetings.voting');
         Route::post('/meetings/{id}/voting/create', 'MeetingController@votingCreate')->name('meetings.votingCreate');
+        Route::post('/meetings/{id}/init-vote-for-many-docs', 'MeetingController@initVoteForManyDocs');
         Route::get('/meetings/{id}/voting/{voting_id}/document/{document_id}', 'MeetingController@votingDocument')->name('meetings.votingDocument');
         Route::get('/meetings/{id}/voting/{voting_id}/law/{law_id}', 'MeetingController@votingLaw')->name('meetings.votingLaw');
         Route::get('/meetings/{id}/voting/{voting_id}/ata/{ata_id}', 'MeetingController@votingAta')->name('meetings.votingAta');
         Route::get('/meetings/{id}/voting/{voting_id}/advice/{advice_id}', 'MeetingController@votingAdvice')->name('meetings.votingAdvice');
+        Route::get('/meetings/{meeting_id}/struct/{struct_id}/voting-many-files', 'MeetingController@votingManyFiles');
 
         Route::post('/meetings/{id}/voting/{voting_id}/updateAssemblyman', 'MeetingController@updateAssemblyman')->name('meetings.updateAssemblyman');
         Route::post(

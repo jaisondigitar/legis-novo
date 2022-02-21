@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -84,6 +85,11 @@ class Advice extends BaseModel
         'laws_projects_id' => 'required',
         'to_id' => 'required',
     ];
+
+    /**
+     * @var string[]
+     */
+    protected $appends = ['label'];
 
     public function getDateAttribute($date)
     {

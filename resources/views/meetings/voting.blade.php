@@ -41,7 +41,7 @@
                                                 Aprovada
                                             </span>
                                         @else
-                                            @if(!isset($voitng->closed_at))
+                                            @if(!isset($voting->closed_at))
                                                 <span class="pull-right text-danger"> Reprovada</span>
                                             @else
                                                 <span class="pull-right text-warning"> Em votação</span>
@@ -64,308 +64,337 @@
     </div>
 
     <h2>VOTAÇÃO </h2>
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" style="text-decoration: none; color:#fff;" >
-                                    ATA
-                                    <span class="pull-right"> <i class="fa fa-arrow-up" onclick="icon_toogle(this)"></i> </span>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body">
-                                @if($meeting)
-                                    <div class="row-fluid text-uppercase">
-                                        <span>
-                                            @if($last_voting != null)
-                                                ATA Nº - {{$last_voting->number}}/{{Carbon\Carbon::createFromFormat('d/m/Y H:i',$last_voting->date_start)->year}}
-                                                @if(isset($meeting->voting()->where('ata_id', $last_voting->id)->first()->closed_at))
-                                                    <br>
-                                                    <span class="document_list @if($meeting->situation($last_voting->id, 'ata')) text-primary @else text-danger @endif">
-                                                    @if($meeting->situation($last_voting->id, 'ata'))
-                                                            Votação aprovada
-                                                        @else
-                                                            Votação reprovada
-                                                        @endif
-                                                    </span>
-                                                @endif
-                                            @endif
-                                        </span>
-                                        <span class="pull-right">
-                                            <span class="pull-right" @if(isset($meeting->voting()->where('meeting_id', $meeting->id)->whereNotNull('deleted_at')->first()->closed_at)) style="margin-top: 10px;" @endif>
-                                                @if($ata_voting && ($last_voting != null))
-                                                    @if(isset($meeting->voting()->where('ata_id', $last_voting->id)->first()->closed_at))
-                                                        <a href="/resume/voting/{{$meeting->voting()->where('ata_id', $last_voting->id)->first()->id}}" target="_blank">
-                                                            <button class="btn btn-info btn-xs">Resumo</button>
-                                                        </a>
-                                                        <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/ata/{{$last_voting->id}}">
-                                                            <button class="btn btn-danger btn-xs">Encerrada</button>
-                                                        </a>
-                                                    @else
-                                                        @if(($meeting->voting()->where('ata_id', $last_voting->id)->first()))
-                                                            <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/ata/{{$last_voting->id}}">
-                                                                <button class="btn btn-warning btn-xs">Em andamento</button>
-                                                            </a>
-                                                        @else
-                                                            <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor2" onclick="voting_ata({{$last_voting}})">Abrir Votação</button>
-                                                        @endif
-                                                    @endif
-                                                @endif
-                                            </span>
-                                        </span>
-                                    </div>
-                                @else
-                                    Sessão anterior não possui ATA
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading" role="tab" id="headingThree">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree" style="text-decoration: none; color:#fff;" >
-                                    PARECER
-                                    <span class="pull-right"> <i class="fa fa-arrow-up" onclick="icon_toogle(this)"></i> </span>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-                            <div class="panel-body">
-                                <ul class="list-group">
-                                    @foreach($advices as $item)
-                                        <li class="list-group-item">
-                                            <div class="col-lg-10 text-uppercase">
-                                                {!! $item->commission->name . ' - ' !!}
-                                                @if($item->document_id > 0)
-                                                    @if($item->document->document_type->parent_id) {{ $item->document->document_type->parent->name }} ::  @endif {!! $item->document->document_type->name !!} -
-                                                    @if($item->document->number == 0)
-                                                    @else
-                                                        {!! $item->document->number . '/' . $item->document->getYear($item->date) !!}
-                                                    @endif
-                                                    <br>
-                                                    @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
-                                                        <span class="document_list @if($meeting->situation($item->id, 'advice')) text-primary @else text-danger @endif">
-                                                            @if($meeting->situation($item->id, 'advice'))
-                                                                Votação aprovada
-                                                            @else
-                                                                Votação reprovada
-                                                            @endif
-                                                        </span>
-                                                    @endif
-                                                @endif
-
-                                                @if($item->laws_projects_id > 0)
-                                                    @if(!$item->project->law_type) {{ $item->project->law_type_id }} @else {!! mb_strtoupper($item->project->law_type->name, 'UTF-8') !!} @endif
-
-                                                    <span id="tdLawProjectNumber">
-                                                        {!! $item->project->project_number . '/' . $item->project->getYearLawPublish($item->project->law_date) !!}
-                                                    </span>
-                                                    <br>
-                                                    @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
-                                                        <span class="document_list @if($meeting->situation($item->id, 'advice')) text-primary @else text-danger @endif">
-                                                        @if($meeting->situation($item->id, 'advice'))
-                                                            Votação aprovada
-                                                        @else
-                                                            Votação reprovada
-                                                        @endif
-                                                        </span>
-                                                    @endif
-                                                @endif
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <span class="pull-right" @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at)) style="margin-top: 10px;" @endif>
-                                                    @if($advice_voting)
-                                                        @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
-                                                            @if($item->document_id > 0)
-                                                                <a href="/resume/voting/{{$item->voting()->where('meeting_id', $meeting->id)->first()->id}}" target="_blank">
-                                                                <button class="btn btn-info btn-xs">Resumo</button>
-                                                             </a>
-                                                                <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/advice/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
-                                                            @endif
-
-                                                            @if($item->laws_projects_id > 0)
-                                                                <a href="/resume/voting/{{$item->voting()->where('meeting_id', $meeting->id)->first()->id}}" target="_blank">
-                                                                <button class="btn btn-info btn-xs">Resumo</button>
-                                                                </a>
-                                                                <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/advice/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
-                                                            @endif
-                                                        @else
-                                                            @if(!$item->voting()->where('meeting_id', $meeting->id)->first())
-                                                                <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor3" onclick="voting_advice({{$item}})">Abrir Votação</button>
-                                                            @else
-                                                                <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/advice/{{$item->id}}"> <button class="btn btn-warning btn-xs">Em andamento</button></a>
-                                                            @endif
-                                                        @endif
-                                                    @endif
-                                                </span>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
     <div class="clearfix"></div>
 
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-info">
-                        <div class="panel-heading" role="tab" id="headingFour">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour" style="text-decoration: none; color:#fff;" >
-                                    DOCUMENTOS
-                                    <span class="pull-right"> <i class="fa fa-arrow-up" onclick="icon_toogle(this)"></i> </span>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
-                            <div class="panel-body">
-                                <ul class="list-group">
-                                    @foreach($docs as $item)
-                                        <li class="list-group-item">
-                                            <div class="col-lg-10 text-uppercase">
-                                                <span class="text-uppercase">
-                                                Documento :
-                                                </span>
-                                                @if($item->document_type->parent_id) {{ $item->document_type->parent->name }} ::  @endif {!! $item->document_type->name !!} -
-                                                @if($item->number==0)
-                                                @else
-                                                    {!! $item->number . '/' . $item->getYear($item->date) !!}
-                                                @endif
-                                                <br>
-                                                @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
-                                                    <span class="document_list @if($meeting->situation($item->id, 'document')) text-primary @else text-danger @endif">
-                                                        @if($meeting->situation($item->id, 'document'))
-                                                                Votação aprovada
-                                                            @else
-                                                                Votação reprovada
-                                                            @endif
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <span class="pull-right" @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at)) style="margin-top: 10px;" @endif>
-                                                    @if($doc_voting)
-                                                        @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
-                                                            <a href="/resume/voting/{{$item->voting()->where('meeting_id', $meeting->id)->first()->id}}" target="_blank">
-                                                                <button class="btn btn-info btn-xs">Resumo</button>
-                                                             </a>
-                                                            <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/document/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
-                                                        @else
-                                                            @if(!$item->voting()->where('meeting_id', $meeting->id)->first())
-                                                                <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#InfoModalColor2" onclick="voting_document({{$item}})">Abrir Votação</button>
-                                                            @else
-                                                                <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/document/{{$item->id}}"> <button class="btn btn-warning btn-xs">Em andamento</button></a>
-                                                            @endif
+    @foreach($structurepautas as $pauta)
+        <div class="col-md-12">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-info">
+                    <div class="panel-heading" role="tab" id="collapse_{{ $pauta->id }}">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse"
+                               data-parent="#accordion" href="#collapse_{{ $pauta->id }}"
+                               aria-expanded="true" aria-controls="collapse_{{ $pauta->id }}"
+                               style="text-decoration: none; color:#fff;"
+                            ></a>{{ $pauta->name }}
+                            <span class="pull-right"> <i class="fa fa-arrow-up" onclick="icon_toogle(this)"></i> </span>
+                        </h4>
+                    </div>
+                    <div id="collapse_{{ $pauta->id }}" class="panel-collapse collapse in"
+                         role="tabpanel" aria-labelledby="collapse_{{ $pauta->id }}">
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <div class="col-md-12">
+                                @if(count($pauta->children) > 0)
+                                    @foreach($pauta->children as $child)
+                                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" role="tab" id="heading_{{ $child->id }}">
+                                                        <h4 class="panel-title">
+                                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{ $child->id }}" aria-expanded="true" aria-controls="collapse_{{ $child->id }}" style="text-decoration: none; color:#fff;" >
+                                                                {{ $child->name }}
+                                                                <span class="pull-right"> <i class="fa fa-arrow-up" onclick="icon_toogle(this)"></i> </span>
+                                                            </a>
+                                                        </h4>
+                                                        @if($child->vote_in_block)
+                                                            <span class="pull-right">
+                                                                <span
+                                                                    class="pull-right"
+                                                                    style="margin: -20px 30px 0 0;"
+                                                                >
+                                                                    @if($child->has_open_voting)
+                                                                        <a
+                                                                            href="/meetings/{{$meeting->id}}/struct/{{$child->id}}/voting-many-files">
+                                                                            <button class="btn btn-warning btn-xs">Em andamento</button>
+                                                                        </a>
+                                                                    @else
+                                                                        <?php
+                                                                            $files = [];
+
+                                                                            if ($child->meeting->isNotEmpty()) {
+                                                                                $files = $child
+                                                                                    ->meeting
+                                                                                    ->map(function ($item) {
+                                                                                        $files = [];
+
+                                                                                        if ($item->document->isNotEmpty()) {
+                                                                                            $files[] = $item->document->toArray();
+                                                                                        }
+
+                                                                                        if ($item->law->isNotEmpty()) {
+                                                                                            $files[] = $item->law->toArray();
+                                                                                        }
+
+                                                                                        if ($item->advices->isNotEmpty()) {
+                                                                                            $files[] = $item->advices->toArray();
+                                                                                        }
+
+                                                                                        return $files;
+                                                                                    });
+                                                                            }
+                                                                        ?>
+                                                                        <button
+                                                                            class="btn btn-info btn-xs btn-block"
+                                                                            data-toggle="modal"
+                                                                            data-target="#voting-files"
+                                                                            onclick="voting_files({{$files}})"
+                                                                        >
+                                                                            Abrir Votação
+                                                                        </button>
+                                                                    @endif
+                                                                </span>
+                                                            </span>
                                                         @endif
-                                                    @endif
-                                                </span>
+
+                                                    </div>
+                                                    <div id="collapse_{{ $child->id }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
+                                                        <div
+                                                            class="panel-body"
+                                                            style="width: 100%; display: flex; flex-direction: column"
+                                                        >
+
+                                                            @if($meeting)
+                                                                <div class="row-fluid text-uppercase">
+                                                                    <span>
+                                                                        @if($last_voting != null)
+                                                                            ATA Nº - {{$last_voting->number}}/{{Carbon\Carbon::createFromFormat('d/m/Y H:i',$last_voting->date_start)->year}}
+                                                                            @if(isset($meeting->voting()->where('ata_id', $last_voting->id)->first()->closed_at))
+                                                                                <br>
+                                                                                <span class="document_list @if($meeting->situation($last_voting->id, 'ata')) text-primary @else text-danger @endif">
+                                                                                    @if($meeting->situation($last_voting->id, 'ata'))
+                                                                                        Votação aprovada
+                                                                                    @else
+                                                                                        Votação reprovada
+                                                                                    @endif
+                                                                                </span>
+                                                                            @endif
+                                                                        @endif
+                                                                    </span>
+                                                                    @if(! $child->vote_in_block)
+                                                                        <span class="pull-right">
+                                                                            <span class="pull-right" @if(isset($meeting->voting()->where('meeting_id', $meeting->id)->whereNotNull('deleted_at')->first()->closed_at)) style="margin-top: 10px;" @endif>
+                                                                                @if($ata_voting && ($last_voting != null))
+                                                                                    @if(isset($meeting->voting()->where('ata_id', $last_voting->id)->first()->closed_at))
+                                                                                        <a href="/resume/voting/{{$meeting->voting()->where('ata_id', $last_voting->id)->first()->id}}" target="_blank">
+                                                                                            <button class="btn btn-info btn-xs">Resumo</button>
+                                                                                        </a>
+                                                                                        <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/ata/{{$last_voting->id}}">
+                                                                                            <button class="btn btn-danger btn-xs">Encerrada</button>
+                                                                                        </a>
+                                                                                    @else
+                                                                                        @if(($meeting->voting()->where('ata_id', $last_voting->id)->first()))
+                                                                                            <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/ata/{{$last_voting->id}}">
+                                                                                                <button class="btn btn-warning btn-xs">Em andamento</button>
+                                                                                            </a>
+                                                                                        @else
+                                                                                            <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor2" onclick="voting_ata({{$last_voting}})">Abrir Votação</button>
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                            </span>
+                                                                        </span>
+                                                                    @endif
+                                                                </div>
+                                                            @else
+                                                                Sessão anterior não possui ATA
+                                                            @endif
+
+                                                            @if($child->add_advice)
+                                                                <ul class="list-group">
+                                                                    @if($child->meeting->isNotEmpty())
+                                                                        @foreach($child->meeting as $meeting_pauta)
+                                                                            @foreach($meeting_pauta->advices as $item)
+                                                                                <li class="list-group-item">
+                                                                                    <div class="col-lg-10 text-uppercase">
+                                                                                        {!! $item->commission->name . ' - ' !!}
+                                                                                        @if($item->document_id > 0)
+                                                                                            @if($item->document->document_type->parent_id) {{ $item->document->document_type->parent->name }} ::  @endif {!! $item->document->document_type->name !!} -
+                                                                                            @if($item->document->number == 0)
+                                                                                            @else
+                                                                                                {!! $item->document->number . '/' . $item->document->getYear($item->date) !!}
+                                                                                            @endif
+                                                                                            <br>
+                                                                                            @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
+                                                                                                <span class="document_list @if($meeting->situation($item->id, 'advice')) text-primary @else text-danger @endif">
+                                                                                                    @if($meeting->situation($item->id, 'advice'))
+                                                                                                        Votação aprovada
+                                                                                                    @else
+                                                                                                        Votação reprovada
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            @endif
+                                                                                            @endif
+                                                                                            @if($item->laws_projects_id > 0)
+                                                                                                @if(!$item->project->law_type) {{ $item->project->law_type_id }} @else {!! mb_strtoupper($item->project->law_type->name, 'UTF-8') !!} @endif
+                                                                                                <span id="tdLawProjectNumber">
+                                                                                                    {!! $item->project->project_number . '/' . $item->project->getYearLawPublish($item->project->law_date) !!}
+                                                                                                </span>
+                                                                                                <br>
+                                                                                                @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
+                                                                                                    <span class="document_list @if($meeting->situation($item->id, 'advice')) text-primary @else text-danger @endif">
+                                                                                                        @if($meeting->situation($item->id, 'advice'))
+                                                                                                            Votação aprovada
+                                                                                                        @else
+                                                                                                            Votação reprovada
+                                                                                                        @endif
+                                                                                                    </span>
+                                                                                                @endif
+                                                                                        @endif
+                                                                                    </div>
+                                                                                    @if(! $child->vote_in_block)
+                                                                                        <div class="col-lg-2">
+                                                                                            <span class="pull-right" @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at)) style="margin-top: 10px;" @endif>
+                                                                                                @if($advice_voting)
+                                                                                                    @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
+                                                                                                        @if($item->document_id > 0)
+                                                                                                            <a href="/resume/voting/{{$item->voting()->where('meeting_id', $meeting->id)->first()->id}}" target="_blank">
+                                                                                                            <button class="btn btn-info btn-xs">Resumo</button>
+                                                                                                         </a>
+                                                                                                            <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/advice/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
+                                                                                                        @endif
+
+                                                                                                        @if($item->laws_projects_id > 0)
+                                                                                                            <a href="/resume/voting/{{$item->voting()->where('meeting_id', $meeting->id)->first()->id}}" target="_blank">
+                                                                                                            <button class="btn btn-info btn-xs">Resumo</button>
+                                                                                                            </a>
+                                                                                                            <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/advice/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
+                                                                                                        @endif
+                                                                                                    @else
+                                                                                                        @if(!$item->voting()->where('meeting_id', $meeting->id)->first())
+                                                                                                            <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor3" onclick="voting_advice({{$item}})">Abrir Votação</button>
+                                                                                                        @else
+                                                                                                            <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/advice/{{$item->id}}"> <button class="btn btn-warning btn-xs">Em andamento</button></a>
+                                                                                                        @endif
+                                                                                                    @endif
+                                                                                                @endif
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                    <div class="clearfix"></div>
+                                                                                </li>
+                                                                            @endforeach
+                                                                        @endforeach
+                                                                    @endif
+                                                                </ul>
+                                                            @endif
+
+                                                            @if($child->add_doc)
+                                                                @if($child->meeting->isNotEmpty())
+                                                                    @foreach($child->meeting as $meeting_pauta)
+                                                                        @foreach($meeting_pauta->document as $item)
+                                                                            <li class="list-group-item">
+                                                                                <div class="col-lg-10 text-uppercase">
+                                                                                    <span class="text-uppercase">
+                                                                                        Documento :
+                                                                                    </span>
+                                                                                    @if($item->document_type->parent_id) {{ $item->document_type->parent->name }} ::  @endif {!! $item->document_type->name !!} -
+                                                                                    @if($item->number==0)
+                                                                                    @else
+                                                                                        {!! $item->number . '/' . $item->getYear($item->date) !!}
+                                                                                    @endif
+                                                                                    <br>
+                                                                                    @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
+                                                                                        <span class="document_list @if($meeting->situation($item->id, 'document')) text-primary @else text-danger @endif">
+                                                                                            @if($meeting->situation($item->id, 'document'))
+                                                                                                Votação aprovada
+                                                                                            @else
+                                                                                                Votação reprovada
+                                                                                            @endif
+                                                                                        </span>
+                                                                                    @endif
+                                                                                </div>
+                                                                                @if(! $child->vote_in_block)
+                                                                                    <div class="col-lg-2">
+                                                                                        <span class="pull-right" @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at)) style="margin-top: 10px;" @endif>
+                                                                                            @if($doc_voting)
+                                                                                                @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
+                                                                                                    <a href="/resume/voting/{{$item->voting()->where('meeting_id', $meeting->id)->first()->id}}" target="_blank">
+                                                                                                        <button class="btn btn-info btn-xs">Resumo</button>
+                                                                                                     </a>
+                                                                                                    <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/document/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
+                                                                                                @else
+                                                                                                    @if(!$item->voting()->where('meeting_id', $meeting->id)->first())
+                                                                                                        <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#InfoModalColor2" onclick="voting_document({{$item}})">Abrir Votação</button>
+
+                                                                                                    @else
+                                                                                                        <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/document/{{$item->id}}"> <button class="btn btn-warning btn-xs">Em andamento</button></a>
+                                                                                                    @endif
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="clearfix"></div>
+                                                                                @endif
+                                                                            </li>
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                @endif
+                                                            @endif
+
+                                                            @if($child->add_law)
+                                                                @if($child->meeting->isNotEmpty())
+                                                                    @foreach($child->meeting as $meeting_pauta)
+                                                                        @foreach($meeting_pauta->law as $item)
+                                                                            <li class="list-group-item">
+                                                                                <div class="col-lg-10 text-uppercase">
+                                                                                    Projeto de lei :
+
+                                                                                    @if(!$item->law_type) {{ $item->law_type_id }} @else {!! mb_strtoupper($item->law_type->name, 'UTF-8') !!} @endif
+
+                                                                                    <span id="tdLawProjectNumber">
+                                                                                        {!! $item->project_number . '/' . $item->getYearLawPublish($item->law_date) !!}
+                                                                                    </span>
+
+                                                                                    <br>
+                                                                                    @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
+                                                                                        <span class="document_list @if($meeting->situation($item->id, 'law')) text-primary @else text-danger @endif">
+                                                                                            @if($meeting->situation($item->id, 'law'))
+                                                                                                Votação aprovada
+                                                                                            @else
+                                                                                                Votação reprovada
+                                                                                            @endif
+                                                                                        </span>
+                                                                                    @endif
+                                                                                </div>
+                                                                                @if(! $child->vote_in_block)
+                                                                                    <div class="col-lg-2">
+                                                                                        <span class="pull-right" @if(isset($item->voting->closed_at)) style="margin-top: 30px;" @else style="margin-top: 10px;" @endif>
+                                                                                            @if($law_voting)
+                                                                                                @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
+                                                                                                    <a href="/resume/voting/{{$item->voting()->where('meeting_id', $meeting->id)->first()->id}}" target="_blank">
+                                                                                                        <button class="btn btn-info btn-xs">Resumo</button>
+                                                                                                     </a>
+                                                                                                    <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/law/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
+                                                                                                @else
+                                                                                                    @if(!$item->voting()->where('meeting_id', $meeting->id)->first())
+                                                                                                        <button type="button" class="btn btn-primary btn-block btn-xs" data-toggle="modal" data-target="#WarningModalColor2" onclick="voting_law({{$item}})">Abrir Votação</button>
+                                                                                                    @else
+                                                                                                        <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/law/{{$item->id}}"> <button class="btn btn-warning btn-xs">Em andamento</button></a>
+                                                                                                    @endif
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="clearfix"></div>
+                                                                                @endif
+                                                                            </li>
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                @endif
+                                                            @endif
+                                                        </div>
+                                                </div>
                                             </div>
-                                            <div class="clearfix"></div>
-                                        </li>
+                                        </div>
                                     @endforeach
-                                </ul>
-                            </div><!-- /.panel-body -->
-                        </div>
+                                @endif
+                            </ul>
+                        </div><!-- /.panel-body -->
                     </div>
                 </div>
-
             </div>
         </div>
-    </div>
-
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-warning">
-                        <div class="panel-heading" role="tab" id="headingFive">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive" style="text-decoration: none; color:#fff;" >
-                                    PROJETO DE LEI
-                                    <span class="pull-right"> <i class="fa fa-arrow-up" onclick="icon_toogle(this)"></i> </span>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
-                            <div class="panel-body">
-                                <ul class="list-group">
-                                    @foreach($laws  as $item)
-                                        <li class="list-group-item">
-                                            <div class="col-lg-10 text-uppercase">
-                                                Projeto de lei :
-
-                                                @if(!$item->law_type) {{ $item->law_type_id }} @else {!! mb_strtoupper($item->law_type->name, 'UTF-8') !!} @endif
-
-                                                <span id="tdLawProjectNumber">
-                                                    {!! $item->project_number . '/' . $item->getYearLawPublish($item->law_date) !!}
-                                                </span>
-
-                                                <br>
-                                                @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
-                                                    <span class="document_list @if($meeting->situation($item->id, 'law')) text-primary @else text-danger @endif">
-                                                        @if($meeting->situation($item->id, 'law'))
-                                                                Votação aprovada
-                                                            @else
-                                                                Votação reprovada
-                                                            @endif
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <span class="pull-right" @if(isset($item->voting->closed_at)) style="margin-top: 30px;" @else style="margin-top: 10px;" @endif>
-                                                    @if($law_voting)
-                                                        @if(isset($item->voting()->where('meeting_id', $meeting->id)->first()->closed_at))
-                                                            <a href="/resume/voting/{{$item->voting()->where('meeting_id', $meeting->id)->first()->id}}" target="_blank">
-                                                                <button class="btn btn-info btn-xs">Resumo</button>
-                                                             </a>
-                                                            <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/law/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
-                                                        @else
-                                                            @if(!$item->voting()->where('meeting_id', $meeting->id)->first())
-                                                                <button type="button" class="btn btn-primary btn-block btn-xs" data-toggle="modal" data-target="#WarningModalColor2" onclick="voting_law({{$item}})">Abrir Votação</button>
-                                                            @else
-                                                                <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/law/{{$item->id}}"> <button class="btn btn-warning btn-xs">Em andamento</button></a>
-                                                            @endif
-                                                        @endif
-                                                    @endif
-                                                </span>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div><!-- /.panel-body -->
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    @endforeach
 
     <div class="modal fade" id="WarningModalColor2" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
@@ -447,7 +476,7 @@
         </div><!-- /.modal-dialog -->
     </div>
 
-    @if($last_voting != null)
+    @if($last_voting !== null)
     <div class="modal fade" id="primaryModalColor2" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content modal-no-shadow modal-no-border">
@@ -531,6 +560,66 @@
         </div><!-- /.modal-dialog -->
     </div>
 
+    <div class="modal fade" id="voting-files" tabindex="-1" role="dialog" aria-hidden="true"
+         style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content modal-no-shadow modal-no-border">
+                <div class="modal-header bg-info no-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title text-uppercase">Votação</h4>
+                </div>
+
+                <form
+                    action="/meetings/{{ $meeting->id }}/init-vote-for-many-docs"
+                    id="form_law"
+                    method="POST"
+                >
+                    {!!  Form::token() !!}
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="meeting_name">Sessão</label>
+                                <input
+                                    type="text"
+                                    id="meeting_name"
+                                    name="meeting_name"
+                                    value="{{ $meeting->number }}/{{ Carbon\Carbon::createFromFormat(
+                                            'd/m/Y H:i',
+                                            $meeting->date_start
+                                        )->year}}"
+                                    class="form-control"
+                                    disabled
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="document_name">Arquivos</label>
+                                <div
+                                    id="files"
+                                    style="
+                                        min-height: 20px;
+                                        border: 1px solid #D5DAE0;
+                                        padding: 10px;
+                                        margin: 0
+                                    "
+                                ></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal"
+                        >
+                            Fechar
+                        </button>
+                        <button type="submit" class="btn btn-info">Abrir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script>
 
@@ -607,14 +696,34 @@
                 name = ' PROJETO DE LEI : ' + advice.project.law_type.name + ' - ' + advice.project.project_number + '/' + data[2];
                 var meeting_id = $('#advice_name').val(name);
             }
+        }
 
-            // if(!law.law_type){ name = law.law_type_id + ' : ' } else { name = law.law_type.name.toUpperCase() + ' : '; }
-            //
-            // var year = law.law_date.split('/');
-            //
-            // name = name + law.project_number + '/' + year[2];
-            //
-            // var meeting_id = $('#advice_name').val(name);
+        const voting_files = files => {
+            const filesArea = document.querySelector('#files')
+
+            for (const item of files.flat().flat()) {
+                const inputFile = document.createElement('input')
+                const p = document.createElement('p')
+
+                p.innerText = item.label
+
+                inputFile.setAttribute('hidden', '')
+
+                const inputTypes = [
+                    { model: 'Document', type: `document_id-${item.id}` },
+                    { model: 'LawProject', type: `law_id-${item.id}` }
+                ]
+
+                inputFile.setAttribute(
+                    'name',
+                    inputTypes.filter(type => item.model === type.model)[0].type ?? ''
+                )
+
+                inputFile.setAttribute('value', item.id)
+
+                filesArea.append(inputFile)
+                filesArea.append(p)
+            }
         }
 
 

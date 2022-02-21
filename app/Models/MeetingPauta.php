@@ -43,13 +43,18 @@ class MeetingPauta extends BaseModel
         return $this->hasMany(LawsProject::class, 'id', 'law_id');
     }
 
+    public function struct()
+    {
+        return $this->hasOne(Structurepautum::class, 'id', 'structure_id');
+    }
+
     public function meeting()
     {
-        return $this->hasMany(Meeting::class);
+        return $this->hasMany(Meeting::class, 'id', 'meeting_id');
     }
 
     public function advices()
     {
-        return $this->hasMany(Advice::class);
+        return $this->hasMany(Advice::class, 'id', 'advice_id');
     }
 }
