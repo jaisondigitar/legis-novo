@@ -4,6 +4,43 @@
 @endsection
 @section('content')
     <style>
+        body {
+            padding: 3%;
+        }
+
+        .nav-mega {
+            width: 100%;
+        }
+        .nav-mega .dropdown {
+            position: static;
+        }
+        .nav-mega .dropdown-menu.mega-menu {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -moz-border-radius-topleft: 0;
+            -webkit-border-top-left-radius: 0;
+            border-top-left-radius: 0;
+            -moz-border-radius-topright: 0;
+            -webkit-border-top-right-radius: 0;
+            border-top-right-radius: 0;
+            min-width: auto;
+            width: 100%;
+            margin-top: 0;
+            padding: 0;
+            border-color: #ccc;
+        }
+        .nav-mega .dropdown-menu.mega-menu > li {
+            padding: 20px;
+        }
+        .nav-mega .dropdown-menu.mega-menu .media-list .media {
+            padding: 10px;
+            font-size: 13px;
+        }
+        .nav-mega .dropdown-menu.mega-menu .media-list .media-heading {
+            font-size: 16px;
+        }
+
         .alert>p, .alert>ul {
             font-weight: 300;
         }
@@ -41,7 +78,7 @@
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <div style="padding-left: 10px"
+            <div style="padding-left: 10px">
             <a href="/lawsProjects">
             <div class="card text-center">
                 <div class="card-header bg-danger">
@@ -71,7 +108,7 @@
         </div>
 
         <div class="col-sm-4">
-            <div style="padding-right: 10px"
+            <div style="padding-right: 10px">
             <a href="/admin/commissions">
                 <div class="card text-center">
                     <div class="card-header bg-success">
@@ -89,6 +126,43 @@
                 </div>
                 </a>
             </div>
+        </div>
+    </div>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <ul class="nav nav-mega">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        teste<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu mega-menu">
+                        <li>
+                            <div class="row-fluid">
+                                <ul class="media-list span4">
+                                    <li class="media">
+                                        <a href="#" class="pull-left">
+                                        </a>
+                                        <div class="media-body">
+                                            <h5 class="media-heading"><a href="#">teste</a></h5>
+                                            <ul class="unstyled">
+                                                <li><a href="#">teste</a></li>
+                                                <li><a href="#">teste</a></li>
+                                                <li><a href="#">teste</a></li>
+                                                <li><a href="#">teste</a></li>
+                                                <li><a href="#">teste</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <hr>
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 

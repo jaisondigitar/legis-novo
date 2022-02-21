@@ -1,4 +1,4 @@
-<table class="table table-striped permissionDataTable">
+<table class="table table-striped dataTable">
     <thead>
         <tr>
             <th>Slug</th>

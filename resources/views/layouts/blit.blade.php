@@ -64,6 +64,10 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
         .pointer{
             cursor:pointer;
         }
@@ -233,7 +237,7 @@
     </style>
     <script type="application/javascript">
         $(document).ready(function() {
-            $('.permissionDataTable').DataTable({
+            $('.dataTable').DataTable({
                 "language": {
                     "sEmptyTable": "Nenhum registro encontrado",
                     "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
