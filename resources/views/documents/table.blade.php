@@ -154,7 +154,7 @@
     </div>
 </div>
 
-<div id="modalNumberEdit" class="modal fade" role="dialog">
+<div id="modalNumberEditLaw" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -288,7 +288,7 @@
 
         limpaedit();
         $('#document_id_edit_number').val(id);
-        $('#modalNumberEdit').modal();
+        $('#modalNumberEditLaw').modal();
 
     };
 
@@ -360,7 +360,7 @@
             }).success(function (result) {
 
                 if (result.success) {
-                    $('#modalNumberEdit').modal('hide');
+                    $('#modalNumberEditLaw').modal('hide');
                     $('#numberEdit' + result.id).html(result.next_number);
 
                 } else {
