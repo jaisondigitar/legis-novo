@@ -168,6 +168,30 @@
     </div>
 </div>
 
+<div id="modalNumberEditDoc" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Número do Projeto de Lei</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="law_project_id" id="law_project_id_edit_number">
+
+                <div class="form-group col-sm-5">
+                    {!! Form::label('law_project_number_edit', 'Número do Projeto de Lei:') !!}
+                    {!! Form::text('law_project_number_edit', null, ['class' => 'form-control', 'id' => 'law_project_number_edit']) !!}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success pull-right" id="btn-edit-protocol" onclick="editNumberDoc()" >Alterar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modalProtocolEdit" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -218,6 +242,33 @@
         $('#answer').modal();
     };
 
+    const alteraNumber = (id) => {
+        $('#law_project_id_edit_number').val(id);
+        $('#modalNumberEditDoc').modal();
+    }
+
+    const editNumberDoc = () => {
+        const url = '/lawProjects/altera-numero';
+
+        const data = {
+            law_project_id: $('#law_project_id_edit_number').val(),
+            law_project_id_number: $('#law_project_number_edit').val(),
+            '_token': '{{csrf_token()}}'
+        };
+
+        $.ajax({
+            url: url,
+            data: data,
+            method: 'POST'
+        }).success((result) => {
+            if (result.success) {
+                $('#modalNumberEditLaw').modal('hide');
+                $('#numberEdit' + result.id).html(result.next_number);
+            } else {
+                $('#law_project_number_edit').val(result.next_number);
+            }
+        });
+    };
 
     const toogleApproved = function (id) {
 

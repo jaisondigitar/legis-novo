@@ -1235,9 +1235,47 @@ class LawsProjectController extends AppBaseController
         ];
     }
 
-    public function lawsProjectProtocolSave()
+    public function alteraNumero(Request $request)
     {
-        $params = \Illuminate\Support\Facades\Request::all();
+        $input = $request->all();
+
+        $law_project = LawsProject::find($input['law_project_id']);
+
+        $year = explode('/', $law_project->law_date);
+        $year = $year[2];
+
+        $parameter = Parameters::where('slug', 'permitir-criar-numero-de-projetos-de-lei-fora-da-sequencia')->first();
+
+        if ($parameter->value === 0) {
+            $law_project_verify = LawsProject::whereYear('law_date', '=', $year);
+
+            $law_project_verify = $law_project_verify->where('project_number', '>=', $input['law_project_id_number'])
+                ->orderBy('project_number', 'DESC')
+                ->first();
+        } else {
+            $law_project_verify = LawsProject::whereYear('law_date', '=', $year);
+
+
+            $law_project_verify = $law_project_verify->where('project_number', '=', $input['law_project_id_number'])
+                ->orderBy('project_number', 'DESC')
+                ->first();
+        }
+
+        if ($law_project_verify) {
+            return ['success' => false, 'message' => 'Número já utilizado ou inferior ao último, a sua sugestão foi atualizada!', 'next_number' => $input['law_project_id_number']];
+        } else {
+            $law_project = LawsProject::find($input['law_project_id']);
+            $law_project->project_number = $input['law_project_id_number'];
+
+            if ($law_project->save()) {
+                return ['success' => true, 'message' => 'Número foi atualizado!', 'next_number' => $input['law_project_id_number'].'/'.$year, 'id' => $law_project->id];
+            }
+        }
+    }
+
+    public function lawsProjectProtocolSave(Request $request)
+    {
+        $params = $request->all();
 
         $law_project = LawsProject::find($params['law_project_id']);
 

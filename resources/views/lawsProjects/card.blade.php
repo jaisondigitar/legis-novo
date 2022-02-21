@@ -11,7 +11,23 @@
             @endif
             -
             <span id="tdLawProjectNumber{{$lawsProject->id}}" style="color: #37BC9B">
-                {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!}
+                @if($lawsProject->project_number)
+                    @if (Auth::user()->roleHasPermission('lawsProject.editnumerolei'))
+                        <a
+                            href="javascript:void(0)"
+                            id="numberEdit{{$lawsProject->id}}"
+                            onclick="alteraNumber('{{ $lawsProject->id }}');"
+                        >
+                            {!!$lawsProject->project_number . '/' .$lawsProject->getYearLawPublish($lawsProject->law_date)!!}
+                        </a>
+                    @else
+                        <span style="color: #37BC9B">
+                            {!!$lawsProject->project_number . '/' .$lawsProject->getYearLawPublish($lawsProject->law_date)!!}
+                        </span>
+                    @endif
+                @else
+                    -
+                @endif
             </span>
             <div class="pull-right">
                 Prazo:
