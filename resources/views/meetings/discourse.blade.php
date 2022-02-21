@@ -66,7 +66,6 @@
                 method : 'POST'
             }).success(function (data) {
                 data = JSON.parse(data);
-                console.log(data)
                 if(data.assemblyman_id == 0){
                     toastr.success('Nenhum paralamentar selecionado!');
                 }else{
@@ -125,7 +124,6 @@
 
                             if (value.abstention == 1)
                                 $('#vote_' + value.assemblyman_id + '_3').attr('checked', true);
-                            console.log(value);
                         })
                     }
                 })

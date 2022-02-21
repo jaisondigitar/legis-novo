@@ -102,7 +102,6 @@
                 method : 'POST'
             }).success(function (data) {
                 data = JSON.parse(data);
-                console.log(data);
                 if(data == null){
                     toastr.success('Nenhum paralamentar selecionado!');
                 }else{

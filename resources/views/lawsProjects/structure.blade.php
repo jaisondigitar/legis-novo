@@ -208,7 +208,6 @@
                                 $('#myModal .modal-dialog .modal-body #idModal').val(cc_item_id);
 
                                 if(cc_name){
-                                    console.log(cc_name)
                                     CKEDITOR.instances['nameModal'].setData(cc_name);
                                 }
 

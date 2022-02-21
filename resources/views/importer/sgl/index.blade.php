@@ -104,7 +104,6 @@
   var prepareUpload = function(event)
   {
     files = event.target.files;
-    console.log(files);
   }
 
   var importar = function()

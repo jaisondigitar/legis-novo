@@ -297,7 +297,8 @@
         @endif
     @endshield
 
-    @shield('meetings.index', 'version_pauta.index', 'sessionTypes.index', 'structurepautas.index')
+    @shield('meetings.voter', 'meetings.index', 'version_pauta.index', 'sessionTypes.index',
+    'structurepautas.index')
         @if(App::make("ModuleService")->isActive('Sessoes'))
             <li>
                 <a class="dropdown-toggle courser" data-toggle="dropdown">
@@ -343,13 +344,6 @@
                             </a>
                         </li>
                     @endshield
-                    {{--@shield('structurepautas.index')
-                        <li>
-                            <a href="{{url('/structurepautas', $parameters = [], $secure = null)}}">
-                                Estrutura de Pauta
-                            </a>
-                        </li>
-                    @endshield--}}
                     @shield('structurepautas.index')
                         <li>
                             <a href="{{url('/typeVotings', $parameters = [], $secure = null)}}">

@@ -21,7 +21,6 @@ class Voting extends BaseModel
     public $table = 'votings';
 
     protected $fillable = [
-
         'meeting_id',
         'type_voting_id',
         'open_at',
@@ -32,6 +31,7 @@ class Voting extends BaseModel
         'document_id',
         'closed_at',
         'version_pauta_id',
+        'is_open_for_voting',
     ];
 
     public function document()

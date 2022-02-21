@@ -54,8 +54,6 @@
                 toastr.error("Erro ao excluir parecer!");
             }
 
-            console.log(data);
-
         });
     }
 </script>

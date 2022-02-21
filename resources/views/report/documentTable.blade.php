@@ -122,9 +122,8 @@
             data : data,
             jsonp: false,
             method: 'POST',
-            success :function(data){
+            success: function(data){
                 data = JSON.parse(data);
-                console.log(data);
             }
         })
     }

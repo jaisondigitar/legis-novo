@@ -96,7 +96,6 @@
             dataType: "json"
         }).success(function (result) {
             $.each(result, function( index, value ) {
-                console.log(index, value);
                 //Adicionando a visualização
                 $('#tbody').append('<tr id="show'+value.assemblyman_id+ '">' +
                     '<td>'+ value.assemblyman.full_name +'</td>' +

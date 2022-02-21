@@ -583,8 +583,6 @@
 
         var voting_advice = function (advice)
         {
-            console.log(advice);
-
             var advice_id = $('#advice_id').val(advice.id);
             var meeting_id = $('#meeting_id').val('{{$meeting->id}}');
 

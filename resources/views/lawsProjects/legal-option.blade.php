@@ -166,7 +166,6 @@
                     data: data,
                     method: 'POST'
                 }).success((data) => {
-                    console.log(data);
                     if (data) {
                         toastr.success("Pedido salvo com sucesso!!");
                         window.location.reload()
