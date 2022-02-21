@@ -184,7 +184,7 @@ class DocumentModelsController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('documentModels.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -201,6 +201,10 @@ class DocumentModelsController extends AppBaseController
         }
 
         $this->documentModelsRepository->delete($documentModels);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Modelo de documento removido com secesso.')->success();
 

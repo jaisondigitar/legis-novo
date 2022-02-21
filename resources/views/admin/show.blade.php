@@ -59,7 +59,7 @@
                                             <td>
                                                  <span class="pull-right">
                                                     <a href="/documents/{{$advice->document->id}}" target="_blank" class="btn btn-xs btn-info"><i class="fa fa-file-text-o"></i></a>
-                                                    <button id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="findAdvice({{$advice->id}})"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    <button id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="findAdvice({{$advice->id}})"><i class="fa fa-eye"></i></button>
                                                      @if($advice->closed == 1)
                                                      <button id="advice_awnser_{{$advice->id}}" onclick="carrega_id({{$advice->id}})" type="button" class="btn btn-info btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
                                                      @endif
@@ -198,7 +198,7 @@
 
             });
 
-            var carrega_id = function(param, number){
+            const carrega_id = (param, number) => {
                 document.getElementById('inform').textContent = `${param.project.owner.short_name} - ${param.project.project_number}/${number}`;
 
                 $('#adv_idP').val(param.id);

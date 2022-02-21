@@ -13,19 +13,22 @@
                 @is(['root', 'admin'])
                     <input class="switch" onchange="changeActive('{!! $lawsType->id !!}')" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" {!! $lawsType->is_active > 0 ? 'checked' : '' !!}>
                 @endis
-                    {{--@if($lawsType->is_active == 1)--}}
-                        {{--<label class="label label-success">Sim</label>--}}
-                    {{--@else--}}
-                        {{--<label class="label label-danger">Não</label>--}}
-                    {{--@endif--}}
-
             </td>
             <td>
                 {!! Form::open(['route' => ['lawsTypes.destroy', $lawsType->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('lawsTypes.show')<a @popper(Visualizar) href="{!! route('lawsTypes.show', [$lawsType->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield
-                    @shield('lawsTypes.edit')<a @popper(Editar) href="{!! route('lawsTypes.edit', [$lawsType->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>@endshield
-                    @shield('lawsTypes.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                    @shield('lawsTypes.show')<a @popper(Visualizar) href="{!! route('lawsTypes.show', [$lawsType->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
+                    @shield('lawsTypes.edit')<a @popper(Editar) href="{!! route('lawsTypes.edit', [$lawsType->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
+                    @shield('lawsTypes.delete')
+                    <button
+                        @popper(Deletar)
+                        type = "submit"
+                        class = 'btn btn-danger btn-xs'
+                        onclick ="sweet(event, {!! $lawsType->id !!})"
+                    >
+                        <i class="fa fa-trash"></i>
+                    </button>
+                    @endshield
                 </div>
                 {!! Form::close() !!}
             </td>
@@ -44,4 +47,12 @@
         }).success(function(result) {
         });
     };
+
+    const sweet = (e, id) => {
+        const url = `/lawsTypes/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
 </script>

@@ -229,7 +229,7 @@ class CompanyController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('companies.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -246,6 +246,10 @@ class CompanyController extends AppBaseController
         }
 
         $this->companyRepository->delete($company);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Registro deletado com sucesso!')->success();
 

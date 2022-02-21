@@ -11,7 +11,7 @@
 			<td>{!! $state->name !!}</td>
             <td>
                 <a href="{!! route('states.edit', [$state->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>
-                <a href="{!! route('states.delete', [$state->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"><i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i></a>
+                <a href="{!! route('states.delete', [$state->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"><i class="fa fa-remove icon-rounded icon-xs icon-danger"></i></a>
             </td>
         </tr>
     @endforeach

@@ -217,7 +217,7 @@ class CommissionController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy(int $id, Request $request)
     {
         if (! Defender::hasPermission('commissions.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -236,6 +236,10 @@ class CommissionController extends AppBaseController
         CommissionAssemblyman::where('commission_id', $commission->id)->delete();
 
         $this->commissionRepository->delete($commission);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Comissão excluída com sucesso')->success();
 

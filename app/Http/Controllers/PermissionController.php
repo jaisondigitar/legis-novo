@@ -11,6 +11,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
@@ -143,7 +144,7 @@ class PermissionController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy(int $id, Request $request)
     {
         $permission = $this->permissionRepository->findByID($id);
 
@@ -154,6 +155,10 @@ class PermissionController extends AppBaseController
         }
 
         $this->permissionRepository->delete($permission);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Registro deletado com sucesso!')->success();
 

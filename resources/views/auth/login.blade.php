@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/structure.css') }}">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+
     <style>
         form {
             width: 20rem;
@@ -190,7 +193,7 @@
                     <div class="errorLogin">
                         @if($errors->any())
                             @foreach($errors->all() as $error)
-                                <li style="color: gainsboro">{!! $error !!}</li>
+                                <div id="error"></div>
                             @endforeach
                         @endif
                         @csrf
@@ -198,12 +201,13 @@
 
                     <label>
                         E-mail
-                        <input type="text" name="email" tabindex="1" placeholder="email">
+                        <input type="email" name="email" tabindex="1" placeholder="email">
                     </label>
+
 
                     <label>
                         Senha
-                        <input type="password" name="password" placeholder="senha" tabindex="2">
+                        <input type="password" name="password" required placeholder="senha" tabindex="2">
                     </label>
 
                     <div class="forgot">
@@ -228,4 +232,14 @@
     </footer>
 </body>
 </html>
-
+<script>
+    $(document).ready(() => {
+        if($('#error').is(":visible")) {
+            Swal.fire({
+                icon: 'error',
+                title: 'E-mail e/ou senha incorretos',
+                text: 'Verifique seu e-mail e senha',
+            })
+        }
+    });
+</script>

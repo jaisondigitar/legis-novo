@@ -16,16 +16,23 @@
                 <div class='btn-group'>
                     @shield('people.show')
                     <a @popper(Visualizar) href="{!! route('people.show', [$p->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-eye-open"></i>
+                        <i class="fa fa-eye"></i>
                     </a>
                     @endshield
                     @shield('people.edit')
                     <a @popper(Editar) href="{!! route('people.edit', [$p->id]) !!}" class='btn btn-default btn-xs'>
-                        <i class="glyphicon glyphicon-edit"></i>
+                        <i class="fa fa-edit"></i>
                     </a>
                     @endshield
                     @shield('people.delete')
-                        {!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                        <button
+                            @popper(Deletar)
+                            type = 'submit'
+                            class = 'btn btn-danger btn-xs'
+                            onclick="sweet(event, {!! $p->id !!})"
+                        >
+                            <i class="fa fa-trash"></i>
+                        </button>
                     @endshield
                 </div>
                 {!! Form::close() !!}
@@ -34,3 +41,12 @@
     @endforeach
     </tbody>
 </table>
+<script>
+    const sweet = (e, id) => {
+        const url = `/people/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
+</script>
