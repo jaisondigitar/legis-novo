@@ -179,7 +179,7 @@ class StatusProcessingDocumentController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('statusProcessingDocuments.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -196,6 +196,10 @@ class StatusProcessingDocumentController extends AppBaseController
         }
 
         $this->statusProcessingDocumentRepository->delete($statusProcessingDocument);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Status do processamento do documento removido com sucesso.')->success();
 

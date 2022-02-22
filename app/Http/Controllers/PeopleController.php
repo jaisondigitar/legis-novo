@@ -194,7 +194,7 @@ class PeopleController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy(int $id, Request $request)
     {
         if (! Defender::hasPermission('people.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -205,6 +205,10 @@ class PeopleController extends AppBaseController
         $people = $this->peopleRepository->findById($id);
 
         $this->peopleRepository->delete($people);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         return redirect(route('people.index'));
     }

@@ -28,8 +28,13 @@
                     <a @popper(Editar) href="{!! route('modules.edit', [$module->id]) !!}">
                         <i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i>
                     </a>
-                    <a @popper(Deletar) href="{!! route('config.modules.delete', [$module->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
-                        <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
+                    <a
+                        class="pointer"
+                        @popper(Deletar)
+                        type="submit"
+                        onclick="sweet(event, {!! $module->id !!})"
+                    >
+                        <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
                     </a>
                 </td>
             </tr>
@@ -46,5 +51,13 @@
         }).success(function(result) {
             console.log(result);
         });
+    }
+
+    const sweet = (e, id) => {
+        const url = `/config/modules/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
     }
 </script>

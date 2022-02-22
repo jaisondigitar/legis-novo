@@ -13,6 +13,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
@@ -145,7 +146,7 @@ class RoleController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy(int $id, Request $request)
     {
         $role = $this->roleRepository->findByID($id);
 
@@ -156,6 +157,10 @@ class RoleController extends AppBaseController
         }
 
         $this->roleRepository->delete($role);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Registro deletado com sucesso!')->success();
 

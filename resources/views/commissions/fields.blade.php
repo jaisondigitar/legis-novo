@@ -105,7 +105,7 @@
                     '<td>'+ value.end_date +'</td>'+
                     '<td>' +
                     '<button type="button" onclick="removeAssemblyman('+ value.office +','+ value.assemblyman_id+')" class="btn btn-sm btn-danger">' +
-                    '<i class="glyphicon glyphicon-remove"></i>' +
+                    '<i class="fa fa-remove"></i>' +
                     '</button>' +
                     '</td></tr>');
                 // extra button <button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-edit"></i></button>
@@ -165,7 +165,7 @@
                 '<td>'+ start_date +'</td>' +
                 '<td>'+ end_date +'</td>' +
                 '<td>' +
-                '<button type="button" class="btn btn-sm btn-danger" onclick="removeAssemblyman('+ office_id +','+ assemblyman_id +')"><i class="glyphicon glyphicon-remove"></i></button>' +
+                '<button type="button" class="btn btn-sm btn-danger" onclick="removeAssemblyman('+ office_id +','+ assemblyman_id +')"><i class="fa fa-remove"></i></button>' +
                 '</td>' +
                 '</tr>');
 

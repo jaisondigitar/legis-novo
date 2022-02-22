@@ -164,7 +164,7 @@ class TypeVotingController extends AppBaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('typeVotings.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -181,6 +181,10 @@ class TypeVotingController extends AppBaseController
         }
 
         $type_voting->delete($id);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Tipo removido com sucesso.')->success();
 

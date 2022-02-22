@@ -8,7 +8,7 @@
     {!! Form::select('law_type_id', $law_types, null, ['class' => 'form-control']) !!}
 </div>
 
-<div class="form-group col-sm-2">
+<div class="form-group col-sm-3">
     {!! Form::label('reference_id', 'Referente à:') !!}
     {!! Form::select('reference_id', $references_project, null, ['class' => 'form-control chosen']) !!}
 </div>
@@ -18,7 +18,7 @@
     {!! Form::select('situation_id', $situation, null, ['class' => 'form-control']) !!}
 </div>
 
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-2">
     {!! Form::label('assemblyman_id', 'Parlamentar Responsável', ['class' => 'required']) !!}
     {!! Form::select('assemblyman_id', $assemblymensList ,null, ['class' => 'form-control', 'id' => 'owner_id']) !!}
 </div>

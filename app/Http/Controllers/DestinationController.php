@@ -8,6 +8,7 @@ use Artesaos\Defender\Facades\Defender;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
@@ -143,7 +144,7 @@ class DestinationController extends Controller
      * @param  int  $destination_id
      * @return Application|RedirectResponse|Redirector
      */
-    public function destroy(int $destination_id)
+    public function destroy(int $destination_id, Request $request)
     {
         if (! Defender::hasPermission('destination.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -160,6 +161,10 @@ class DestinationController extends Controller
         }
 
         Destination::destroy($destination_id);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Registro deletado com sucesso!')->success();
 
