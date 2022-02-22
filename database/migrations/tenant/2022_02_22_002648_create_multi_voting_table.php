@@ -12,7 +12,7 @@ class CreateMultiVotingTable extends Migration
             $table->id();
             $table->foreignId('multi_docs_schedule_id')->references('id')
                 ->on('multi_docs_schedule');
-            $table->timestamp('closed_at');
+            $table->timestamp('closed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
