@@ -52,6 +52,7 @@ class Advice extends BaseModel
         'laws_projects_id',
         'description',
         'legal_option',
+        'date_end',
     ];
 
     public static $translation = [

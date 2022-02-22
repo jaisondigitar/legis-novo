@@ -87,7 +87,7 @@
                                             <td> {{ $processing->destination->name ?? '' }}</td>
                                             <td> @if($processing->statusProcessingLaw) {{$processing->statusProcessingLaw->name}} @endif</td>
                                             <td style="text-align: justify;"> {!! $processing->obsevation !!}</td>
-                                            <td style="text-align: justify;"> {!! $processing->date_end !!}</td>
+                                            <td style="text-align: justify;"> {!! $processing->date_end ?? '' !!}</td>
                                             <td>
                                                 @if($key === $last_position)
                                                     @if(Auth::user()->id == $processing->owner_id || Auth::user()->hasRole('root'))
@@ -206,9 +206,9 @@
         });
     }
 
-    var save_processing = function(){
+    const save_processing = () => {
 
-        url = '{{route('processings.store')}}';
+        const url = '{{route('processings.store')}}';
 
         if($('#new_advice_situation_id').val() == ''){
             toastr.error('Selecione a situação da tramitação!')
@@ -261,10 +261,10 @@
                                 }
                                 str += "</td>";
                                 str += "<td>";
-                                str += valor.obsevation;
+                                str += valor.obsevation ?? '';
                                 str += "</td>";
                                 str += "<td>";
-                                str += valor.date_end;
+                                str += valor.date_end ?? '';
                                 str += "</td>";
                                 @if(Auth::user()->id === $processing->user_id || Auth::user()->hasRole('root'))
                                     str += "<td>";
@@ -296,7 +296,7 @@
 
         if(confirm('Deseja excluir?')) {
 
-            url = '/processings/' + id;
+            const url = `/processings/${id}`;
 
             $.ajax({
                 url: url,

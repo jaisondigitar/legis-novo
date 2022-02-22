@@ -93,7 +93,11 @@ class Processing extends BaseModel
      */
     public function setDateEndAttribute($date_end)
     {
-        $this->attributes['date_end'] = Carbon::createFromFormat('d/m/Y', $date_end);
+        if ($date_end) {
+            $this->attributes['date_end'] = Carbon::createFromFormat('d/m/Y', $date_end);
+        } else {
+            $this->attributes['date_end'] = null;
+        }
     }
 
     /**
