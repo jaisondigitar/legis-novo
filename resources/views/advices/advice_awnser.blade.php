@@ -157,7 +157,7 @@
                         </div>
                         <div id="accordion-1-child-3" class="collapse" aria-expanded="false">
                             <div class="panel-body">
-                                @foreach($advice->awnser()->orderBy('date','desc')->get() as $awnser)
+                                @foreach($advice_all as $awnser)
                                     {{--{{dd($awnser)}}--}}
 
                                     <div class="col-sm-12" id="awnser_{{$awnser->id}}">
@@ -171,10 +171,10 @@
                                                     {{ $awnser->date }}
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                {{--<div class="col-md-4">
                                                     <b>Situação:</b> <br/>
                                                     {{$awnser->commission_situation->name}}
-                                                </div>
+                                                </div>--}}
 
 
                                                 <div class="col-md-4">

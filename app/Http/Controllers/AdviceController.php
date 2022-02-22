@@ -292,11 +292,13 @@ class AdviceController extends AppBaseController
 
     public function findAwnser(int $id)
     {
-        $obj = Advice::find($id);
+        $advice = Advice::find($id);
+
+        $advice_all = $advice->all()->where('laws_projects_id', $advice->laws_projects_id);
 
         $commissions_situation = ComissionSituation::pluck('name', 'id')->prepend('Selecione', 0);
 
-        return view('advices.advice_awnser', compact('commissions_situation'))->with('advice', $obj);
+        return view('advices.advice_awnser', compact('commissions_situation', 'advice_all'))->with('advice', $advice);
     }
 
     public function deleteAwnser($id)
