@@ -60,6 +60,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <h4 class="modal-title" id="myModalLabel">PEDIDO DE DESTINO</h4>
+                        <p>Projeto de Lei: {!!$lawsProject->project_number . '/' .$lawsProject->getYearLawPublish($lawsProject->law_date)!!}</p>
                     </div>
                     <div class="modal-body">
                         <label style="width: 100%">

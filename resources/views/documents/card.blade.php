@@ -75,9 +75,7 @@
                                 @else
                                     <span style="color: #37BC9B">
                                         {!!
-                                            $document->number
-                                        !!}{!!
-                                            '/' . $document->getYear($document->date)
+                                            $document->number. '/' .$document->getYear($document->date)
                                         !!}
                                     </span>
                                 @endif

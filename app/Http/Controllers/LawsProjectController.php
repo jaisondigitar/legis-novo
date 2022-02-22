@@ -1618,7 +1618,6 @@ class LawsProjectController extends AppBaseController
             return redirect(route('lawsProjects.index'));
         }
 
-
         return view('lawsProjects.legal-option', ['lawsProject' => $lawsProject]);
     }
 }

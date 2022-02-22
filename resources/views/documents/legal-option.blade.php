@@ -36,6 +36,7 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                         aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="myModalLabel">PEDIDO DE DESTINO</h4>
+                                <p>Documento: {!! $document->number. '/' . $document->getYear($document->date) !!}</p>
                             </div>
                             <div class="modal-body">
                                 <label style="width: 100%">
