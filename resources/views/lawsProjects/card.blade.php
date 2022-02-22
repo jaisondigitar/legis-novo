@@ -211,7 +211,9 @@
                     -
                 @else
                     {!!
-                        $lawsProject->processing->first()->created_at
+                        Carbon\Carbon::createFromFormat('d/m/Y H:i', $lawsProject->processing->first()->created_at)
+                            ->addHour(-4)
+                            ->format('d/m/Y H:i');
                     !!}
                 @endif
             </span>
@@ -374,11 +376,27 @@
         </div><!-- /.modal-dialog -->
     </div>
 @endif
-<script>
-    const sweet = (e) => {
-        const url = `/lawsProject/{{$lawsProject->id}}`;
 
-        const data = {
+<script>
+    var date_split = "{!! $lawsProject->processing->first()->created_at !!}".split(' ')[0].split('/').reverse().join("-")
+    var hour_split = "{!! $lawsProject->processing->first()->created_at !!}".split(' ')[1]
+
+    console.log(
+        "{!! $lawsProject->processing->first()->created_at !!}", ' / moment -> ',
+
+        moment(date_split+' '+hour_split).format('YYYY-MM-DD hh:mm a'), ' / javascript -> ',
+
+        date_split+' '+hour_split.toLocaleString(
+            Intl.DateTimeFormat().resolvedOptions().locale, {
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            }
+        )
+    );
+
+    function sweet (e) {
+        var url = `/lawsProject/{{$lawsProject->id}}`;
+
+        var data = {
             '_token' : '{{csrf_token()}}'
         };
 
