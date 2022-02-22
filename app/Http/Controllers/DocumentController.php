@@ -1171,11 +1171,9 @@ class DocumentController extends AppBaseController
         $destinations = Destination::pluck('name', 'id')->prepend('Selecione...', '');
 
         $documents = $document->processingDocument()->orderBy('processing_document_date', 'desc')->get();
-        foreach ($documents as $key => $last) {
-            $array[] = $key;
-        }
 
-        $last_position = empty($array) ? [] : end($array);
+        $first_documents = $documents->first();
+
 
         return view(
             'documents.advices',
@@ -1186,7 +1184,7 @@ class DocumentController extends AppBaseController
                 'advice_publication_document',
                 'status_processing_document',
                 'documents',
-                'last_position',
+                'first_documents',
                 'destinations'
             )
         )

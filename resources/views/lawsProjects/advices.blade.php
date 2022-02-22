@@ -89,16 +89,14 @@
                                             <td style="text-align: justify;"> {!! $processing->obsevation !!}</td>
                                             <td style="text-align: justify;"> {!! $processing->date_end ?? '' !!}</td>
                                             <td>
-                                                @if($key === $last_position)
-                                                    @if(Auth::user()->id == $processing->owner_id || Auth::user()->hasRole('root'))
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-danger btn-xs"
-                                                            onclick="delete_processing('{{$processing->id}}')"
-                                                        >
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    @endif
+                                                @if(Auth::user()->id === $processing->owner_id || $processing->id === $first_processing->id || Auth::user()->hasRole('root'))
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-danger btn-xs"
+                                                        onclick="delete_processing('{{$processing->id}}')"
+                                                    >
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
                                                 @endif
                                             </td>
                                         </tr>
@@ -225,6 +223,7 @@
                         advice_situation_id: $('#new_advice_situation_id').val(),
                         status_processing_law_id: $('#new_status_processing_law_id').val(),
                         processing_date: $('#new_date_processing').val(),
+                        processing_date_first: '{{ $first_processing->processing_date }}',
                         destination_id: $('#destination_id').val(),
                         processing_file: $('#processing_file').val(),
                         date_end: $('#date_end').val(),
@@ -238,8 +237,9 @@
                     }).success(function (data) {
                         data = JSON.parse(data);
 
-                        @if(isset($processing))
-                            table = $('#table_processing').empty();
+                        if (data) {
+                            @if(isset($processing))
+                                table = $('#table_processing').empty();
 
                             data.forEach(function (valor, chave) {
 
@@ -268,23 +268,26 @@
                                 str += "</td>";
                                 @if(Auth::user()->id === $processing->user_id || Auth::user()->hasRole('root'))
                                     str += "<td>";
-                                    str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
-                                    str += "</td>";
+                                str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
+                                str += "</td>";
                                 @endif
-                                str += "</tr>";
+                                    str += "</tr>";
                                 table.append(str);
                             });
-                        @endif
+                            @endif
 
-                        toastr.success('Tramitação salva com sucesso!');
+                            toastr.success('Tramitação salva com sucesso!');
 
-                        $('#new_advice_publication_id').val('');
-                        $('#new_advice_situation_id').val('');
-                        $('#new_status_processing_law_id').val('');
-                        $('#new_date_processing').val('');
-                        CKEDITOR.instances.new_observation.setData('');
+                            $('#new_advice_publication_id').val('');
+                            $('#new_advice_situation_id').val('');
+                            $('#new_status_processing_law_id').val('');
+                            $('#new_date_processing').val('');
+                            CKEDITOR.instances.new_observation.setData('');
 
-                        window.location.href = '{{route('lawsProjects.index')}}';
+                            window.location.href = '{{route('lawsProjects.index')}}';
+                        } else {
+                            toastr.error("Data menor que a do ultimo tramite");
+                        }
                     });
                 }
             }

@@ -322,11 +322,8 @@ class LawsProjectController extends AppBaseController
         $lawsProject = $this->lawsProjectRepository->findByID($lawProjectId);
 
         $processing_last = $lawsProject->processing()->orderBy('processing_date', 'desc')->get();
-        foreach ($processing_last as $key => $last) {
-            $array[] = $key;
-        }
 
-        $last_position = empty($array) ? [] : end($array);
+        $first_processing = $processing_last->first();
 
         if (empty($lawsProject)) {
             flash('Projeto de Leis não encontrado')->error();
@@ -354,8 +351,8 @@ class LawsProjectController extends AppBaseController
                 'advice_situation_law',
                 'advice_publication_law',
                 'status_processing_law',
-                'last_position',
                 'destinations',
+                'first_processing',
                 'processing_last',
                 'legal'
             )

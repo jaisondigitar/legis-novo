@@ -39,7 +39,18 @@ class ProcessingController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $processing = Processing::create($request->all());
+
+        $date = explode('/', $input['processing_date']);
+        $date_first = explode('/', $input['processing_date_first']);
+
+        $processing_date = $date[2].'-'.$date[1].'-'.$date[0];
+        $processing_date_first = $date_first[2].'-'.$date_first[1].'-'.$date_first[0];
+
+        if (strtotime($processing_date) < strtotime($processing_date_first)) {
+            return json_encode(false);
+        }
+
+        $processing = Processing::create($input);
         $processing->owner()->associate(Auth::user());
 
         if ($processing) {
