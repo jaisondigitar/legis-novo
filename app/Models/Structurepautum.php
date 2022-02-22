@@ -49,7 +49,10 @@ class Structurepautum extends Node
 
     public function getHasOpenVotingAttribute()
     {
-        if ($this->meeting->isNotEmpty()) {
+        if (
+            $this->meeting->isNotEmpty() &&
+            $this->meeting->first()->meeting->isNotEmpty()
+        ) {
             return $this->meeting->first()
                 ->meeting->first()
                 ->manyVotes->whereNull('closed_at')
