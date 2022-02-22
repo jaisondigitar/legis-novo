@@ -100,6 +100,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="col-md-12">
+                                    <input type="hidden" name="commission_id" id="commission_id_number">
 
                                     <input type="text" class="form-control hidden"  name="id" id="adv_idP"/>
 
@@ -159,20 +160,17 @@
         <!-- Large modal -->
 
         {{-- fim do modal --}}
-            <script>
-                $(document).ready(function () {
-                    $('.datepicker1').datepicker({
-                        format: 'dd/mm/yyyy',
-                        language: 'pt-BR',
-                        autoclose: true
-                    });
-
-                })
-
-            </script>
-
-
         <script>
+            $(document).ready(function () {
+                $('.datepicker1').datepicker({
+                    format: 'dd/mm/yyyy',
+                    language: 'pt-BR',
+                    autoclose: true
+                });
+
+                $('#commission_id_number').val({{$commissions->id}});
+            })
+
 
             var id = '';
 

@@ -304,15 +304,17 @@ class AdminController extends AppBaseController
             }
         }
 
-        return view('admin.index', compact(
+        flash('Informar parecer salvo com sucesso.')->success();
+
+        return redirect(route('admin.showLaw', $input['commission_id']))->with([
             'projLeiAll',
             'projLeiApr',
             'projLeiRead',
             'docAll',
             'docRead',
             'commissions',
-            'commissions_situation'
-        ));
+            'commissions_situation',
+        ]);
     }
 
     public function exportFiles()
