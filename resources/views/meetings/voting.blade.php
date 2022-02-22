@@ -66,6 +66,78 @@
     <h2>VOTAÇÃO </h2>
     <div class="clearfix"></div>
 
+    <div class="col-md-12">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-info">
+                <div class="panel-heading" role="tab" id="collapse_ata">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse"
+                           data-parent="#accordion" href="#collapse_ata"
+                           aria-expanded="true" aria-controls="collapse_ata"
+                           style="text-decoration: none; color:#fff;"
+                        ></a>ATA
+                        <span class="pull-right"> <i class="fa fa-arrow-up" onclick="icon_toogle(this)"></i> </span>
+                    </h4>
+                </div>
+                <div id="collapse_ata" class="panel-collapse collapse in"
+                     role="tabpanel" aria-labelledby="collapse_ata">
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <div class="col-md-12">
+                                @if($meeting)
+                                    <li class="list-group-item">
+                                        <div class="col-lg-10 text-uppercase">
+                                            <span>
+                                                @if($last_voting != null)
+                                                    ATA Nº - {{$last_voting->number}}/{{Carbon\Carbon::createFromFormat('d/m/Y H:i',$last_voting->date_start)->year}}
+                                                    @if(isset($meeting->voting()->where('ata_id', $last_voting->id)->first()->closed_at))
+                                                        <br>
+                                                        <span class="document_list @if($meeting->situation($last_voting->id, 'ata')) text-primary @else text-danger @endif">
+                                                            @if($meeting->situation($last_voting->id, 'ata'))
+                                                                Votação aprovada
+                                                            @else
+                                                                Votação reprovada
+                                                            @endif
+                                                        </span>
+                                                    @endif
+                                                @endif
+                                            </span>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <span class="pull-right" @if(isset($meeting->voting()->where('meeting_id', $meeting->id)->whereNotNull('deleted_at')->first()->closed_at)) style="margin-top: 10px;" @endif>
+                                                @if($ata_voting && ($last_voting != null))
+                                                    @if(isset($meeting->voting()->where('ata_id', $last_voting->id)->first()->closed_at))
+                                                        <a href="/resume/voting/{{$meeting->voting()->where('ata_id', $last_voting->id)->first()->id}}" target="_blank">
+                                                            <button class="btn btn-info btn-xs">Resumo</button>
+                                                        </a>
+                                                        <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/ata/{{$last_voting->id}}">
+                                                            <button class="btn btn-danger btn-xs">Encerrada</button>
+                                                        </a>
+                                                    @else
+                                                        @if(($meeting->voting()->where('ata_id', $last_voting->id)->first()))
+                                                            <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/ata/{{$last_voting->id}}">
+                                                                <button class="btn btn-warning btn-xs">Em andamento</button>
+                                                            </a>
+                                                        @else
+                                                            <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor2" onclick="voting_ata({{$last_voting}})">Abrir Votação</button>
+                                                        @endif
+                                                    @endif
+                                                @endif
+                                            </span>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </li>
+                                @else
+                                    Sessão anterior não possui ATA
+                                @endif
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @foreach($structurepautas as $pauta)
         <div class="col-md-12">
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -152,54 +224,6 @@
                                                             class="panel-body"
                                                             style="width: 100%; display: flex; flex-direction: column"
                                                         >
-
-                                                            @if($meeting)
-                                                                <li class="list-group-item">
-                                                                    <div class="col-lg-10 text-uppercase">
-                                                                        <span>
-                                                                            @if($last_voting != null)
-                                                                                ATA Nº - {{$last_voting->number}}/{{Carbon\Carbon::createFromFormat('d/m/Y H:i',$last_voting->date_start)->year}}
-                                                                                @if(isset($meeting->voting()->where('ata_id', $last_voting->id)->first()->closed_at))
-                                                                                    <br>
-                                                                                    <span class="document_list @if($meeting->situation($last_voting->id, 'ata')) text-primary @else text-danger @endif">
-                                                                                        @if($meeting->situation($last_voting->id, 'ata'))
-                                                                                            Votação aprovada
-                                                                                        @else
-                                                                                            Votação reprovada
-                                                                                        @endif
-                                                                                    </span>
-                                                                                @endif
-                                                                            @endif
-                                                                        </span>
-                                                                    </div>
-                                                                    @if(! $child->vote_in_block)
-                                                                        <div class="col-lg-2">
-                                                                            <span class="pull-right" @if(isset($meeting->voting()->where('meeting_id', $meeting->id)->whereNotNull('deleted_at')->first()->closed_at)) style="margin-top: 10px;" @endif>
-                                                                                @if($ata_voting && ($last_voting != null))
-                                                                                    @if(isset($meeting->voting()->where('ata_id', $last_voting->id)->first()->closed_at))
-                                                                                        <a href="/resume/voting/{{$meeting->voting()->where('ata_id', $last_voting->id)->first()->id}}" target="_blank">
-                                                                                            <button class="btn btn-info btn-xs">Resumo</button>
-                                                                                        </a>
-                                                                                        <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/ata/{{$last_voting->id}}">
-                                                                                            <button class="btn btn-danger btn-xs">Encerrada</button>
-                                                                                        </a>
-                                                                                    @else
-                                                                                        @if(($meeting->voting()->where('ata_id', $last_voting->id)->first()))
-                                                                                            <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/ata/{{$last_voting->id}}">
-                                                                                                <button class="btn btn-warning btn-xs">Em andamento</button>
-                                                                                            </a>
-                                                                                        @else
-                                                                                            <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor2" onclick="voting_ata({{$last_voting}})">Abrir Votação</button>
-                                                                                        @endif
-                                                                                    @endif
-                                                                                @endif
-                                                                            </span>
-                                                                        </div>
-                                                                    @endif
-                                                                </li>
-                                                            @else
-                                                                Sessão anterior não possui ATA
-                                                            @endif
 
                                                             @if($child->add_advice)
                                                                 @if($child->meeting->isNotEmpty())
