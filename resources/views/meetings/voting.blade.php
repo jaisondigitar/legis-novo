@@ -209,7 +209,7 @@
                                                                             class="btn btn-info btn-xs btn-block"
                                                                             data-toggle="modal"
                                                                             data-target="#voting-files"
-                                                                            onclick="voting_files({{$files}})"
+                                                                            onclick="voting_files({{ $files }}, {{ $child->id }})"
                                                                         >
                                                                             Abrir Votação
                                                                         </button>
@@ -722,20 +722,22 @@
             }
         }
 
-        const voting_files = files => {
+        const voting_files = (files, structure_id) => {
             const filesArea = document.querySelector('#files')
 
             for (const item of files.flat().flat()) {
                 const inputFile = document.createElement('input')
+                const inputStruct = document.createElement('input')
                 const p = document.createElement('p')
 
                 p.innerText = item.label
 
                 inputFile.setAttribute('hidden', '')
+                inputStruct.setAttribute('hidden', '')
 
                 const inputTypes = [
                     { model: 'Document', type: `document_id-${item.id}` },
-                    { model: 'LawProject', type: `law_id-${item.id}` }
+                    { model: 'LawProject', type: `law_project_id-${item.id}` }
                 ]
 
                 inputFile.setAttribute(
@@ -743,9 +745,14 @@
                     inputTypes.filter(type => item.model === type.model)[0].type ?? ''
                 )
 
+                inputStruct.setAttribute('name', 'structure_id')
+
+                inputStruct.setAttribute('value', structure_id)
+
                 inputFile.setAttribute('value', item.id)
 
                 filesArea.append(inputFile)
+                filesArea.append(inputStruct)
                 filesArea.append(p)
             }
         }

@@ -35,18 +35,6 @@
             >
         </label>
         <span style="text-transform: uppercase; margin-left: 5px">Iniciar votação</span>
-        {{--<label style="text-transform: uppercase">
-            <input
-                type="checkbox"
-                class="pull-left radioBox1"
-                id="contactChoice0"
-                name="assemblyman"
-                value="nenhum"
-                style="margin-right: 5px"
-                onclick="disable_vote()"
-            >
-            Iniciar votação
-        </label>--}}
     </div>
 
     <div class="clearfix"></div>

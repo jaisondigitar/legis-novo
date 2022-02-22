@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DocumentTypes;
 use App\Http\Requests\CreateMeetingRequest;
 use App\Http\Requests\UpdateMeetingRequest;
 use App\Models\Advice;
@@ -15,11 +16,14 @@ use App\Models\LawsProject;
 use App\Models\Meeting;
 use App\Models\MeetingFiles;
 use App\Models\MeetingPauta;
+use App\Models\MultiDocsSchedule;
+use App\Models\MultiVoting;
 use App\Models\Parameters;
 use App\Models\Processing;
 use App\Models\ProcessingDocument;
 use App\Models\Responsibility;
 use App\Models\ResponsibilityAssemblyman;
+use App\Models\ScheduleDocs;
 use App\Models\SessionPlace;
 use App\Models\SessionType;
 use App\Models\StatusProcessingDocument;
@@ -1162,47 +1166,64 @@ class MeetingController extends AppBaseController
      */
     public function initVoteForManyDocs(Request $request, $id)
     {
-        $request->except('_token');
-
-        $last_voting = Meeting::where('id', '<', $id)->get()->last();
-
-        $ata_voting = Parameters::where('slug', 'realiza-votacao-de-ata')->first()->value;
-
         if (Voting::whereNotNull('open_at')->whereNull('closed_at')->first()) {
             flash('Existe votação em aberto!')->warning();
 
             return redirect(route('meetings.voting', $id));
         }
 
-        $meeting = Meeting::find($id);
+        $schedule_files = $this->prepareObtainedFiles($request->except('_token'));
 
-        $voting = null;
+        $multi_docs_schedule = $this->createRegisterForMultiDocsSchedule([
+            'meeting_id' => $id,
+            'structure_id' => $request->get('structure_id'),
+        ]);
 
-        foreach ($request->except('_token') as $key => $document_id) {
-            $voting_data = [
-                'meeting_id' => $id,
-                'document_id' => $document_id,
-                'version_pauta_id' => $meeting->version_pauta_id,
-            ];
+        $this->attachFilesToSchedule($multi_docs_schedule->id, $schedule_files);
 
-            $type_of_doc = explode('-', $key)[0];
+        MultiVoting::create(['multi_docs_schedule_id' => $multi_docs_schedule->id]);
 
-            switch ($type_of_doc) {
-                case 'document_id':
-                    $voting_data['document_id'] = $document_id;
-                break;
+//        return view('meetings.start_voting', compact('voting', 'meeting', 'assemblyman', 'last_voting', 'ata_voting'));
+    }
 
-                case 'law_id':
-                    $voting_data['law_id'] = $document_id;
-                break;
+    /**
+     * @param  array  $schedule_data
+     * @return mixed
+     */
+    public function createRegisterForMultiDocsSchedule(array $schedule_data)
+    {
+        return MultiDocsSchedule::create($schedule_data);
+    }
+
+    public function attachFilesToSchedule(int $multi_docs_schedule_id, array $schedule_files)
+    {
+        foreach ($schedule_files as $file) {
+            $file['multi_docs_schedule_id'] = $multi_docs_schedule_id;
+
+            ScheduleDocs::create($file);
+        }
+    }
+
+    /**
+     * @param  array  $schedule_files
+     * @return array
+     */
+    private function prepareObtainedFiles(array $schedule_files): array
+    {
+        $data = [];
+
+        foreach (array_keys($schedule_files) as $key) {
+            $type_of_doc = substr(explode('-', $key)[0], 0, -3);
+
+            if (in_array($type_of_doc, DocumentTypes::$types)) {
+                $data[] = [
+                    'model_type' => array_flip(DocumentTypes::$types)[$type_of_doc],
+                    'model_id' => $schedule_files[$key],
+                ];
             }
-
-            $voting = Voting::firstOrCreate($voting_data);
         }
 
-        $assemblyman = Assemblyman::where('active', 1)->get();
-
-        return view('meetings.start_voting', compact('voting', 'meeting', 'assemblyman', 'last_voting', 'ata_voting'));
+        return $data;
     }
 
     public function votingDocument($meeting_id, $voting_id, $document_id)
