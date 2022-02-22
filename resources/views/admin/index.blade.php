@@ -4,168 +4,223 @@
 @endsection
 @section('content')
     <style>
-        body {
-            padding: 3%;
-        }
-
-        .nav-mega {
-            width: 100%;
-        }
-        .nav-mega .dropdown {
-            position: static;
-        }
-        .nav-mega .dropdown-menu.mega-menu {
-            -moz-box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-            -moz-border-radius-topleft: 0;
-            -webkit-border-top-left-radius: 0;
-            border-top-left-radius: 0;
-            -moz-border-radius-topright: 0;
-            -webkit-border-top-right-radius: 0;
-            border-top-right-radius: 0;
-            min-width: auto;
-            width: 100%;
-            margin-top: 0;
-            padding: 0;
-            border-color: #ccc;
-        }
-        .nav-mega .dropdown-menu.mega-menu > li {
-            padding: 20px;
-        }
-        .nav-mega .dropdown-menu.mega-menu .media-list .media {
-            padding: 10px;
-            font-size: 13px;
-        }
-        .nav-mega .dropdown-menu.mega-menu .media-list .media-heading {
-            font-size: 16px;
+        .accordion {
+            margin-top: 2rem;
         }
 
         .alert>p, .alert>ul {
             font-weight: 300;
         }
 
-        .lista li{
-            margin: 0;
-            padding: 0;
-            text-align: left;
-            list-style-type: none;
+        .card_test:hover {
+            box-shadow: 3px 4px 4px 2px #e9ecef;
+            transform: scale(1.07)
         }
 
-        .card {
+        .row {
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .card_test {
+            display: flex;
+            border-radius: 23px;
+            max-width: 500px;
+            margin-left: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
             transition: all 0.2s ease;
             cursor: pointer
         }
 
-        .card:hover {
-            box-shadow: 3px 4px 4px 2px #e9ecef;
-            transform: scale(1.07)
+        .initial {
+            border-radius: 20px 0 0 20px;
+            background-color: #F04343;
+            padding: 30px;
+            max-width: 250px;
         }
-        .row {
-            align-items: center;
+
+        .initial_document {
+            border-radius: 20px 0 0 20px;
+            background-color: #00A3FF;
+            padding: 30px;
+            max-width: 250px;
+        }
+
+        .initial_commissions {
+            border-radius: 20px 0 0 20px;
+            background-color: #66B700;
+            padding: 30px;
+            max-width: 250px;
+        }
+
+        .end {
+            border-radius: 0 20px 20px 0;
+            background-color: #FFFFFF;
+            padding: 30px;
+            width: 100%;
+        }
+
+        .bt_color_danger {
+            background-color: #F04343;
+        }
+
+        .bt_color_info {
+            background-color: #00A3FF;
+        }
+
+        .bt_color_success {
+            background-color: #66B700;
         }
     </style>
-{{--    <h1 class="page-heading" style="margin-top: 15px;">DASHBOARD <small>Algumas informações úteis</small></h1>--}}
 
-    <div class="row justify-content-start">
-        <div class="col-sm-12">
-{{--            <div class="alert alert-info">--}}
-                <h1>Bem vindo(a)!</h1>
-{{--                <p style="text-align: justify">O GPL é um software para Gestão de Processos Legislativos. </p>--}}
-{{--                <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis./p>--}}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="text-start">
+                    <h5>Bem vindo(a)!</h5>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
+
+    <div class="row justify-content-center">
+        <div class="col-sm-3">
             <div style="padding-left: 10px">
             <a href="/lawsProjects">
-            <div class="card text-center">
-                <div class="card-header bg-danger">
-                    <h3 class="panel-title">PROJETOS DE LEI</h3>
+            <div class="text-center card_test">
+                <div
+                    class="initial">
                 </div>
-                <div class="panel-body">
-                    <h1 class="bolded tiles-number text-danger">{{ $projLeiAll }}</h1>
-                    <p class="text-muted"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></p>
+                <div class="panel-body end">
+                    <div class="text-black">
+                        <h3 class="panel-title">PROJETOS DE LEI</h3>
+                    </div>
+                    <div class="text-start">
+                        <h1 STYLE="color: #F04343" class="bolded tiles-number">{{ $projLeiAll }}</h1>
+                        <div class="text-end">
+                            <h3 class="text-muted"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></h3>
+                        </div>
+                    </div>
                 </div>
             </div>
             </a>
             </div>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <a href="/documents">
-                <div class="card text-center">
-                    <div class="card-header bg-info">
-                        <h3 class="panel-title">DOCUMENTOS</h3>
+                <div class="text-center card_test">
+                    <div
+                        class="initial_document">
                     </div>
-                    <div class="panel-body">
-                        <h1 class="bolded tiles-number text-info">{{ $docAll }}</h1>
-                        <p class="text-muted"><small>LIDOS: <strong>{{ $docRead }}</strong></small></p>
+                    <div class="panel-body end">
+                        <div class="text-black">
+                            <h3 class="panel-title">DOCUMENTOS</h3>
+                        </div>
+                        <div class="text-start">
+                            <h1 style="color: #00A3FF" class="bolded tiles-number">{{ $docAll }}</h1>
+                        </div>
+                        <div class="text-end">
+                            <h3 class="text-muted"><small>LIDOS: <strong>{{ $docRead }}</strong></small></h3>
+                        </div>
                     </div>
                 </div>
             </a>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div style="padding-right: 10px">
             <a href="/admin/commissions">
-                <div class="card text-center">
-                    <div class="card-header bg-success">
-                        <h3 class="panel-title">COMISSÕES</h3>
+                <div class="text-center card_test">
+                    <div
+                        class="initial_commissions">
                     </div>
-                    <div class="panel-body">
-                        <h1
-                            class="bolded tiles-number text-success">
-                            {{ isset($commissions)  ? count($commissions) : '0' }}
-                        </h1>
-                        <p class="text-muted">
-                            <small>LISTA DAS COMISSÕES ATIVAS</small>
-                        </p>
+                    <div class="panel-body end">
+                        <div class="text-black">
+                            <h3 class="panel-title">COMISSÕES</h3>
+                        </div>
+                            <div class="text-start">
+                                <h1
+                                    style="color: #66B700"
+                                    class="bolded tiles-number bg-op">
+                                    {{ isset($commissions)  ? count($commissions) : '0' }}
+                                </h1>
+                            </div>
+                            <div class="text-end">
+                                <h5 class="text-muted"><small><strong>COMISSÕES ATIVAS: </strong></small></h5>
+                            </div>
+                        </div>
                     </div>
-                </div>
                 </a>
             </div>
         </div>
     </div>
-    <div class="navbar">
-        <div class="navbar-inner">
-            <ul class="nav nav-mega">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        teste<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu mega-menu">
-                        <li>
-                            <div class="row-fluid">
-                                <ul class="media-list span4">
-                                    <li class="media">
-                                        <a href="#" class="pull-left">
-                                        </a>
-                                        <div class="media-body">
-                                            <h5 class="media-heading"><a href="#">teste</a></h5>
-                                            <ul class="unstyled">
-                                                <li><a href="#">teste</a></li>
-                                                <li><a href="#">teste</a></li>
-                                                <li><a href="#">teste</a></li>
-                                                <li><a href="#">teste</a></li>
-                                                <li><a href="#">teste</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <hr>
 
+    <div  class="accordion" id="accordions">
+        <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button  class="accordion-button collapsed btn bt_color_danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Projetos de Lei
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="accordionProjetosDeLei">
+                    <div class="accordion-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    Emenda: 05 <br>
+                                    EmendaSupresiva : 05<br>
+                                    Emenda Modificada: 20<br>
+                                    Emenda Projeto: 20<br>
+                                    Resolução: 05<br>
+                                    Emenda Aditiva: 05<br>
+                                </div>
+                                <div class="col">
+                                    Emenda Substitutiva: 20<br>
+                                    Projeto de Lei: 00<br>
+                                    Emenda: 05<br>
+                                    Projeto de Lei Complementar: 00<br>
+                                    Projeto de Lei Legislativo: 00<br>
+                                    loremipsum:00<br>
                                 </div>
                             </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div style="margin-top: 1rem" class="accordion-item">
+            <h2 class="accordion-header" id="accordionDocumentos">
+                <button class="accordion-button collapsed btn bt_color_info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Documentos
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="accordionDocumentos">
+                <div class="accordion-body">
+                    Emenda: 05               Emenda Substitutiva: 20
+                    EmendaSupresiva : 05     Projeto de Lei: 00
+                    Emenda Modificada: 20   Emenda: 05
+                    Emenda Projeto: 20      Projeto de Lei Complementar: 00
+                    Resolução: 05            Projeto de Lei Legislativo: 00
+                    Emenda Aditiva: 05       loremipsum:00
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 1rem" class="accordion-item">
+            <h2 class="accordion-header" id="accordionComissões">
+                <button class="accordion-button collapsed btn bt_color_success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Comissões
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="accordionComissões">
+                <div class="accordion-body">
+                    Emenda: 05               Emenda Substitutiva: 20
+                    EmendaSupresiva : 05     Projeto de Lei: 00
+                    Emenda Modificada: 20   Emenda: 05
+                    Emenda Projeto: 20      Projeto de Lei Complementar: 00
+                    Resolução: 05            Projeto de Lei Legislativo: 00
+                    Emenda Aditiva: 05       loremipsum:00
+                </div>
+            </div>
         </div>
     </div>
-
     {{--@if(isset($commissions))--}}
     {{--@foreach($commissions as $c)--}}
             {{--<div class="col-lg-6">--}}
