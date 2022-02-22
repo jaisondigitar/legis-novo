@@ -1,5 +1,5 @@
-<div class="form-group col-sm-2">
-    {!! Form::label('law_date', 'Data projeto:', ['class' => 'required']) !!}
+<div class="form-group col-sm-1">
+    {!! Form::label('law_date', 'Data:', ['class' => 'required']) !!}
     {!! Form::text('law_date', null, ['class' => 'form-control datepicker', 'required']) !!}
 </div>
 
@@ -8,9 +8,19 @@
     {!! Form::select('law_type_id', $law_types, null, ['class' => 'form-control']) !!}
 </div>
 
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-4">
     {!! Form::label('reference_id', 'Referente à:') !!}
     {!! Form::select('reference_id', $references_project, null, ['class' => 'form-control chosen']) !!}
+    {{--<select name="reference_id" data-placeholder="Selecione..." style="width: 100%;" class="chosen-select" tabindex="5">
+        <option value="0">Selecione...</option>
+        @foreach($lawsProjectType as $keyOt => $itemsOt)
+            <optgroup label="{{$keyOt}}">
+                @foreach($itemsOt as $itemsOp)
+                    <option value="{{$itemsOp->id}}">{{$itemsOp->project_number.'/'.$itemsOp->getYearLaw($itemsOp->law_date.' - '.$itemsOp->law_type->name)}}</option>
+                @endforeach
+            </optgroup>
+        @endforeach
+    </select>--}}
 </div>
 
 <div class="form-group col-sm-2">
@@ -166,7 +176,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#reference_id').chosen();
+        $('.chosen').chosen();
 
         var oldValue;
 
