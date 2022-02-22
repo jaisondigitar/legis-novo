@@ -1183,7 +1183,11 @@ class MeetingController extends AppBaseController
 
         MultiVoting::create(['multi_docs_schedule_id' => $multi_docs_schedule->id]);
 
-//        return view('meetings.start_voting', compact('voting', 'meeting', 'assemblyman', 'last_voting', 'ata_voting'));
+        $files = ScheduleDocs::where('multi_docs_schedule_id', $multi_docs_schedule->id)->get();
+
+        $meeting = Meeting::find($id);
+
+        return view('meetings.start_many_voting', compact('files', 'multi_docs_schedule', 'meeting'));
     }
 
     /**
