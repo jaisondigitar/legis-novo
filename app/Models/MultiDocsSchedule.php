@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MultiDocsSchedule extends BaseModel
@@ -22,4 +23,12 @@ class MultiDocsSchedule extends BaseModel
         'description',
         'observation',
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function docs(): HasMany
+    {
+        return $this->hasMany(ScheduleDocs::class);
+    }
 }
