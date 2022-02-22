@@ -10,8 +10,8 @@ class CreateMultiDocsScheduleTable extends Migration
     {
         Schema::create('multi_docs_schedule', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('meeting_id')->references('id')->on('meetings');
-            $table->foreignId('structure_id')->references('id')
+            $table->unsignedInteger('meeting_id')->references('id')->on('meetings');
+            $table->unsignedInteger('structure_id')->references('id')
                 ->on('structurepautas');
             $table->text('description')->nullable();
             $table->text('observation')->nullable();

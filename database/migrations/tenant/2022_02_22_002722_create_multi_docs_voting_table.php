@@ -13,7 +13,7 @@ class CreateMultiDocsVotingTable extends Migration
             $table->id();
             $table->foreignId('multi_voting_id')->references('id')
                 ->on('multi_voting');
-            $table->foreignId('assemblymen_id')->references('id')
+            $table->unsignedInteger('assemblymen_id')->references('id')
                 ->on('assemblymen');
             $table->enum('vote', VoteTypes::$types);
             $table->timestamps();
