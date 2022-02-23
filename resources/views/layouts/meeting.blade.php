@@ -33,11 +33,9 @@
                         <li class="list-group-item text-left">
                             @shield('meetings.edit')<a href="{!! route('meetings.voting', [$meeting->id]) !!}" class="menu"><i class="fa fa-list"></i> VOTAÇÃO</a>@endshield
                         </li>
-                        @if(!\App\Models\Parameters::where('slug', 'painel-digital-permitir-multi-sessoes')->first()->value)
                         <li class="list-group-item text-left">
                             @shield('meetings.edit')<a href="/painel-votacao/{{Auth::user()->company->stage}}" class="menu" target="_blank"><i class="fa fa-ticket"></i> PAINEL DE VOTAÇÃO</a>@endshield
                         </li>
-                        @endif
                         <li class="list-group-item text-left">
                             @shield('meetings.edit')<a href="/meetings/{{$meeting->id}}/discourse" class="menu text-uppercase"><i class="fa fa-user "></i> PÚLPITO</a>@endshield
                         </li>
