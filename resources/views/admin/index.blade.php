@@ -1,78 +1,101 @@
 @extends('layouts.blit')
-@section('Breadcrumbs')
-    {!! Breadcrumbs::render('home') !!}
-@endsection
+{{--@section('Breadcrumbs')--}}
+{{--    {!! Breadcrumbs::render('home') !!}--}}
+{{--@endsection--}}
 @section('content')
     <style>
-        .accordion {
-            margin-top: 2rem;
+        #accordions {
+            margin: 0 0.7rem;
+        }
+
+        .accordion-item {
+            margin-top: 3rem;
         }
 
         .alert>p, .alert>ul {
             font-weight: 300;
         }
 
-        .card_test:hover {
+        .card_remake:hover {
             box-shadow: 3px 4px 4px 2px #e9ecef;
             transform: scale(1.07)
         }
 
         .row {
             align-items: center;
-            margin-top: 2rem;
+            margin: 2rem 0 0 0;
         }
 
-        .card_test {
+        .card_remake {
             display: flex;
-            border-radius: 23px;
-            max-width: 500px;
-            margin-left: 10px;
+            border-radius: 8px;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
             transition: all 0.2s ease;
             cursor: pointer
         }
 
-        .initial {
-            border-radius: 20px 0 0 20px;
-            background-color: #F04343;
+        .card_bg {
+            border-radius: 10px 0 0 10px;
             padding: 30px;
-            max-width: 250px;
+        }
+
+        .initial {
+            border-radius: 10px 0 0 10px;
+            background-color: rgb(223, 119, 130);
+            padding: 30px;
         }
 
         .initial_document {
-            border-radius: 20px 0 0 20px;
-            background-color: #00A3FF;
+            border-radius: 10px 0 0 10px;
+            background-color: rgb(233, 93, 34);
             padding: 30px;
-            max-width: 250px;
         }
 
         .initial_commissions {
-            border-radius: 20px 0 0 20px;
-            background-color: #66B700;
+            border-radius: 10px 0 0 10px;
+            background-color: rgb(1, 120, 144);
             padding: 30px;
-            max-width: 250px;
         }
 
-        .end {
-            border-radius: 0 20px 20px 0;
+        .card_content {
+            border-radius: 0 10px 10px 0;
             background-color: #FFFFFF;
-            padding: 30px;
             width: 100%;
         }
 
-        .bt_color_danger {
-            background-color: #F04343;
+        .opacity {
+            opacity: 0.7;
         }
 
-        .bt_color_info {
-            background-color: #00A3FF;
+        .accordion-button:not(.collapsed){
+            color: #0A0A0A;
+            background-color: rgb(217, 204, 185);
         }
 
-        .bt_color_success {
-            background-color: #66B700;
+        .bt_color_red {
+            background-color: rgba(223, 119, 130, 0.65);
+        }
+
+        .bt_color_blue {
+            background-color: rgba(233, 93, 34, 0.65);
+        }
+
+        .bt_color_green {
+            background-color: rgba(1, 120, 144, 0.65);
+        }
+
+        .bt_color_red:hover, .bt_color_blue:hover, .bt_color_green:hover {
+            opacity: 2.0;
+        }
+
+        .red_card, .blue_card, .green_card {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
         }
     </style>
 
+    <div style="margin: 0 3rem 0 3rem">
         <div class="row">
             <div class="col-sm-12">
                 <div class="text-start">
@@ -81,87 +104,103 @@
             </div>
         </div>
 
-    <div class="row justify-content-center">
-        <div class="col-sm-3">
-            <div style="padding-left: 10px">
-            <a href="/lawsProjects">
-            <div class="text-center card_test">
-                <div
-                    class="initial">
-                </div>
-                <div class="panel-body end">
-                    <div class="text-black">
-                        <h3 class="panel-title">PROJETOS DE LEI</h3>
+        <div class="row justify-content-between">
+            <div class="col-4">
+                <a class="card_remake" href="/lawsProjects">
+                    <div
+                        class="card_bg initial">
                     </div>
-                    <div class="text-start">
-                        <h1 STYLE="color: #F04343" class="bolded tiles-number">{{ $projLeiAll }}</h1>
-                        <div class="text-end">
-                            <h3 class="text-muted"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></h3>
+                    <div class="panel-body card_content" style="padding: 10px">
+                        <div class="text-black">
+                            <h3 class="panel-title">PROJETOS DE LEI</h3>
+                        </div>
+                        <div class="red_card">
+                            <h1 class="bolded" style="color: #0A0A0A;">{{ $projLeiAll }}</h1>
+                            <h5 class="text-muted" style="padding-right: 20px"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></h5>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
-            </a>
-            </div>
-        </div>
 
-        <div class="col-sm-3">
-            <a href="/documents">
-                <div class="text-center card_test">
+            <div class="col-4">
+                <a class="card_remake" href="/documents">
                     <div
-                        class="initial_document">
+                        class="card_bg initial_document">
                     </div>
-                    <div class="panel-body end">
+                    <div class="panel-body card_content" style="padding: 10px">
                         <div class="text-black">
                             <h3 class="panel-title">DOCUMENTOS</h3>
                         </div>
-                        <div class="text-start">
-                            <h1 style="color: #00A3FF" class="bolded tiles-number">{{ $docAll }}</h1>
-                        </div>
-                        <div class="text-end">
-                            <h3 class="text-muted"><small>LIDOS: <strong>{{ $docRead }}</strong></small></h3>
+                        <div class="blue_card">
+                            <h1 class="bolded" style="color: #0A0A0A">{{ $docAll }}</h1>
+                            <h5 class="text-muted" style="padding-right: 20px"><small>LIDOS: <strong>{{ $docRead }}</strong></small></h5>
                         </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
 
-        <div class="col-sm-3">
-            <div style="padding-right: 10px">
-            <a href="/admin/commissions">
-                <div class="text-center card_test">
+            <div class="col-4">
+                <a class="card_remake" href="/admin/commissions">
                     <div
-                        class="initial_commissions">
+                        class="card_bg initial_commissions">
                     </div>
-                    <div class="panel-body end">
+                    <div class="panel-body card_content" style="padding: 10px">
                         <div class="text-black">
                             <h3 class="panel-title">COMISSÕES</h3>
                         </div>
-                            <div class="text-start">
-                                <h1
-                                    style="color: #66B700"
-                                    class="bolded tiles-number bg-op">
-                                    {{ isset($commissions)  ? count($commissions) : '0' }}
-                                </h1>
-                            </div>
-                            <div class="text-end">
-                                <h5 class="text-muted"><small><strong>COMISSÕES ATIVAS: </strong></small></h5>
-                            </div>
+                        <div class="green_card">
+                            <h1 class="bolded" style="color: #0A0A0A">{{ isset($commissions)  ? count($commissions) : '0' }}</h1>
+                            <h5 class="text-muted" style="padding-right: 20px"><small><strong>COMISSÕES ATIVAS: </strong></small></h5>
                         </div>
                     </div>
                 </a>
             </div>
         </div>
-    </div>
 
-    <div  class="accordion" id="accordions">
-        <div class="accordion-item">
+        <div class="accordion" id="accordions">
+            <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
-                    <button  class="accordion-button collapsed btn bt_color_danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        Projetos de Lei
+                    <button  class="accordion-button collapsed btn bt_color_red" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        <strong> Projetos de Lei </strong>
                     </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="accordionProjetosDeLei">
+                <div style="background-color: rgba(217, 204, 185, 0.20);" id="collapseOne" class="accordion-collapse collapse" aria-labelledby="accordionProjetosDeLei">
+                    <div class="accordion-body">
+                        <div class="container">
+                            <div class="row">
+                                {{--@foreach($projetosDeLei as $projetoDeLei)
+                                    <div class="col-1">
+                                        {{ $projetoDeLei->nome }}: {{ $projetosDeLei->where("nome", $projetoDeLei->nome)->count() }}
+                                    </div>
+                                @endforeach--}}
+                                <div class="col">
+                                    Emenda: 05 <br>
+                                    EmendaSupresiva : 05<br>
+                                    Emenda Modificada: 20<br>
+                                    Emenda Projeto: 20<br>
+                                    Resolução: 05<br>
+                                    Emenda Aditiva: 05<br>
+                                </div>
+                                <div class="col">
+                                    Emenda: 05 <br>
+                                    EmendaSupresiva : 05<br>
+                                    Emenda Modificada: 20<br>
+                                    Emenda Projeto: 20<br>
+                                    Resolução: 05<br>
+                                    Emenda Aditiva: 05<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="accordionDocumentos">
+                    <button class="accordion-button collapsed btn bt_color_blue" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <strong>Documentos</strong>
+                    </button>
+                </h2>
+                <div style="background-color: rgba(217, 204, 185, 0.20);" id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="accordionDocumentos">
                     <div class="accordion-body">
                         <div class="container">
                             <div class="row">
@@ -186,41 +225,40 @@
                     </div>
                 </div>
             </div>
-        <div style="margin-top: 1rem" class="accordion-item">
-            <h2 class="accordion-header" id="accordionDocumentos">
-                <button class="accordion-button collapsed btn bt_color_info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Documentos
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="accordionDocumentos">
-                <div class="accordion-body">
-                    Emenda: 05               Emenda Substitutiva: 20
-                    EmendaSupresiva : 05     Projeto de Lei: 00
-                    Emenda Modificada: 20   Emenda: 05
-                    Emenda Projeto: 20      Projeto de Lei Complementar: 00
-                    Resolução: 05            Projeto de Lei Legislativo: 00
-                    Emenda Aditiva: 05       loremipsum:00
-                </div>
-            </div>
-        </div>
-        <div style="margin-top: 1rem" class="accordion-item">
-            <h2 class="accordion-header" id="accordionComissões">
-                <button class="accordion-button collapsed btn bt_color_success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Comissões
-                </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="accordionComissões">
-                <div class="accordion-body">
-                    Emenda: 05               Emenda Substitutiva: 20
-                    EmendaSupresiva : 05     Projeto de Lei: 00
-                    Emenda Modificada: 20   Emenda: 05
-                    Emenda Projeto: 20      Projeto de Lei Complementar: 00
-                    Resolução: 05            Projeto de Lei Legislativo: 00
-                    Emenda Aditiva: 05       loremipsum:00
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="accordionComissões">
+                    <button class="accordion-button collapsed btn bt_color_green" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <strong> Comissões </strong>
+                    </button>
+                </h2>
+                <div style="background-color: rgba(217, 204, 185, 0.20);" id="collapseThree" class="accordion-collapse collapse" aria-labelledby="accordionComissões">
+                    <div class="accordion-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    Emenda: 05 <br>
+                                    EmendaSupresiva : 05<br>
+                                    Emenda Modificada: 20<br>
+                                    Emenda Projeto: 20<br>
+                                    Resolução: 05<br>
+                                    Emenda Aditiva: 05<br>
+                                </div>
+                                <div class="col">
+                                    Emenda Substitutiva: 20<br>
+                                    Projeto de Lei: 00<br>
+                                    Emenda: 05<br>
+                                    Projeto de Lei Complementar: 00<br>
+                                    Projeto de Lei Legislativo: 00<br>
+                                    loremipsum:00<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     {{--@if(isset($commissions))--}}
     {{--@foreach($commissions as $c)--}}
             {{--<div class="col-lg-6">--}}
@@ -267,7 +305,7 @@
     {{--modal  detalhes--}}
 
     <!-- Large modal -->
-    <div class="container">
+        <div class="container">
         <!-- Modal -->
         <div class="modal fade " id="myModal" role="dialog">
             <div class="modal-dialog  modal-lg">
@@ -397,13 +435,7 @@
 
     {{-- fim do modal --}}
 
-
-
-
-
-
     <script>
-
         var id = '';
 
         $(document).ready(function () {
@@ -560,6 +592,4 @@
 
         }
     </script>
-
-
 @endsection

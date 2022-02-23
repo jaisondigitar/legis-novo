@@ -18,14 +18,27 @@
     .dropdown {
         padding-right: 15px;
     }
+
+    #navbar-brand{
+        margin: 0 0 0 3.688rem;
+        color: #0A0A0A;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .NewNavbar {
+        margin: 0 0 0 25rem;
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/admin" style="font-size: 20px; display: flex; align-items: center; margin-left: 0;">
+        <a id="navbar-brand" href="/admin">
             GPL
         </a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse NewNavbar" id="navbarSupportedContent"
+        >
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @is(['root'])
                     <li class="nav-item dropdown">

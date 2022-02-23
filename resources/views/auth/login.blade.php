@@ -122,7 +122,7 @@
 
         @media screen and (min-width: 1100px) {
             .backFormat {
-                border-bottom: 100vh solid #166091;
+                border-bottom: 100vh solid rgb(113, 185, 245);
                 border-left: 35rem solid transparent;
                 margin-left: 15rem;
                 width: 100vw;
@@ -132,7 +132,7 @@
 
         @media screen and (max-width: 1100px) {
             .backFormat {
-                border-bottom: 100vh solid #166091;
+                border-bottom: 100vh solid rgb(113, 185, 245);
                 border-left: 45rem solid transparent;
                 width: 100vw;
             }
@@ -153,7 +153,7 @@
             }
 
             .backFormat {
-                border-bottom: 70vh solid #166091;
+                border-bottom: 70vh solid rgb(113, 185, 245);
                 border-left: 0 solid transparent;
                 /*width: 100vw;*/
             }
