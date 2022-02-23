@@ -273,19 +273,21 @@
                     </a>
                 @endshield
 
-                @if(Auth::user()->id == $lawsProject->owner->id || Auth::user()->hasRole('root'))
+                {{--Retirada de Botões sem Utilidade--}}
+
+                {{--@if(Auth::user()->id == $lawsProject->owner->id || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.edit')
                         <a @popper(ESTRUTURA DE LEI) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                             <i class="fas fa-gavel"></i>
                         </a>
                     @endshield
-                @endif
+                @endif--}}
 
-                @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
+                {{--@shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
                     <a @popper(ALTERAR NÚMERO/PROTOCOLO) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
                        <i class="fas fa-project-diagram"></i>
                     </a>
-                @endshield
+                @endshield--}}
 
                 @if($lawsProject->law_file)
                     <a href="/laws/{{ $lawsProject->law_file }}" target="_blank" class='btn btn-default btn-sm'>
