@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ScheduleDocs extends BaseModel
@@ -21,4 +22,12 @@ class ScheduleDocs extends BaseModel
         'model_type',
         'model_id',
     ];
+
+    /**
+     * @return MorphTo
+     */
+    public function documents(): MorphTo
+    {
+        return $this->morphTo('model');
+    }
 }

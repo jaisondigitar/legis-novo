@@ -1,6 +1,6 @@
 @extends('layouts.meeting')
 @section('content-meeting')
-    @if($is_closed)
+    @if($multi_docs_schedule->closet_at)
         <div class="alert alert-danger alert-block fade in alert-dismissable ">
             <strong> <h3 class="text-center">VOTAÇÃO ENCERRADA</h3></strong>
         </div>
@@ -10,32 +10,42 @@
         Votação:
     </h3>
         @foreach ($files as $file)
-            <p>{{ $file->label }}</p>
+            <p>{{ $file->model->label }}</p>
         @endforeach
     <div class="clearfix"></div>
     <hr>
     <div class="col-lg-12" style="margin-bottom: 20px;">
-        <label>
-            <input type="radio" class="pull-left radioBox1" id="contactChoice0" name="assemblyman" value="nenhum" style="margin-right: 5px;" onclick="disable_vote()">
-            DESMARCAR PARLAMENTAR
+        <label for="active">
+            <input
+                name="active"
+                id="active"
+                class="switch"
+                data-on-text="Sim"
+                data-off-text="Não"
+                data-off-color="danger"
+                data-on-color="success"
+                data-size="normal"
+                type="checkbox"
+                onchange="enableVotes()"
+            >
         </label>
+        <span style="text-transform: uppercase; margin-left: 5px">Iniciar votação</span>
     </div>
 
     <div class="clearfix"></div>
     @foreach($meeting->assemblyman()->orderBy('short_name')->get() as $item)
     <div class="col-sm-3">
         <div class="panel panel-info">
-            <div class="panel-heading" style="min-height: 70px;">
+            <div
+                class="panel-heading"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 70px;
+                "
+            >
                 <label>
-                    <input
-                        type="radio"
-                        class="pull-left radioBox1"
-                        id="contactChoice{{$item->id}}"
-                        name="assemblyman"
-                        value="{{$item->short_name}}"
-                        style="margin-right: 5px;"
-                        onclick="enable_vote('{{$item->id}}')"
-                    >
                     {{ mb_strtoupper($item->short_name) }}
                 </label>
             </div>
@@ -161,13 +171,13 @@
     <div class="clearfix"></div>
     <hr>
     <div class="col-lg-12">
-    @if(! $is_closed)
+    @if(! $multi_docs_schedule->closet_at)
         <div class="col-lg-4 pull-right">
             <a href="{{--/meetings/{{$meeting->id}}/voting/{{$voting->id}}/closeVoting--}}" onclick="return confirm('Deseja encerrar votação?')"><button class="btn btn-danger pull-right"> ENCERRAR VOTAÇÃO</button></a>
         </div>
     @endif
     <div class="col-lg-4 pull-right">
-        @if($is_closed)
+        @if($multi_docs_schedule->closet_at)
             <a href="{{--/meetings/{{$meeting->id}}/voting/{{$voting->id}}/cancelVoting--}}" style="margin-right: 15px;" onclick="return confirm('Deseja cancelar votação?')"><button class="btn btn-warning pull-right"> CANCELAR VOTAÇÃO</button></a>
         @endif
     </div>
@@ -251,7 +261,7 @@
         }
 
         $(document).ready(function () {
-            @if("{{ $is_closed }}")
+            @if("{{ $multi_docs_schedule->closet_at }}")
                 $(".radioBox").attr('disabled', true);
                 $(".radioBox1").attr('disabled', true);
             @endif

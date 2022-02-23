@@ -1145,7 +1145,10 @@ class MeetingController extends AppBaseController
 
         TypeVoting::pluck('name', 'id')->prepend('Selecione', 0);
 
-        if (Voting::whereNotNull('open_at')->whereNull('closed_at')->first()) {
+        if (
+            Voting::whereNotNull('open_at')->whereNull('closed_at')->first() ||
+            MultiVoting::whereNull('closed_at')->first()
+        ) {
             flash('Existe votação em aberto!')->warning();
 
             return redirect(route('meetings.voting', $meeting->id));
@@ -1166,10 +1169,15 @@ class MeetingController extends AppBaseController
      */
     public function initVoteForManyDocs(Request $request, $id)
     {
-        if (Voting::whereNotNull('open_at')->whereNull('closed_at')->first()) {
+        $meeting = Meeting::find($id);
+
+        if (
+            Voting::whereNotNull('open_at')->whereNull('closed_at')->first() ||
+            MultiVoting::whereNull('closed_at')->first()
+        ) {
             flash('Existe votação em aberto!')->warning();
 
-            return redirect(route('meetings.voting', $id));
+            return redirect(route('meetings.voting', $meeting->id));
         }
 
         $schedule_files = $this->prepareObtainedFiles($request->except('_token'));
@@ -1184,8 +1192,6 @@ class MeetingController extends AppBaseController
         MultiVoting::create(['multi_docs_schedule_id' => $multi_docs_schedule->id]);
 
         $files = ScheduleDocs::where('multi_docs_schedule_id', $multi_docs_schedule->id)->get();
-
-        $meeting = Meeting::find($id);
 
         return view('meetings.start_many_voting', compact('files', 'multi_docs_schedule', 'meeting'));
     }
@@ -1292,7 +1298,15 @@ class MeetingController extends AppBaseController
     public function votingManyFiles($meeting_id, $struct_id)
     {
         $meeting = Meeting::find($meeting_id);
-        $has_many_docs = $meeting->meeting_pauta
+
+        $multi_docs_schedule = MultiDocsSchedule::where('meeting_id', $meeting_id)
+            ->where('structure_id', $struct_id)->first();
+
+        $files = ScheduleDocs::where('multi_docs_schedule_id', $multi_docs_schedule->id)
+            ->with('documents')
+            ->get();
+
+        /*$has_many_docs = $meeting->meeting_pauta
             ->where('structure_id', '=', $struct_id)->first()
             ->struct->vote_in_block;
         $is_closed = $meeting->meeting_pauta
@@ -1322,7 +1336,9 @@ class MeetingController extends AppBaseController
             'assemblyman',
             'is_closed',
             'files'
-        ));
+        ));*/
+
+        return view('meetings.start_many_voting', compact('files', 'multi_docs_schedule', 'meeting'));
     }
 
     public function updateAssemblyman($meeting_id, $voting_id, Request $request)

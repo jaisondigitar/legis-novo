@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -301,5 +302,13 @@ class Document extends BaseModel
     public function getModelAttribute(): string
     {
         return 'Document';
+    }
+
+    /**
+     * @return MorphMany
+     */
+    public function votingDocuments(): MorphMany
+    {
+        return $this->morphMany(ScheduleDocs::class, 'documents');
     }
 }
