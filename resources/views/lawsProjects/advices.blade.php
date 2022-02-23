@@ -28,7 +28,7 @@
 
                         <div class="form-group col-sm-2">
                             {!! Form::label('new_date_processing', 'Data:') !!}
-                            {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!}
+                            {!! Form::text('new_date_processing', null, ['class' => 'form-control datetimepicker1']) !!}
                         </div>
 
                         <div class="form-group col-sm-2">
@@ -116,7 +116,7 @@
         @endif
 
         <script>
-            document.querySelector('#new_date_processing').value = dateForm
+            document.querySelector('#new_date_processing').value = dateForm + ' ' + timeForm
 
             $(document).ready(function () {
                 setTimeout(function () {

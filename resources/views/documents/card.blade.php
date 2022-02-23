@@ -206,9 +206,7 @@
                                 -
                             @else
                                 {!!
-                                    Carbon\Carbon::createFromFormat('d/m/Y H:i', $document->processingDocument->first()->created_at)
-                                        ->addHour(-4)
-                                        ->format('d/m/Y H:i')
+                                    $document->processingDocument->first()->processing_document_date
                                 !!}
                             @endif
                         </span>

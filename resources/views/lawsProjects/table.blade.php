@@ -145,9 +145,9 @@
             <div class="modal-body">
                 <div align="center"><label class="label label-danger" id="labelmessage2"></label></div>
                 <input type="hidden" name="law_project_id" id="law_project_protocol_id">
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-12">
                     {!! Form::label('date_protocol', 'Data:') !!}
-                    {!! Form::text('date_protocol', null, ['class' => 'form-control datepicker', 'id' => 'date_protocol']) !!}
+                    {!! Form::text('date_protocol', null, ['class' => 'form-control datetimepicker1', 'id' => 'date_protocol']) !!}
                 </div>
                 <div class="form-group col-sm-12">
                     {!! Form::label('project_number', 'Número projeto de lei:') !!}
@@ -212,7 +212,7 @@
 
                 <div class="form-group col-sm-4">
                     {!! Form::label('date_protocol', 'Data do protocolo:') !!}
-                    {!! Form::text('date_protocol', null, ['class' => 'form-control datepicker', 'id' => 'date_protocol_edit']) !!}
+                    {!! Form::text('date_protocol', null, ['class' => 'form-control datetimepicker1', 'id' => 'date_protocol_edit']) !!}
                 </div>
 
                 @shield('lawsProject.editprotocollei')
@@ -416,10 +416,12 @@
         const dia = data.getDate() <= 9 ? '0' + data.getDate() : data.getDate() ;
         let mes = data.getMonth() + 1;
         const ano = data.getFullYear();
+        const hour = data.getHours();
+        const min = data.getMinutes();
 
         mes = mes <= 9 ? '0' + mes : mes;
 
-        return dia + '/' + mes + '/' + ano;
+        return dia + '/' + mes + '/' + ano + ' ' + hour + ':' + min;
     }
 
     $(document).ready(function () {
@@ -437,7 +439,7 @@
                 $('#law_project_protocol_id').val(id);
                 $('#project_number').val(result.project_number);
                 $('#protocol').val(result.protocol);
-                $('#date_protocol').val(data);
+                $('#date_protocol').val(dateForm + ' ' + timeForm);
                 $('#labelmessage2').html('');
                 $('#modalProtocol').modal();
             });

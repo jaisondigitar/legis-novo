@@ -34,7 +34,7 @@
 
                             <div class="form-group col-sm-3">
                                 {!! Form::label('new_processing_document_date', 'Data:') !!}
-                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datepicker']) !!}
+                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datetimepicker1']) !!}
                             </div>
 
                             <div class="form-group col-sm-12">
@@ -106,8 +106,7 @@
 
 
 <script>
-
-    document.querySelector('#new_processing_document_date').value = dateForm
+    document.querySelector('#new_processing_document_date').value = dateForm + '' + timeForm
 
     var save_processing = function() {
 

@@ -67,7 +67,7 @@ class Processing extends BaseModel
      */
     public function setProcessingDateAttribute($processing_date)
     {
-        $this->attributes['processing_date'] = Carbon::createFromFormat('d/m/Y', $processing_date);
+        $this->attributes['processing_date'] = Carbon::createFromFormat('d/m/Y H:i', $processing_date);
     }
 
     /**
@@ -76,7 +76,7 @@ class Processing extends BaseModel
      */
     public function getProcessingDateAttribute($processing_date): string
     {
-        return $this->asDateTime($processing_date)->format('d/m/Y');
+        return $this->asDateTime($processing_date)->format('d/m/Y H:i');
     }
 
     /**

@@ -222,8 +222,7 @@
 
         date = dia + '/' + mes + '/' + ano4+ ' '+ hora + ':' + min + ':' + seg ;
 
-
-        $('#protocol_date').val(date);
+        $('#protocol_date').val(dateForm + ' ' + timeForm);
 
     });
 
@@ -452,7 +451,7 @@
                 $('#next_number_origin').val(result.data.next_number);
                 $('#year_document').val(result.data.year);
                 $('#labelmessage').html('');
-                $('#protocol_date').val(date);
+                $('#protocol_date').val(dateForm + ' ' + timeForm);
                 $('#modalProtocol').modal('show');
             });
         });

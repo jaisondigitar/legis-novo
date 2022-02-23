@@ -1279,7 +1279,7 @@ class LawsProjectController extends AppBaseController
         Processing::create([
             'law_projects_id' => $law_project->id,
             'advice_situation_id' => AdviceSituationLaw::where('name', 'Encaminhado')->first()->id,
-            'processing_date' => now()->format('d/m/Y'),
+            'processing_date' => now()->format('d/m/Y H:i'),
             'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
         ]);
 
@@ -1389,7 +1389,8 @@ class LawsProjectController extends AppBaseController
 
         $date = $input['protocoldate'];
 
-        $ano = explode('/', $date);
+        $date_time = explode(' ', $date);
+        $ano = explode('/', $date_time[0]);
 
         $law_project = LawsProject::find($input['id']);
 

@@ -980,7 +980,7 @@ class DocumentController extends AppBaseController
             'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
             'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
                 ->first()->id,
-            'processing_document_date' => now()->format('d/m/Y'),
+            'processing_document_date' => now()->format('d/m/Y H:i'),
             'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
         ]);
 
@@ -1028,6 +1028,7 @@ class DocumentController extends AppBaseController
                 if ($document_protocol->save()) {
                     $date = explode('/', $input['protocol_date']);
                     $time = explode(' ', $date[2]);
+
 
                     $document_protocol->created_at = $time[0].'-'.$date[1].'-'.$date[0].$time[1];
                     $document_protocol->save();

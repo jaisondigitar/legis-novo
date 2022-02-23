@@ -211,9 +211,7 @@
                     -
                 @else
                     {!!
-                        Carbon\Carbon::createFromFormat('d/m/Y H:i', $lawsProject->processing->first()->created_at)
-                            ->addHour(-4)
-                            ->format('d/m/Y H:i');
+                        $lawsProject->processing->first()->processing_date
                     !!}
                 @endif
             </span>
