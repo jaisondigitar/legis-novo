@@ -32,9 +32,9 @@
             <div class="pull-right">
                 Prazo:
 
-                @if(isset($lawsProject->processing[0]->date_end))
+                @if(isset($lawsProject->processing->first()->date_end))
                     <?php
-                        $input = $lawsProject->processing[0]->date_end;
+                        $input = $lawsProject->processing->first()->date_end;
                         $date = implode('-', array_reverse(explode('/', $input)));
 
                         $diff = strtotime($date) - strtotime(date('Y-m-d'));
