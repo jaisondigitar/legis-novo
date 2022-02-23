@@ -57,14 +57,14 @@
                 </div>
 
                 <div class="form-group col-sm-12">
-                    {!! Form::label('file[]', 'Enexo de Resposta:') !!}
+                    {!! Form::label('file[]', 'Anexo de Resposta:') !!}
                     {!! Form::file('file[]', array('multiple'=>true, 'class' => 'file')) !!}
                 </div>
             </div>
             <div class="clearfix"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-success pull-right">Salvar</button>
+                <button type="button" id="save-reply" class="btn btn-success pull-right">Salvar</button>
             </div>
         </div>
     </div>
@@ -214,7 +214,8 @@
 </div>
 
 <script>
-    const answer = () => {
+    const answer = (id) => {
+        $('#answer #save-reply').attr('value', id);
         $('#answer').modal();
     };
 
@@ -463,6 +464,10 @@
                     }
                 });
             }
+        });
+
+        $('#save-reply').on('click', function(){
+            alert(this.value);
         });
     });
 
