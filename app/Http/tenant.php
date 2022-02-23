@@ -194,6 +194,7 @@ Route::middleware([
         ]);
 
         Route::post('/advice/create', 'AdviceController@store');
+        Route::post('/advice/replica', 'AdviceController@createAdviceReplica');
         Route::post('/advice/delete', 'AdviceController@removerAdvice');
 
         Route::get('/advice/findAwnser/{id?}', 'AdviceController@findAwnser')->name('advices.find');
