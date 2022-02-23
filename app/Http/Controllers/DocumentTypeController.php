@@ -179,7 +179,7 @@ class DocumentTypeController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('documentTypes.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -196,6 +196,10 @@ class DocumentTypeController extends AppBaseController
         }
 
         $this->documentTypeRepository->delete($documentType, $id);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Tipo de Documento removido com sucesso.')->success();
 

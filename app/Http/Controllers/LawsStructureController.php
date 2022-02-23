@@ -171,7 +171,7 @@ class LawsStructureController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('lawsStructures.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -188,6 +188,10 @@ class LawsStructureController extends AppBaseController
         }
 
         $this->lawsStructureRepository->delete($lawsStructure);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Estrutura da lei removido com sucesso.')->success();
 

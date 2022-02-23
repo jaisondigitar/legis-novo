@@ -36,16 +36,19 @@ return [
     'connections' => [
 
         'central' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'db'),
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', 'db'),
             'port' => env('DB_PORT', '3306'),
-            'database'  => env('DB_DATABASE', 'legis'),
-            'username'  => env('DB_USERNAME', ''),
-            'password'  => env('DB_PASSWORD', ''),
-            'charset'   => 'utf8',
+            'database' => env('DB_DATABASE', 'legis'),
+            'username' => env('DB_USERNAME', ''),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
+            'prefix' => '',
+            'strict' => false,
+            'dump' => [
+                'add_extra_option' => '--all-databases',
+            ],
         ],
 
         'sqlite' => [

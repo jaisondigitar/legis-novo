@@ -145,7 +145,7 @@ class VersionPautaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('version_pauta.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -162,6 +162,10 @@ class VersionPautaController extends Controller
         }
 
         $version->delete($id);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Versão da pauta removida com sucesso.')->success();
 

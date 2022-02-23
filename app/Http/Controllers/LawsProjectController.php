@@ -234,6 +234,10 @@ class LawsProjectController extends AppBaseController
 
         $references_project = [0 => 'Selecione'];
 
+        $lawsProjectType = $law_types->mapWithKeys(function ($item, $key) {
+            return [$item => LawsProject::where('law_type_id', $key)->get()];
+        });
+
         foreach ($references as $reference) {
             $references_project[$reference->id] = $reference->project_number.'/'.$reference->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
         }
@@ -243,6 +247,7 @@ class LawsProjectController extends AppBaseController
         return view('lawsProjects.create')->with(compact('status_processing_law', 'comission', 'lawsProject', 'law_types', 'situation', 'advice_situation_law', 'advice_publication_law'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('references_project', $references_project)
+            ->with('lawsProjectType', $lawsProjectType)
             ->with('assemblymensList', $assemblymensList[1]);
     }
 
@@ -825,7 +830,7 @@ class LawsProjectController extends AppBaseController
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
 
-            $return = '<h3 style="text-align: center">'.mb_strtoupper($advice->destination->name, 'UTF-8').'</h3>';
+            $return = '<h3 style="text-align: center">'.mb_strtoupper($advice->destination->name ?? '', 'UTF-8').'</h3>';
             $return .= '<p><strong>Solicitação: </strong>'.$advice->date.'<br><strong>Descrição: </strong>'.$advice->description.'</p>';
 
             foreach ($advice->awnser as $resp) {
@@ -924,6 +929,10 @@ class LawsProjectController extends AppBaseController
 
         $translation = LawsProject::$translation;
 
+        $lawsProjectType = $law_types->mapWithKeys(function ($item, $key) {
+            return [$item => LawsProject::where('law_type_id', $key)->get()];
+        });
+
         $logs = Log::where('auditable_id', $lawsProject->id)
             ->where('auditable_type', LawsProject::class)
             ->orderBy('created_at', 'desc')
@@ -944,7 +953,8 @@ class LawsProjectController extends AppBaseController
                 'lawsAssemblyman',
                 'references_project',
                 'advice_situation_law',
-                'advice_publication_law'
+                'advice_publication_law',
+                'lawsProjectType'
             ))
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1]);

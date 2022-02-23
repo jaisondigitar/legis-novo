@@ -180,7 +180,7 @@ class ResponsibilityController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('responsibilities.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -197,6 +197,10 @@ class ResponsibilityController extends AppBaseController
         }
 
         $this->responsibilityRepository->delete($responsibility);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Responsabilidade removida com sucesso.')->success();
 

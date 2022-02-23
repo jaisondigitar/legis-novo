@@ -172,7 +172,7 @@ class LawsTypeController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('lawsTypes.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -189,6 +189,10 @@ class LawsTypeController extends AppBaseController
         }
 
         $this->lawsTypeRepository->delete($lawsType);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Tipo de lei removido com sucesso.')->success();
 
