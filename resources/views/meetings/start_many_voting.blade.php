@@ -1,17 +1,20 @@
 @extends('layouts.meeting')
 @section('content-meeting')
-    @if($multi_docs_schedule->closet_at)
+    @if($multi_docs_schedule->multiVoting->closet_at)
         <div class="alert alert-danger alert-block fade in alert-dismissable ">
             <strong> <h3 class="text-center">VOTAÇÃO ENCERRADA</h3></strong>
         </div>
         <hr>
     @endif
-    <h3 class="text-uppercase">
-        Votação:
+    <h3 class="text-uppercase" style="display: inline; margin-top: 0">
+        Em votação:
     </h3>
+    <div
+        style="display: inline-flex; flex-direction: column; margin-left: 10px;">
         @foreach ($files as $file)
             <p>{{ $file->model->label }}</p>
         @endforeach
+    </div>
     <div class="clearfix"></div>
     <hr>
     <div class="col-lg-12" style="margin-bottom: 20px;">
@@ -26,7 +29,7 @@
                 data-on-color="success"
                 data-size="normal"
                 type="checkbox"
-                onchange="enableVotes()"
+                onchange="switchStructureVoting()"
             >
         </label>
         <span style="text-transform: uppercase; margin-left: 5px">Iniciar votação</span>
@@ -266,9 +269,8 @@
                 $(".radioBox1").attr('disabled', true);
             @endif
 
-            setInterval(function (args)
+            /*setInterval(function (args)
             {
-
                 $.ajax({
                     url : '/voting/getVotes',
                     method : 'GET'
@@ -291,8 +293,27 @@
                     }
                 })
 
-            }, 1000);
+            }, 1000);*/
         })
+
+        const switchStructureVoting = async () => {
+            const isChecked = document.querySelector('#active').checked
+
+            const body = new FormData();
+            body.append('isChecked', isChecked);
+            body.append('structure_id', "{{ $multi_docs_schedule->structure_id }}");
+
+            const resp = await fetch(
+                "{{ route('meetings.enableVote', [$meeting->id]) }}",
+                {
+                    headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' },
+                    method: 'POST',
+                    body
+                }
+            ).catch(() => { toastr.error('Falha ao habilitar votação') })
+            console.log(resp.json())
+            await resp.json() ? toastr.success('Votação aberta') : toastr.success('Votação fechada')
+        }
     </script>
 @endsection
 

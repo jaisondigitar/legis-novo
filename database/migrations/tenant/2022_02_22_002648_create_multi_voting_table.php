@@ -12,6 +12,7 @@ class CreateMultiVotingTable extends Migration
             $table->id();
             $table->foreignId('multi_docs_schedule_id')->references('id')
                 ->on('multi_docs_schedule');
+            $table->boolean('is_open_for_voting')->default(false);
             $table->timestamp('closed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

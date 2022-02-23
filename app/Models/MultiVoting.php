@@ -19,5 +19,6 @@ class MultiVoting extends BaseModel
     public $fillable = [
         'multi_docs_schedule_id',
         'closed_at',
+        'is_open_for_voting',
     ];
 }

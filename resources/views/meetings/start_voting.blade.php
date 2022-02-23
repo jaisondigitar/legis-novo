@@ -51,7 +51,6 @@
                 "
             >
                 <label>
-{{--                    <input type="radio" class="pull-left radioBox1" id="contactChoice{{$item->id}}" name="assemblyman" value="{{$item->short_name}}" style="margin-right: 5px;" onclick="enable_vote('{{$item->id}}')">--}}
                     {{ mb_strtoupper($item->short_name) }}
                 </label>
             </div>

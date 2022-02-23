@@ -1283,12 +1283,22 @@ class MeetingController extends AppBaseController
     public function enableVote(Request $request, int $id)
     {
         $is_checked = $request->get('isChecked') === 'true';
+        $structure_id = $request->get('structure_id');
 
-        $voting = Voting::find($id);
-        $voting->update(['is_open_for_voting' => $is_checked]);
-        $voting = $voting->fresh();
+        if (Structurepautum::find($structure_id)->vote_in_block) {
+            $voting = MultiDocsSchedule::where('meeting_id', $id)
+                ->where('structure_id', $structure_id)->first()->multiVoting;
 
-        if ($voting->save()) {
+            if ($voting->update(['is_open_for_voting' => $is_checked])) {
+                return json_encode($is_checked);
+            }
+
+            throw new Exception('Falha ao habilitar votação');
+        }
+
+        $voting = Meeting::where('id', $id)->first()->voting->is_open_for_voting;
+
+        if ($voting->update(['is_open_for_voting' => $is_checked])) {
             return json_encode($is_checked);
         }
 
@@ -1305,38 +1315,6 @@ class MeetingController extends AppBaseController
         $files = ScheduleDocs::where('multi_docs_schedule_id', $multi_docs_schedule->id)
             ->with('documents')
             ->get();
-
-        /*$has_many_docs = $meeting->meeting_pauta
-            ->where('structure_id', '=', $struct_id)->first()
-            ->struct->vote_in_block;
-        $is_closed = $meeting->meeting_pauta
-            ->where('structure_id', '=', $struct_id)->first()->meeting->whereNotNull('closed_at')
-            ->isNotEmpty();
-        $votings = Voting::where('meeting_id', $meeting_id)->whereNotNull('closed_at')->get();
-        $files = $meeting->meeting_pauta->where('structure_id', '=', $struct_id)->load([
-            'document',
-            'law',
-            'advices',
-        ])->map(function ($item) {
-            $data = [];
-
-            $item->document->isNotEmpty() && $data[] = $item->document;
-            $item->law->isNotEmpty() && $data[] = $item->law;
-            $item->advices->isNotEmpty() && $data[] = $item->advices;
-
-            return $data;
-        })->flatten();
-
-        $assemblyman = Assemblyman::where('active', 1)->get();
-
-        return view('meetings.start_many_voting', compact(
-            'meeting',
-            'votings',
-            'has_many_docs',
-            'assemblyman',
-            'is_closed',
-            'files'
-        ));*/
 
         return view('meetings.start_many_voting', compact('files', 'multi_docs_schedule', 'meeting'));
     }

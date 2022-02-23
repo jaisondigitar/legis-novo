@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne as HasOneAlias;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MultiDocsSchedule extends BaseModel
@@ -34,9 +34,9 @@ class MultiDocsSchedule extends BaseModel
     }
 
     /**
-     * @return HasOneAlias
+     * @return HasOne
      */
-    public function multiVoting(): HasOneAlias
+    public function multiVoting(): HasOne
     {
         return $this->hasOne(MultiVoting::class);
     }

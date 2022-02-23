@@ -297,7 +297,7 @@ Route::middleware([
 
         Route::post('/meetings/{id}/voting/{voting_id}/updateAssemblyman', 'MeetingController@updateAssemblyman')->name('meetings.updateAssemblyman');
         Route::post(
-            '/meetings/voting/{id}/enable',
+            '/meetings/{id}/voting/enable',
             'MeetingController@enableVote'
         )->name('meetings.enableVote');
         Route::get('/meetings/{id}/voting/{voting_id}/closeVoting', 'MeetingController@closeVoting')->name('meetings.closeVoting');
