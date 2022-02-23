@@ -1279,7 +1279,7 @@ class LawsProjectController extends AppBaseController
         Processing::create([
             'law_projects_id' => $law_project->id,
             'advice_situation_id' => AdviceSituationLaw::where('name', 'Encaminhado')->first()->id,
-            'processing_date' => now()->format('d/m/Y H:i'),
+            'processing_date' => $params['protocoldate'],
             'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
         ]);
 
