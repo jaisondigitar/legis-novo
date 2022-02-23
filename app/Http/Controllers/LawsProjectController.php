@@ -1593,4 +1593,11 @@ class LawsProjectController extends AppBaseController
 
         return view('lawsProjects.legal-option', ['lawsProject' => $lawsProject]);
     }
+
+    public function replyLawsProjects($id)
+    {
+        dd('teste');
+
+        $lawsProject = $this->lawsProjectRepository->findById($id);
+    }
 }
