@@ -1,4 +1,4 @@
-<table class="table table-responsive" id="logs-table">
+<table class="table table-striped table-hover" id="logs-table">
     <thead>
         <th>Usuario</th>
         <th>Tipo</th>
@@ -18,9 +18,7 @@
             <td>
                 {!! Form::open(['route' => ['logs.destroy', $log->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('logs.show') <button @popper(Visualizar) id="advice_{{$log->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="getLog({{$log}})"><i class="fa fa-eye"></i></button>@endshield
-
-                    {{--@shield('logs.show')<a href="{!! route('logs.show', [$log->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield--}}
+                    @shield('logs.show') <button @popper(Visualizar) id="advice_{{$log->id}}" type="button" class="btn btn-default btn-sm" data-bs-toggle="modal" data-bs-target="#myModal" onclick="getLog({{$log}})"><i class="fa fa-eye"></i></button>@endshield
                 </div>
                 {!! Form::close() !!}
             </td>
@@ -30,84 +28,62 @@
     </tbody>
 </table>
 {!! $logs->appends(request()->input())->render()  !!}
-
-<div class="container">
-    <!-- Modal -->
-    <div class="modal fade " id="myModal"  tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog  modal-lg">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Detalhes do Log</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-md-12">
-
-                        <!-- Created At Field -->
-                        <div class="form-group col-md-6">
-                            {!! Form::label('created_at', 'Data:', ['class'=>'text-uppercase']) !!}
-                            <p id="log_created_at"></p>
-                        </div>
-
-                        <!-- User Id Field -->
-                        <div class="form-group col-md-3">
-                            {!! Form::label('user_id', 'Usuário:', ['class'=>'text-uppercase']) !!}
-                            <p id="log_user"> </p>
-                        </div>
-
-                        <!-- User Id Field -->
-                        <div class="form-group col-md-6">
-                            {!! Form::label('email', 'E-mail:', ['class'=>'text-uppercase']) !!}
-                            <p id="log_email"> </p>
-                        </div>
-
-                        <!-- Owner Type Field -->
-                        <div class="form-group col-md-6">
-                            {!! Form::label('auditable_type', 'Tabela:', ['class'=>'text-uppercase']) !!}
-                            <p id="log_owner_type"></p>
-                        </div>
-
-                        <!-- Owner Id Field -->
-                        <div class="form-group col-md-6">
-                            {!! Form::label('auditable_id', 'Id do registro:', ['class'=>'text-uppercase']) !!}
-                            <p id="log_owner_id"></p>
-                        </div>
-
-                        <!-- Type Field -->
-                        <div class="form-group col-md-6">
-                            {!! Form::label('event', 'Tipo:', ['class'=>'text-uppercase']) !!}
-                            <p id="log_type"></p>
-                        </div>
-
-                        <!-- Old Value Field -->
-                        <div class="form-group col-md-12">
-                            {!! Form::label('old_values', 'Valor antigo:',
-                            ['class'=>'text-uppercase']) !!}
-                            <p id="log_old_value"></p>
-                        </div>
-
-                        <!-- New Value Field -->
-                        <div class="form-group col-md-12">
-                            {!! Form::label('new_values', 'Valor novo:',
-                            ['class'=>'text-uppercase']) !!}
-                            <p id="log_new_value"></p>
-                        </div>
+    <div class="container">
+        <div id="myModal" class="modal fade" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Detalhes do Log</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="clearfix"></div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
+                    <div class="modal-body">
+                        <div class="col-md-12">
+                            <div class="form-group col-md-6">
+                                {!! Form::label('created_at', 'Data:', ['class'=>'text-uppercase']) !!}
+                                <p id="log_created_at"></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                {!! Form::label('user_id', 'Usuário:', ['class'=>'text-uppercase']) !!}
+                                <p id="log_user"> </p>
+                            </div>
+                            <div class="form-group col-md-6">
+                                {!! Form::label('email', 'E-mail:', ['class'=>'text-uppercase']) !!}
+                                <p id="log_email"> </p>
+                            </div>
+                            <div class="form-group col-md-6">
+                                {!! Form::label('auditable_type', 'Tabela:', ['class'=>'text-uppercase']) !!}
+                                <p id="log_owner_type"></p>
+                            </div>
+                            <div class="form-group col-md-6">
+                                {!! Form::label('auditable_id', 'Id do registro:', ['class'=>'text-uppercase']) !!}
+                                <p id="log_owner_id"></p>
+                            </div>
+                            <div class="form-group col-md-6">
+                                {!! Form::label('event', 'Tipo:', ['class'=>'text-uppercase']) !!}
+                                <p id="log_type"></p>
+                            </div>
+                            <div class="form-group col-md-12">
+                                {!! Form::label('old_values', 'Valor antigo:',
+                                ['class'=>'text-uppercase']) !!}
+                                <p id="log_old_value"></p>
+                            </div>
+                            <div class="form-group col-md-12">
+                                {!! Form::label('new_values', 'Valor novo:',
+                                ['class'=>'text-uppercase']) !!}
+                                <p id="log_new_value"></p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
-
 <script>
-    var getLog = function (log) {
-        // $('#log_id').html(log.id);
+    const getLog = () => {
         $('#log_user').html(log.user.name);
         $('#log_email').html(log.user.email);
         $('#log_owner_type').html(log.auditable_type);
