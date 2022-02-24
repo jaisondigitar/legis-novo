@@ -805,7 +805,7 @@ class MeetingController extends AppBaseController
             Processing::create([
                 'law_projects_id' => $input['law_id'],
                 'advice_situation_id' => AdviceSituationLaw::where('name', 'Encaminhado')->first()->id,
-                'processing_date' => now()->format('d/m/Y'),
+                'processing_date' => now()->format('d/m/Y H:i'),
                 'destination_id' => Destination::where('name', 'PLENÁRIO')->first()->id,
             ]);
         }

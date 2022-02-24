@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -86,14 +87,14 @@ class Advice extends BaseModel
         'to_id' => 'required',
     ];
 
-    public function getDateAttribute($date)
+    public function getDateAttribute($date): string
     {
-        return $this->asDateTime($date)->format('d/m/Y');
+        return $this->asDateTime($date)->format('d/m/Y H:i');
     }
 
     public function setDateAttribute($date)
     {
-        $this->attributes['date'] = $date->format('Y-m-d');
+        $this->attributes['date'] = Carbon::createFromFormat('d/m/Y H:i', $date);
     }
 
     public function destination()

@@ -40,17 +40,19 @@ class ProcessingController extends Controller
     {
         $input = $request->all();
 
-        $date = explode(' ', $input['processing_date']);
-        $date_time = explode('/', $date[0]);
+        if ($input['processing_date_first']) {
+            $date = explode(' ', $input['processing_date']);
+            $date_time = explode('/', $date[0]);
 
-        $date_first = explode(' ', $input['processing_date_first']);
-        $date_first_time = explode('/', $date_first[0]);
+            $date_first = explode(' ', $input['processing_date_first']);
+            $date_first_time = explode('/', $date_first[0]);
 
-        $processing_date = $date_time[2].'-'.$date_time[1].'-'.$date_time[0];
-        $processing_date_first = $date_first_time[2].'-'.$date_first_time[1].'-'.$date_first_time[0];
+            $processing_date = $date_time[2].'-'.$date_time[1].'-'.$date_time[0];
+            $processing_date_first = $date_first_time[2].'-'.$date_first_time[1].'-'.$date_first_time[0];
 
-        if (strtotime($processing_date) < strtotime($processing_date_first)) {
-            return json_encode(false);
+            if (strtotime($processing_date) < strtotime($processing_date_first)) {
+                return json_encode(false);
+            }
         }
 
         $processing = Processing::create($input);

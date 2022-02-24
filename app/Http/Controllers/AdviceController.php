@@ -86,7 +86,7 @@ class AdviceController extends AppBaseController
     {
         $input = $request->all();
 
-        $input['date'] = Carbon::now();
+        $input['date'] = Carbon::now()->format('d/m/Y H:i');
 
         $date_end = isset($input['date_end']) ? Carbon::createFromFormat('d/m/Y', $input['date_end']) : null;
         $legal_option = $input['legal_option'] ?? null;
@@ -119,9 +119,9 @@ class AdviceController extends AppBaseController
                 $processing->advice_publication_id = null;
                 $processing->advice_situation_id = 1;
                 $processing->status_processing_law_id = 8;
-                $processing->processing_date = Carbon::now()->format('d/m/Y');
+                $processing->processing_date = $input['date'];
                 $processing->destination_id = 5;
-                $processing->date_end = $date_end->format('d/m/Y');
+                $processing->date_end = $date_end;
                 $processing->save();
 
                 $flag = 1;
@@ -131,7 +131,7 @@ class AdviceController extends AppBaseController
         if ($flag) {
             return \GuzzleHttp\json_encode(true);
         } else {
-            return json_encode(false);
+            return \GuzzleHttp\json_encode(false);
         }
     }
 
