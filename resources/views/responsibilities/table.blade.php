@@ -1,4 +1,4 @@
-<table class="table table-responsive" id="responsibilities-table">
+<table class="table table-striped table-hover" id="responsibilities-table">
     <thead>
         <th>Nome</th>
         <th>Ordem</th>
@@ -14,13 +14,13 @@
             <td>
                 {!! Form::open(['route' => ['responsibilities.destroy', $responsibility->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('responsibilities.show')<a @popper(Visualizar) href="{!! route('responsibilities.show', [$responsibility->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('responsibilities.edit')<a @popper(Editar) href="{!! route('responsibilities.edit', [$responsibility->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
+                    @shield('responsibilities.show')<a @popper(Visualizar) href="{!! route('responsibilities.show', [$responsibility->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
+                    @shield('responsibilities.edit')<a @popper(Editar) href="{!! route('responsibilities.edit', [$responsibility->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
                     @shield('responsibilities.delete')
                     <button
                         @popper(Deletar)
                         type = 'submit'
-                        class = 'btn btn-danger btn-xs'
+                        class = 'btn btn-danger btn-sm'
                         onclick="sweet(event, {!! $responsibility->id !!})"
                     >
                         <i class="fa fa-trash"></i>

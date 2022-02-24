@@ -263,13 +263,13 @@
 
         <div class='btn-group action' id="tdoptions{{$document->id}}">
             @shield('documents.show')
-                <a @popper(GERAR PDF) href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-xs'>
+                <a @popper(GERAR PDF) href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
                     <i class="fa fa-file-pdf-o"></i>
                 </a>
             @endshield
 
             @if($document->read > 0 && $document->approved > 0 && Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
-                <a @popper(RESPONDER) onclick="answer()" class='btn btn-default btn-xs answer'>
+                <a @popper(RESPONDER) onclick="answer()" class='btn btn-default btn-sm answer'>
                     <i class="fa fa-reply"></i>
                 </a>
             @endif
@@ -293,7 +293,7 @@
 
                 @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.edit')
-                        <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
+                        <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-sm'>
                             <i class="fa fa-edit"></i>
                         </a>
                     @endshield
@@ -302,7 +302,7 @@
                 @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.delete')
                        <a @popper(REMOVER)>
-                           {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => 'sweet(event)']) !!}
+                           {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'sweet(event)']) !!}
                        </a>
                     @endshield
                 @endif

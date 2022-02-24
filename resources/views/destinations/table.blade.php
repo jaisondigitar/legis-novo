@@ -2,8 +2,8 @@
     <thead>
         <tr>
             <th style="width: 80px">Nome</th>
-            <th>Email</th>
-            <th style="width: 120px; min-width: 120px">Ação</th>
+            <th style="width: 75rem">Email</th>
+            <th style="width: 120px">Ação</th>
         </tr>
     </thead>
     <tbody>
@@ -19,23 +19,23 @@
                     @shield('destination.show')
                         <a @popper(Visualizar) href="{!! route('destinations.show', [$destination->id]) !!}"
                             class="btn btn-default btn-sm">
-                            <i class="fas fa-eye"></i>
+                            <i class="fa fa-eye"></i>
                         </a>
                     @endshield
                     @shield('destination.edit')
                         <a @popper(Editar) href="{!! route('destinations.edit', [$destination->id]) !!}"
                             class="btn btn-default btn-sm">
-                            <i class="fas fa-pencil-alt"></i>
+                            <i class="fa fa-pencil"></i>
                         </a>
                     @endshield
                     @shield('destination.delete')
                     <button
                         @popper(Deletar)
+                        class="btn btn-danger btn-sm"
                         type = "submit"
-                        style = 'padding: 0; margin: 0; border: 0;'
                         onclick="sweet(event, {!! $destination->id !!})"
                     >
-                        <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
+                        <i class="fa fa-trash"></i>
                     </button>
                     @endshield
                 </td>

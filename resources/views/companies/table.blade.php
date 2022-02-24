@@ -1,4 +1,4 @@
-<table class="table table-striped dataTable">
+<table class="table table-striped table-hover dataTable">
     <thead>
         <tr>
             <th>Cod</th>
@@ -13,7 +13,18 @@
                 <td>#{!! str_pad($company->id, 4, "0", STR_PAD_LEFT) !!}</td>
                 <td>{!! $company->shortName !!}</td>
                 <td>
-                    <input class="switch" onchange="changeStatus('{!! $company->id !!}')" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal" type="checkbox" {!! $company->active>0?'checked':'' !!}>
+                    <div class="form-check form-switch form-switch-md">
+                        <input
+                            onchange="changeStatus('{!! $company->id !!}')"
+                            id="active"
+                            name="active"
+                            class="form-check-input"
+                            type="checkbox"
+                            @if($company->active)
+                            checked
+                            @endif
+                        >
+                    </div>
                 </td>
                 <td>
                     <div class="pull-right">
@@ -26,12 +37,12 @@
                             <i class="fas fa-pencil-alt"></i>
                         </a>
                         <a
-                            class="pointer"
+                            class="btn btn-danger btn-sm"
                             @popper(Deletar)
                             type="submit"
                             onclick="sweet(event, {!! $company->id !!})"
                         >
-                            <i class="fa fa-trash icon-rounded icon-xs icon-danger"></i>
+                            <i class="fa fa-trash"></i>
                         </a>
                     </div>
                 </td>

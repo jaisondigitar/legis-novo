@@ -1,4 +1,4 @@
-<table class="table table-responsive" id="parties-table">
+<table class="table table-striped table-hover" id="parties-table">
     <thead>
         <th>Sigla</th>
         <th>Nome</th>
@@ -12,13 +12,13 @@
             <td>
                 {!! Form::open(['route' => ['parties.destroy', $party->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('parties.show')<a @popper(Visualizar) href="{!! route('parties.show', [$party->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('parties.edit')<a @popper(Editar) href="{!! route('parties.edit', [$party->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
+                    @shield('parties.show')<a @popper(Visualizar) href="{!! route('parties.show', [$party->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
+                    @shield('parties.edit')<a @popper(Editar) href="{!! route('parties.edit', [$party->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
                     @shield('parties.delete')
                     <button
                         @popper(Deletar)
                         type = 'submit'
-                        class = 'btn btn-danger btn-xs'
+                        class = 'btn btn-danger btn-sm'
                         onclick="sweet(event, {!! $party->id !!})"
                     >
                         <i class="fa fa-trash"></i>

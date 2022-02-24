@@ -7,12 +7,12 @@
             <span class="pull-right">
                 @shield('roles.show')
                     <a @popper(Permissões) href="{!! route('gerencial.roles.permission', [$role->id])!!}">
-                        <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-list-ol"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm "><i class="fa fa-list-ol"></i></button>
                     </a>
                 @endshield
                 @shield('roles.edit')
                     <a @popper(Editar) href="{!! route('roles.edit', [$role->id]) !!}">
-                        <button type="button" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-edit"></i></button>
                     </a>
                 @endshield
                 @shield('roles.delete')
@@ -20,7 +20,7 @@
                        type="submit"
                        onclick="sweet(event, {!! $role->id !!})"
                     >
-                        <button type="button" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i>Deletar</button>
+                        <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                     </a>
                 @endshield
             </span>

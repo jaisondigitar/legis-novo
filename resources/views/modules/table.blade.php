@@ -1,4 +1,4 @@
-<table class="table table-bordered table-hover">
+<table class="table table-striped table-hover">
     <thead>
         <tr>
             <th>Name</th>
@@ -33,12 +33,12 @@
 {{--                        <i class="fas fa-pencil-alt icon-rounded icon-xs icon-warning"></i>--}}
                     </a>
                     <a
-                        class="pointer"
+                        class = "btn btn-danger btn-sm"
                         @popper(Deletar)
                         type="submit"
                         onclick="sweet(event, {!! $module->id !!})"
                     >
-                        <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
+                        <i class="fa fa-trash"></i>
                     </a>
                 </td>
             </tr>

@@ -1,4 +1,4 @@
-<table class="table table-striped dataTable">
+<table class="table table-striped table-hover dataTable">
     <thead>
         <tr>
             <th>Slug</th>
@@ -20,11 +20,11 @@
                     @endis
                     @is('root')
                         <a
-                            class="pointer"
+                            class = "btn btn-danger btn-sm"
                             @popper(Deletar)
                             onclick="sweet(event, {!! $permission->id !!})"
                         >
-                            <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
+                            <i class="fa fa-trash"></i>
                         </a>
                     @endis
                 </td>
