@@ -1,4 +1,4 @@
-<table class="table table-responsive" id="assemblymen-table">
+<table class="table table-striped table-hover" id="assemblymen-table">
     <thead>
         <th>Código</th>
         <th>Nome Parlamentar</th>
@@ -33,7 +33,18 @@
             </td>
             <td>
                 @shield('assemblymen.edit')
-                <input class="switch" onchange="changeStatus('{!! $assemblyman->id !!}')" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" {!! $assemblyman->active>0?'checked':'' !!}>
+                <div class="form-check form-switch form-switch-md">
+                    <input
+                        onchange="changeStatus('{!! $assemblyman->id !!}')"
+                        id="active"
+                        name="active"
+                        class="form-check-input"
+                        type="checkbox"
+                        @if($assemblyman->active)
+                        checked
+                        @endif
+                    >
+                </div>
                 @endshield
             </td>
             <td>
@@ -56,14 +67,14 @@
                         R
                     </button>
                     @endshield
-                    @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
+                    @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
+                    @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
                     @shield('assemblymen.delete')
                         {!! Form::open(['route' => ['assemblymen.destroy', $assemblyman->id], 'method' => 'delete']) !!}
                         <a
                             @popper(Deletar)
                             type = "submit"
-                            class = 'btn btn-danger btn-xs'
+                            class = 'btn btn-danger btn-sm'
                             onclick="sweet(event, {!! $assemblyman->id !!})"
                         >
                             <i class="fa fa-trash"></i>

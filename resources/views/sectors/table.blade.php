@@ -1,4 +1,4 @@
-<table class="table table-responsive" id="sectors-table">
+<table class="table table-striped table-hover" id="sectors-table">
     <thead>
         <th>Nome</th>
         <th>Externo</th>
@@ -11,33 +11,31 @@
             <td>{!! $sector->name !!}</td>
             <td>
                 <label>
-                    <input
-                        type="checkbox"
-                        id="external-{{$sector->id}}"
-                        onchange="statusExternal('{!! $sector->id !!}')"
-                        class='form-control switch'
-                        data-on-text='Sim'
-                        data-off-text='Não'
-                        data-off-color='danger'
-                        data-on-color='success'
-                        data-size='normal'
-                        @if($sector->external == 1)
+                    <div class="form-check form-switch form-switch-md">
+                        <input
+                            type="checkbox"
+                            id="external-{{$sector->id}}"
+                            onchange="statusExternal('{!! $sector->id !!}')"
+                            name="active"
+                            class="form-check-input"
+                            @if($sector->external)
                             checked
-                        @endif
-                    >
+                            @endif
+                        >
+                    </div>
                 </label>
             </td>
             <td>{!! $sector->slug !!}</td>
             <td>
                 {!! Form::open(['route' => ['sectors.destroy', $sector->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('sectors.show')<a @popper(Visualizar) href="{!! route('sectors.show', [$sector->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('sectors.edit')<a @popper(Editar) href="{!! route('sectors.edit', [$sector->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
+                    @shield('sectors.show')<a @popper(Visualizar) href="{!! route('sectors.show', [$sector->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
+                    @shield('sectors.edit')<a @popper(Editar) href="{!! route('sectors.edit', [$sector->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
                     @shield('sectors.delete')
                     <button
                         @popper(Deletar)
                         type = 'submit'
-                        class = 'btn btn-danger btn-xs'
+                        class = 'btn btn-danger btn-sm'
                         onclick="sweet(event, {!! $sector->id !!})"
                     >
                         <i class="fa fa-trash"></i>

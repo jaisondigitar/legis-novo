@@ -6,7 +6,7 @@
             <th>Email</th>
             <th>Regras</th>
             <th width="80px">Ativo</th>
-            <th width="150px">Ação</th>
+            <th style="width: 11.25rem">Ação</th>
         </tr>
     </thead>
     <tbody>
@@ -22,20 +22,33 @@
                     @endforeach
                 </td>
                 <td>
-                    @shield('users.edit')<input class="switch" onchange="changeStatus('{!! $user->id !!}')" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" {!! $user->active>0?'checked':'' !!}>@endshield
+                    @shield('users.edit')
+                    <div class="form-check form-switch form-switch-md">
+                        <input
+                            onchange="changeStatus('{!! $user->id !!}')"
+                            id="active"
+                            name="active"
+                            class="form-check-input"
+                            type="checkbox"
+                            @if($user->active)
+                            checked
+                            @endif
+                        >
+                    </div>
+                    @endshield
                 </td>
                 <td>
-                    @is(['admin','root']) <a @popper(Hístorico) href="/users/{!! $user->id !!}/auditing"><i class="fa fa-user-secret icon-rounded icon-xs icon-dark"></i></a>@endis
-                    @shield('users.show')<a @popper(Visualizar) href="{!! route('users.show', [$user->id]) !!}"><i class="fa fa-eye icon-rounded icon-xs icon-info"></i></a>@endshield
-                    @shield('users.edit')<a @popper(Editar) href="{!! route('users.edit', [$user->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>@endshield
+                    @is(['admin','root']) <a @popper(Hístorico) href="/users/{!! $user->id !!}/auditing" class="btn btn-default btn-sm"><i class="fa fa-user-secret"></i></a>@endis
+                    @shield('users.show')<a @popper(Visualizar) href="{!! route('users.show', [$user->id]) !!}" class="btn btn-default btn-sm"><i class="fa fa-eye"></i></a>@endshield
+                    @shield('users.edit')<a @popper(Editar) href="{!! route('users.edit', [$user->id]) !!}" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></a>@endshield
                     @shield('users.delete')
                         <a
-                            class="pointer"
+                            class="btn btn-danger btn-sm"
                             @popper(Deletar)
                             type="submit"
                             onclick="sweet(event, {!! $user->id !!})"
                         >
-                            <i class="fa fa-trash icon-rounded icon-xs icon-danger"></i>
+                            <i class="fa fa-trash"></i>
                         </a>
                     @endshield
                 </td>
