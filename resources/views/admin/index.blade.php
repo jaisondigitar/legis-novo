@@ -35,51 +35,66 @@
         .panel-info:hover .display-count-info {
             display: block;
         }
+
+        .title-card {
+            text-decoration: none !important;
+            color: #0b0b0b;
+        }
+
+        .title-card:hover {
+            text-decoration: none !important;
+            color: #0b0b0b;
+        }
     </style>
     <h1 class="page-heading" style="margin-top: 0;">DASHBOARD <small>Algumas informações úteis</small></h1>
 
-    <a href="/lawsProjects">
-        <div class="col-lg-4">
-            <!-- BEGIN TODAY VISITOR TILES -->
-            <div class="panel panel-danger panel-square panel-no-border text-center">
-                <div class="panel-heading">
+    <div class="col-lg-4">
+        <!-- BEGIN TODAY VISITOR TILES -->
+        <div class="panel panel-danger panel-square panel-no-border text-center">
+            <div class="panel-heading">
+                <a class="title-card" href="/lawsProjects">
                     <h3 class="panel-title">PROJETOS DE LEI</h3>
-                </div>
-                <div class="panel-body">
-                    <h1 class="bolded tiles-number text-danger">{{ $projLeiAll }}</h1>
-                    <p class="text-muted"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></p>
-                    <div class="display-count-danger">
-                        @foreach($countType as $key => $items)
-                            @if($items)
-                                <p class="text-muted text-card"><small><strong>{{ $key }}: {{ $items }}</strong></small></p>
-                            @endif
-                        @endforeach
-                    </div>
-                </div><!-- /.panel-body -->
-            </div><!-- /.panel panel-success panel-block-color -->
-        </div>
-    </a>
+                </a>
+            </div>
 
-    <a href="/documents">
-        <div class="col-lg-4">
-            <div class="panel panel-info panel-square panel-no-border text-center">
-                <div class="panel-heading">
-                    <h3 class="panel-title">DOCUMENTOS</h3>
+            <div class="panel-body">
+                <h1 class="bolded tiles-number text-danger">{{ $projLeiAll }}</h1>
+                <p class="text-muted"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></p>
+                <div class="display-count-danger">
+                    @foreach($countType as $key => $items)
+                        @if($items['count'])
+                            <a href="/lawsProjects?has-filter=true&created_at=&law_type_id={{$items['id']}}&project_number=&law_date=&assemblyman_id=">
+                                <p class="text-muted text-card"><small><strong>{{ $key }}: {{ $items['count'] }}</strong></small></p>
+                            </a>
+                        @endif
+                    @endforeach
                 </div>
-                <div class="panel-body">
-                    <h1 class="bolded tiles-number text-info">{{ $docAll }}</h1>
-                    <p class="text-muted"><small>LIDOS: <strong>{{ $docRead }}</strong></small></p>
-                    <div class="display-count-info">
-                        @foreach($countDoc as $key => $items)
-                            @if($items)
-                                <p class="text-muted text-card"><small><strong>{{ $key }}: {{ $items }}</strong></small></p>
-                            @endif
-                        @endforeach
-                    </div>
-                </div><!-- /.panel-body -->
-            </div><!-- /.panel panel-success panel-block-color -->
-        </div>
-    </a>
+            </div><!-- /.panel-body -->
+        </div><!-- /.panel panel-success panel-block-color -->
+    </div>
+
+    <div class="col-lg-4">
+        <div class="panel panel-info panel-square panel-no-border text-center">
+            <div class="panel-heading">
+                <a class="title-card" href="/documents">
+                    <h3 class="panel-title">DOCUMENTOS</h3>
+                </a>
+            </div>
+            <div class="panel-body">
+                <h1 class="bolded tiles-number text-info">{{ $docAll }}</h1>
+                <p class="text-muted"><small>LIDOS: <strong>{{ $docRead }}</strong></small></p>
+                <div class="display-count-info">
+                    @foreach($countDoc as $key => $items)
+                        @if($items['count'])
+                            <a href="/documents?has-filter=true&reg=&document_type_id={{$items['id']}}&number=&date=&owner_id=&content=&status=0">
+                                <p class="text-muted text-card"><small><strong>{{ $key }}: {{ $items['count'] }}</strong></small></p>
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
+            </div><!-- /.panel-body -->
+        </div><!-- /.panel panel-success panel-block-color -->
+    </div>
 
     <a href="/admin/commissions">
         <div class="col-lg-4">

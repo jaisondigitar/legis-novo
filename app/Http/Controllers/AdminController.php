@@ -74,11 +74,11 @@ class AdminController extends AppBaseController
         $docRead = count(Document::where('read', 1)->get());
 
         $countType = $law_types->mapWithKeys(function ($item, $key) {
-            return [$item => LawsProject::where('law_type_id', $key)->count()];
+            return collect([$item => collect(['id' => $key, 'count' => LawsProject::where('law_type_id', $key)->count()])]);
         });
 
         $countDoc = $documentType->mapWithKeys(function ($item, $key) {
-            return [$item => Document::where('document_type_id', $key)->count()];
+            return collect([$item => ['id' => $key, 'count' => Document::where('document_type_id', $key)->count()]]);
         });
 
         return view('admin.index', compact(
