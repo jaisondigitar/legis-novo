@@ -41,7 +41,7 @@
 
         .initial {
             border-radius: 10px 0 0 10px;
-            background-color: rgb(223, 119, 130);
+            background-color: rgb(199, 209, 0);
             padding: 30px;
         }
 
@@ -73,7 +73,7 @@
         }
 
         .bt_color_red {
-            background-color: rgba(223, 119, 130, 0.65);
+            background-color: rgba(199, 209, 0, 0.65);
         }
 
         .bt_color_blue {
