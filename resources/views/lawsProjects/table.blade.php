@@ -51,6 +51,7 @@
                         Descrição:
                         <textarea
                             name="comissionDescriprion"
+                            id="comissionDescriprion"
                             class="form-control descricao ckeditor"
                         ></textarea>
                     </label>
@@ -467,7 +468,20 @@
         });
 
         $('#save-reply').on('click', function(){
-            alert(this.value);
+            id = this.value;
+            url = '/lawsProjectsReply/' + this.value;
+            data = {
+                description: CKEDITOR.instances['comissionDescriprion'].getData(),
+                file: "fileAjax"
+            };
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: data
+            }).success(function(response){
+            }).error(function(e){
+            });
         });
     });
 
