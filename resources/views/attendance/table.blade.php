@@ -1,4 +1,4 @@
-<table class="table table-responsive" id="attendance-table">
+<table class="table table-striped table-hover" id="attendance-table">
     <thead>
         <tr>
             <th>Data</th>
@@ -7,7 +7,7 @@
             <th>Visitante</th>
             <th>Tipo de Atendimento</th>
             <th>Hora Saída</th>
-            <th>Manutenção</th>
+            <th class="pull-right">Manutenção</th>
         </tr>
     </thead>
     <tbody>
@@ -20,37 +20,39 @@
             <td>{!! $attend->type->name !!}</td>
             <td>{!! $attend->time_exit ?? '-' !!}</td>
             <td>
-                {!! Form::open(['route' => ['attendance.destroy', $attend->id], 'method' => 'delete']) !!}
-                <div class='btn-group'>
-                    @shield('attendance.show')
-                        <a @popper(Visualizar) href="{!! route('attendance.show', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>
-                    @endshield
+                <div class="pull-right">
+                    {!! Form::open(['route' => ['attendance.destroy', $attend->id], 'method' => 'delete']) !!}
+                        <div class='btn-group'>
+                            @shield('attendance.show')
+                                <a @popper(Visualizar) href="{!! route('attendance.show', [$attend->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>
+                            @endshield
 
-                    <button
-                        @popper(Hora de saida)
-                        type="button"
-                        class="btn btn-default btn-xs"
-                        onclick="modal_exit({{ $attend }})"
-                    >
-                        <i class="fa fa-sign-out"></i>
-                    </button>
+                            <button
+                                @popper(Hora de saida)
+                                type="button"
+                                class="btn btn-default btn-sm"
+                                onclick="modal_exit({{ $attend }})"
+                            >
+                                <i class="fa fa-sign-out"></i>
+                            </button>
 
-                    @shield('attendance.edit')
-                        <a @popper(Editar) href="{!! route('attendance.edit', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>
-                    @endshield
+                            @shield('attendance.edit')
+                                <a @popper(Editar) href="{!! route('attendance.edit', [$attend->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>
+                            @endshield
 
-                    @shield('attendance.delete')
-                      <button
-                            @popper(Deletar)
-                            type = 'submit'
-                            class = 'btn btn-danger btn-xs'
-                            onclick="sweet(event, {!! $attend->id !!})"
-                      >
-                          <i class="fa fa-trash"></i>
-                      </button>
-                    @endshield
+                            @shield('attendance.delete')
+                              <button
+                                    @popper(Deletar)
+                                    type = 'submit'
+                                    class = 'btn btn-danger btn-sm'
+                                    onclick="sweet(event, {!! $attend->id !!})"
+                              >
+                                  <i class="fa fa-trash"></i>
+                              </button>
+                            @endshield
+                        </div>
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </td>
         </tr>
     @endforeach

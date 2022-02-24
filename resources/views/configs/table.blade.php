@@ -1,10 +1,10 @@
-<table class="table table-responsive" id="configs-table">
+<table class="table table-striped table-hover" id="configs-table">
     <thead>
         <th>Name</th>
         <th>Type</th>
         <th>Slug</th>
         <th>Value</th>
-        <th colspan="3">Manutenção</th>
+        <th class="pull-right">Manutenção</th>
     </thead>
     <tbody>
     @foreach($configs as $config)
@@ -14,13 +14,15 @@
             <td>{!! $config->slug !!}</td>
             <td>{!! $config->value !!}</td>
             <td>
-                {!! Form::open(['route' => ['$ROUTES_AS_PREFIX$configs.destroy', $config->id], 'method' => 'delete']) !!}
-                <div class='btn-group'>
-                    @shield('configs.show')<a @popper(Visualizar) href="{!! route('$ROUTES_AS_PREFIX$configs.show', [$config->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('configs.edit')<a @popper(Editar) href="{!! route('$ROUTES_AS_PREFIX$configs.edit', [$config->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
-                    @shield('configs.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                <div class="pull-right">
+                    {!! Form::open(['route' => ['$ROUTES_AS_PREFIX$configs.destroy', $config->id], 'method' => 'delete']) !!}
+                        <div class='btn-group'>
+                            @shield('configs.show')<a @popper(Visualizar) href="{!! route('$ROUTES_AS_PREFIX$configs.show', [$config->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
+                            @shield('configs.edit')<a @popper(Editar) href="{!! route('$ROUTES_AS_PREFIX$configs.edit', [$config->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
+                            @shield('configs.delete'){!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}@endshield
+                        </div>
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </td>
         </tr>
     @endforeach

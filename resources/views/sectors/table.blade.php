@@ -3,7 +3,7 @@
         <th>Nome</th>
         <th>Externo</th>
         <th>Slug</th>
-        <th colspan="3">Manutenção</th>
+        <th class="pull-right">Manutenção</th>
     </thead>
     <tbody>
     @foreach($sectors as $sector)
@@ -27,22 +27,24 @@
             </td>
             <td>{!! $sector->slug !!}</td>
             <td>
-                {!! Form::open(['route' => ['sectors.destroy', $sector->id], 'method' => 'delete']) !!}
-                <div class='btn-group'>
-                    @shield('sectors.show')<a @popper(Visualizar) href="{!! route('sectors.show', [$sector->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('sectors.edit')<a @popper(Editar) href="{!! route('sectors.edit', [$sector->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
-                    @shield('sectors.delete')
-                    <button
-                        @popper(Deletar)
-                        type = 'submit'
-                        class = 'btn btn-danger btn-sm'
-                        onclick="sweet(event, {!! $sector->id !!})"
-                    >
-                        <i class="fa fa-trash"></i>
-                    </button>
-                    @endshield
+                <div class="pull-right">
+                    {!! Form::open(['route' => ['sectors.destroy', $sector->id], 'method' => 'delete']) !!}
+                        <div class='btn-group'>
+                            @shield('sectors.show')<a @popper(Visualizar) href="{!! route('sectors.show', [$sector->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
+                            @shield('sectors.edit')<a @popper(Editar) href="{!! route('sectors.edit', [$sector->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
+                            @shield('sectors.delete')
+                            <button
+                                @popper(Deletar)
+                                type = 'submit'
+                                class = 'btn btn-danger btn-sm'
+                                onclick="sweet(event, {!! $sector->id !!})"
+                            >
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            @endshield
+                        </div>
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </td>
         </tr>
     @endforeach

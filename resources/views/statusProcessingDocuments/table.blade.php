@@ -1,29 +1,31 @@
-<table class="table table-responsive" id="statusProcessingDocuments-table">
+<table class="table table-striped table-hover" id="statusProcessingDocuments-table">
     <thead>
         <th>Name</th>
-        <th colspan="3">Manutenção</th>
+        <th class="pull-right">Manutenção</th>
     </thead>
     <tbody>
     @foreach($statusProcessingDocuments as $statusProcessingDocument)
         <tr>
             <td>{!! $statusProcessingDocument->name !!}</td>
             <td>
-                {!! Form::open(['route' => ['statusProcessingDocuments.destroy', $statusProcessingDocument->id], 'method' => 'delete']) !!}
-                <div class='btn-group'>
-                    @shield('statusProcessingDocuments.show')<a @popper(Visualizar) href="{!! route('statusProcessingDocuments.show', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('statusProcessingDocuments.edit')<a @popper(Editar) href="{!! route('statusProcessingDocuments.edit', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
-                    @shield('statusProcessingDocuments.delete')
-                    <button
-                        @popper(Deletar)
-                        type = 'submit'
-                        class = 'btn btn-danger btn-xs'
-                        onclick = "sweet(event, {!! $statusProcessingDocument->id !!})"
-                    >
-                        <i class="fa fa-trash"></i>
-                    </button>
-                    @endshield
+                <div class="pull-right">
+                    {!! Form::open(['route' => ['statusProcessingDocuments.destroy', $statusProcessingDocument->id], 'method' => 'delete']) !!}
+                    <div class='btn-group'>
+                        @shield('statusProcessingDocuments.show')<a @popper(Visualizar) href="{!! route('statusProcessingDocuments.show', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
+                        @shield('statusProcessingDocuments.edit')<a @popper(Editar) href="{!! route('statusProcessingDocuments.edit', [$statusProcessingDocument->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
+                        @shield('statusProcessingDocuments.delete')
+                        <button
+                            @popper(Deletar)
+                            type = 'submit'
+                            class = 'btn btn-danger btn-sm'
+                            onclick = "sweet(event, {!! $statusProcessingDocument->id !!})"
+                        >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        @endshield
+                    </div>
+                        {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </td>
         </tr>
     @endforeach

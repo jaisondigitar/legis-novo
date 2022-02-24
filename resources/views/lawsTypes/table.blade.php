@@ -1,8 +1,8 @@
-<table class="table table-responsive" id="lawsTypes-table">
+<table class="table table-striped table-hover" id="lawsTypes-table">
     <thead>
         <th>Name</th>
         <th>Ativo</th>
-        <th colspan="3">Manutenção</th>
+        <th class="pull-right">Manutenção</th>
     </thead>
     <tbody>
     @foreach($lawsTypes as $lawsType)
@@ -11,26 +11,39 @@
             <td>
 
                 @is(['root', 'admin'])
-                    <input class="switch" onchange="changeActive('{!! $lawsType->id !!}')" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" {!! $lawsType->is_active > 0 ? 'checked' : '' !!}>
+                <div class="form-check form-switch form-switch-md">
+                    <input
+                        onchange="changeActive('{!! $lawsType->id !!}')"
+                        id="active"
+                        name="active"
+                        class="form-check-input"
+                        type="checkbox"
+                        @if($lawsType->is_active)
+                        checked
+                        @endif
+                    >
+                </div>
                 @endis
             </td>
             <td>
-                {!! Form::open(['route' => ['lawsTypes.destroy', $lawsType->id], 'method' => 'delete']) !!}
-                <div class='btn-group'>
-                    @shield('lawsTypes.show')<a @popper(Visualizar) href="{!! route('lawsTypes.show', [$lawsType->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('lawsTypes.edit')<a @popper(Editar) href="{!! route('lawsTypes.edit', [$lawsType->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>@endshield
-                    @shield('lawsTypes.delete')
-                    <button
-                        @popper(Deletar)
-                        type = "submit"
-                        class = 'btn btn-danger btn-xs'
-                        onclick ="sweet(event, {!! $lawsType->id !!})"
-                    >
-                        <i class="fa fa-trash"></i>
-                    </button>
-                    @endshield
+                <div class="pull-right">
+                    {!! Form::open(['route' => ['lawsTypes.destroy', $lawsType->id], 'method' => 'delete']) !!}
+                        <div class='btn-group'>
+                            @shield('lawsTypes.show')<a @popper(Visualizar) href="{!! route('lawsTypes.show', [$lawsType->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
+                            @shield('lawsTypes.edit')<a @popper(Editar) href="{!! route('lawsTypes.edit', [$lawsType->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
+                            @shield('lawsTypes.delete')
+                            <button
+                                @popper(Deletar)
+                                type = "submit"
+                                class = 'btn btn-danger btn-sm'
+                                onclick ="sweet(event, {!! $lawsType->id !!})"
+                            >
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            @endshield
+                        </div>
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </td>
         </tr>
     @endforeach
