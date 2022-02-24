@@ -1,9 +1,9 @@
 @extends('layouts.blit')
-@section('Breadcrumbs')
-    {!! Breadcrumbs::render('documents.list') !!}
-@endsection
+{{--@section('Breadcrumbs')--}}
+{{--    {!! Breadcrumbs::render('documents.list') !!}--}}
+{{--@endsection--}}
 @section('content')
-    <div class="the-box rounded">
+    <div style="margin: 0.625rem 0 0 0" class="the-box rounded">
         <form id="search-form" method="GET">
             <input type="hidden" name="has-filter" value="true">
             <div class="row">
