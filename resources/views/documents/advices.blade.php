@@ -32,7 +32,7 @@
                                 {!! Form::select('destination_id', $destinations, null, ['class' => 'form-control']) !!}
                             </div>
 
-                            @if(userCanDo('dateAdvicesDocument.edit'))
+                            @if(Auth::user()->roleHasPermission('dateAdvicesDocument.edit'))
                                 <div class="form-group col-sm-3">
                                     {!! Form::label('new_processing_document_date', 'Data:') !!}
                                     {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datetimepicker1']) !!}

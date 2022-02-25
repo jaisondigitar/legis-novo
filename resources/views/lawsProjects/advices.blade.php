@@ -26,7 +26,7 @@
                             {!! Form::select('new_status_processing_law_id', $status_processing_law ,null, ['class' => 'form-control']) !!}
                         </div>
 
-                        @if(userCanDo('dateAdvicesLawsProjects.edit'))
+                        @if(Auth::user()->roleHasPermission('dateAdvicesLawsProjects.edit'))
                             <div class="form-group col-sm-2">
                                 {!! Form::label('new_date_processing', 'Data:') !!}
                                 {!! Form::text('new_date_processing', null, ['class' => 'form-control datetimepicker1']) !!}
