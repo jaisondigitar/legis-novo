@@ -51,14 +51,6 @@
                                 </label>
 
                                 <label>
-                                    Descrição:
-                                    <textarea
-                                        name="comissionDescriprion"
-                                        class="form-control descricao ckeditor"
-                                    ></textarea>
-                                </label>
-
-                                <label>
                                     Parecer Jurídico:
                                     <textarea
                                         name="legal_option"
@@ -105,13 +97,13 @@
             });
 
             const data = {
+                date: dateForm + ' ' + timeForm,
                 document_id: document_id,
                 laws_projects_id: 0,
                 to_id: to_id,
                 type: type,
-                description: CKEDITOR.instances['comissionDescriprion'].getData(),
                 legal_option: CKEDITOR.instances['legal_option'].getData(),
-                date_end: null,
+                date_end: null
             };
 
             if (to_id.length > 0) {
@@ -123,7 +115,7 @@
                     console.log(data);
                     if (data) {
                         toastr.success("Pedido salvo com sucesso!!");
-                        window.location.reload()
+                        // window.location.reload()
                     } else {
                         toastr.error("Erro ao salvar pedido!!");
                     }

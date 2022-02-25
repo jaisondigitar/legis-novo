@@ -87,6 +87,27 @@ class Advice extends BaseModel
         'to_id' => 'required',
     ];
 
+    /**
+     * @param $date_end
+     */
+    public function setDateEndAttribute($date_end)
+    {
+        if ($date_end) {
+            $this->attributes['date_end'] = Carbon::createFromFormat('d/m/Y', $date_end);
+        } else {
+            $this->attributes['date_end'] = null;
+        }
+    }
+
+    /**
+     * @param $date_end
+     * @return string
+     */
+    public function getDateEndAttribute($date_end)
+    {
+        return isset($date_end) ? $this->asDateTime($date_end)->format('d/m/Y') : null;
+    }
+
     public function getDateAttribute($date): string
     {
         return $this->asDateTime($date)->format('d/m/Y H:i');

@@ -86,9 +86,6 @@ class AdviceController extends AppBaseController
     {
         $input = $request->all();
 
-        $input['date'] = Carbon::now()->format('d/m/Y H:i');
-
-        $date_end = isset($input['date_end']) ? Carbon::createFromFormat('d/m/Y', $input['date_end']) : null;
         $legal_option = $input['legal_option'] ?? null;
 
         $to_id = $input['to_id'];
@@ -102,10 +99,9 @@ class AdviceController extends AppBaseController
             $advice->type = $type[$key];
             $advice->to_id = $to_id[$key];
             $advice->laws_projects_id = $input['laws_projects_id'] ?? 0;
-            $advice->document_id = $input['document_id'];
+            $advice->document_id = $input['document_id'] ?? 0;
             $advice->legal_option = $legal_option;
-            $advice->description = $input['description'];
-            $advice->date_end = $date_end;
+            $advice->date_end = $input['date_end'];
 
             if ($advice->save()) {
                 $situation = ComissionSituation::first();
@@ -114,6 +110,7 @@ class AdviceController extends AppBaseController
                     'comission_situation_id' => $situation->id,
                 ]);
 
+
                 $processing = new Processing();
                 $processing->law_projects_id = $input['laws_projects_id'];
                 $processing->advice_publication_id = null;
@@ -121,7 +118,7 @@ class AdviceController extends AppBaseController
                 $processing->status_processing_law_id = 8;
                 $processing->processing_date = $input['date'];
                 $processing->destination_id = 5;
-                $processing->date_end = $date_end;
+                $processing->date_end = $input['date_end'];
                 $processing->save();
 
                 $flag = 1;
