@@ -32,10 +32,17 @@
                                 {!! Form::select('destination_id', $destinations, null, ['class' => 'form-control']) !!}
                             </div>
 
-                            <div class="form-group col-sm-3">
-                                {!! Form::label('new_processing_document_date', 'Data:') !!}
-                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datetimepicker1']) !!}
-                            </div>
+                            @if(userCanDo('dateAdvicesDocument.edit'))
+                                <div class="form-group col-sm-3">
+                                    {!! Form::label('new_processing_document_date', 'Data:') !!}
+                                    {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datetimepicker1']) !!}
+                                </div>
+                            @else
+                                <div class="form-group col-sm-3">
+                                    {!! Form::label('new_processing_document_date', 'Data:') !!}
+                                    {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datetimepicker1', 'disabled']) !!}
+                                </div>
+                            @endif
 
                             <div class="form-group col-sm-12">
                                 {!! Form::label('new_document_observation', ' Observações:') !!}
@@ -128,7 +135,7 @@
                         document_situation_id: $('#new_document_situation_id').val(),
                         status_processing_document_id: $('#new_status_processing_document_id').val(),
                         processing_document_date: $('#new_processing_document_date').val(),
-                        processing_document_date_first: '{{ $first_documents->processing_document_date }}',
+                        processing_document_date_first: '{{ $first_documents->processing_document_date ?? '' }}',
                         destination_id: $('#destination_id').val(),
                         observation: CKEDITOR.instances.new_document_observation.getData(),
                         date_end: null,
@@ -148,7 +155,7 @@
                                 data.forEach(function (valor) {
                                     str = '<tr id="line_' + valor.id + '"> ';
                                     str += "<td>";
-                                    str += valor.processing_document_date;
+                                    str += valor.processing_document_date ?? '';
                                     str += "</td>";
                                     str += "<td>";
                                     str += valor.document_situation.name;

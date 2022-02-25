@@ -165,6 +165,8 @@
 <script src="{{ url('assets/plugins/chosen/chosen.jquery.min.js') }}"></script>
 
 <script type="text/javascript">
+    document.querySelector('#law_date').value = dateForm
+
     $(document).ready(function () {
         $('#reference_id').chosen();
 

@@ -26,10 +26,17 @@
                             {!! Form::select('new_status_processing_law_id', $status_processing_law ,null, ['class' => 'form-control']) !!}
                         </div>
 
-                        <div class="form-group col-sm-2">
-                            {!! Form::label('new_date_processing', 'Data:') !!}
-                            {!! Form::text('new_date_processing', null, ['class' => 'form-control datetimepicker1']) !!}
-                        </div>
+                        @if(userCanDo('dateAdvicesLawsProjects.edit'))
+                            <div class="form-group col-sm-2">
+                                {!! Form::label('new_date_processing', 'Data:') !!}
+                                {!! Form::text('new_date_processing', null, ['class' => 'form-control datetimepicker1']) !!}
+                            </div>
+                        @else
+                            <div class="form-group col-sm-2">
+                                {!! Form::label('new_date_processing', 'Data:') !!}
+                                {!! Form::text('new_date_processing', null, ['class' => 'form-control datetimepicker1', 'disabled']) !!}
+                            </div>
+                        @endif
 
                         <div class="form-group col-sm-2">
                             {!! Form::label('destination_id', 'Destinatários:') !!}
@@ -251,7 +258,7 @@
                         advice_situation_id: $('#new_advice_situation_id').val(),
                         status_processing_law_id: $('#new_status_processing_law_id').val(),
                         processing_date: $('#new_date_processing').val(),
-                        processing_date_first: '{{ $first_processing->processing_date }}',
+                        processing_date_first: '{{ $first_processing->processing_date ?? '' }}',
                         destination_id: $('#destination_id').val(),
                         processing_file: $('#processing_file').val(),
                         date_end: $('#date_end').val(),
@@ -273,7 +280,7 @@
 
                                 str = '<tr id="line_' + valor.id + '"> ';
                                 str += "<td>";
-                                str += valor.processing_date;
+                                str += valor.processing_date ?? '';
                                 str += "</td>";
                                 str += "<td>";
                                 str += valor.advice_situation_law.name;
