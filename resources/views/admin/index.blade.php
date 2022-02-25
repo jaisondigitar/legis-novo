@@ -17,8 +17,8 @@
         }
 
         .card_remake:hover {
-            box-shadow: 3px 4px 4px 2px #e9ecef;
-            transform: scale(1.07)
+            box-shadow: 3px 4px 4px 2px #3b3b3b;
+            transform: scale(1.06)
         }
 
         .row {
@@ -41,19 +41,19 @@
 
         .initial {
             border-radius: 10px 0 0 10px;
-            background-color: rgb(199, 209, 0);
+            background-color: rgb(155, 34, 38);
             padding: 30px;
         }
 
         .initial_document {
             border-radius: 10px 0 0 10px;
-            background-color: rgb(233, 93, 34);
+            background-color: rgb(0, 95, 115);
             padding: 30px;
         }
 
         .initial_commissions {
             border-radius: 10px 0 0 10px;
-            background-color: rgb(1, 120, 144);
+            background-color: rgb(202, 103, 2);
             padding: 30px;
         }
 
@@ -67,25 +67,37 @@
             opacity: 0.7;
         }
 
+        .accordion-button{
+            color: #FFFFFF;
+        }
+
         .accordion-button:not(.collapsed){
             color: #0A0A0A;
             background-color: rgb(217, 204, 185);
         }
 
         .bt_color_red {
-            background-color: rgba(199, 209, 0, 0.65);
+            background-color: rgba(155, 34, 38, 0.80);
         }
 
         .bt_color_blue {
-            background-color: rgba(233, 93, 34, 0.65);
+            background-color: rgba(0, 95, 115, 0.75);
         }
 
         .bt_color_green {
-            background-color: rgba(1, 120, 144, 0.65);
+            background-color: rgba(202, 103, 2, 0.75);
         }
 
-        .bt_color_red:hover, .bt_color_blue:hover, .bt_color_green:hover {
-            opacity: 2.0;
+        .bt_color_red:hover {
+            opacity: 1.0;
+        }
+
+        .bt_color_blue:hover {
+            opacity: 1.0;
+        }
+
+        .bt_color_green:hover {
+            opacity: 1.0;
         }
 
         .red_card, .blue_card, .green_card {
@@ -112,11 +124,11 @@
                     </div>
                     <div class="panel-body card_content" style="padding: 10px">
                         <div class="text-black">
-                            <h3 class="panel-title">PROJETOS DE LEI</h3>
+                            <h3 class="panel-title">Projetos de Lei</h3>
                         </div>
                         <div class="red_card">
-                            <h1 class="bolded" style="color: #0A0A0A;">{{ $projLeiAll }}</h1>
-                            <h5 class="text-muted" style="padding-right: 20px"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></h5>
+                            <h1 style="color: #0A0A0A;">{{ $projLeiAll }}</h1>
+                            <h5 class="text-muted" style="padding-right: 20px"><small>Aprovados: <strong>{{ $projLeiApr }}</strong></small></h5>
                         </div>
                     </div>
                 </a>
@@ -129,11 +141,11 @@
                     </div>
                     <div class="panel-body card_content" style="padding: 10px">
                         <div class="text-black">
-                            <h3 class="panel-title">DOCUMENTOS</h3>
+                            <h3 class="panel-title">Documentos</h3>
                         </div>
                         <div class="blue_card">
-                            <h1 class="bolded" style="color: #0A0A0A">{{ $docAll }}</h1>
-                            <h5 class="text-muted" style="padding-right: 20px"><small>LIDOS: <strong>{{ $docRead }}</strong></small></h5>
+                            <h1 style="color: #0A0A0A">{{ $docAll }}</h1>
+                            <h5 class="text-muted" style="padding-right: 20px"><small>Lidos: <strong>{{ $docRead }}</strong></small></h5>
                         </div>
                     </div>
                 </a>
@@ -146,11 +158,11 @@
                     </div>
                     <div class="panel-body card_content" style="padding: 10px">
                         <div class="text-black">
-                            <h3 class="panel-title">COMISSÕES</h3>
+                            <h3 class="panel-title">Comissões</h3>
                         </div>
                         <div class="green_card">
-                            <h1 class="bolded" style="color: #0A0A0A">{{ isset($commissions)  ? count($commissions) : '0' }}</h1>
-                            <h5 class="text-muted" style="padding-right: 20px"><small><strong>COMISSÕES ATIVAS: </strong></small></h5>
+                            <h1 style="color: #0A0A0A">{{ isset($commissions)  ? count($commissions) : '0' }}</h1>
+                            <h5 class="text-muted" style="padding-right: 20px"></h5>
                         </div>
                     </div>
                 </a>
@@ -164,7 +176,7 @@
                         <strong> Projetos de Lei </strong>
                     </button>
                 </h2>
-                <div style="background-color: rgba(217, 204, 185, 0.20);" id="collapseOne" class="accordion-collapse collapse" aria-labelledby="accordionProjetosDeLei">
+                <div style="background-color: rgb(217, 204, 185);" id="collapseOne" class="accordion-collapse collapse" aria-labelledby="accordionProjetosDeLei">
                     <div class="accordion-body">
                         <div class="container">
                             <div class="row">
@@ -200,7 +212,7 @@
                         <strong>Documentos</strong>
                     </button>
                 </h2>
-                <div style="background-color: rgba(217, 204, 185, 0.20);" id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="accordionDocumentos">
+                <div style="background-color: rgb(217, 204, 185);" id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="accordionDocumentos">
                     <div class="accordion-body">
                         <div class="container">
                             <div class="row">
@@ -225,37 +237,37 @@
                     </div>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="accordionComissões">
-                    <button class="accordion-button collapsed btn bt_color_green" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        <strong> Comissões </strong>
-                    </button>
-                </h2>
-                <div style="background-color: rgba(217, 204, 185, 0.20);" id="collapseThree" class="accordion-collapse collapse" aria-labelledby="accordionComissões">
-                    <div class="accordion-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    Emenda: 05 <br>
-                                    EmendaSupresiva : 05<br>
-                                    Emenda Modificada: 20<br>
-                                    Emenda Projeto: 20<br>
-                                    Resolução: 05<br>
-                                    Emenda Aditiva: 05<br>
-                                </div>
-                                <div class="col">
-                                    Emenda Substitutiva: 20<br>
-                                    Projeto de Lei: 00<br>
-                                    Emenda: 05<br>
-                                    Projeto de Lei Complementar: 00<br>
-                                    Projeto de Lei Legislativo: 00<br>
-                                    loremipsum:00<br>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{{--            <div class="accordion-item">--}}
+{{--                <h2 class="accordion-header" id="accordionComissões">--}}
+{{--                    <button class="accordion-button collapsed btn bt_color_green" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">--}}
+{{--                        <strong> Comissões </strong>--}}
+{{--                    </button>--}}
+{{--                </h2>--}}
+{{--                <div style="background-color: rgb(217, 204, 185);" id="collapseThree" class="accordion-collapse collapse" aria-labelledby="accordionComissões">--}}
+{{--                    <div class="accordion-body">--}}
+{{--                        <div class="container">--}}
+{{--                            <div class="row">--}}
+{{--                                <div class="col">--}}
+{{--                                    Emenda: 05 <br>--}}
+{{--                                    EmendaSupresiva : 05<br>--}}
+{{--                                    Emenda Modificada: 20<br>--}}
+{{--                                    Emenda Projeto: 20<br>--}}
+{{--                                    Resolução: 05<br>--}}
+{{--                                    Emenda Aditiva: 05<br>--}}
+{{--                                </div>--}}
+{{--                                <div class="col">--}}
+{{--                                    Emenda Substitutiva: 20<br>--}}
+{{--                                    Projeto de Lei: 00<br>--}}
+{{--                                    Emenda: 05<br>--}}
+{{--                                    Projeto de Lei Complementar: 00<br>--}}
+{{--                                    Projeto de Lei Legislativo: 00<br>--}}
+{{--                                    loremipsum:00<br>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
     </div>
 

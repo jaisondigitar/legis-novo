@@ -6,7 +6,7 @@
         <th>Responsabilidade</th>
         <th>Legislatura</th>
         <th>Ativo</th>
-        <th colspan="3">Manutenção</th>
+        <th class="pull-right">Manutenção</th>
     </thead>
     <tbody>
     @foreach($assemblymen as $assemblyman)
@@ -48,39 +48,41 @@
                 @endshield
             </td>
             <td>
-                <div class='btn-group' style="min-width: 200px">
-                    @shield('assemblymen.show')
+                <div class="pull-right">
+                    <div class='btn-group' style="min-width: 200px">
+                        @shield('assemblymen.show')
+                            <button
+                                @popper(Legislaturas) type="button" class='btn btn-default btn-sm listLegislatures' value="{{$assemblyman->id}}">
+                                L
+                            </button>
+                        @endshield
+                        @shield('assemblymen.show')
                         <button
-                            @popper(Legislaturas) type="button" class='btn btn-default btn-sm listLegislatures' value="{{$assemblyman->id}}">
-                            L
+                            @popper(Partidos) type="button" class='btn btn-default btn-sm listParties' value="{{$assemblyman->id}}">
+                            P
                         </button>
-                    @endshield
-                    @shield('assemblymen.show')
-                    <button
-                        @popper(Partidos) type="button" class='btn btn-default btn-sm listParties' value="{{$assemblyman->id}}">
-                        P
-                    </button>
-                    @endshield
-                    @shield('assemblymen.show')
-                    <button
-                        @popper(Responsabilidades) type="button" class='btn btn-default btn-sm listResponsibilities' value="{{$assemblyman->id}}">
-                        R
-                    </button>
-                    @endshield
-                    @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
-                    @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
-                    @shield('assemblymen.delete')
-                        {!! Form::open(['route' => ['assemblymen.destroy', $assemblyman->id], 'method' => 'delete']) !!}
-                        <a
-                            @popper(Deletar)
-                            type = "submit"
-                            class = 'btn btn-danger btn-sm'
-                            onclick="sweet(event, {!! $assemblyman->id !!})"
-                        >
-                            <i class="fa fa-trash"></i>
-                        </a>
-                        {!! Form::close() !!}
-                    @endshield
+                        @endshield
+                        @shield('assemblymen.show')
+                        <button
+                            @popper(Responsabilidades) type="button" class='btn btn-default btn-sm listResponsibilities' value="{{$assemblyman->id}}">
+                            R
+                        </button>
+                        @endshield
+                        @shield('assemblymen.show')<a @popper(Visualizar) href="{!! route('assemblymen.show', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-eye"></i></a>@endshield
+                        @shield('assemblymen.edit')<a @popper(Editar) href="{!! route('assemblymen.edit', [$assemblyman->id]) !!}" class='btn btn-default btn-sm'><i class="fa fa-edit"></i></a>@endshield
+                        @shield('assemblymen.delete')
+                            {!! Form::open(['route' => ['assemblymen.destroy', $assemblyman->id], 'method' => 'delete']) !!}
+                            <a
+                                @popper(Deletar)
+                                type = "submit"
+                                class = 'btn btn-danger btn-sm'
+                                onclick="sweet(event, {!! $assemblyman->id !!})"
+                            >
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            {!! Form::close() !!}
+                        @endshield
+                    </div>
                 </div>
             </td>
         </tr>

@@ -38,6 +38,7 @@
                     <button type="reset" value="reset" class="btn btn-block btn-warning width"><i class="fa fa-recycle"></i> Reset</button>
                 </div>
             </div>
+        </form>
         <div class="clearfix"></div>
     </div>
     <div class="the-box rounded">

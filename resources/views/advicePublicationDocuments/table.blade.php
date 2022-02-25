@@ -1,7 +1,7 @@
 <table class="table table-striped table-hover" id="advicePublicationDocuments-table">
     <thead>
         <th>Name</th>
-        <th> class="pull-right">Manutenção</th>
+        <th class="pull-right">Manutenção</th>
     </thead>
     <tbody>
     @foreach($advicePublicationDocuments as $advicePublicationDocuments)
