@@ -378,21 +378,6 @@
 @endif
 
 <script>
-    var date_split = "{!! $lawsProject->processing->first()->created_at !!}".split(' ')[0].split('/').reverse().join("-")
-    var hour_split = "{!! $lawsProject->processing->first()->created_at !!}".split(' ')[1]
-
-    console.log(
-        "{!! $lawsProject->processing->first()->created_at !!}", ' / moment -> ',
-
-        moment(date_split+' '+hour_split).format('YYYY-MM-DD hh:mm a'), ' / javascript -> ',
-
-        date_split+' '+hour_split.toLocaleString(
-            Intl.DateTimeFormat().resolvedOptions().locale, {
-                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
-            }
-        )
-    );
-
     function sweet (e) {
         var url = `/lawsProject/{{$lawsProject->id}}`;
 

@@ -36,9 +36,14 @@
                             {!! Form::select('destination_id', $destinations, null, ['class' => 'form-control']) !!}
                         </div>
 
-                        <div class="form-group col-sm-2">
+                        <div class="form-group col-sm-1">
                             {!! Form::label('date_end', 'Prazo:') !!}
                             {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
+                        </div>
+
+                        <div class="form-group col-sm-1">
+                            {!! Form::label('days', 'Dias:') !!}
+                            {!! Form::number('days', null, ['class' => 'form-control', 'disabled']) !!}
                         </div>
 
                         <div class="form-group col-sm-12">
@@ -118,6 +123,26 @@
         <script>
             document.querySelector('#new_date_processing').value = dateForm + ' ' + timeForm
 
+            const diffDate = () => {
+                const array_date = $('#new_date_processing').val().split(' ')
+                const date_first_split = array_date[0].split('/').reverse().join('/')
+                const date_last_split = $('#date_end').val().split('/').reverse().join('/')
+
+                let day1 = new Date(date_last_split);
+                let day2 = new Date(date_first_split);
+
+                return Math.abs(day1-day2)/(1000 * 3600 * 24);
+            }
+
+            $('#date_end').on('change', () => {
+                document.querySelector('#days').value = diffDate()
+            })
+
+            $('#destination_id').on('change', () => {
+                console.log(diffDate());
+                document.querySelector('#days').value = diffDate()
+            })
+
             $(document).ready(function () {
                 setTimeout(function () {
                     $('#comissao').addClass('chosen-select')
@@ -196,10 +221,13 @@
         $('body').on('change', '#destination_id', () => {
             if ($('#destination_id').val() === '4') {
                 document.querySelector('#date_end').value = someDateForm
+                document.querySelector('#days').value = diffDate()
             } else if ($('#destination_id').val() === '6') {
                 document.querySelector('#date_end').value = someDateTwentyForm
+                document.querySelector('#days').value = diffDate()
             } else {
                 document.querySelector('#date_end').value = ''
+                document.querySelector('#days').value = diffDate()
             }
         });
     }

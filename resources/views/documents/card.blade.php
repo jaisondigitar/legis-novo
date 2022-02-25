@@ -301,11 +301,12 @@
         {!! Form::close() !!}
     </div>
 </div>
-<script>
-    const sweet = (e) => {
-        const url = `/documents/{{$document->id}}`;
 
-        const data = {
+<script>
+    function sweet (e) {
+        var url = `/documents/{{$document->id}}`;
+
+        var data = {
             '_token' : '{{csrf_token()}}'
         };
 

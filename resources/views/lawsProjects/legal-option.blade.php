@@ -92,6 +92,11 @@
                             {!! Form::label('date_end', 'Prazo:') !!}
                             {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
                         </label>
+
+                        <label>
+                            {!! Form::label('days', 'Dias:') !!}
+                            {!! Form::number('days', null, ['class' => 'form-control', 'disabled']) !!}
+                        </label>
                     </div>
                     <div class="modal-footer">
                         <button
@@ -117,6 +122,18 @@
 
     <script>
         document.querySelector('#date_end').value = someDateFiveForm
+
+        $('#date_end').on('change', () => {
+            const date_first_split = $('#date_end').val().split('/').reverse().join('/')
+            const date_last_split = dateForm.split('/').reverse().join('/')
+
+            let day1 = new Date(date_last_split);
+            let day2 = new Date(date_first_split);
+
+            let difference= Math.abs(day2-day1);
+
+            document.querySelector('#days').value = difference/(1000 * 3600 * 24)
+        })
 
         $(document).ready(function () {
             setTimeout(function () {
