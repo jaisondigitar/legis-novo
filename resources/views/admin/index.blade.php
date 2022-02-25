@@ -38,12 +38,12 @@
 
         .title-card {
             text-decoration: none !important;
-            color: #0b0b0b;
+            color: white;
         }
 
         .title-card:hover {
             text-decoration: none !important;
-            color: #0b0b0b;
+            color: white;
         }
     </style>
     <h1 class="page-heading" style="margin-top: 0;">DASHBOARD <small>Algumas informações úteis</small></h1>
