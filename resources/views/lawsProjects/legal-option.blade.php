@@ -178,7 +178,7 @@
                 }).success((data) => {
                     if (data) {
                         toastr.success("Pedido salvo com sucesso!!");
-                        // window.location.reload()
+                        window.location.reload()
                     } else {
                         toastr.error("Erro ao salvar pedido!!");
                     }
