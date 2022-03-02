@@ -156,24 +156,13 @@
                     <div class="accordion-body">
                         <div class="container">
                             <div class="row">
-                                <div class="col">
-                                    @foreach()
-                                    {{  }}
-                                    @endforeach
-                                        @foreach($countType as $lawTypes)
-                                       <div class="col-1">
-                                           {{ $lawTypes->nome }}: {{ $lawTypes->where("nome", $lawTypes->nome)->count() }}
-                                       </div>
-                                   @endforeach
-                                </div>
-                                <div class="col">
-                                    Emenda: 05 <br>
-                                    EmendaSupresiva : 05<br>
-                                    Emenda Modificada: 20<br>
-                                    Emenda Projeto: 20<br>
-                                    Resolução: 05<br>
-                                    Emenda Aditiva: 05<br>
-                                </div>
+                                @foreach($countTypes as $name => $content)
+                                    <div class="col-6">
+                                        <a href="/lawsProjects?has-filter=true&created_at=&law_type_id={{ $content['id'] }}&project_number=&law_date=&assemblyman_id=">
+                                            {{ $name }}: {{ $content["count"] }}
+                                        </a>
+                                   </div>
+                               @endforeach
                             </div>
                         </div>
                     </div>

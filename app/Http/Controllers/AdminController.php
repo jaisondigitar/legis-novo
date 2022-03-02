@@ -73,8 +73,13 @@ class AdminController extends AppBaseController
         $docAll = count(Document::all());
         $docRead = count(Document::where('read', 1)->get());
 
-        $countType = $law_types->mapWithKeys(function ($item, $key) {
-            return collect([$item => collect(['id' => $key, 'count' => LawsProject::where('law_type_id', $key)->count()])]);
+        $countTypes = $law_types->mapWithKeys(function ($item, $key) {
+            return collect([
+                $item => collect([
+                    'id' => $key,
+                    'count' => LawsProject::where('law_type_id', $key)->count(),
+                ]),
+            ]);
         });
 
         return view('admin.index', compact(
@@ -86,7 +91,7 @@ class AdminController extends AppBaseController
             'commissions',
             'commissions_situation',
             'assemblyman_list',
-            'countType'
+            'countTypes'
         ));
     }
 
