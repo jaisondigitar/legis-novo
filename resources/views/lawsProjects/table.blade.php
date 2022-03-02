@@ -46,26 +46,33 @@
                 <input type="hidden" name="document_id" id="document_id">
                 <input type="hidden" name="next_number_origin" id="next_number_origin">
 
-                <div class="form-group col-sm-12">
-                    <label>
-                        Descrição:
-                        <textarea
-                            name="comissionDescriprion"
-                            id="comissionDescriprion"
-                            class="form-control descricao ckeditor"
-                        ></textarea>
-                    </label>
-                </div>
+                <form method="POST" action="{{ route('lawsProjects.reply')}}" enctype="multipart/form-data" name="reply-form" id="reply-form">
+                    @csrf
+                    <input type="hidden" id="lawproject_id" name="lawproject_id" value="">
+                    <div class="form-group col-sm-12">
+                        <label>
+                            Descrição:
+                            <textarea
+                                name="comissionDescriprion"
+                                id="comissionDescriprion"
+                                class="form-control descricao ckeditor"
+                            ></textarea>
+                        </label>
+                    </div>
 
-                <div class="form-group col-sm-12">
-                    {!! Form::label('file[]', 'Anexo de Resposta:') !!}
-                    {!! Form::file('file[]', array('multiple'=>true, 'class' => 'file')) !!}
-                </div>
+                    <div class="form-group col-sm-12">
+                        {!! Form::label('file[]', 'Anexo de Resposta:') !!}
+                        {!! Form::file('file[]', array('multiple'=>true, 'class' => 'file')) !!}
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                        <button type="submit" id="save-reply" class="btn btn-success pull-right">Salvar</button>
+                    </div>
+                </form>
             </div>
-            <div class="clearfix"></div>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-                <button type="button" id="save-reply" class="btn btn-success pull-right">Salvar</button>
             </div>
         </div>
     </div>
@@ -216,7 +223,7 @@
 
 <script>
     const answer = (id) => {
-        $('#answer #save-reply').attr('value', id);
+        $('#answer #lawproject_id').attr('value', id);
         $('#answer').modal();
     };
 
@@ -465,23 +472,6 @@
                     }
                 });
             }
-        });
-
-        $('#save-reply').on('click', function(){
-            id = this.value;
-            url = '/lawsProjectsReply/' + this.value;
-            data = {
-                description: CKEDITOR.instances['comissionDescriprion'].getData(),
-                file: "fileAjax"
-            };
-
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: data
-            }).success(function(response){
-            }).error(function(e){
-            });
         });
     });
 
