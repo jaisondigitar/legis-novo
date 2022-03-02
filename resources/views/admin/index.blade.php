@@ -4,12 +4,8 @@
 {{--@endsection--}}
 @section('content')
     <style>
-        #accordions {
-            margin: 0 0.7rem;
-        }
-
         .accordion-item {
-            margin-top: 3rem;
+            margin: 3rem 0 3rem 0;
         }
 
         .alert>p, .alert>ul {
@@ -17,7 +13,7 @@
         }
 
         .card_remake:hover {
-            box-shadow: 3px 4px 4px 2px #3b3b3b;
+            box-shadow: 3px 4px 4px 3px #a9a9a9;
             transform: scale(1.06)
         }
 
@@ -29,7 +25,7 @@
         .card_remake {
             display: flex;
             border-radius: 8px;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             transition: all 0.2s ease;
             cursor: pointer
         }
@@ -40,19 +36,19 @@
         }
 
         .initial {
-            border-radius: 10px 0 0 10px;
+            border-radius: 7px 0 0 7px;
             background-color: rgb(155, 34, 38);
             padding: 30px;
         }
 
         .initial_document {
-            border-radius: 10px 0 0 10px;
+            border-radius: 7px 0 0 7px;
             background-color: rgb(0, 95, 115);
             padding: 30px;
         }
 
         .initial_commissions {
-            border-radius: 10px 0 0 10px;
+            border-radius: 7px 0 0 7px;
             background-color: rgb(202, 103, 2);
             padding: 30px;
         }
@@ -63,40 +59,20 @@
             width: 100%;
         }
 
-        .opacity {
-            opacity: 0.7;
-        }
-
         .accordion-button{
             color: #FFFFFF;
         }
 
         .accordion-button:not(.collapsed){
-            color: #0A0A0A;
-            background-color: rgb(217, 204, 185);
+            color: #FFFFFF;
+            background-color: rgb(155, 34, 38);
         }
 
         .bt_color_red {
-            background-color: rgba(155, 34, 38, 0.80);
-        }
-
-        .bt_color_blue {
-            background-color: rgba(0, 95, 115, 0.75);
-        }
-
-        .bt_color_green {
-            background-color: rgba(202, 103, 2, 0.75);
+            background-color: rgb(155, 34, 38);
         }
 
         .bt_color_red:hover {
-            opacity: 1.0;
-        }
-
-        .bt_color_blue:hover {
-            opacity: 1.0;
-        }
-
-        .bt_color_green:hover {
             opacity: 1.0;
         }
 
@@ -169,29 +145,26 @@
             </div>
         </div>
 
-        <div class="accordion" id="accordions">
+        <div class="accordion" id="accordion-one">
             <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button  class="accordion-button collapsed btn bt_color_red" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button class="accordion-button bt_color_red" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
                         <strong> Projetos de Lei </strong>
                     </button>
                 </h2>
-                <div style="background-color: rgb(217, 204, 185);" id="collapseOne" class="accordion-collapse collapse" aria-labelledby="accordionProjetosDeLei">
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
                         <div class="container">
                             <div class="row">
-                                {{--@foreach($projetosDeLei as $projetoDeLei)
-                                    <div class="col-1">
-                                        {{ $projetoDeLei->nome }}: {{ $projetosDeLei->where("nome", $projetoDeLei->nome)->count() }}
-                                    </div>
-                                @endforeach--}}
                                 <div class="col">
-                                    Emenda: 05 <br>
-                                    EmendaSupresiva : 05<br>
-                                    Emenda Modificada: 20<br>
-                                    Emenda Projeto: 20<br>
-                                    Resolução: 05<br>
-                                    Emenda Aditiva: 05<br>
+                                    @foreach()
+                                    {{  }}
+                                    @endforeach
+                                        @foreach($countType as $lawTypes)
+                                       <div class="col-1">
+                                           {{ $lawTypes->nome }}: {{ $lawTypes->where("nome", $lawTypes->nome)->count() }}
+                                       </div>
+                                   @endforeach
                                 </div>
                                 <div class="col">
                                     Emenda: 05 <br>
@@ -206,13 +179,16 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="accordion" id="accordion-two">
             <div class="accordion-item">
-                <h2 class="accordion-header" id="accordionDocumentos">
-                    <button class="accordion-button collapsed btn bt_color_blue" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button style="background-color: rgb(0, 95, 115)" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
                         <strong>Documentos</strong>
                     </button>
                 </h2>
-                <div style="background-color: rgb(217, 204, 185);" id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="accordionDocumentos">
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
                         <div class="container">
                             <div class="row">
@@ -237,37 +213,6 @@
                     </div>
                 </div>
             </div>
-{{--            <div class="accordion-item">--}}
-{{--                <h2 class="accordion-header" id="accordionComissões">--}}
-{{--                    <button class="accordion-button collapsed btn bt_color_green" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">--}}
-{{--                        <strong> Comissões </strong>--}}
-{{--                    </button>--}}
-{{--                </h2>--}}
-{{--                <div style="background-color: rgb(217, 204, 185);" id="collapseThree" class="accordion-collapse collapse" aria-labelledby="accordionComissões">--}}
-{{--                    <div class="accordion-body">--}}
-{{--                        <div class="container">--}}
-{{--                            <div class="row">--}}
-{{--                                <div class="col">--}}
-{{--                                    Emenda: 05 <br>--}}
-{{--                                    EmendaSupresiva : 05<br>--}}
-{{--                                    Emenda Modificada: 20<br>--}}
-{{--                                    Emenda Projeto: 20<br>--}}
-{{--                                    Resolução: 05<br>--}}
-{{--                                    Emenda Aditiva: 05<br>--}}
-{{--                                </div>--}}
-{{--                                <div class="col">--}}
-{{--                                    Emenda Substitutiva: 20<br>--}}
-{{--                                    Projeto de Lei: 00<br>--}}
-{{--                                    Emenda: 05<br>--}}
-{{--                                    Projeto de Lei Complementar: 00<br>--}}
-{{--                                    Projeto de Lei Legislativo: 00<br>--}}
-{{--                                    loremipsum:00<br>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
         </div>
     </div>
 

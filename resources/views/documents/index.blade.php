@@ -3,7 +3,7 @@
 {{--    {!! Breadcrumbs::render('documents.list') !!}--}}
 {{--@endsection--}}
 @section('content')
-    <div style="margin: 0.625rem 0 0 0" class="the-box rounded">
+    <div style="margin: 1rem 0 1rem 0" class="the-box rounded">
         <form id="search-form" method="GET">
             <input type="hidden" name="has-filter" value="true">
             <div class="row">
@@ -49,14 +49,12 @@
                 </div>
             </div>
 
-            <div class="row" style="margin-top: 20px">
-                <div class="form-group col-md-10">
-                    <button class="btn btn-block btn-primary" style="width: 100%">
+            <div class="col-lg-12" style="text-align: right">
+                <div class="form-group col-md-12 mt-3">
+                    <button class="btn btn-block btn-primary">
                         <i class="fa fa-search"></i> Pesquisar
                     </button>
-                </div>
-                <div class="form-group col-md-2">
-                    <button type="reset" class="btn btn-block btn-warning" style="width: 100%">
+                    <button type="reset" class="btn btn-block btn-warning">
                         <i class="fa fa-recycle"></i> Reset
                     </button>
                 </div>

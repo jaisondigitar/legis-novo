@@ -1,11 +1,11 @@
 @extends('layouts.blit')
 @section('Breadcrumbs')
-    {!! Breadcrumbs::render('lawsProjects.list') !!}
+{{--    {!! Breadcrumbs::render('lawsProjects.list') !!}--}}
 @endsection
 @section('content')
     <form method="GET">
         <input type="hidden" name="has-filter" value="true">
-        <div class="the-box rounded">
+        <div style="margin-top: 1rem" class="the-box rounded">
             <div class="row">
                 <div class="form-group col-md-2">
                     {!! Form::label('date', 'Registro:') !!}
@@ -56,12 +56,10 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="form-group col-md-10 mt-3">
-                    <button class="btn btn-block btn-primary width"><i class="fa fa-search"></i> Pesquisar</button>
-                </div>
-                <div class="form-group col-md-2 mt-3">
-                    <button type="reset" class="btn btn-block btn-warning width"><i class="fa fa-recycle"></i> Reset</button>
+            <div class="col-lg-12" style="text-align: right;">
+                <div class="form-group col-md-12 mt-3">
+                    <button style="align-items: end" class="btn btn-block btn-primary"><i class="fa fa-search"></i>Pesquisar</button>
+                    <button style="align-items: end" type="reset" class="btn btn-block btn-warning"><i class="fa fa-recycle"></i>Reset</button>
                 </div>
             </div>
         </div>
