@@ -31,11 +31,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-10 mt-3">
-                    <button class="btn btn-block btn-primary width"><i class="fa fa-search"></i> Pesquisar</button>
-                </div>
                 <div class="form-group col-md-2 mt-3">
-                    <button type="reset" value="reset" class="btn btn-block btn-warning width"><i class="fa fa-recycle"></i> Reset</button>
+                    <button class="btn btn-block btn-primary"><i class="fa fa-search"></i>Pesquisar</button>
+                    <button type="reset" value="reset" class="btn btn-block btn-warning"><i class="fa fa-recycle"></i>Reset</button>
                 </div>
             </div>
         </form>
@@ -57,7 +55,6 @@
                 </div>
             </div>
         </div>
-        <hr class="hr">
         <div class="row">
             <div class="col-md-12">
                 @include('flash::message')

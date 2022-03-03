@@ -37,7 +37,7 @@ class AdminController extends AppBaseController
     public function dashboard()
     {
         $law_types = LawsType::where('is_active', true)->pluck('name', 'id');
-        $documentType = DocumentType::where('parent_id', 0)->pluck('name', 'id');
+        $documentTypes = DocumentType::where('parent_id', 0)->pluck('name', 'id');
 
         $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
@@ -73,11 +73,20 @@ class AdminController extends AppBaseController
         $docAll = count(Document::all());
         $docRead = count(Document::where('read', 1)->get());
 
-        $countTypes = $law_types->mapWithKeys(function ($item, $key) {
+        $lawCountTypes = $law_types->mapWithKeys(function ($item, $key) {
             return collect([
                 $item => collect([
                     'id' => $key,
                     'count' => LawsProject::where('law_type_id', $key)->count(),
+                ]),
+            ]);
+        });
+
+        $documentsCountTypes = $documentTypes->mapWithKeys(function ($item, $key) {
+            return collect([
+                $item => collect([
+                    'id' => $key,
+                    'count' => Document::where('document_type_id', $key)->count(),
                 ]),
             ]);
         });
@@ -91,7 +100,8 @@ class AdminController extends AppBaseController
             'commissions',
             'commissions_situation',
             'assemblyman_list',
-            'countTypes'
+            'lawCountTypes',
+            'documentsCountTypes'
         ));
     }
 

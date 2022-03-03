@@ -9,7 +9,7 @@
                 <p><i class="fa fa-check-circle"></i> Data: {!! $meeting->date_start !!}</p>
             </div>
             <div class="col-md-6">
-                <a href="/meeting/ata/{{ $meeting->id }}/pdf" target="_blank"><button class="pull-right btn btn-info btn-rounded-lg"><i class="fa fa-file-pdf-o"></i> GERAR PDF </button></a>
+                <a href="/meeting/ata/{{ $meeting->id }}/pdf" target="_blank"><button class="pull-right btn btn-info btn-rounded-lg"><i class="fa fa-file-pdf-o"></i> Gerar PDF </button></a>
             </div>
             <div class="clearfix"></div>
             <form action="/meetings/ata" method="post">

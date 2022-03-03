@@ -157,7 +157,7 @@
             </div>
             <div class="col-md-6">
                 @shield('document.read')
-                    <label for="lido_{{$document->id}}">
+                    <label style="margin-left: 6.5rem" for="lido_{{$document->id}}">
                         <strong>Lido:</strong>
                         <input id="lido_{{$document->id}}" type="checkbox" onclick="changeRead('{!! $document->id !!}')" {!! $document->read > 0 ? 'checked' : '' !!}>
                     </label>
@@ -165,13 +165,13 @@
                 @shield('document.approved')
                     <span>
                         <label>
-                        <strong>Aprovado:</strong>
+                        <strong style="margin-left: 2rem">Aprovado:</strong>
                             <input onchange="changeApproved('{!! $document->id !!}')" type="checkbox" {!! $document->approved > 0 ? 'checked' : '' !!} >
                         </label>
                     </span>
                 @endshield
                 <br>
-                <label>
+                <label style="margin-left: 6.5rem">
                     <strong>Data Prot.:</strong>
                     <span>
                         @if($document->document_protocol)
@@ -182,7 +182,7 @@
                     </span>
                 </label>
                 <br>
-                <label>
+                <label style="margin-left: 6.5rem">
                     <strong>Setor:</strong>
                     <span>
                         @if($document->externalSector)
@@ -255,45 +255,45 @@
     </div>
     <div class="card-footer">
         @if(!$document->document_protocol)
-            <span class="badge badge-warning pull-left">Aberto</span>
+            <span style="margin-top: 0.313rem" class="badge badge-warning pull-left">Aberto</span>
         @else
-            <span class="badge badge-info pull-left">Protocolado</span>
+            <span style="background-color: rgb(101, 116, 255); margin-top: 0.313rem" class="badge badge-info pull-left">Protocolado</span>
         @endif
         {!! Form::open(['route' => ['documents.destroy', $document->id], 'method' => 'delete']) !!}
 
         <div class='btn-group action' id="tdoptions{{$document->id}}">
             @shield('documents.show')
-                <a @popper(GERAR PDF) href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
+                <a @popper(Gerar PDF) href="{!! route('documents.show', [$document->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
                     <i class="fa fa-file-pdf-o"></i>
                 </a>
             @endshield
 
             @if($document->read > 0 && $document->approved > 0 && Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
-                <a @popper(RESPONDER) onclick="answer()" class='btn btn-default btn-sm answer'>
+                <a @popper(Responder) onclick="answer()" class='btn btn-default btn-sm answer'>
                     <i class="fa fa-reply"></i>
                 </a>
             @endif
 
             @if(!Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
                 @shield('documents.advices')
-                    <a @popper(TRÂMITAÇÃO) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-sm'>
+                    <a @popper(Trâmitação) href="{!! route('documents.advices', [$document->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="fa fa-list-alt"></i>
                     </a>
 
-                    <a @popper(PARECERES) href="{!! route('documents.legal-option', [$document->id]) !!}" class='btn btn-default btn-sm'>
+                    <a @popper(Pareceres) href="{!! route('documents.legal-option', [$document->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="fa fa-clipboard"></i>
                     </a>
                 @endshield
 
                 @shield('documents.edit')
-                    <a @popper(ANEXAR ARQUIVO) href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-sm'>
+                    <a @popper(Anexar arquivo) href="{!! route('documents.attachament', [$document->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="fas fa-paperclip"></i>
                     </a>
                 @endshield
 
                 @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.edit')
-                        <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-sm'>
+                        <a @popper(Editar) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-sm'>
                             <i class="fa fa-edit"></i>
                         </a>
                     @endshield
@@ -301,7 +301,7 @@
 
                 @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.delete')
-                       <a @popper(REMOVER)>
+                       <a @popper(Remover)>
                            {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'sweet(event)']) !!}
                        </a>
                     @endshield

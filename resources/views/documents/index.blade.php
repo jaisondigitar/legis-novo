@@ -3,17 +3,15 @@
 {{--    {!! Breadcrumbs::render('documents.list') !!}--}}
 {{--@endsection--}}
 @section('content')
-    <div style="margin: 1rem 0 1rem 0" class="the-box rounded">
+    <div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
         <form id="search-form" method="GET">
             <input type="hidden" name="has-filter" value="true">
             <div class="row">
                 <div class="form-group col-md-2">
-                    {!! Form::label('date', 'Registro:') !!}
+                    {!! Form::label('date', 'Data:') !!}
                     {!!
                         Form::text('reg', $form->input('reg'), [
-                            'class' => 'form-control datepicker text-center',
-                            'minlength' => '10',
-                            'maxlength' => '10',
+                            'class' => 'form-control datepicker text-center'
                         ])
                     !!}
                 </div>
@@ -49,20 +47,20 @@
                 </div>
             </div>
 
-            <div class="col-lg-12" style="text-align: right">
-                <div class="form-group col-md-12 mt-3">
+            <div class="col-lg-12" style="text-align: start">
+                <div class="form-group col-md mt-3">
                     <button class="btn btn-block btn-primary">
-                        <i class="fa fa-search"></i> Pesquisar
+                        <i class="fa fa-search"></i>Pesquisar
                     </button>
                     <button type="reset" class="btn btn-block btn-warning">
-                        <i class="fa fa-recycle"></i> Reset
+                        <i class="fa fa-recycle"></i>Reset
                     </button>
                 </div>
             </div>
         </form>
     </div>
 
-    <div class="the-box rounded">
+    <div style="margin: 1rem 3.125rem 0 3.125rem" class="the-box rounded">
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-toolbar" role="toolbar">
@@ -70,7 +68,7 @@
                         @shield('documents.delete')
                             <a href="javascript:void(0)" onclick="deletaBash()" style="display: none;" class="deleteAll">
                                 <button type="button" class="btn btn-danger">
-                                    <i class="fa fa-trash"></i> DELETAR SELECIONADOS
+                                    <i class="fa fa-trash"></i> Deletar selecionados
                                 </button>
                             </a>
                         @endshield

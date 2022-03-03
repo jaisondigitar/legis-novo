@@ -68,6 +68,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <style>
+        .datepicker {
+            padding: 6px;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
         }
@@ -86,8 +90,10 @@
         .page-content {
             display: grid;
         }
+
         a {
             text-decoration: none;
+            color: #686969;
         }
         .form-check-input {
             clear: left;
@@ -687,10 +693,6 @@ BEGIN PAGE
                     toastr["{{ Session::get('flash_notification')->first()->level }}"]
                     ("{{ Session::get('flash_notification')->first()->message }}");
                 </script>
-                <div class="alert alert-{{ Session::get('flash_notification')->first()->level }} alert-bold-border square fade in alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    {{ Session::get('flash_notification')->first()->message }}
-                </div>
             @endif
             @yield('content')
         </div><!-- /.container-fluid -->
@@ -700,7 +702,7 @@ BEGIN PAGE
 
 <!-- BEGIN FOOTER -->
 <footer>
-    &copy; {{Date('Y')}} <a href="https://www.genesis.tec.br/" target="_blank">
+    &copy; {{Date('Y')}} <a style="color: #29AF8E" href="https://www.genesis.tec.br/" target="_blank">
         Gênesis Tecnologia e Inovação
     </a>. Todos os Direitos Reservados
 </footer>

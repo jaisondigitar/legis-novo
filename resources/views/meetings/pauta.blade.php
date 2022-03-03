@@ -60,7 +60,7 @@
                 <h2>Pauta da sessão</h2>
             </div>
             <div class="col-md-12">
-                <a href="/meeting/pauta/{{ $meeting_id }}/pdf" target="_blank"><button class="pull-right btn btn-info btn-rounded-lg"><i class="fa fa-file-pdf-o"></i> GERAR PDF </button></a>
+                <a href="/meeting/pauta/{{ $meeting_id }}/pdf" target="_blank"><button class="pull-right btn btn-info btn-rounded-lg"><i class="fa fa-file-pdf-o"></i> Gerar PDF </button></a>
             </div>
             {{--<div class="col-md-3 noprint">--}}
                 {{--<a href="" target="_blank"><button class="pull-right btn btn-info btn-rounded-lg" onclick="imprimir()"><i class="fa fa-file-pdf-o"></i> GERAR PDF </button></a>--}}

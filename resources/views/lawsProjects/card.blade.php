@@ -139,7 +139,7 @@
                 </span>
             </div>
             <div class="col-md-3">
-                <label>
+                <label style="margin: 0 0 1rem 7.813rem">
                     Aprovação:
                     <div class="form-check form-switch form-switch-lg">
                         <input
@@ -155,7 +155,7 @@
                     </div>
                 </label>
                 <br>
-                <span>
+                <span style="margin: 0 0 0 7.813rem">
                     <strong>Lida:</strong>
 
                     @shield('lawsProject.read')
@@ -224,46 +224,46 @@
     </div>
     <div class="card-footer">
         @if(!$lawsProject->protocol)
-            <span class="badge badge-warning pull-left">Aberto</span>
+            <span style="margin-top: 0.313rem" class="badge badge-warning pull-left">Aberto</span>
         @else
-            <span class="badge badge-info pull-left">Protocolado</span>
+            <span style="background-color: rgb(101, 116, 255); margin-top: 0.313rem" class="badge badge-info pull-left">Protocolado</span>
         @endif
 
         {!! Form::open(['route' => ['lawsProjects.destroy', $lawsProject->id], 'method' => 'delete']) !!}
         <div class='btn-group action'>
             @shield('lawsProjects.show')
-                <a @popper(GERAR PDF) href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
+                <a @popper(Gerar PDF) href="{!! route('lawsProjects.show', [$lawsProject->id]) !!}" target="_blank" class='btn btn-default btn-sm'>
                     <i class="far fa-eye"></i>
                 </a>
             @endshield
 
             @if($lawsProject->town_hall == 1 && $lawsProject->is_read > 0 && Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
-                <a @popper(RESPONDER) onclick="answer()" class='btn btn-default btn-sm answer'>
+                <a @popper(Responder) onclick="answer()" class='btn btn-default btn-sm answer'>
                     <i class="fa fa-reply"></i>
                 </a>
             @endif
 
             @if(!Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
                 @shield('lawsProject.advices')
-                    <a @popper(TRÂMITAÇÃO) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                    <a @popper(Trâmitação) href="{!! route('lawsProjects.advices', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="fas fa-list-alt"></i>
                     </a>
 
-                    <a @popper(PARECERES) href="{!! route('lawsProjects.legal-option', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                    <a @popper(Pareceres) href="{!! route('lawsProjects.legal-option', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                         <i class="fa fa-clipboard"></i>
                     </a>
                 @endshield
 
                 @if(Auth::user()->id == $lawsProject->owner->id || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.edit')
-                        <a @popper(ESTRUTURA DE LEI) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        <a @popper(Estrutura de lei) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                             <i class="fas fa-gavel"></i>
                         </a>
                     @endshield
                 @endif
 
                 @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
-                    <a @popper(ALTERAR NÚMERO/PROTOCOLO) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
+                    <a @popper(Alterar número\Protocolo) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
                        <i class="fas fa-project-diagram"></i>
                     </a>
                 @endshield
@@ -281,18 +281,18 @@
                 @endif
 
                 @if($lawsProject->voting)
-                    <a @popper(VOTAÇÃO) type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
+                    <a @popper(Votação) type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#votes_{{ $lawsProject->id }}">
                         <i class="fas fa-vote-yea"></i>
                     </a>
                 @endif
 
-                <a @popper(ANEXOS) href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-default btn-sm">
+                <a @popper(Anexos) href="/lawproject/{{$lawsProject->id}}/addFiles" class="btn btn-default btn-sm">
                     <i class="fas fa-paperclip"></i>
                 </a>
 
                 @if($lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.edit')
-                        <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
+                        <a @popper(Editar) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                             <i class="fa fa-edit"></i>
                         </a>
                     @endshield
@@ -300,7 +300,7 @@
 
                 @if(!$lawsProject->protocol && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.delete')
-                        <a @popper(REMOVER)>
+                        <a @popper(Remover)>
                             {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'sweet(event)']) !!}
                         </a>
                     @endshield

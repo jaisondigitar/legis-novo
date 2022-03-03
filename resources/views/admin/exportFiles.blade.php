@@ -34,7 +34,7 @@
         <div class="col-md-2" >
             <div class="panel panel-info panel-square text-center">
                 <div class="panel-heading" >
-                    <h3 class="panel-title text-uppercase">GERAR PDF</h3>
+                    <h3 class="panel-title text-uppercase">Gerar PDF</h3>
                 </div>
                 <div class="panel-body" style="height: 166px;">
                     <a href="/config/export/files/documents" class="btn btn-warning btn-lg" style="margin-top: 15px;"> DOCUMENTOS </a>

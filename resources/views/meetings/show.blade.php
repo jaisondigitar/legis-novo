@@ -61,7 +61,7 @@
                 <p class="text-muted"><small>TOTAL DE VEREADORES - <strong>{{$assemblyman->count()}}</strong></small></p>
                 <p class="text-muted"><small> PRESENTE -  <strong>{{$meeting->assemblyman()->count()}}</strong></small></p>
                 <p class="text-muted"><small>AUSENTES <strong>{{$assemblyman->count() - $meeting->assemblyman()->count()}}</strong></small></p>
-                <a target="_blank" href="{{route('meetings.presencePDF', $meeting->id )}}" class="btn btn-success btn-block"> GERAR PDF</a>
+                <a target="_blank" href="{{route('meetings.presencePDF', $meeting->id )}}" class="btn btn-success btn-block"> Gerar PDF</a>
             </div><!-- /.panel-body -->
         </div><!-- /.panel panel-success panel-block-color -->
         <!-- END TODAY VISITOR TILES -->

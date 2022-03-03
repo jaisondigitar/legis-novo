@@ -19,7 +19,6 @@
 
         .row {
             align-items: center;
-            margin: 2rem 0 0 0;
         }
 
         .card_remake {
@@ -83,13 +82,9 @@
         }
     </style>
 
-    <div style="margin: 0 3rem 0 3rem">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="text-start">
-                    <h5>Bem vindo(a)!</h5>
-                </div>
-            </div>
+    <div style="margin: 1rem 3rem 0 3rem">
+        <div class="text-start">
+            <h5>Bem vindo(a)!</h5>
         </div>
 
         <div class="row justify-content-between">
@@ -116,12 +111,12 @@
                         class="card_bg initial_document">
                     </div>
                     <div class="panel-body card_content" style="padding: 10px">
-                        <div class="text-black">
+                        <div style="margin-left: 1rem" class="text-black">
                             <h3 class="panel-title">Documentos</h3>
                         </div>
                         <div class="blue_card">
-                            <h1 style="color: #0A0A0A">{{ $docAll }}</h1>
-                            <h5 class="text-muted" style="padding-right: 20px"><small>Lidos: <strong>{{ $docRead }}</strong></small></h5>
+                            <h1 style="margin-left: 1rem; color: #0A0A0A">{{ $docAll }}</h1>
+                            <h5 class="text-muted" style="margin-right: 2rem; padding-right: 20px"><small>Lidos: <strong>{{ $docRead }}</strong></small></h5>
                         </div>
                     </div>
                 </a>
@@ -154,16 +149,16 @@
                 </h2>
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
-                        <div class="container">
-                            <div class="row">
-                                @foreach($countTypes as $name => $content)
+                        <div class="row">
+                            @foreach($lawCountTypes as $name => $content)
+                                @if($content["count"])
                                     <div class="col-6">
                                         <a href="/lawsProjects?has-filter=true&created_at=&law_type_id={{ $content['id'] }}&project_number=&law_date=&assemblyman_id=">
                                             {{ $name }}: {{ $content["count"] }}
                                         </a>
                                    </div>
-                               @endforeach
-                            </div>
+                                @endif
+                           @endforeach
                         </div>
                     </div>
                 </div>
@@ -179,25 +174,16 @@
                 </h2>
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    Emenda: 05 <br>
-                                    EmendaSupresiva : 05<br>
-                                    Emenda Modificada: 20<br>
-                                    Emenda Projeto: 20<br>
-                                    Resolução: 05<br>
-                                    Emenda Aditiva: 05<br>
-                                </div>
-                                <div class="col">
-                                    Emenda Substitutiva: 20<br>
-                                    Projeto de Lei: 00<br>
-                                    Emenda: 05<br>
-                                    Projeto de Lei Complementar: 00<br>
-                                    Projeto de Lei Legislativo: 00<br>
-                                    loremipsum:00<br>
-                                </div>
-                            </div>
+                        <div class="row">
+                            @foreach($documentsCountTypes as $name => $content)
+                                @if($content["count"])
+                                    <div class="col-6">
+                                        <a href="/documents?has-filter=true&reg=&document_type_id={{ $content['id'] }}&number=&date=&owner_id=&content=&status=0">
+                                            {{ $name }}: {{ $content["count"] }}
+                                        </a>
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                 </div>
