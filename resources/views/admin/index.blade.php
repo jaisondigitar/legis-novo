@@ -1,7 +1,7 @@
 @extends('layouts.blit')
-{{--@section('Breadcrumbs')--}}
-{{--    {!! Breadcrumbs::render('home') !!}--}}
-{{--@endsection--}}
+@section('Breadcrumbs')
+    {{ Breadcrumbs::render('home') }}
+@endsection
 @section('content')
     <style>
         .accordion-item {
@@ -69,10 +69,6 @@
 
         .bt_color_red {
             background-color: rgb(155, 34, 38);
-        }
-
-        .bt_color_red:hover {
-            opacity: 1.0;
         }
 
         .red_card, .blue_card, .green_card {

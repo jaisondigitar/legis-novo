@@ -121,7 +121,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
                                 @endshield
 
                                 @is(['root','admin'])
@@ -137,7 +137,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
                                 @endis
 
                                 @shield('roles.index')
@@ -155,7 +155,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
 
                                     <li>
                                         <a class="dropdown-item" href="{{url('/config/export/files', $parameters = [], $secure = null)}}">
@@ -183,8 +183,7 @@
                                         Parlamentar
                                     </a>
                                 </li>
-
-                                <li class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
                                 @endshield
 
                                 @shield('legislatures.index')
@@ -242,7 +241,7 @@
                                         <a class="dropdown-item" href="{{url('/documents', $parameters = [], $secure = null)}}">Documentos</a>
                                     </li>
 
-                                    <li class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
                                 @endshield
 
                                 @shield('adviceSituationDocuments.index')
@@ -308,7 +307,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
                                 @endshield
                                 @shield('officeCommissions.index')
                                     <li>
@@ -345,7 +344,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
                                 @endshield
 
                                 @if(\Illuminate\Support\Facades\Auth::user()->sector->slug == 'gabinete')
@@ -420,7 +419,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
                                 @endshield
 
                                 @shield('lawSituations.index')
@@ -500,7 +499,7 @@
                                     </a>
                                 </li>
 
-                                <li class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
                                 @endshield
                                 @shield('people.index')
                                 <li>
@@ -538,7 +537,7 @@
                             </a>
                         </li>
 
-                        <li class="divider"></li>
+                        <li><hr class="dropdown-divider"></li>
 
                         <li>
                             <a class="dropdown-item" href="/report/lawsProject">
@@ -550,13 +549,13 @@
                                 Projeto de lei sem arquivos
                             </a>
                         </li>
-                        <li class="divider"></li>
+                        <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item" href="/report/meeting/noFiles">
                                 Pautas/ATA sem arquivos
                             </a>
                         </li>
-                        <li class="divider"></li>
+                        <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item" href="/report/getTramitacao">
                                 Projetos de lei / Tramitacao

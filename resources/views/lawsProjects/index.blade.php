@@ -3,11 +3,16 @@
 {{--    {!! Breadcrumbs::render('lawsProjects.list') !!}--}}
 @endsection
 @section('content')
+    <style>
+        .colorTest {
+            color: rgb(67, 70, 74);
+        }
+    </style>
     <form method="GET">
         <input type="hidden" name="has-filter" value="true">
         <div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
             <div class="row">
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-2 colorTest">
                     {!! Form::label('date', 'Data:') !!}
                     {!!
                         Form::text('created_at', $form->input('updated_at'), [
@@ -15,7 +20,7 @@
                         ])
                     !!}
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 colorTest">
                     {!! Form::label('owner_id', 'Tipo:') !!}
                     {!! Form::select(
                         'law_type_id',
@@ -25,7 +30,7 @@
                         $form->input('law_type_id'), ['class' => 'form-control'])
                     !!}
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-2 colorTest">
                     {!! Form::label('date', 'Número:') !!}
                     {!! Form::input(
                         'number',
@@ -34,7 +39,7 @@
                         ['class' => 'form-control', 'min' => 0])
                     !!}
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-2 colorTest">
                     {!! Form::label('date', 'Ano:') !!}
                     {!! Form::input(
                         'number',
@@ -43,7 +48,7 @@
                         ['class' => 'form-control', 'min' => 1000, 'max' => 9999])
                     !!}
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 colorTest">
                     {!! Form::label('owner_id', 'Responsável:') !!}
                     {!! Form::select(
                         'assemblyman_id',

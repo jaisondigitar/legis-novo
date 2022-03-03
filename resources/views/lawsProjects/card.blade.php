@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <span class="panel-title text-uppercase" style="font-size: 15px;">
+        <span class="panel-title text-uppercase" style="font-size: 15px; color: rgb(67, 70, 74)">
             <label>
                 <input type="checkbox" name="toDelete" value="{{$lawsProject->id}}" class="checkDelete " />
             </label>
@@ -49,17 +49,17 @@
         <div class="row">
             <div class="col-md-5">
                 <span>
-                    <strong>COD:</strong>
+                    <strong style="color: #0A0A0A">COD:</strong>
                     {!! $lawsProject->getNumberLaw() == 'false'  ? '-'  : $lawsProject->getNumberLaw() !!}
                 </span>
                 <br>
                 <span>
-                    <strong>Data: </strong>
+                    <strong style="color: #0A0A0A">Data: </strong>
                     {{$lawsProject->law_date}}
                 </span>
                 <br>
                 <span>
-                    <strong>Protocolo: </strong>
+                    <strong style="color: #0A0A0A">Protocolo: </strong>
                     <span id="tdLawProtocol{{$lawsProject->id}}" style="color: #37BC9B" align="center">
                         @if($lawsProject->protocol > 0)
                             {{ $lawsProject->protocol }} - {{$lawsProject->protocoldate}}
@@ -74,7 +74,7 @@
                 </span>
                 <br>
                 <span>
-                    <strong> Aprovado: </strong>
+                    <strong style="color: #0A0A0A"> Aprovado: </strong>
 
                     @if($lawsProject->is_ready >= 1)
                         <span id="tdLawApproved_{{$lawsProject->id}}">
@@ -101,7 +101,7 @@
             </div>
             <div class="col-md-4">
                 <span>
-                    <strong>Responsável: </strong>
+                    <strong style="color: #0A0A0A">Responsável: </strong>
 
                     @if($lawsProject->owner)
                         {{ $lawsProject->owner->short_name }}
@@ -111,7 +111,7 @@
                 </span>
                 <br>
                 <span>
-                    <strong>Comissão: </strong>
+                    <strong style="color: #0A0A0A">Comissão: </strong>
 
                     @if($lawsProject->comission)
                         {{ $lawsProject->comission->name }}
@@ -121,7 +121,7 @@
                 </span>
                 <br>
                 <span>
-                    <strong>Referente à: </strong>
+                    <strong style="color: #0A0A0A">Referente à: </strong>
 
                     @if($lawsProject->reference_id > 0)
                         <a href="/lawsProjects/{{$lawsProject->reference_id}}" target="_blank">
@@ -133,13 +133,13 @@
                 </span>
                 <br>
                 <span>
-                    <strong>Aprovado pela câmara: </strong>
+                    <strong style="color: #0A0A0A">Aprovado pela câmara: </strong>
 
                     {{ $lawsProject->town_hall ? 'Sim' : 'Não' }}
                 </span>
             </div>
             <div class="col-md-3">
-                <label style="margin: 0 0 1rem 7.813rem">
+                <label style="margin: 0 0 1rem 7.813rem; color: #0A0A0A">
                     Aprovação:
                     <div class="form-check form-switch form-switch-lg">
                         <input
@@ -156,7 +156,7 @@
                 </label>
                 <br>
                 <span style="margin: 0 0 0 7.813rem">
-                    <strong>Lida:</strong>
+                    <strong style="color: #0A0A0A">Lida:</strong>
 
                     @shield('lawsProject.read')
                         <label>
@@ -172,7 +172,7 @@
             <div class="col-md-12">
                 <br>
                 <span style="text-align: justify !important;" class="text-uppercase">
-                    <strong>Ementa:</strong>
+                    <strong style="color: #0A0A0A">Ementa:</strong>
 
                     @if($lawsProject->title === '')
                         -
@@ -186,7 +186,7 @@
             </div>
             <div class="col-md-12">
                 <span>
-                    <strong>Data Tram.:</strong>
+                    <strong style="color: #0A0A0A">Data Tram.:</strong>
                     @if($lawsProject->processing->isEmpty())
                         -
                     @else
@@ -197,7 +197,7 @@
                 </span>
                 <br>
                 <span>
-                    <strong>Status:</strong>
+                    <strong style="color: #0A0A0A">Status:</strong>
 
                     @if($lawsProject->processing->isEmpty())
                         -
@@ -209,7 +209,7 @@
                 </span>
                 <br>
                 <span>
-                    <strong>Destinatário:</strong>
+                    <strong style="color: #0A0A0A">Destinatário:</strong>
 
                     @if($lawsProject->processing->isEmpty())
                         -
