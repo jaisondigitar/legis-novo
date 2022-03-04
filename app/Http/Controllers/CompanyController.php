@@ -199,8 +199,11 @@ class CompanyController extends AppBaseController
 
             return redirect(route('companies.index'));
         }
+        $input = $request->all();
 
-        $this->companyRepository->update($company, $request->all());
+        $input['active'] = isset($input['active']) ? 1 : 0;
+
+        $this->companyRepository->update($company, $input);
 
         $company = Company::find($id);
 

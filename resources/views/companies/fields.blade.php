@@ -20,85 +20,91 @@
         {!! Form::file('image') !!}
     </div>
 </div>
+    <div class="row">
+        <!--- Shortname Field --->
+        <div class="form-group col-sm-6">
+            {!! Form::label('shortName', 'Nome Fantasia:', ['class' => 'required']) !!}
+            {!! Form::text('shortName', null, ['class' => 'form-control']) !!}
+        </div>
 
-<!--- Shortname Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('shortName', 'Nome Fantasia:', ['class' => 'required']) !!}
-	{!! Form::text('shortName', null, ['class' => 'form-control']) !!}
-</div>
+        <!--- Fullname Field --->
+        <div class="form-group col-sm-6">
+            {!! Form::label('fullName', 'Razão Social:', ['class' => 'required']) !!}
+            {!! Form::text('fullName', null, ['class' => 'form-control']) !!}
+        </div>
 
-<!--- Fullname Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('fullName', 'Razão Social:', ['class' => 'required']) !!}
-	{!! Form::text('fullName', null, ['class' => 'form-control']) !!}
-</div>
+        <!--- Email Field --->
+        <div class="form-group col-sm-6 col-lg-4">
+            {!! Form::label('email', 'Email:', ['class' => 'required']) !!}
+            {!! Form::text('email', null, ['class' => 'form-control']) !!}
+        </div>
 
-<!--- Email Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('email', 'Email:', ['class' => 'required']) !!}
-	{!! Form::text('email', null, ['class' => 'form-control']) !!}
-</div>
+        <!--- Phone1 Field --->
+        <div class="form-group col-sm-4 col-lg-4">
+            {!! Form::label('phone1', 'Celular:', ['class' => 'required']) !!}
+            {!! Form::text('phone1', null, ['class' => 'form-control phone']) !!}
+        </div>
 
-<!--- Phone1 Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('phone1', 'Celular:', ['class' => 'required']) !!}
-	{!! Form::text('phone1', null, ['class' => 'form-control phone']) !!}
-</div>
+        <!--- Phone2 Field --->
+        <div class="form-group col-sm-4 col-lg-4">
+            {!! Form::label('phone2', 'Telefone 2:', ['class' => 'required']) !!}
+            {!! Form::text('phone2', null, ['class' => 'form-control phone']) !!}
+        </div>
 
-<!--- Phone2 Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('phone2', 'Telefone 2:', ['class' => 'required']) !!}
-	{!! Form::text('phone2', null, ['class' => 'form-control phone']) !!}
-</div>
+        <!--- Mayor Field --->
+        <div class="form-group col-sm-4 col-lg-4">
+            {!! Form::label('mayor', 'Responsável:', ['class' => 'required']) !!}
+            {!! Form::text('mayor', null, ['class' => 'form-control']) !!}
+        </div>
 
-<!--- Mayor Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('mayor', 'Responsável:', ['class' => 'required']) !!}
-	{!! Form::text('mayor', null, ['class' => 'form-control']) !!}
-</div>
+        <!--- Cnpjcpf Field --->
+        <div class="form-group col-sm-6 col-lg-4">
+            {!! Form::label('cnpjCpf', 'Cnpj:', ['class' => 'required']) !!}
+            {!! Form::text('cnpjCpf', null, ['class' => 'form-control cpfcnpj']) !!}
+        </div>
 
-<!--- Cnpjcpf Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('cnpjCpf', 'Cnpj:', ['class' => 'required']) !!}
-	{!! Form::text('cnpjCpf', null, ['class' => 'form-control cpfcnpj']) !!}
-</div>
+        <!--- Ierg Field --->
+        <div class="form-group col-sm-6 col-lg-4">
+            {!! Form::label('ieRg', 'Insc. Estadual:', ['class' => 'required']) !!}
+            {!! Form::text('ieRg', null, ['class' => 'form-control']) !!}
+        </div>
 
-<!--- Ierg Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('ieRg', 'Insc. Estadual:', ['class' => 'required']) !!}
-	{!! Form::text('ieRg', null, ['class' => 'form-control']) !!}
-</div>
+        <!--- Im Field --->
+        <div class="form-group col-sm-6 col-lg-4">
+            {!! Form::label('im', 'Insc. Municipal:', ['class' => 'required']) !!}
+            {!! Form::text('im', null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group col-sm-6 col-lg-4">
+            {!! Form::label('address', 'Endereço:') !!}
+            {!! Form::text('address', null, ['class' => 'form-control']) !!}
+        </div>
 
-<!--- Im Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('im', 'Insc. Municipal:', ['class' => 'required']) !!}
-	{!! Form::text('im', null, ['class' => 'form-control']) !!}
-</div>
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('address', 'Endereço:') !!}
-	{!! Form::text('address', null, ['class' => 'form-control']) !!}
-</div>
+        <!--- State Field --->
+        <div class="form-group col-sm-2">
+            {!! Form::label('state', 'UF:') !!}
+            {!! Form::select('state', $states, null, ['class' => 'form-control states', 'onChange'=>'getCities(\'state\')']) !!}
+        </div>
 
-<!--- State Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('state', 'UF:') !!}
-    {!! Form::select('state', $states, null, ['class' => 'form-control states', 'onChange'=>'getCities(\'state\')']) !!}
-</div>
+        <!--- City Field --->
+        <div class="form-group col-sm-4">
+            {!! Form::label('city', 'Cidade:') !!}
+            {!! Form::select('city', $cities, null, ['class' => 'form-control cities']) !!}
+        </div>
+        <div class="form-group form-check form-switch form-switch-md">
+            <input
+                name="active"
+                class="form-check-input"
+                type="checkbox"
+                @if(isset($company->active) ? $company->active == 1 : false)
+                checked
+                @endif
+            >
+        </div>
+    </div>
 
-<!--- City Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    {!! Form::label('city', 'Cidade:') !!}
-	{!! Form::select('city', $cities, null, ['class' => 'form-control cities']) !!}
-</div>
 
+{{--<!--- Active Field --->--}}
 
-
-<!--- Active Field --->
-<div class="form-group col-sm-6 col-lg-4">
-    <div class="checkbox">
-		<label>{!! Form::checkbox('active', 1, true) !!}Active</label>
-	</div>
-</div>
 
 
 <!--- Submit Field --->

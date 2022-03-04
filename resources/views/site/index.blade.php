@@ -11,23 +11,23 @@
                     <img
                         src="/assets/images/gpl.png"
                         alt="GPL"
-                        style="max-width: 40%; height: 50%;"
+                        style="height: 9rem;"
                     >
                     <div class="mtb">
                         <div>
-                            <ul class="nav nav-tabs centered" role="tablist">
-                                <li role="presentation" class=" @if(isset($_GET['documents'])) in active @endif">
-                                    <a class="menu" href="#docs" aria-controls="docs" role="tab" data-toggle="tab">
+                            <ul class="nav nav-tabs nav-fill mb-3" role="tablist">
+                                <li role="presentation" class="nav-item">
+                                    <a style="color:#218CD2" role="tab" data-toggle="tab" href="#docs" aria-controls="docs" class="nav-link @if(isset($_GET['documents'])) active @endif">
                                         DOCUMENTOS
                                     </a>
                                 </li>
-                                <li role="presentation" class=" @if(isset($_GET['projects'])) in active @endif">
-                                    <a class="menu" href="#projects" aria-controls="projects" role="tab" data-toggle="tab">
+                                <li role="presentation" class="nav-item">
+                                    <a style="color:#218CD2" role="tab" data-toggle="tab" href="#projects" aria-controls="projects" class="nav-link @if(isset($_GET['projects'])) active @endif">
                                         PROJETOS DE LEI
                                     </a>
                                 </li>
-                                <li role="presentation" class=" @if(isset($_GET['atas'])) in active @endif">
-                                    <a class="menu" href="#atas" aria-controls="atas" role="tab" data-toggle="tab">
+                                <li role="presentation" class="nav-item">
+                                    <a style="color:#218CD2" role="tab" data-toggle="tab" href="#atas" aria-controls="atas" class="nav-link @if(isset($_GET['atas'])) active @endif">
                                         ATAS/PAUTAS
                                     </a>
                                 </li>
@@ -36,12 +36,13 @@
                         <div class="tab-content">
                             <div
                                 role="tabpanel"
-                                class="tab-pane fade @if(isset($_GET['documents'])) in active @endif"
+                                class="tab-pane fade show @if(isset($_GET['documents'])) active @endif"
                                 id="docs"
                             >
-                                <h1>DOCUMENTOS</h1>
+{{--                                <h1>DOCUMENTOS</h1>--}}
                                 <form method="GET" id="formDocuments">
                                     <input type="hidden" name="documents" value="true">
+                                <div class="row">
                                     <div class="form-group col-md-4">
                                         {!! Form::label('owner_id', 'Tipo:') !!}
                                         {!! Form::select(
@@ -85,17 +86,20 @@
                                         ) !!}
                                     </div>
                                     <div class="form-group col-md-2">
-                                        {!! Form::label('frase', 'Frase completa:') !!}
-                                        {!! Form::checkbox('frase', null, 0, ['class' => 'form-control ']) !!}
+                                        <div>
+                                            {!! Form::label('frase', 'Frase completa:') !!}
+                                        </div>
+                                        <div>
+                                            {!! Form::checkbox('frase', null, 0, ['class' => 'form-check-input ', 'style' => 'padding: 10px 10px 10px 10px']) !!}
+                                        </div>
                                     </div>
+                                </div>
                                     <div class="clearfix"></div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-12 mt-3">
                                         <button type="reset" class="btn btn-block btn-warning">
                                             <i class="fa fa-recycle"></i> Reset
                                         </button>
-                                    </div>
-                                    <div class="form-group col-md-10">
-                                        <button class="btn btn-block btn-primary" onclick="find_word()">
+                                        <button class="btn btn-block btn-primary btn-blue" onclick="find_word()">
                                             <i class="fa fa-search"></i> Pesquisar
                                         </button>
                                     </div>
@@ -103,12 +107,13 @@
                             </div>
                             <div
                                 role="tabpanel"
-                                class="tab-pane fade @if(isset($_GET['projects'])) in active @endif"
+                                class="tab-pane fade show  @if(isset($_GET['projects'])) active @endif"
                                 id="projects"
                             >
-                                <h1>PROJETOS DE LEI</h1>
+{{--                                <h1>PROJETOS DE LEI</h1>--}}
                                 <form method="GET" id="formDocuments">
                                     <input type="hidden" name="projects" value="true">
+                                <div class="row">
                                     <div class="form-group col-md-4">
                                         {!! Form::label('owner_id', 'Tipo:') !!}
                                         {!! Form::select(
@@ -152,57 +157,60 @@
                                         ) !!}
                                     </div>
                                     <div class="form-group col-md-2">
-                                        {!! Form::label('frase', 'Frase completa:') !!}
-                                        {!! Form::checkbox('frase', null, 0, ['class' => 'form-control']) !!}
+                                        <div>
+                                            {!! Form::label('frase', 'Frase completa:') !!}
+                                        </div>
+                                        <div>
+                                            {!! Form::checkbox('frase', null, 0, ['class' => 'form-check-input', 'style' => 'padding: 10px 10px 10px 10px']) !!}
+                                        </div>
                                     </div>
+                                </div>
                                     <div class="clearfix"></div>
-                                    <div class="form-group col-md-2">
-                                        <button type="reset" class="btn btn-block btn-warning">
-                                            <i class="fa fa-recycle"></i> Reset
-                                        </button>
-                                    </div>
-                                    <div class="form-group col-md-10">
-                                        <button class="btn btn-block btn-primary">
-                                            <i class="fa fa-search"></i> Pesquisar
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                        <div class="form-group col-md-12 mt-3">
+                                            <button type="reset" class="btn btn-block btn-warning">
+                                                <i class="fa fa-recycle"></i> Reset
+                                            </button>
+                                            <button class="btn btn-block btn-primary btn-blue">
+                                                <i class="fa fa-search"></i> Pesquisar
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             <div
                                 role="tabpanel"
-                                class="tab-pane fade @if(isset($_GET['atas'])) in active @endif"
+                                class="tab-pane fade show @if(isset($_GET['atas'])) active @endif"
                                 id="atas"
                             >
-                                <h1>ATAS E PAUTAS</h1>
+{{--                                <h1>ATAS E PAUTAS</h1>--}}
                                 <form method="GET" id="formDocuments">
                                     <input type="hidden" name="atas" value="true">
-                                    <div class="form-group col-md-offset-4 col-md-3">
-                                        {!! Form::label('type', 'Tipo:') !!}
-                                        {!! Form::select(
-                                            'type',
-                                            App\Models\SessionType::pluck('name', 'id')->prepend('Selecione...', '') ,
-                                            $form->input('type'),
-                                            ['class' => 'form-control']
-                                        ) !!}
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        {!! Form::label('date', 'Data:') !!}
-                                        {!! Form::text(
-                                            'data',
-                                            (($form->input('data')) !== null ? $form->input('data'): null),
-                                            ['class' => 'form-control datepicker']
-                                        ) !!}
-                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="form-group col-md-offset-4 col-md-3">
+                                            {!! Form::label('type', 'Tipo:') !!}
+                                            {!! Form::select(
+                                                'type',
+                                                App\Models\SessionType::pluck('name', 'id')->prepend('Selecione...', '') ,
+                                                $form->input('type'),
+                                                ['class' => 'form-control']
+                                            ) !!}
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            {!! Form::label('date', 'Data:') !!}
+                                            {!! Form::text(
+                                                'data',
+                                                (($form->input('data')) !== null ? $form->input('data'): null),
+                                                ['class' => 'form-control datepicker']
+                                            ) !!}
+                                        </div>
                                     <div class="clearfix"></div>
-                                    <div class="form-group col-md-2">
-                                        <button type="reset" class="btn btn-block btn-warning">
-                                            <i class="fa fa-recycle"></i> Reset
-                                        </button>
-                                    </div>
-                                    <div class="form-group col-md-10">
-                                        <button class="btn btn-block btn-primary">
-                                            <i class="fa fa-search"></i> Pesquisar
-                                        </button>
+                                        <div style="text-align: center" class="form-group col-md-12 mt-3">
+                                            <button type="reset" class="btn btn-block btn-warning">
+                                                <i class="fa fa-recycle"></i> Reset
+                                            </button>
+                                            <button class="btn btn-block btn-primary btn-blue">
+                                                <i class="fa fa-search"></i> Pesquisar
+                                            </button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -238,7 +246,7 @@
                                             {!! $documentModel->number . '/' .
                                                 $documentModel->getYear($documentModel->date) !!}
                                             -
-                                            {!! $documentModel->owner->short_name !!}
+                                            {{ $documentModel->owner->short_name ??  $documentModel->owner }}
                                         </strong><br>
                                         @if(strlen($documentModel->content)>=600)
                                             {!! substr(strip_tags($documentModel->content), 0, strrpos(substr(
@@ -254,12 +262,12 @@
                                                 <div class="clearfix"></div>
                                                 @foreach($documentModel->documents as $doc)
                                                     @if($doc->filename)
-                                                        <div class="col-md-3" style="    width: auto !important;">
+                                                        <div class="col-md-3" style=" width: auto !important;">
                                                             <a
                                                                 href="{{ (new \App\Services\StorageService())
                                                                     ->inDocumentsFolder()->getPath
                                                                     ($doc->filename) }}"
-                                                                target="_blank" class="btn btn-xs btn-success"
+                                                                target="_blank" class="btn btn-sm btn-success"
                                                             >
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
@@ -268,7 +276,7 @@
                                                                     ->inDocumentsFolder()->getPath
                                                                     ($doc->filename) }}"
                                                             >
-                                                                <button class="btn btn-xs btn-info">
+                                                                <button class="btn btn-sm btn-info">
                                                                     {{ $doc->filename }}
                                                                 </button>
                                                             </a>

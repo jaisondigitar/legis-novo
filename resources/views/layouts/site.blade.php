@@ -12,10 +12,8 @@
     <title>Consulta</title>
     <link rel="shortcut icon" href="assets/images/logoLegis.ico" type="image/png"/>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/front/assets/css/bootstrap.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="/front/assets/css/ionicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"/>
@@ -83,7 +81,7 @@
         h1 {
             font-family: 'Lato', sans-serif;
             font-weight: 600;
-            color: #286090;
+            color: #208bd2;
         }
 
 
@@ -131,7 +129,7 @@
 
         input {
             font-size: 16px;
-            min-height: 40px;
+            min-height:  5px;
             border-radius: 25px;
             line-height: 20px;
             padding: 15px 30px 16px;
@@ -145,6 +143,10 @@
 
         ul {
             list-style-type: none;
+        }
+
+        .btn-blue {
+            background-color: #208bd2;
         }
     </style>
 </head>

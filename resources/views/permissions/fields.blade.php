@@ -16,8 +16,8 @@
     <!--- Submit Field --->
     <div class="form-group col-sm-12 text-right mt-3">
         <a href="{{ URL::previous() }}">
-            <button type="button" class="btn btn-info">Cancelar</button>
+            <button type="button" class="btn btn-info btn-sm">Cancelar</button>
         </a>
-        {!! Form::submit('SALVAR', ['class' => 'btn btn-success']) !!}
+        {!! Form::submit('SALVAR', ['class' => 'btn btn-success btn-sm']) !!}
     </div>
 </div>

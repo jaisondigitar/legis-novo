@@ -30,7 +30,7 @@
             border-radius: 10px;
             line-height: 20px;
             padding: 10px;
-            border: 1px solid #b9b9af;
+            border: 1px transparent;
             background-color: #fff;
             opacity: 0.9;
             -webkit-transition: background-color 0.2s;
@@ -45,7 +45,7 @@
             border-radius: 10px;
             line-height: 20px;
             padding: 10px;
-            border: 1px solid #b9b9af;
+            border: 1px transparent;
             background-color: #fff;
             opacity: 0.9;
             -webkit-transition: background-color 0.2s;
@@ -54,7 +54,7 @@
 
         button {
             border-radius: 5px;
-            background: #166091;
+            background: #208bd2;
             color: #fff;
             padding: 10px 20px;
             font-size: 15px;
@@ -63,7 +63,7 @@
         button:hover,
         button:focus,
         button:active {
-            background: white;
+            background: #ececec;
             color: #000000;
         }
 
@@ -122,7 +122,7 @@
 
         @media screen and (min-width: 1100px) {
             .backFormat {
-                border-bottom: 100vh solid rgb(113, 185, 245);
+                border-bottom: 100vh solid rgb(32, 139, 210);
                 border-left: 35rem solid transparent;
                 margin-left: 15rem;
                 width: 100vw;
@@ -132,7 +132,7 @@
 
         @media screen and (max-width: 1100px) {
             .backFormat {
-                border-bottom: 100vh solid rgb(113, 185, 245);
+                border-bottom: 100vh solid rgb(32, 139, 210);
                 border-left: 45rem solid transparent;
                 width: 100vw;
             }
@@ -153,7 +153,7 @@
             }
 
             .backFormat {
-                border-bottom: 70vh solid rgb(113, 185, 245);
+                border-bottom: 70vh solid rgb(32, 139, 210);
                 border-left: 0 solid transparent;
                 /*width: 100vw;*/
             }
@@ -200,13 +200,13 @@
                     </div>
 
                     <label>
-                        E-mail
+                        E-mail:
                         <input type="email" name="email" tabindex="1" placeholder="email">
                     </label>
 
 
                     <label>
-                        Senha
+                        Senha:
                         <input type="password" name="password" required placeholder="senha" tabindex="2">
                     </label>
 
