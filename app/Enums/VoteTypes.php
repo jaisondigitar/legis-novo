@@ -9,5 +9,10 @@ class VoteTypes
     public const BLOCKED = 'blocked';
     public const OUT = 'out';
 
-    public static array $types = [self::YES, self::NO, self::BLOCKED, self::OUT];
+    public static array $types = [
+        self::YES => self::YES,
+        self::NO => self::NO,
+        self::BLOCKED => self::BLOCKED,
+        self::OUT => self::OUT,
+    ];
 }

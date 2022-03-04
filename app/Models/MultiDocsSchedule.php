@@ -40,4 +40,12 @@ class MultiDocsSchedule extends BaseModel
     {
         return $this->hasOne(MultiVoting::class);
     }
+
+    /**
+     * @return HasOne
+     */
+    public function meeting(): HasOne
+    {
+        return $this->hasOne(Meeting::class, 'id', 'meeting_id');
+    }
 }

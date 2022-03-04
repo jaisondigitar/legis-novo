@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DocumentTypes;
+use App\Enums\VoteTypes;
 use App\Http\Requests\CreateMeetingRequest;
 use App\Http\Requests\UpdateMeetingRequest;
 use App\Models\Advice;
@@ -17,6 +18,7 @@ use App\Models\Meeting;
 use App\Models\MeetingFiles;
 use App\Models\MeetingPauta;
 use App\Models\MultiDocsSchedule;
+use App\Models\MultiDocsVoting;
 use App\Models\MultiVoting;
 use App\Models\Parameters;
 use App\Models\Processing;
@@ -1316,7 +1318,12 @@ class MeetingController extends AppBaseController
             ->with('documents')
             ->get();
 
-        return view('meetings.start_many_voting', compact('files', 'multi_docs_schedule', 'meeting'));
+        $votes = $multi_docs_schedule->multiVoting->multiDocsVoting;
+
+        return view(
+            'meetings.start_many_voting',
+            compact('files', 'multi_docs_schedule', 'meeting', 'votes')
+        );
     }
 
     public function updateAssemblyman($meeting_id, $voting_id, Request $request)
@@ -1472,14 +1479,13 @@ class MeetingController extends AppBaseController
 
     public function painelParlamentarData($id)
     {
-        $voting = Voting::open();
         $assemblyman = Assemblyman::find($id);
 
         $data = [];
-        $data['status'] = false;
+
         $data['assemblyman']['name'] = 'PARLAMENTAR - '.$assemblyman->short_name;
 
-        if ($voting->count() > 0) {
+        if ($voting = Voting::open()->get()->isNotEmpty()) {
             if ($voting->ata_id > 0) {
                 $data['name'] = 'ATA - '.$voting->getAta();
             } else {
@@ -1493,32 +1499,66 @@ class MeetingController extends AppBaseController
             $data['status'] = true;
             $voting->votes()->where('voting_id', $voting->id)->first();
 
-            $meeting = Meeting::find($voting->meeting_id);
-            if ($meeting) {
-                $data['meeting']['session'] = 'SESSÃO - '.$meeting->number.'/'.Carbon::createFromFormat('d/m/Y H:i', $meeting->date_start)->year;
-                $data['meeting']['type'] = 'TIPO - '.$meeting->session_type->name;
-            }
-
             if ($voting->votes()->where('voting_id', $voting->id)->where('assemblyman_id', $assemblyman->id)->count() > 0) {
                 $data['assemblyman']['id'] = $assemblyman->id;
             } else {
                 $data['assemblyman']['id'] = 0;
             }
+
+            $meeting = Meeting::find($voting->meeting_id);
+
+            $data['active'] = (
+                $meeting
+                    ->assemblyman()
+                    ->find($id)
+            ) && $voting->is_open_for_voting;
+        } else {
+            $voting = MultiVoting::whereNull('closed_at')->first();
+
+            if ($voting) {
+                $data['name'] = $voting->multiDocsSchedule->docs()->with('documents')->get()
+                    ->pluck('model')->pluck('label');
+                $data['status'] = true;
+            }
+
+            if (
+                $voting->multiDocsVoting()->where('multi_voting_id', $voting->id)
+                    ->where('assemblymen_id', $assemblyman->id)
+            ) {
+                $data['assemblyman']['id'] = $assemblyman->id;
+            } else {
+                $data['assemblyman']['id'] = 0;
+            }
+
+            $meeting = Meeting::find($voting->multiDocsSchedule->meeting_id);
+
+            $data['active'] = (
+                $meeting
+                    ->assemblyman()
+                    ->find($id)
+            ) && $voting->is_open_for_voting &&
+                ! $voting->multiDocsVoting()->where('assemblymen_id', $id)->first();
         }
 
-        $data['active'] = (
-            ! Meeting::find($voting->meeting_id)
-                ->assemblyman()
-                ->find($id) == null
-        ) &&
-            Voting::find($voting->id)->is_open_for_voting;
+        if ($meeting) {
+            $data['meeting']['session'] = 'SESSÃO - '.$meeting->number.'/'.Carbon::createFromFormat('d/m/Y H:i', $meeting->date_start)->year;
+            $data['meeting']['type'] = 'TIPO - '.$meeting->session_type->name;
+        }
 
         return json_encode($data);
     }
 
     public function assemblymanVoting($id)
     {
-        $voting = Voting::open();
+        if (Voting::open()->get()->isNotEmpty()) {
+            $voting = Voting::open()->first();
+            $meeting = Meeting::find($voting->meeting_id);
+        } else {
+            $voting = MultiVoting::whereNull('closed_at')->first();
+            $meeting = Meeting::find($voting->multiDocsSchedule->meeting->id);
+            $meeting->multi_voting = true;
+        }
+
         $assemblyman = UserAssemblyman::where('users_id', Auth::user()->id)->where('assemblyman_id', $id)->first();
 
         if ($assemblyman == null) {
@@ -1528,11 +1568,8 @@ class MeetingController extends AppBaseController
         }
 
         $ids = UserAssemblyman::where('users_id', Auth::user()->id)->pluck('assemblyman_id')->toArray();
-        $assemblyman_list = Assemblyman::whereIn('id', $ids)->pluck('short_name', 'id')->prepend('Selecione', 0);
 
-        if ($voting->get()->count() > 0) {
-            $meeting = Meeting::find($voting->meeting_id);
-        }
+        $assemblyman_list = Assemblyman::whereIn('id', $ids)->pluck('short_name', 'id')->prepend('Selecione', 0);
 
         return view('meetings.assemblyman_vote', compact('meeting', 'voting', 'id', 'assemblyman_list'));
     }
@@ -1543,21 +1580,35 @@ class MeetingController extends AppBaseController
 
         $vote = $input['votes'];
 
-        $voting = Voting::open();
+        if (Voting::open()->get()->isNotEmpty()) {
+            $voting = Voting::open();
 
-        $votes = Votes::firstOrCreate([
-            'voting_id' => $voting->id,
-            'assemblyman_id' => $input['assemblyman_id'],
-        ]);
+            $votes = Votes::firstOrCreate([
+                'voting_id' => $voting->id,
+                'assemblyman_id' => $input['assemblyman_id'],
+            ]);
 
-        $votes->reset();
-        $votes->$vote = 1;
+            $votes->reset();
+            $votes->$vote = 1;
 
-        if ($votes->save()) {
-            return json_encode(true);
+            return json_encode($votes->save());
+        } else {
+            return json_encode(
+                (bool) MultiDocsVoting::firstOrCreate(
+                    [
+                        'multi_voting_id' => $input['voting'],
+                        'assemblymen_id' => $input['assemblyman_id'],
+                    ],
+                    [
+                        'multi_voting_id' => $input['voting'],
+                        'assemblymen_id' => $input['assemblyman_id'],
+                        'vote' => $input['votes'] === 'abstention' ?
+                            VoteTypes::BLOCKED :
+                            VoteTypes::$types[$input['votes']],
+                    ]
+                )
+            );
         }
-
-        return json_encode(false);
     }
 
     public function getVotes()

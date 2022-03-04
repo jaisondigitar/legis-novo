@@ -36,7 +36,7 @@
     </div>
 
     <div class="clearfix"></div>
-    @foreach($meeting->assemblyman()->orderBy('short_name')->get() as $item)
+    @foreach($meeting->assemblyman()->orderBy('short_name')->get() as $assemblyman)
     <div class="col-sm-3">
         <div class="panel panel-info">
             <div
@@ -49,7 +49,7 @@
                 "
             >
                 <label>
-                    {{ mb_strtoupper($item->short_name) }}
+                    {{ mb_strtoupper($assemblyman->short_name) }}
                 </label>
             </div>
             <div class="panel-body" >
@@ -61,23 +61,14 @@
                                 <input
                                     type="radio"
                                     class="pull-left radioBox"
-                                    id="vote_{{$item->id}}_1"
-                                    name="{{$item->id}}_vote"
+                                    id="vote_{{$assemblyman->id}}_1"
+                                    name="{{$assemblyman->id}}_vote"
                                     value="yes"
-                                    onclick="votes(this, '{{$item->id}}')"
+                                    onclick="votes(this, '{{$assemblyman->id}}')"
                                     disabled
-                                    {{--@if($meeting->voting()
-                                            ->get()
-                                            ->where('id', $voting->id)
-                                            ->first()
-                                            ->votes()
-                                            ->where('voting_id', $voting->id)
-                                            ->where('assemblyman_id', $item->id)
-                                            ->where('yes', 1)
-                                            ->first()
-                                    )
+                                    @if($votes->where('assemblymen_id', $assemblyman->id)->where('vote', \App\Enums\VoteTypes::YES)->first())
                                         checked
-                                    @endif--}}
+                                    @endif
                                 >
                             </span>
                         </label>
@@ -89,10 +80,10 @@
                                 <input
                                     type="radio"
                                     class="pull-left radioBox"
-                                    id="vote_{{$item->id}}_2"
-                                    name="{{$item->id}}_vote"
+                                    id="vote_{{$assemblyman->id}}_2"
+                                    name="{{$assemblyman->id}}_vote"
                                     value="no"
-                                    onclick="votes(this, '{{$item->id}}')"
+                                    onclick="votes(this, '{{$assemblyman->id}}')"
                                     disabled
                                     {{--@if ($meeting->voting()
                                             ->get()
@@ -117,10 +108,10 @@
                                 <input
                                     type="radio"
                                     class="pull-left radioBox"
-                                    id="vote_{{$item->id}}_3"
-                                    name="{{$item->id}}_vote"
+                                    id="vote_{{$assemblyman->id}}_3"
+                                    name="{{$assemblyman->id}}_vote"
                                     value="abstention"
-                                    onclick="votes(this, '{{$item->id}}')"
+                                    onclick="votes(this, '{{$assemblyman->id}}')"
                                     disabled
                                     {{--@if($meeting->voting()
                                             ->get()
@@ -145,10 +136,10 @@
                                 <input
                                     type="radio"
                                     class="pull-left radioBox"
-                                    id="vote_{{$item->id}}_4"
-                                    name="{{$item->id}}_vote"
+                                    id="vote_{{$assemblyman->id}}_4"
+                                    name="{{$assemblyman->id}}_vote"
                                     value="out"
-                                    onclick="votes(this, '{{$item->id}}')"
+                                    onclick="votes(this, '{{$assemblyman->id}}')"
                                     disabled
                                     {{--@if($meeting->voting()
                                             ->get()
@@ -239,8 +230,9 @@
             })
         }
 
-        var votes = function (t, id) {
-            url = '{{route('meetings.registerVote')}}';
+        const votes = (t, id) => {
+            alert('votou!')
+            /*url = '{{route('meetings.registerVote')}}';
             data = {
                 meeting_id     : '{{$meeting->id}}',
                 {{--voting_id      : '{{$voting->id}}',--}}
@@ -260,7 +252,7 @@
                 }else{
                     toastr.error('Falha ao registrar voto!');
                 }
-            })
+            })*/
         }
 
         $(document).ready(function () {
