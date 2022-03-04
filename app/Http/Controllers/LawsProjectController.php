@@ -89,7 +89,7 @@ class LawsProjectController extends AppBaseController
         foreach ($assemblymens as $assemblyman) {
             $parties = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
 
-            $assemblymensList[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix;
+            $assemblymensList[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix ?? '';
         }
 
         $assemblymens1 = Assemblyman::where('assemblymen.active', '=', 1)->get();
@@ -97,7 +97,7 @@ class LawsProjectController extends AppBaseController
         foreach ($assemblymens1 as $assemblyman) {
             $parties = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
 
-            $assemblymen[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix;
+            $assemblymen[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix ?? '';
         }
 
         return [$assemblymen, $assemblymensList];
