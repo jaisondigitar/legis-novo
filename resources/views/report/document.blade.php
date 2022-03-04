@@ -49,11 +49,9 @@
             </div>
 
             <div class="row" style="margin-top: 20px">
-                <div class="form-group col-md-10 pull-right">
-                    <button class="btn btn-block btn-primary" style="width: 100%"><i class="fa fa-search"></i> Pesquisar</button>
-                </div>
-                <div class="form-group col-md-2 pull-right">
-                    <button type="reset" class="btn btn-block btn-warning" style="width: 100%"><i class="fa fa-recycle"></i> Reset</button>
+                <div class="form-group col-md-12 pull-right">
+                    <button class="btn btn-block btn-primary"><i class="fa fa-search"></i> Pesquisar</button>
+                    <button type="reset" class="btn btn-block btn-warning"><i class="fa fa-recycle"></i> Reset</button>
                 </div>
             </div>
         </form>

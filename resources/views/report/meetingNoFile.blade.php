@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group">
-                        <a href="/report/pdf/noFilesMeeting" target="_blank" class="btn btn-success"> Gerar PDF</a>
+                        <a href="/report/pdf/noFilesMeeting" target="_blank" class="btn btn-default"> Gerar PDF</a>
                     </div>
                 </div>
             </div>

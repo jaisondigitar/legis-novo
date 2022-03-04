@@ -30,11 +30,11 @@
                     <div class="pull-right">
                         <a @popper(Visualizar) href="{!! route('companies.show', [$company->id]) !!}"
                            class="btn btn-default btn-sm">
-                            <i class="fas fa-eye"></i>
+                            <i class="fa fa-eye"></i>
                         </a>
                         <a @popper(Editar) href="{!! route('companies.edit', [$company->id]) !!}"
                            class="btn btn-default btn-sm">
-                            <i class="fas fa-pencil-alt"></i>
+                            <i class="fa fa-edit"></i>
                         </a>
                         <a
                             class="btn btn-danger btn-sm"

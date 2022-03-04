@@ -1,6 +1,6 @@
 @extends('layouts.blit')
 @section('Breadcrumbs')
-{{--    {!! Breadcrumbs::render('lawsProjects.list') !!}--}}
+    {!! Breadcrumbs::render('lawsProjects.list') !!}
 @endsection
 @section('content')
     <style>

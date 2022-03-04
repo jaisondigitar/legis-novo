@@ -3,7 +3,7 @@
         <tr>
             <th>Slug</th>
             <th>Descrição</th>
-            <th width="50px">Ação</th>
+            <th class="pull-right">Ação</th>
         </tr>
     </thead>
     <tbody>
@@ -12,21 +12,23 @@
                 <td>{!! $permission->name !!}</td>
                 <td>{!! $permission->readable_name !!}</td>
                 <td>
-                    @is('root')
-                        <a @popper(Editar) href="{!! route('permissions.edit', [$permission->id]) !!}"
-                            class="btn btn-default btn-sm">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                    @endis
-                    @is('root')
-                        <a
-                            class = "btn btn-danger btn-sm"
-                            @popper(Deletar)
-                            onclick="sweet(event, {!! $permission->id !!})"
-                        >
-                            <i class="fa fa-trash"></i>
-                        </a>
-                    @endis
+                    <div class="pull-right">
+                        @is('root')
+                            <a @popper(Editar) href="{!! route('permissions.edit', [$permission->id]) !!}"
+                                class="btn btn-default btn-sm">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        @endis
+                        @is('root')
+                            <a
+                                class = "btn btn-danger btn-sm"
+                                @popper(Deletar)
+                                onclick="sweet(event, {!! $permission->id !!})"
+                            >
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        @endis
+                    </div>
                 </td>
             </tr>
         @endforeach

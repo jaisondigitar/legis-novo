@@ -2,8 +2,8 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th width="80px">Ativo</th>
-            <th width="90px">Ação</th>
+            <th width="1rem">Ativo</th>
+            <th class="pull-right">Ação</th>
         </tr>
     </thead>
     <tbody>
@@ -11,7 +11,7 @@
             <tr>
                 <td>{!! $module->name !!}</td>
                 <td>
-                    <label>
+                    <label class="pull-right">
                         <div class="form-check form-switch form-switch-md">
                             <input
                                 onchange="changeStatus('{!! $module->id !!}')"
@@ -27,19 +27,19 @@
                     </label>
                 </td>
                 <td>
-                    <a @popper(Editar) href="{!! route('modules.edit', [$module->id]) !!}"
-                        class='btn btn-default btn-sm'><i class="fas fa-pencil-alt"></i>
-
-{{--                        <i class="fas fa-pencil-alt icon-rounded icon-xs icon-warning"></i>--}}
-                    </a>
-                    <a
-                        class = "btn btn-danger btn-sm"
-                        @popper(Deletar)
-                        type="submit"
-                        onclick="sweet(event, {!! $module->id !!})"
-                    >
-                        <i class="fa fa-trash"></i>
-                    </a>
+                    <div class="pull-right">
+                        <a @popper(Editar) href="{!! route('modules.edit', [$module->id]) !!}"
+                            class='btn btn-default btn-sm'><i class="fa fa-edit"></i>
+                        </a>
+                        <a
+                            class = "btn btn-danger btn-sm"
+                            @popper(Deletar)
+                            type="submit"
+                            onclick="sweet(event, {!! $module->id !!})"
+                        >
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
                 </td>
             </tr>
         @endforeach

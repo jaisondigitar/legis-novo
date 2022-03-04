@@ -1,7 +1,7 @@
 @extends('layouts.blit')
-{{--@section('Breadcrumbs')--}}
-{{--    {!! Breadcrumbs::render('documents.list') !!}--}}
-{{--@endsection--}}
+@section('Breadcrumbs')
+    {!! Breadcrumbs::render('documents.list') !!}
+@endsection
 @section('content')
     <div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
         <form id="search-form" method="GET">
