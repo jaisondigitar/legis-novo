@@ -18,7 +18,7 @@
             <td>
                 {!! Form::open(['route' => ['logs.destroy', $log->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    @shield('logs.show') <button @popper(Visualizar) id="advice_{{$log->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="getLog({{$log}})"><i class="glyphicon glyphicon-eye-open"></i></button>@endshield
+                    @shield('logs.show') <button @popper(Visualizar) id="advice_{{$log->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="getLog({{$log}})"><i class="fa fa-eye"></i></button>@endshield
 
                     {{--@shield('logs.show')<a href="{!! route('logs.show', [$log->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>@endshield--}}
                 </div>

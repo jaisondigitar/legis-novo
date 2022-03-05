@@ -33,7 +33,7 @@
             </td>
             <td>
                 <a href="{!! route('profiles.edit', [$profile->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>
-                <a href="{!! route('profiles.delete', [$profile->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"><i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i></a>
+                <a href="{!! route('profiles.delete', [$profile->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"><i class="fa fa-remove icon-rounded icon-xs icon-danger"></i></a>
             </td>
         </tr>
     @endforeach

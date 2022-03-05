@@ -233,7 +233,7 @@ class MeetingController extends AppBaseController
      * @throws BindingResolutionException
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('meetings.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -250,6 +250,10 @@ class MeetingController extends AppBaseController
         }
 
         $this->meetingRepository->delete($meeting);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Reunião removida com sucesso.')->success();
 

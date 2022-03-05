@@ -9,6 +9,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
@@ -145,7 +146,7 @@ class ModuleController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws BindingResolutionException
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         $module = $this->moduleRepository->findByID($id);
 
@@ -156,6 +157,10 @@ class ModuleController extends AppBaseController
         }
 
         $this->moduleRepository->delete($module);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Registro deletado com sucesso!')->success();
 

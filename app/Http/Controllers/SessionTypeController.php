@@ -185,7 +185,7 @@ class SessionTypeController extends AppBaseController
      * @throws BindingResolutionException
      * @throws Exception
      */
-    public function destroy(int $id)
+    public function destroy(int $id, Request $request)
     {
         if (! Defender::hasPermission('sessionTypes.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -202,6 +202,10 @@ class SessionTypeController extends AppBaseController
         }
 
         $this->sessionTypeRepository->delete($sessionType);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Tipo de sessão removida com sucesso.')->success();
 

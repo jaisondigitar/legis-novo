@@ -28,7 +28,16 @@
                     @is(['admin','root']) <a @popper(Hístorico) href="/users/{!! $user->id !!}/auditing"><i class="fa fa-user-secret icon-rounded icon-xs icon-dark"></i></a>@endis
                     @shield('users.show')<a @popper(Visualizar) href="{!! route('users.show', [$user->id]) !!}"><i class="fa fa-eye icon-rounded icon-xs icon-info"></i></a>@endshield
                     @shield('users.edit')<a @popper(Editar) href="{!! route('users.edit', [$user->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>@endshield
-                    @shield('users.delete')<a @popper(Deletar) href="{!! route('users.delete', [$user->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"><i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i></a>@endshield
+                    @shield('users.delete')
+                        <a
+                            class="pointer"
+                            @popper(Deletar)
+                            type="submit"
+                            onclick="sweet(event, {!! $user->id !!})"
+                        >
+                            <i class="fa fa-trash icon-rounded icon-xs icon-danger"></i>
+                        </a>
+                    @endshield
                 </td>
             </tr>
             @endif
@@ -43,5 +52,14 @@
             url: url,
             dataType: "json"
         })
+    }
+</script>
+<script>
+    const sweet = (e, id) => {
+        const url = `users/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
     }
 </script>

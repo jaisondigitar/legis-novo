@@ -25,6 +25,7 @@
                                     <th class="text-center"> Nome</th>
                                     <th class="text-center" style="text-align: left"> Ementa</th>
                                     <th class="text-center"> Autor</th>
+                                    <th class="text-center"> Tipo</th>
                                     <th class="text-center"> Ações</th>
                                 </tr>
                             </thead>
@@ -37,11 +38,12 @@
                                             <td> {!! $advice->project->law_type->name !!}</td>
                                             <td style="text-align: left"> {!! $advice->project->title !!}</td>
                                             <td> {!! $advice->project->owner->short_name !!}</td>
+                                            <td> {!! $advice->advice_id ? 'Réplica' : '' !!}</td>
                                             <td>
                                                 <span class="pull-right">
                                                     <a href="/lawsProjects/{{$advice->project->id}}" target="_blank" class="btn btn-xs btn-info"><i class="fa fa-file-text-o"></i></a>
-                                                    <button id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="findAdvice({{$advice->id}})"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                                    @if($advice->closed == 1)
+                                                    <button id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="findAdvice({{$advice->id}})"><i class="fa fa-eye"></i></button>
+                                                    @if($advice->closed == 1 && \App\Models\Advice::query()->where('advice_id', $advice->id)->doesntExist())
                                                     <button id="advice_awnser_{{$advice->id}}" onclick="carrega_id({{$advice->id}})" type="button" class="btn btn-info btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
                                                     @endif
                                                 </span>
@@ -59,7 +61,7 @@
                                             <td>
                                                  <span class="pull-right">
                                                     <a href="/documents/{{$advice->document->id}}" target="_blank" class="btn btn-xs btn-info"><i class="fa fa-file-text-o"></i></a>
-                                                    <button id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="findAdvice({{$advice->id}})"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    <button id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="findAdvice({{$advice->id}})"><i class="fa fa-eye"></i></button>
                                                      @if($advice->closed == 1)
                                                      <button id="advice_awnser_{{$advice->id}}" onclick="carrega_id({{$advice->id}})" type="button" class="btn btn-info btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
                                                      @endif
