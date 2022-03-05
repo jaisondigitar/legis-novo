@@ -30,6 +30,7 @@
                 data-size="normal"
                 type="checkbox"
                 onchange="switchStructureVoting()"
+                @if ($multi_voting->is_open_for_voting) checked @endif
             >
         </label>
         <span style="text-transform: uppercase; margin-left: 5px">Iniciar votação</span>
@@ -303,7 +304,7 @@
                     body
                 }
             ).catch(() => { toastr.error('Falha ao habilitar votação') })
-            console.log(resp.json())
+
             await resp.json() ? toastr.success('Votação aberta') : toastr.success('Votação fechada')
         }
     </script>

@@ -1314,6 +1314,9 @@ class MeetingController extends AppBaseController
         $multi_docs_schedule = MultiDocsSchedule::where('meeting_id', $meeting_id)
             ->where('structure_id', $struct_id)->first();
 
+        $multi_voting = MultiVoting::where('multi_docs_schedule_id', $multi_docs_schedule->id)
+            ->where('is_open_for_voting', true)->first();
+
         $files = ScheduleDocs::where('multi_docs_schedule_id', $multi_docs_schedule->id)
             ->with('documents')
             ->get();
@@ -1322,7 +1325,7 @@ class MeetingController extends AppBaseController
 
         return view(
             'meetings.start_many_voting',
-            compact('files', 'multi_docs_schedule', 'meeting', 'votes')
+            compact('files', 'multi_docs_schedule', 'meeting', 'votes', 'multi_voting')
         );
     }
 
