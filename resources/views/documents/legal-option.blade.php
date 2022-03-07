@@ -36,6 +36,7 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                         aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="myModalLabel">PEDIDO DE DESTINO</h4>
+                                <p>Documento: {!! $document->number. '/' . $document->getYear($document->date) !!}</p>
                             </div>
                             <div class="modal-body">
                                 <label style="width: 100%">
@@ -47,14 +48,6 @@
                                             @endforeach
                                         </optgroup>
                                     </select>
-                                </label>
-
-                                <label>
-                                    Descrição:
-                                    <textarea
-                                        name="comissionDescriprion"
-                                        class="form-control descricao ckeditor"
-                                    ></textarea>
                                 </label>
 
                                 <label>
@@ -104,13 +97,13 @@
             });
 
             const data = {
+                date: dateForm + ' ' + timeForm,
                 document_id: document_id,
                 laws_projects_id: 0,
                 to_id: to_id,
                 type: type,
-                description: CKEDITOR.instances['comissionDescriprion'].getData(),
                 legal_option: CKEDITOR.instances['legal_option'].getData(),
-                date_end: null,
+                date_end: null
             };
 
             if (to_id.length > 0) {
@@ -119,6 +112,7 @@
                     data: data,
                     method: 'POST'
                 }).success(function (data) {
+                    console.log(data);
                     if (data) {
                         toastr.success("Pedido salvo com sucesso!!");
                         window.location.reload()
