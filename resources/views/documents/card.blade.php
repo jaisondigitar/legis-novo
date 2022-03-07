@@ -190,9 +190,9 @@
                         @if($document->resume === '')
                             -
                         @else
-                            <p class="resume">
+                            <div class="resume">
                                 {!! $document->resume !!}
-                            </p>
+                           </div>
                         @endif
                     </span>
                 </label>

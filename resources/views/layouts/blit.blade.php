@@ -164,13 +164,20 @@
             color: red;
             padding-right: 3px;
         }
-        .resume {
-            overflow: hidden;
+
+        .resume{
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
             margin: 0;
         }
+
+        .resume > ol{
+            display: none;
+        }
+
     </style>
     <script type="application/javascript">
         const getDate = (number) => {

@@ -796,7 +796,7 @@ class MeetingController extends AppBaseController
                 'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
                 'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
                     ->first()->id,
-                'processing_document_date' => now()->format('d/m/Y'),
+                'processing_document_date' => now()->format('d/m/Y H:i'),
                 'destination_id' => Destination::where('name', 'PLENÁRIO')->first()->id,
             ]);
         }
