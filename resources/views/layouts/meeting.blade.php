@@ -4,19 +4,15 @@
 @endsection
 @section('content')
     <style>
-        .menu{
-            text-decoration: none; color: #999;
+        .menu, .list-group {
+            text-decoration: none;
+            color: #999;
         }
     </style>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
                 <div class="the-box text-center">
-                    <div class="brasao">
-                        @if(Auth::user()->company->image)
-                            <img src="/uploads/company/{{Auth::user()->company->image}}" alt="" class="img-responsive thumbnail">
-                        @endif
-                    </div>
                     <ul class="list-group">
                         <li class="list-group-item text-left active">
                             @shield('meetings.show')<a href="{!! route('meetings.show', [$meeting->id]) !!}" class="menu" style="color: #fff;"><i class="fa fa-home"></i> INÍCIO</a>@endshield
@@ -42,11 +38,9 @@
                         <li class="list-group-item text-left active">
                             <i class="fa fa-cog"></i> CONFIGURAÇÕES
                         </li>
-                        @if(!\App\Models\Parameters::where('slug', 'painel-digital-permitir-multi-sessoes')->first()->value)
                         <li class="list-group-item text-left">
                             @shield('meetings.edit')<a href="{!! route('voting.panelStage', $meeting->id) !!}" class="menu text-uppercase"><i class="fa fa-ticket "></i> Estado do painel</a>@endshield
                         </li>
-                        @endif
                         <li class="list-group-item text-left">
                             <a href="{!! route('meetings.index')!!}" class="menu"><i class="fa fa-reply"></i> VOLTAR</a>
                         </li>
@@ -55,16 +49,20 @@
             </div>
             <div class="col-md-9">
                 <div class="the-box">
-                <h1>SESSÃO {{$meeting->number}}/{{Carbon\Carbon::createFromFormat('d/m/Y H:i',$meeting->date_start)->year}}</h1>
-                <small>{{$meeting->session_type->name}}</small>
-                <hr>
-                <p>
-                    @yield('content-meeting')
+                    <h1>
+                        SESSÃO
+                        {{$meeting->number}}/{{Carbon\Carbon::createFromFormat('d/m/Y H:i',$meeting->date_start)->year}}
+                    </h1>
+                    <small>
+                        {{$meeting->session_type->name}}
+                    </small>
+                    <hr/>
+                    <div>
+                        @yield('content-meeting')
 
-                    <div class="clearfix"></div>
-                </p>
-
-            </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
