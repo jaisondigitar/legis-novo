@@ -18,7 +18,7 @@ class ProcessingDocument extends BaseModel
         'document_situation_id',
         'status_processing_document_id',
         'processing_document_date',
-        'obsevation',
+        'observation',
         'processing_document_file',
         'destination_id',
     ];
