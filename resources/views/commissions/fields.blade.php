@@ -74,15 +74,11 @@
                 <button class="btn btn-info pull-right" type="button" id="saveAssemblymanBtn">Salvar Parlamentar</button>
             </div>
         </div>
-
         <div class="hidden" id="assemblyman_commission_hidden">
 
         </div>
-
-
-
         <!-- Submit Field -->
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 mt-3">
             {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
             <a href="{!! route('commissions.index') !!}" class="btn btn-default">Cancelar</a>
         </div>
