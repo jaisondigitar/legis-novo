@@ -784,15 +784,16 @@ class MeetingController extends AppBaseController
     {
         $input = $request->all();
 
-        $input['law_id'] = $input['law_id'] ? $input['law_id'] : null;
-        $input['document_id'] = $input['document_id'] ? $input['document_id'] : null;
-        $input['advice_id'] = $input['advice_id'] ? $input['advice_id'] : null;
-        $input['description'] = $input['description'] ? $input['description'] : null;
-        $input['observation'] = $input['observation'] ? $input['observation'] : null;
+        $input['law_id'] = $input['law_id'] ?? null;
+        $input['document_id'] = $input['document_id'] ?? null;
+        $input['advice_id'] = $input['advice_id'] ?? null;
+        $input['description'] = $input['description'] ?? null;
+        $input['observation'] = $input['observation'] ?? null;
 
         if ($input['document_id']) {
             ProcessingDocument::create([
                 'document_id' => $input['document_id'],
+                'observation' => $input['observation'],
                 'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
                 'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
                     ->first()->id,
