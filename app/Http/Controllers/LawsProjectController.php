@@ -327,11 +327,8 @@ class LawsProjectController extends AppBaseController
         $lawsProject = $this->lawsProjectRepository->findByID($lawProjectId);
 
         $processing_last = $lawsProject->processing()->orderBy('processing_date', 'desc')->get();
-        foreach ($processing_last as $key => $last) {
-            $array[] = $key;
-        }
 
-        $last_position = empty($array) ? [] : end($array);
+        $first_processing = $processing_last->first();
 
         if (empty($lawsProject)) {
             flash('Projeto de Leis não encontrado')->error();
@@ -359,8 +356,8 @@ class LawsProjectController extends AppBaseController
                 'advice_situation_law',
                 'advice_publication_law',
                 'status_processing_law',
-                'last_position',
                 'destinations',
+                'first_processing',
                 'processing_last',
                 'legal'
             )
@@ -1245,16 +1242,54 @@ class LawsProjectController extends AppBaseController
         ];
     }
 
-    public function lawsProjectProtocolSave()
+    public function alteraNumero(Request $request)
     {
-        $params = \Illuminate\Support\Facades\Request::all();
+        $input = $request->all();
+
+        $law_project = LawsProject::find($input['law_project_id']);
+
+        $year = explode('/', $law_project->law_date);
+        $year = $year[2];
+
+        $parameter = Parameters::where('slug', 'permitir-criar-numero-de-projetos-de-lei-fora-da-sequencia')->first();
+
+        if ($parameter->value === 0) {
+            $law_project_verify = LawsProject::whereYear('law_date', '=', $year);
+
+            $law_project_verify = $law_project_verify->where('project_number', '>=', $input['law_project_id_number'])
+                ->orderBy('project_number', 'DESC')
+                ->first();
+        } else {
+            $law_project_verify = LawsProject::whereYear('law_date', '=', $year);
+
+
+            $law_project_verify = $law_project_verify->where('project_number', '=', $input['law_project_id_number'])
+                ->orderBy('project_number', 'DESC')
+                ->first();
+        }
+
+        if ($law_project_verify) {
+            return ['success' => false, 'message' => 'Número já utilizado ou inferior ao último, a sua sugestão foi atualizada!', 'next_number' => $input['law_project_id_number']];
+        } else {
+            $law_project = LawsProject::find($input['law_project_id']);
+            $law_project->project_number = $input['law_project_id_number'];
+
+            if ($law_project->save()) {
+                return ['success' => true, 'message' => 'Número foi atualizado!', 'next_number' => $input['law_project_id_number'].'/'.$year, 'id' => $law_project->id];
+            }
+        }
+    }
+
+    public function lawsProjectProtocolSave(Request $request)
+    {
+        $params = $request->all();
 
         $law_project = LawsProject::find($params['law_project_id']);
 
         Processing::create([
             'law_projects_id' => $law_project->id,
             'advice_situation_id' => AdviceSituationLaw::where('name', 'Encaminhado')->first()->id,
-            'processing_date' => now()->format('d/m/Y'),
+            'processing_date' => $params['protocoldate'],
             'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
         ]);
 
@@ -1364,7 +1399,8 @@ class LawsProjectController extends AppBaseController
 
         $date = $input['protocoldate'];
 
-        $ano = explode('/', $date);
+        $date_time = explode(' ', $date);
+        $ano = explode('/', $date_time[0]);
 
         $law_project = LawsProject::find($input['id']);
 
@@ -1589,7 +1625,6 @@ class LawsProjectController extends AppBaseController
 
             return redirect(route('lawsProjects.index'));
         }
-
 
         return view('lawsProjects.legal-option', ['lawsProject' => $lawsProject]);
     }

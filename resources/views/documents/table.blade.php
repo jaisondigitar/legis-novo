@@ -154,7 +154,7 @@
     </div>
 </div>
 
-<div id="modalNumberEdit" class="modal fade" role="dialog">
+<div id="modalNumberEditLaw" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -222,8 +222,7 @@
 
         date = dia + '/' + mes + '/' + ano4+ ' '+ hora + ':' + min + ':' + seg ;
 
-
-        $('#protocol_date').val(date);
+        $('#protocol_date').val(dateForm + ' ' + timeForm);
 
     });
 
@@ -288,7 +287,7 @@
 
         limpaedit();
         $('#document_id_edit_number').val(id);
-        $('#modalNumberEdit').modal();
+        $('#modalNumberEditLaw').modal();
 
     };
 
@@ -360,7 +359,7 @@
             }).success(function (result) {
 
                 if (result.success) {
-                    $('#modalNumberEdit').modal('hide');
+                    $('#modalNumberEditLaw').modal('hide');
                     $('#numberEdit' + result.id).html(result.next_number);
 
                 } else {
@@ -452,7 +451,7 @@
                 $('#next_number_origin').val(result.data.next_number);
                 $('#year_document').val(result.data.year);
                 $('#labelmessage').html('');
-                $('#protocol_date').val(date);
+                $('#protocol_date').val(dateForm + ' ' + timeForm);
                 $('#modalProtocol').modal('show');
             });
         });

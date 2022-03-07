@@ -5,4 +5,4 @@
 
 @section('name', 'Serviço Indisponível')
 
-@section('message', 'O servidor está temporariamente indisponível.'))
+@section('message', 'O servidor está temporariamente indisponível.')
