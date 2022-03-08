@@ -246,6 +246,8 @@ Route::middleware([
         Route::post('document-protocol-save', 'DocumentController@documentProtocolSave');
         Route::resource('documents', 'DocumentController');
 
+        Route::post('/documentReply', 'DocumentController@replyDocument')->name('document.reply');
+
         Route::get('commission-assemblymen/{id}', 'CommissionController@commissionAssemblymen');
         Route::resource('commissions', 'CommissionController');
 

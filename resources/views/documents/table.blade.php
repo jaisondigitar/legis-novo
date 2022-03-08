@@ -44,30 +44,33 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Responder Documento</h4>
             </div>
-            <div class="modal-body">
-                <input type="hidden" name="document_id" id="document_id">
-                <input type="hidden" name="next_number_origin" id="next_number_origin">
+            <form method="POST" action="{{ route('document.reply')}}" enctype="multipart/form-data" name="reply-form" id="reply-form">
+                @csrf
+                <div class="modal-body">
+                    <input type="hidden" name="document_id" id="document_id">
 
-                <div class="form-group col-sm-12">
-                    <label>
-                        Descrição:
-                        <textarea
-                            name="comissionDescriprion"
-                            class="form-control descricao ckeditor"
-                        ></textarea>
-                    </label>
-                </div>
+                    <div class="form-group col-sm-12">
+                        <label>
+                            Descrição:
+                            <textarea
+                                name="comissionDescriprion"
+                                id="comissionDescriprion"
+                                class="form-control descricao ckeditor"
+                            ></textarea>
+                        </label>
+                    </div>
 
-                <div class="form-group col-sm-12">
-                    {!! Form::label('file[]', 'Enexo de Resposta:') !!}
-                    {!! Form::file('file[]', array('multiple'=>true, 'class' => 'file')) !!}
+                    <div class="form-group col-sm-12">
+                        {!! Form::label('file[]', 'Anexo de Resposta:') !!}
+                        {!! Form::file('file[]', array('multiple'=>true, 'class' => 'file')) !!}
+                    </div>
                 </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-success pull-right">Salvar</button>
-            </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-success pull-right">Salvar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -223,7 +226,6 @@
         date = dia + '/' + mes + '/' + ano4+ ' '+ hora + ':' + min + ':' + seg ;
 
         $('#protocol_date').val(dateForm + ' ' + timeForm);
-
     });
 
     var converteDate = function(date1){
@@ -269,7 +271,9 @@
 
     };
 
-    const answer = () => {
+    const answer = (document) => {
+        CKEDITOR.instances.comissionDescriprion.setData(document.description);
+        $('#answer #document_id').attr('value', document.id);
         $('#answer').modal();
     };
 

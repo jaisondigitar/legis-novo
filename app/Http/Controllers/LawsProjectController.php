@@ -1631,11 +1631,25 @@ class LawsProjectController extends AppBaseController
 
     public function replyLawsProjects(Request $request)
     {
-        $id = $request->lawproject_id;
+        $id = $request->lawProject_id;
+        $file = $request->file('file');
+
         $lawProject = $this->lawsProjectRepository->findById((int) $id);
 
+        if ($file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawProject->file_reply = $filename;
+        }
+
         $lawProject->description = $request->comissionDescriprion;
-        $lawProject->file_reply = $request->file('file');
         $lawProject->save();
+
+        flash('Projeto de Lei respondido com sucesso!')->success();
+
+        return redirect(route('lawsProjects.index'));
     }
 }
