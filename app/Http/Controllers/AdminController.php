@@ -37,7 +37,7 @@ class AdminController extends AppBaseController
     public function dashboard()
     {
         $law_types = LawsType::where('is_active', true)->pluck('name', 'id');
-        $documentTypes = DocumentType::where('parent_id', 0)->pluck('name', 'id');
+        $documentType = DocumentType::where('parent_id', 0)->pluck('name', 'id');
 
         $gabs = UserAssemblyman::where('users_id', Auth::user()->id)->get();
 
@@ -73,7 +73,7 @@ class AdminController extends AppBaseController
         $docAll = count(Document::all());
         $docRead = count(Document::where('read', 1)->get());
 
-        $lawCountTypes = $law_types->mapWithKeys(function ($item, $key) {
+        $countType = $law_types->mapWithKeys(function ($item, $key) {
             return collect([
                 $item => collect([
                     'id' => $key,
@@ -82,7 +82,7 @@ class AdminController extends AppBaseController
             ]);
         });
 
-        $documentsCountTypes = $documentTypes->mapWithKeys(function ($item, $key) {
+        $countDoc = $documentType->mapWithKeys(function ($item, $key) {
             return collect([
                 $item => collect([
                     'id' => $key,
@@ -100,8 +100,8 @@ class AdminController extends AppBaseController
             'commissions',
             'commissions_situation',
             'assemblyman_list',
-            'lawCountTypes',
-            'documentsCountTypes'
+            'countType',
+            'countDoc',
         ));
     }
 
@@ -314,15 +314,17 @@ class AdminController extends AppBaseController
             }
         }
 
-        return view('admin.index', compact(
+        flash('Informar parecer salvo com sucesso.')->success();
+
+        return redirect(route('admin.showLaw', $input['commission_id']))->with([
             'projLeiAll',
             'projLeiApr',
             'projLeiRead',
             'docAll',
             'docRead',
             'commissions',
-            'commissions_situation'
-        ));
+            'commissions_situation',
+        ]);
     }
 
     public function exportFiles()

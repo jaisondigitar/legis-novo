@@ -111,6 +111,8 @@
 @endif
 
 <script type="text/javascript">
+    document.querySelector('#date').value = dateForm
+
     $(document).ready(function() {
         $('.js-example-basic-multiple').select2();
     });

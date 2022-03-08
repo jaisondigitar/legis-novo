@@ -12,10 +12,10 @@
                     @if($document->document_type->parent_id)
                         {{ $document->document_type->parent->name }} ::
                     @endif
-                        {!! $document->document_type->name !!} -
-                    @if($document->number === 0)
-                        -
-                    @elseif($document->number !== 0)
+
+                    {!! $document->document_type->name !!} -
+
+                    @if($document->number)
                         @if (Auth::user()->roleHasPermission('document.editnumero'))
                             <a
                                 href="javascript:void(0)"
@@ -23,28 +23,18 @@
                                 onclick="alteraNumero('{{ $document->id }}');"
                             >
                                 {!!
-                                    $document->number
-                                !!}{!!
-                                    '/' . $document->getYear($document->date)
+                                    $document->number. '/' .$document->getYear($document->date)
                                 !!}
                             </a>
                         @else
                             <span style="color: #37BC9B">
                                 {!!
-                                    $document->number
-                                !!}{!!
-                                    '/' . $document->getYear($document->date)
+                                    $document->number. '/' .$document->getYear($document->date)
                                 !!}
                             </span>
                         @endif
                     @else
-                        @if (Auth::user()->roleHasPermission('document.editnumero'))
-                            <span style="color: #37BC9B">
-                                {!!
-                                    $document->number . '/' . $document->getYear($document->date)
-                                !!}
-                            </span>
-                        @endif
+                        -
                     @endif
                 </label>
 
@@ -85,9 +75,7 @@
                                 @else
                                     <span style="color: #37BC9B">
                                         {!!
-                                            $document->number
-                                        !!}{!!
-                                            '/' . $document->getYear($document->date)
+                                            $document->number. '/' .$document->getYear($document->date)
                                         !!}
                                     </span>
                                 @endif
@@ -200,9 +188,9 @@
                         @if($document->resume === '')
                             -
                         @else
-                            <p class="resume">
+                            <div class="resume">
                                 {!! $document->resume !!}
-                            </p>
+                           </div>
                         @endif
                     </span>
                 </label>
@@ -216,8 +204,7 @@
                                 -
                             @else
                                 {!!
-                                    $document->processingDocument->first()
-                                        ->processing_document_date
+                                    $document->processingDocument->first()->processing_document_date
                                 !!}
                             @endif
                         </span>
@@ -312,11 +299,12 @@
         {!! Form::close() !!}
     </div>
 </div>
-<script>
-    const sweet = (e) => {
-        const url = `/documents/{{$document->id}}`;
 
-        const data = {
+<script>
+    function sweet (e) {
+        var url = `/documents/{{$document->id}}`;
+
+        var data = {
             '_token' : '{{csrf_token()}}'
         };
 

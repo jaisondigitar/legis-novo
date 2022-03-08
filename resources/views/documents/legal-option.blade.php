@@ -36,6 +36,8 @@
                             <div class="modal-header">
                                 <h4 class="modal-title">PEDIDO DE DESTINO</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                                <p>Documento: {!! $document->number. '/' . $document->getYear($document->date) !!}</p>
                             </div>
                             <div class="modal-body">
                                 <label style="width: 100%">
@@ -47,14 +49,6 @@
                                             @endforeach
                                         </optgroup>
                                     </select>
-                                </label>
-
-                                <label>
-                                    Descrição:
-                                    <textarea
-                                        name="comissionDescriprion"
-                                        class="form-control descricao ckeditor"
-                                    ></textarea>
                                 </label>
 
                                 <label>
@@ -92,13 +86,13 @@
             });
 
             const data = {
+                date: dateForm + ' ' + timeForm,
                 document_id: document_id,
                 laws_projects_id: 0,
                 to_id: to_id,
                 type: type,
-                description: CKEDITOR.instances['comissionDescriprion'].getData(),
                 legal_option: CKEDITOR.instances['legal_option'].getData(),
-                date_end: null,
+                date_end: null
             };
 
             if (to_id.length > 0) {
@@ -119,14 +113,14 @@
             }
         }
 
-        const dataAtualFormatada = (data) => {
-            let dia = data.getDate();
-            if (dia.toString().length === 1)
+        function dataAtualFormatada(data) {
+            var dia = data.getDate();
+            if (dia.toString().length == 1)
                 dia = "0" + dia;
-            let mes = data.getMonth() + 1;
-            if (mes.toString().length === 1)
+            var mes = data.getMonth() + 1;
+            if (mes.toString().length == 1)
                 mes = "0" + mes;
-            let ano = data.getFullYear();
+            var ano = data.getFullYear();
             return dia + "/" + mes + "/" + ano;
         }
     </script>

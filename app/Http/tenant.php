@@ -194,6 +194,7 @@ Route::middleware([
         ]);
 
         Route::post('/advice/create', 'AdviceController@store');
+        Route::post('/advice/replica', 'AdviceController@createAdviceReplica');
         Route::post('/advice/delete', 'AdviceController@removerAdvice');
 
         Route::get('/advice/findAwnser/{id?}', 'AdviceController@findAwnser')->name('advices.find');
@@ -325,6 +326,7 @@ Route::middleware([
         Route::get('/lawProjectApproved/{id}', 'LawsProjectController@lawProjectApproved');
         Route::post('/lawsProjectApprovedSave', 'LawsProjectController@lawsProjectApprovedSave');
         Route::post('/lawsProjectProtocolSave', 'LawsProjectController@lawsProjectProtocolSave');
+        Route::post('/lawProjects/altera-numero', 'LawsProjectController@alteraNumero');
         Route::post('/lawProjects/deleteBash', 'LawsProjectController@deleteBash');
         Route::post('/lawsProject/getNumProt', 'LawsProjectController@getNumProt');
         Route::post('/lawsProject/saveProtocolNumber', 'LawsProjectController@saveProtocolNumber');

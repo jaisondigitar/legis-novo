@@ -1,6 +1,6 @@
 @extends('layouts.blit')
 @section('Breadcrumbs')
-    {{ Breadcrumbs::render('home') }}
+    {!! Breadcrumbs::render('home') !!}
 @endsection
 @section('content')
     <style>
@@ -146,7 +146,7 @@
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
                         <div class="row">
-                            @foreach($lawCountTypes as $name => $content)
+                            @foreach($countType as $name => $content)
                                 @if($content["count"])
                                     <div class="col-6">
                                         <a href="/lawsProjects?has-filter=true&created_at=&law_type_id={{ $content['id'] }}&project_number=&law_date=&assemblyman_id=">
@@ -171,7 +171,7 @@
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
                         <div class="row">
-                            @foreach($documentsCountTypes as $name => $content)
+                            @foreach($countDoc as $name => $content)
                                 @if($content["count"])
                                     <div class="col-6">
                                         <a href="/documents?has-filter=true&reg=&document_type_id={{ $content['id'] }}&number=&date=&owner_id=&content=&status=0">
@@ -233,7 +233,7 @@
     {{--modal  detalhes--}}
 
     <!-- Large modal -->
-        <div class="container">
+    <div class="container">
         <!-- Modal -->
         <div class="modal fade " id="myModal" role="dialog">
             <div class="modal-dialog  modal-lg">
@@ -363,7 +363,13 @@
 
     {{-- fim do modal --}}
 
+
+
+
+
+
     <script>
+
         var id = '';
 
         $(document).ready(function () {
@@ -520,4 +526,6 @@
 
         }
     </script>
+
+
 @endsection
