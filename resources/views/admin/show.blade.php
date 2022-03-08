@@ -17,7 +17,7 @@
                         <a href="/admin/commissions" class="btn btn-default pull-right" style="margin-top: -51px;"> <i class="fa fa-arrow-left"></i> Voltar</a>
                     </div>
                     <div class="panel-body">
-                        <table class="table" id="table_advice">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th class="text-center"> Número</th>
@@ -25,6 +25,7 @@
                                     <th class="text-center"> Nome</th>
                                     <th class="text-center" style="text-align: left"> Ementa</th>
                                     <th class="text-center"> Autor</th>
+                                    <th class="text-center"> Tipo</th>
                                     <th class="text-center"> Ações</th>
                                 </tr>
                             </thead>
@@ -37,12 +38,13 @@
                                             <td> {!! $advice->project->law_type->name !!}</td>
                                             <td style="text-align: left"> {!! $advice->project->title !!}</td>
                                             <td> {!! $advice->project->owner->short_name !!}</td>
+                                            <td> {!! $advice->advice_id ? 'Réplica' : '' !!}</td>
                                             <td>
                                                 <span class="pull-right">
                                                     <a href="/lawsProjects/{{$advice->project->id}}" target="_blank" class="btn btn-xs btn-info"><i class="fa fa-file-text-o"></i></a>
-                                                    <button id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="findAdvice({{$advice->id}})"><i class="fa fa-eye"></i></button>
+                                                    <a id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" href='/advice/findAwnser/{{$advice->id}}'><i class="glyphicon glyphicon-eye-open"></i></a>
                                                     @if($advice->closed == 1)
-                                                    <button id="advice_awnser_{{$advice->id}}" onclick="carrega_id({{$advice->id}})" type="button" class="btn btn-info btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
+                                                    <button id="advice_awnser_{{$advice->id}}" onclick="carrega_id({{$advice}}, {{$advice->project->getYearLawPublish($advice->project->law_date)}})" type="button" class="btn btn-info btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
                                                     @endif
                                                 </span>
                                             </td>
@@ -77,64 +79,6 @@
             </div>
         {{--@endforeach--}}
 
-
-        {{--modal  detalhes--}}
-
-        <!-- Large modal -->
-        <div class="container">
-            <!-- Modal -->
-            <div class="modal fade " id="myModal" role="dialog">
-                <div class="modal-dialog  modal-lg">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Detalhes do pedido</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="col-md-12">
-
-                                <!-- advice_id Field -->
-                                <div class="form-group col-sm-6 hidden">
-                                    {!! Form::label('advice_id', 'id:') !!}
-                                    <input type="text" id="advice_idP" />
-                                    <label id="advice_id"></label>
-                                </div>
-
-                                <!-- Date Field -->
-                                <div class="form-group col-sm-6">
-                                    {!! Form::label('date', 'Data:') !!}
-                                        <label id="date"></label>
-                                </div>
-
-                                <!-- Type Field -->
-                                <div class="form-group col-sm-6">
-                                    {!! Form::label('laws_projects_id', 'Projeto de lei:', ['id' => 'projectName']) !!}
-                                    <label id="laws_projects_id"> </label>
-                                </div>
-
-                                <!-- To Id Field -->
-                                <div class="form-group col-sm-12">
-                                    {!! Form::label('description', 'Descrição:') !!}<br/>
-                                    <p id="description" style="margin-left: 15px;"></p>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="modal-footer">
-                            {{--<a href="javascript:void(0);" class="btn btn-danger pull-left" onclick="removeAdvice()">Remover</a>--}}
-                            <a href="" id="history" class="btn btn-info"> Histórico do tramite </a>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        {{-- fim do modal --}}
-
         {{--modal1  detalhes--}}
 
             <style>
@@ -154,9 +98,11 @@
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <h4 class="modal-title">Informar parecer</h4>
+                                <p id="inform"></p>
                             </div>
                             <div class="modal-body">
                                 <div class="col-md-12">
+                                    <input type="hidden" name="commission_id" id="commission_id_number">
 
                                     <input type="text" class="form-control hidden"  name="id" id="adv_idP"/>
 
@@ -216,20 +162,17 @@
         <!-- Large modal -->
 
         {{-- fim do modal --}}
-            <script>
-                $(document).ready(function () {
-                    $('.datepicker1').datepicker({
-                        format: 'dd/mm/yyyy',
-                        language: 'pt-BR',
-                        autoclose: true
-                    });
-
-                })
-
-            </script>
-
-
         <script>
+            $(document).ready(function () {
+                $('.datepicker1').datepicker({
+                    format: 'dd/mm/yyyy',
+                    language: 'pt-BR',
+                    autoclose: true
+                });
+
+                $('#commission_id_number').val({{$commissions->id}});
+            })
+
 
             var id = '';
 
@@ -255,9 +198,10 @@
 
             });
 
-            var carrega_id = function(param){
+            const carrega_id = (param, number) => {
+                document.getElementById('inform').textContent = `${param.project.owner.short_name} - ${param.project.project_number}/${number}`;
 
-                $('#adv_idP').val(param);
+                $('#adv_idP').val(param.id);
 
             };
 
@@ -278,50 +222,6 @@
                     $('#dateP').val(date);
                 }
             };
-
-            var findAdvice = function(id){
-
-                carrega_id(id);
-                $('#history').attr('href', '/advice/findAwnser/' + id);
-
-                url = "/admin/findAdvice";
-
-                data = {
-                    id : id,
-                    "_token": "{{ csrf_token() }}"
-                };
-
-                $.ajax({
-                    url: url,
-                    data: data,
-                    method: 'POST',
-                    encoding: 'UTF-8',
-
-                    success: function (data) {
-
-                        data = JSON.parse(data);
-                        console.log(data);
-
-                        if (data) {
-                            $('#date').text(data.date);
-                            if (data.laws_projects_id > 0) {
-                                $('#projectName').text('Projeto de lei:');
-                                data_doc = data.project.law_date.toString().split('/');
-
-                                $('#laws_projects_id').text(data.project.project_number + '/' + data_doc[2]);
-                            }
-                            if (data.document_id > 0) {
-                                $('#projectName').text('Documento:');
-                                data_doc = data.document.date.toString().split('/');
-                                $('#laws_projects_id').text(data.document.number + '/' + data_doc[2]);
-                            }
-                            $('#description').html(data.description);
-                        } else {
-                            toastr.error('Pedido não localizado!!!');
-                        }
-                    }
-                });
-            }
 
             var saveAdvice = function(){
                 url = '/admin/saveAdvice';

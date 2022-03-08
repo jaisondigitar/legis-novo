@@ -26,19 +26,31 @@
                             {!! Form::select('new_status_processing_law_id', $status_processing_law ,null, ['class' => 'form-control']) !!}
                         </div>
 
-                        <div class="form-group col-sm-2">
-                            {!! Form::label('new_date_processing', 'Data:') !!}
-                            {!! Form::text('new_date_processing', null, ['class' => 'form-control datepicker']) !!}
-                        </div>
+                        @if(Auth::user()->roleHasPermission('dateAdvicesLawsProjects.edit'))
+                            <div class="form-group col-sm-2">
+                                {!! Form::label('new_date_processing', 'Data:') !!}
+                                {!! Form::text('new_date_processing', null, ['class' => 'form-control datetimepicker1']) !!}
+                            </div>
+                        @else
+                            <div class="form-group col-sm-2">
+                                {!! Form::label('new_date_processing', 'Data:') !!}
+                                {!! Form::text('new_date_processing', null, ['class' => 'form-control datetimepicker1', 'disabled']) !!}
+                            </div>
+                        @endif
 
                         <div class="form-group col-sm-2">
                             {!! Form::label('destination_id', 'Destinatários:') !!}
                             {!! Form::select('destination_id', $destinations, null, ['class' => 'form-control']) !!}
                         </div>
 
-                        <div class="form-group col-sm-2">
+                        <div class="form-group col-sm-1">
                             {!! Form::label('date_end', 'Prazo:') !!}
                             {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
+                        </div>
+
+                        <div class="form-group col-sm-1">
+                            {!! Form::label('days', 'Dias:') !!}
+                            {!! Form::number('days', null, ['class' => 'form-control', 'disabled']) !!}
                         </div>
 
                         <div class="form-group col-sm-12">
@@ -87,18 +99,16 @@
                                             <td> {{ $processing->destination->name ?? '' }}</td>
                                             <td> @if($processing->statusProcessingLaw) {{$processing->statusProcessingLaw->name}} @endif</td>
                                             <td style="text-align: justify;"> {!! $processing->obsevation !!}</td>
-                                            <td style="text-align: justify;"> {!! $processing->date_end !!}</td>
+                                            <td style="text-align: justify;"> {!! $processing->date_end ?? '' !!}</td>
                                             <td>
-                                                @if($key === $last_position)
-                                                    @if(Auth::user()->id == $processing->owner_id || Auth::user()->hasRole('root'))
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-danger btn-xs"
-                                                            onclick="delete_processing('{{$processing->id}}')"
-                                                        >
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    @endif
+                                                @if(Auth::user()->id === $processing->owner_id || $processing->id === $first_processing->id || Auth::user()->hasRole('root'))
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-danger btn-xs"
+                                                        onclick="delete_processing('{{$processing->id}}')"
+                                                    >
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
                                                 @endif
                                             </td>
                                         </tr>
@@ -118,7 +128,27 @@
         @endif
 
         <script>
-            document.querySelector('#new_date_processing').value = dateForm
+            document.querySelector('#new_date_processing').value = dateForm + ' ' + timeForm
+
+            const diffDate = () => {
+                const array_date = $('#new_date_processing').val().split(' ')
+                const date_first_split = array_date[0].split('/').reverse().join('/')
+                const date_last_split = $('#date_end').val().split('/').reverse().join('/')
+
+                let day1 = new Date(date_last_split);
+                let day2 = new Date(date_first_split);
+
+                return Math.abs(day1-day2)/(1000 * 3600 * 24);
+            }
+
+            $('#date_end').on('change', () => {
+                document.querySelector('#days').value = diffDate()
+            })
+
+            $('#destination_id').on('change', () => {
+                console.log(diffDate());
+                document.querySelector('#days').value = diffDate()
+            })
 
             $(document).ready(function () {
                 setTimeout(function () {
@@ -198,17 +228,20 @@
         $('body').on('change', '#destination_id', () => {
             if ($('#destination_id').val() === '4') {
                 document.querySelector('#date_end').value = someDateForm
+                document.querySelector('#days').value = diffDate()
             } else if ($('#destination_id').val() === '6') {
                 document.querySelector('#date_end').value = someDateTwentyForm
+                document.querySelector('#days').value = diffDate()
             } else {
                 document.querySelector('#date_end').value = ''
+                document.querySelector('#days').value = diffDate()
             }
         });
     }
 
-    var save_processing = function(){
+    const save_processing = () => {
 
-        url = '{{route('processings.store')}}';
+        const url = '{{route('processings.store')}}';
 
         if($('#new_advice_situation_id').val() == ''){
             toastr.error('Selecione a situação da tramitação!')
@@ -225,6 +258,7 @@
                         advice_situation_id: $('#new_advice_situation_id').val(),
                         status_processing_law_id: $('#new_status_processing_law_id').val(),
                         processing_date: $('#new_date_processing').val(),
+                        processing_date_first: '{{ $first_processing->processing_date ?? '' }}',
                         destination_id: $('#destination_id').val(),
                         processing_file: $('#processing_file').val(),
                         date_end: $('#date_end').val(),
@@ -238,14 +272,15 @@
                     }).success(function (data) {
                         data = JSON.parse(data);
 
-                        @if(isset($processing))
-                            table = $('#table_processing').empty();
+                        if (data) {
+                            @if(isset($processing))
+                                table = $('#table_processing').empty();
 
                             data.forEach(function (valor, chave) {
 
                                 str = '<tr id="line_' + valor.id + '"> ';
                                 str += "<td>";
-                                str += valor.processing_date;
+                                str += valor.processing_date ?? '';
                                 str += "</td>";
                                 str += "<td>";
                                 str += valor.advice_situation_law.name;
@@ -261,30 +296,33 @@
                                 }
                                 str += "</td>";
                                 str += "<td>";
-                                str += valor.obsevation;
+                                str += valor.obsevation ?? '';
                                 str += "</td>";
                                 str += "<td>";
-                                str += valor.date_end;
+                                str += valor.date_end ?? '';
                                 str += "</td>";
                                 @if(Auth::user()->id === $processing->user_id || Auth::user()->hasRole('root'))
                                     str += "<td>";
-                                    str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
-                                    str += "</td>";
+                                str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
+                                str += "</td>";
                                 @endif
-                                str += "</tr>";
+                                    str += "</tr>";
                                 table.append(str);
                             });
-                        @endif
+                            @endif
 
-                        toastr.success('Tramitação salva com sucesso!');
+                            toastr.success('Tramitação salva com sucesso!');
 
-                        $('#new_advice_publication_id').val('');
-                        $('#new_advice_situation_id').val('');
-                        $('#new_status_processing_law_id').val('');
-                        $('#new_date_processing').val('');
-                        CKEDITOR.instances.new_observation.setData('');
+                            $('#new_advice_publication_id').val('');
+                            $('#new_advice_situation_id').val('');
+                            $('#new_status_processing_law_id').val('');
+                            $('#new_date_processing').val('');
+                            CKEDITOR.instances.new_observation.setData('');
 
-                        window.location.href = '{{route('lawsProjects.index')}}';
+                            window.location.href = '{{route('lawsProjects.index')}}';
+                        } else {
+                            toastr.error("Data menor que a do ultimo tramite");
+                        }
                     });
                 }
             }
@@ -296,7 +334,7 @@
 
         if(confirm('Deseja excluir?')) {
 
-            url = '/processings/' + id;
+            const url = `/processings/${id}`;
 
             $.ajax({
                 url: url,

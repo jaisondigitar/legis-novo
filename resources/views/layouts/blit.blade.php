@@ -63,6 +63,8 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <style>
         .pointer{
             cursor:pointer;
@@ -162,13 +164,20 @@
             color: red;
             padding-right: 3px;
         }
-        .resume {
-            overflow: hidden;
+
+        .resume{
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
             margin: 0;
         }
+
+        .resume > ol{
+            display: none;
+        }
+
     </style>
     <script type="application/javascript">
         const getDate = (number) => {
