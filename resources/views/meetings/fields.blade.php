@@ -1,46 +1,45 @@
-<!-- Session Type Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('session_type_id', 'Tipo da Sessão', ['class' => 'required']) !!}
-    {!! Form::select('session_type_id', $session_type_list, null, ['class' => 'form-control', 'required']) !!}
-</div>
+    <div class="row">
+        <!-- Session Type Id Field -->
+        <div class="form-group col-sm-6">
+            {!! Form::label('session_type_id', 'Tipo da Sessão', ['class' => 'required']) !!}
+            {!! Form::select('session_type_id', $session_type_list, null, ['class' => 'form-control', 'required']) !!}
+        </div>
 
-<!-- Session Place Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('session_place_id', 'Local da Sessão', ['class' => 'required']) !!}
-    {!! Form::select('session_place_id', $session_place_list, null, ['class' => 'form-control', 'required']) !!}
-</div>
+        <!-- Session Place Id Field -->
+        <div class="form-group col-sm-6">
+            {!! Form::label('session_place_id', 'Local da Sessão', ['class' => 'required']) !!}
+            {!! Form::select('session_place_id', $session_place_list, null, ['class' => 'form-control', 'required']) !!}
+        </div>
 
-<!-- Date Start Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('date_start', 'Data Início', ['class' => 'required']) !!}
-    {!! Form::text('date_start', null, ['class' => 'form-control datetimepicker1', 'required']) !!}
-</div>
+        <!-- Date Start Field -->
+        <div class="form-group col-sm-6">
+            {!! Form::label('date_start', 'Data Início', ['class' => 'required']) !!}
+            {!! Form::text('date_start', null, ['class' => 'form-control datetimepicker1', 'required']) !!}
+        </div>
 
-<!-- Date End Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('date_end', 'Data Encerramento:', ['class' => 'required']) !!}
-    {!! Form::text('date_end', null, ['class' => 'form-control datetimepicker1', 'required']) !!}
-</div>
+        <!-- Date End Field -->
+        <div class="form-group col-sm-6">
+            {!! Form::label('date_end', 'Data Encerramento:', ['class' => 'required']) !!}
+{{--            {!! Form::text('date_end', null, ['class' => 'form-control datetimepicker1', 'required']) !!}--}}
+        </div>
 
-<div class="form-group col-sm-6">
-    {!! Form::label('number', 'Número', ['class' => 'required']) !!}
-    {!! Form::text('number', null, ['class' => 'form-control', 'required']) !!}
-    <label class="label label-danger" id="labelmessage"></label>
-</div>
+        <div class="form-group col-sm-6">
+            {!! Form::label('number', 'Número', ['class' => 'required']) !!}
+            {!! Form::text('number', null, ['class' => 'form-control', 'required']) !!}
+            <label class="label label-danger" id="labelmessage"></label>
+        </div>
 
-<div class="form-group col-sm-6">
-    {!! Form::label('version_pauta_id', 'Tipo da versão da pauta', ['class' => 'required']) !!}
-    {!! Form::select('version_pauta_id', $version_pautas, null, ['class' => 'form-control', 'required']) !!}
-</div>
+        <div class="form-group col-sm-6">
+            {!! Form::label('version_pauta_id', 'Tipo da versão da pauta', ['class' => 'required']) !!}
+            {!! Form::select('version_pauta_id', $version_pautas, null, ['class' => 'form-control', 'required']) !!}
+        </div>
 
-<!-- Submit Field -->
-<div class="form-group col-sm-12">
-
-
-
-    {!! Form::submit('Salvar', ['id' => 'verify', 'class' => 'btn btn-primary']) !!}
-    <a href="{!! route('meetings.index') !!}" class="btn btn-default">Cancelar</a>
-</div>
+        <!-- Submit Field -->
+        <div class="form-group col-sm-12">
+            {!! Form::submit('Salvar', ['id' => 'verify', 'class' => 'btn btn-success']) !!}
+            <a href="{!! route('meetings.index') !!}" class="btn btn-default">Cancelar</a>
+        </div>
+    </div>
 
 <script>
     $(document).ready(function(){
