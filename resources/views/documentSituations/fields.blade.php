@@ -8,9 +8,19 @@
         <!-- Active Field -->
         <div class="form-group col-sm-2">
             {!! Form::label('active', 'Ativo:') !!}
-            <div class="clearfix"></div>
-            {!! Form::checkbox('active', 1, null, ['class' => 'form-control switch' , 'data-on-text' => 'Sim', 'data-off-text' => 'Não', 'data-off-color' => 'danger', 'data-on-color' => 'success', 'data-size' => 'normal', 'type' => 'checkbox' ]) !!}
+            <div class="form-check form-switch form-switch-md">
+                <input
+                    id="active"
+                    name="active"
+                    class="form-check-input"
+                    type="checkbox"
+                    @if(isset($documentSituation->active) ? $documentSituation->active == 1:false)
+                    checked
+                    @endif
+                >
+            </div>
         </div>
+
 
         <!-- Submit Field -->
         <div class="form-group col-sm-12 mt-3">

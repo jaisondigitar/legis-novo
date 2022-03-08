@@ -6,7 +6,7 @@
         <div class="clearfix"></div>
 
         <!-- Submit Field -->
-        <div class="form-group col-sm-12">
+        <div class="form-group col-sm-12 mt-3">
             {!! Form::submit('Salvar', ['class' => 'btn btn-success']) !!}
             <a href="{!! route('version_pauta.index') !!}" class="btn btn-default">Cancelar</a>
         </div>

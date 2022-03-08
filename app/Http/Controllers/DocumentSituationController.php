@@ -79,6 +79,8 @@ class DocumentSituationController extends AppBaseController
         }
         $input = $request->all();
 
+        $input['active'] = isset($input['active']) ? 1 : 0;
+
         $this->documentSituationRepository->create($input);
 
         flash('Situção de Documento salva com secesso.')->success();
