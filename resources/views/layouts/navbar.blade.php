@@ -27,8 +27,11 @@
         align-items: center;
     }
 
-    .NewNavbar {
-        margin: 0 0 0 25rem;
+    .navbar-nav.navbar-center {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
     }
 </style>
 
@@ -37,9 +40,9 @@
         <a id="navbar-brand" href="/admin">
             GPL
         </a>
-        <div class="collapse navbar-collapse NewNavbar" id="navbarSupportedContent"
+        <div class="collapse navbar-collapse" id="navbarSupportedContent"
         >
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-center">
                 @is(['root'])
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navConfig" role="button" data-bs-toggle="dropdown" aria-expanded="false">
