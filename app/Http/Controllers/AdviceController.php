@@ -10,6 +10,7 @@ use App\Models\AdviceAwnser;
 use App\Models\AdviceSituation;
 use App\Models\ComissionSituation;
 use App\Models\MeetingPauta;
+use App\Models\Processing;
 use App\Repositories\AdviceRepository;
 use App\Services\StorageService;
 use Artesaos\Defender\Facades\Defender;
@@ -85,9 +86,7 @@ class AdviceController extends AppBaseController
     {
         $input = $request->all();
 
-        $input['date'] = Carbon::now();
-        $date_end = isset($input['date_end']) ? Carbon::createFromFormat('d/m/Y', $input['date_end']) : null;
-        $legal_option = isset($input['legal_option']) ? $input['legal_option'] : null;
+        $legal_option = $input['legal_option'] ?? null;
 
         $to_id = $input['to_id'];
         $type = $input['type'];
@@ -100,10 +99,9 @@ class AdviceController extends AppBaseController
             $advice->type = $type[$key];
             $advice->to_id = $to_id[$key];
             $advice->laws_projects_id = $input['laws_projects_id'] ?? 0;
-            $advice->document_id = $input['document_id'];
+            $advice->document_id = $input['document_id'] ?? 0;
             $advice->legal_option = $legal_option;
-            $advice->description = $input['description'];
-            $advice->date_end = $date_end;
+            $advice->date_end = $input['date_end'];
 
             if ($advice->save()) {
                 $situation = ComissionSituation::first();
@@ -111,6 +109,18 @@ class AdviceController extends AppBaseController
                     'advice_id' => $advice->id,
                     'comission_situation_id' => $situation->id,
                 ]);
+
+
+                $processing = new Processing();
+                $processing->law_projects_id = $input['laws_projects_id'];
+                $processing->advice_publication_id = null;
+                $processing->advice_situation_id = 1;
+                $processing->status_processing_law_id = 8;
+                $processing->processing_date = $input['date'];
+                $processing->destination_id = 5;
+                $processing->date_end = $input['date_end'];
+                $processing->save();
+
                 $flag = 1;
             }
         }
@@ -118,8 +128,57 @@ class AdviceController extends AppBaseController
         if ($flag) {
             return \GuzzleHttp\json_encode(true);
         } else {
-            return json_encode(false);
+            return \GuzzleHttp\json_encode(false);
         }
+    }
+
+    public function createAdviceReplica(Request $request)
+    {
+        $input = $request->all();
+
+        $input['date'] = Carbon::now();
+        $date_end = isset($input['date_end']) ? Carbon::createFromFormat('d/m/Y', $input['date_end']) : null;
+        $legal_option = isset($input['legal_option']) ? $input['legal_option'] : null;
+
+        $to_id = $input['to_id'];
+        $type = $input['type'];
+
+        foreach ($input['to_id'] as $key => $val) {
+            $advice = new Advice();
+            $advice->date = $input['date'];
+            $advice->type = $type[$key];
+            $advice->to_id = $to_id[$key];
+            $advice->laws_projects_id = $input['laws_projects_id'];
+            $advice->document_id = $input['document_id'];
+            $advice->legal_option = $legal_option;
+            $advice->description = $input['description'];
+            $advice->date_end = $date_end;
+            $advice->advice_id = $input['id'] ?? null;
+
+            if ($advice->save()) {
+                $situation = ComissionSituation::first();
+                AdviceSituation::create([
+                    'advice_id' => $advice->id,
+                    'comission_situation_id' => $situation->id,
+                ]);
+
+                $file = $request->file('file');
+
+                if ($file) {
+                    // TODO descomentar e remover $filename = 'teste.txt';
+//                    $filename = static::$uploadService
+//                        ->inAdvicesFolder()
+//                        ->sendFile($file)
+//                        ->send();
+
+                    $filename = 'teste.txt';
+                    $advice->file = $filename;
+                    $advice->save();
+                }
+            }
+        }
+
+        return Redirect(route('lawsProjects.legal-option', $input['laws_projects_id']));
     }
 
     /**
@@ -279,11 +338,13 @@ class AdviceController extends AppBaseController
 
     public function findAwnser(int $id)
     {
-        $obj = Advice::find($id);
+        $advice = Advice::find($id);
+
+        $advice_all = $advice->all()->where('laws_projects_id', $advice->laws_projects_id);
 
         $commissions_situation = ComissionSituation::pluck('name', 'id')->prepend('Selecione', 0);
 
-        return view('advices.advice_awnser', compact('commissions_situation'))->with('advice', $obj);
+        return view('advices.advice_awnser', compact('commissions_situation', 'advice_all'))->with('advice', $advice);
     }
 
     public function deleteAwnser($id)

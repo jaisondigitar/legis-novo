@@ -18,7 +18,7 @@ class ProcessingDocument extends BaseModel
         'document_situation_id',
         'status_processing_document_id',
         'processing_document_date',
-        'obsevation',
+        'observation',
         'processing_document_file',
         'destination_id',
     ];
@@ -71,7 +71,7 @@ class ProcessingDocument extends BaseModel
      */
     public function setProcessingDocumentDateAttribute($processing_document_date)
     {
-        $this->attributes['processing_document_date'] = Carbon::createFromFormat('d/m/Y', $processing_document_date);
+        $this->attributes['processing_document_date'] = Carbon::createFromFormat('d/m/Y H:i', $processing_document_date);
     }
 
     /**
@@ -80,7 +80,7 @@ class ProcessingDocument extends BaseModel
      */
     public function getProcessingDocumentDateAttribute($processing_document_date): string
     {
-        return $this->asDateTime($processing_document_date)->format('d/m/Y');
+        return $this->asDateTime($processing_document_date)->format('d/m/Y H:i');
     }
 
     /**

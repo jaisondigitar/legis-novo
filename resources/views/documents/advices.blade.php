@@ -32,10 +32,17 @@
                                 {!! Form::select('destination_id', $destinations, null, ['class' => 'form-control']) !!}
                             </div>
 
-                            <div class="form-group col-sm-3">
-                                {!! Form::label('new_processing_document_date', 'Data:') !!}
-                                {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datepicker']) !!}
-                            </div>
+                            @if(Auth::user()->roleHasPermission('dateAdvicesDocument.edit'))
+                                <div class="form-group col-sm-3">
+                                    {!! Form::label('new_processing_document_date', 'Data:') !!}
+                                    {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datetimepicker1']) !!}
+                                </div>
+                            @else
+                                <div class="form-group col-sm-3">
+                                    {!! Form::label('new_processing_document_date', 'Data:') !!}
+                                    {!! Form::text('new_processing_document_date', null, ['class' => 'form-control datetimepicker1', 'disabled']) !!}
+                                </div>
+                            @endif
 
                             <div class="form-group col-sm-12">
                                 {!! Form::label('new_document_observation', ' Observações:') !!}
@@ -79,10 +86,8 @@
                                             <td > {{ $processing->statusProcessingDocument->name ?? '' }}</td>
                                             <td > {{ $processing->destination->name ?? '' }}</td>
                                             <td style="text-align: justify;"> {!! $processing->observation !!}</td>
-                                            @if($key === $last_position)
-                                                @if(Auth::user()->id == $processing->owner_id || Auth::user()->hasRole('root'))
-                                                    <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
-                                                @endif
+                                            @if(Auth::user()->id == $processing->owner_id || $first_documents->id === $processing->id || Auth::user()->hasRole('root'))
+                                                <td> <button type="button" class="btn btn-danger btn-xs" onclick="delete_processing('{{$processing->id}}')"> <i class="fa fa-trash"></i> </button> </td>
                                             @endif
                                         </tr>
                                     @empty
@@ -108,8 +113,7 @@
 
 
 <script>
-
-    document.querySelector('#new_processing_document_date').value = dateForm
+    document.querySelector('#new_processing_document_date').value = dateForm + '' + timeForm
 
     var save_processing = function() {
 
@@ -131,6 +135,7 @@
                         document_situation_id: $('#new_document_situation_id').val(),
                         status_processing_document_id: $('#new_status_processing_document_id').val(),
                         processing_document_date: $('#new_processing_document_date').val(),
+                        processing_document_date_first: '{{ $first_documents->processing_document_date ?? '' }}',
                         destination_id: $('#destination_id').val(),
                         observation: CKEDITOR.instances.new_document_observation.getData(),
                         date_end: null,
@@ -143,49 +148,53 @@
                     }).success(function (data) {
                         data = JSON.parse(data);
 
-                        @if(isset($processing))
-                            table = $('#table_processing').empty();
+                        if (data) {
+                            @if(isset($processing))
+                                table = $('#table_processing').empty();
 
-                            data.forEach(function (valor) {
-                                str = '<tr id="line_' + valor.id + '"> ';
-                                str += "<td>";
-                                str += valor.processing_document_date;
-                                str += "</td>";
-                                str += "<td>";
-                                str += valor.document_situation.name;
-                                str += "</td>";
-                                str += "<td>";
-                                if (valor.status_processing_document_id > 0) {
-                                    str += valor.status_processing_document.name;
-                                }
-                                str += "</td>";
-                                str += "<td>";
-                                if (valor.destination) {
-                                    str += valor.destination.name;
-                                }
-                                str += "</td>";
-                                str += "<td>";
-                                str += valor.observation || '';
-                                str += "</td>";
-                                @if(Auth::user()->id == $processing->user_id || Auth::user()->hasRole('root'))
-                                str += "<td>";
-                                str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
-                                str += "</td>";
-                                @endif
+                                data.forEach(function (valor) {
+                                    str = '<tr id="line_' + valor.id + '"> ';
+                                    str += "<td>";
+                                    str += valor.processing_document_date ?? '';
+                                    str += "</td>";
+                                    str += "<td>";
+                                    str += valor.document_situation.name;
+                                    str += "</td>";
+                                    str += "<td>";
+                                    if (valor.status_processing_document_id > 0) {
+                                        str += valor.status_processing_document.name;
+                                    }
+                                    str += "</td>";
+                                    str += "<td>";
+                                    if (valor.destination) {
+                                        str += valor.destination.name;
+                                    }
+                                    str += "</td>";
+                                    str += "<td>";
+                                    str += valor.observation || '';
+                                    str += "</td>";
+                                    @if(Auth::user()->id == $processing->user_id || Auth::user()->hasRole('root'))
+                                    str += "<td>";
+                                    str += '<button type="button" class="btn btn-danger btn-xs" onclick="delete_processing(' + valor.id + ')"> <i class="fa fa-trash"></i> </button>';
+                                    str += "</td>";
+                                    @endif
 
-                                str += "</tr>";
-                                table.append(str);
-                            });
-                        @endif
+                                    str += "</tr>";
+                                    table.append(str);
+                                });
+                            @endif
 
-                        toastr.success('Tramitação salva com sucesso!');
+                            toastr.success('Tramitação salva com sucesso!');
 
-                        $('#new_document_situation_id').val(0);
-                        $('#new_status_processing_document_id').val(0);
-                        $('#new_processing_document_date').val('');
-                        CKEDITOR.instances.new_document_observation.setData('');
+                            $('#new_document_situation_id').val(0);
+                            $('#new_status_processing_document_id').val(0);
+                            $('#new_processing_document_date').val('');
+                            CKEDITOR.instances.new_document_observation.setData('');
 
-                        window.location.href = '{{route('documents.index')}}';
+                            window.location.href = '{{route('documents.index')}}';
+                        } else {
+                            toastr.error("Data menor que a do ultimo tramite");
+                        }
                     });
                 }
             }

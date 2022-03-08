@@ -258,14 +258,12 @@ class LawsProject extends BaseModel
 
     public function setProtocoldateAttribute($protocoldate)
     {
-        if ($protocoldate) {
-            $this->attributes['protocoldate'] = Carbon::createFromFormat('d/m/Y', $protocoldate);
-        }
+        $this->attributes['protocoldate'] = Carbon::createFromFormat('d/m/Y H:i', $protocoldate);
     }
 
     public function getProtocoldateAttribute($protocoldate)
     {
-        return $this->asDateTime($protocoldate)->format('d/m/Y');
+        return $this->asDateTime($protocoldate)->format('d/m/Y H:i');
     }
 
     public function setDatePresentationAttribute($date)

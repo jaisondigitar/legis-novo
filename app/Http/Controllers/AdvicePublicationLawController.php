@@ -172,7 +172,7 @@ class AdvicePublicationLawController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('advicePublicationLaws.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -189,6 +189,10 @@ class AdvicePublicationLawController extends AppBaseController
         }
 
         $this->advicePublicationLawRepository->delete($advicePublicationLaw);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Publicação do Parecer da Lei removido com sucesso.')->success();
 

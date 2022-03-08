@@ -11,14 +11,30 @@
             @endif
             -
             <span id="tdLawProjectNumber{{$lawsProject->id}}" style="color: #37BC9B">
-                {!! $lawsProject->project_number . '/' . $lawsProject->getYearLawPublish($lawsProject->law_date) !!}
+                @if($lawsProject->project_number)
+                    @if (Auth::user()->roleHasPermission('lawsProject.editnumerolei'))
+                        <a
+                            href="javascript:void(0)"
+                            id="numberEdit{{$lawsProject->id}}"
+                            onclick="alteraNumber('{{ $lawsProject->id }}');"
+                        >
+                            {!!$lawsProject->project_number . '/' .$lawsProject->getYearLawPublish($lawsProject->law_date)!!}
+                        </a>
+                    @else
+                        <span style="color: #37BC9B">
+                            {!!$lawsProject->project_number . '/' .$lawsProject->getYearLawPublish($lawsProject->law_date)!!}
+                        </span>
+                    @endif
+                @else
+                    -
+                @endif
             </span>
             <div class="pull-right">
                 Prazo:
 
-                @if(isset($lawsProject->processing[0]->date_end))
+                @if(isset($lawsProject->processing->first()->date_end))
                     <?php
-                        $input = $lawsProject->processing[0]->date_end;
+                        $input = $lawsProject->processing->first()->date_end;
                         $date = implode('-', array_reverse(explode('/', $input)));
 
                         $diff = strtotime($date) - strtotime(date('Y-m-d'));
@@ -195,7 +211,7 @@
                     -
                 @else
                     {!!
-                        $lawsProject->processing->first()->created_at
+                        $lawsProject->processing->first()->processing_date
                     !!}
                 @endif
             </span>
@@ -261,19 +277,21 @@
                     </a>
                 @endshield
 
-                @if(Auth::user()->id == $lawsProject->owner->id || Auth::user()->hasRole('root'))
+                {{--Retirada de Botões sem Utilidade--}}
+
+                {{--@if(Auth::user()->id == $lawsProject->owner->id || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.edit')
                         <a @popper(ESTRUTURA DE LEI) href="{!! route('lawsProjects.structure', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
                             <i class="fas fa-gavel"></i>
                         </a>
                     @endshield
-                @endif
+                @endif--}}
 
-                @shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
+                {{--@shield('lawsProject.editprotocollei','lawsProject.editnumerolei')
                     <a @popper(ALTERAR NÚMERO/PROTOCOLO) href="javascript:void(0)" class='btn btn-default btn-sm' onclick="editNumero({{$lawsProject->id}})">
                        <i class="fas fa-project-diagram"></i>
                     </a>
-                @endshield
+                @endshield--}}
 
                 @if($lawsProject->law_file)
                     <a href="/laws/{{ $lawsProject->law_file }}" target="_blank" class='btn btn-default btn-sm'>
@@ -300,7 +318,7 @@
                 @if($lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.edit')
                         <a @popper(EDITAR) href="{!! route('lawsProjects.edit', [$lawsProject->id]) !!}" class='btn btn-default btn-sm'>
-                            <i class="glyphicon glyphicon-edit"></i>
+                            <i class="fa fa-edit"></i>
                         </a>
                     @endshield
                 @endif
@@ -308,7 +326,7 @@
                 @if(!$lawsProject->protocol && $lawsProject->owner->short_name === Auth::user()->name || Auth::user()->hasRole('root'))
                     @shield('lawsProjects.delete')
                         <a @popper(REMOVER)>
-                            {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+                            {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'sweet(event)']) !!}
                         </a>
                     @endshield
                 @endif
@@ -362,3 +380,15 @@
         </div><!-- /.modal-dialog -->
     </div>
 @endif
+
+<script>
+    function sweet (e) {
+        var url = `/lawsProject/{{$lawsProject->id}}`;
+
+        var data = {
+            '_token' : '{{csrf_token()}}'
+        };
+
+        sweetDelete(e, url, data)
+    }
+</script>

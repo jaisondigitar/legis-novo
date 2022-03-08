@@ -3,11 +3,14 @@
     {!! Breadcrumbs::render('home') !!}
 @endsection
 @section('content')
-
-
     <div class="col-sm-12">
         <div class="the-box bg-default no-border">
             <h4 class="small-title">INFORMAÇÕES</h4>
+            <p>
+                Autor: {{$advice->project->owner->short_name}}<br>
+                Data: {{$advice->project->law_date}}<br>
+                Número: {{$advice->project->project_number}}/{{$advice->project->getYearLawPublish($advice->project->law_date)}}
+            </p>
             <hr>
 
             <div class="col-sm-12">
@@ -154,7 +157,7 @@
                         </div>
                         <div id="accordion-1-child-3" class="collapse" aria-expanded="false">
                             <div class="panel-body">
-                                @foreach($advice->awnser()->orderBy('date','desc')->get() as $awnser)
+                                @foreach($advice_all as $awnser)
                                     {{--{{dd($awnser)}}--}}
 
                                     <div class="col-sm-12" id="awnser_{{$awnser->id}}">
@@ -168,10 +171,10 @@
                                                     {{ $awnser->date }}
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                {{--<div class="col-md-4">
                                                     <b>Situação:</b> <br/>
                                                     {{$awnser->commission_situation->name}}
-                                                </div>
+                                                </div>--}}
 
 
                                                 <div class="col-md-4">

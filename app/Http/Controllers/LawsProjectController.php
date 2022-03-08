@@ -90,7 +90,7 @@ class LawsProjectController extends AppBaseController
         foreach ($assemblymens as $assemblyman) {
             $parties = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
 
-            $assemblymensList[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix;
+            $assemblymensList[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix ?? '';
         }
 
         $assemblymens1 = Assemblyman::where('assemblymen.active', '=', 1)->get();
@@ -98,7 +98,7 @@ class LawsProjectController extends AppBaseController
         foreach ($assemblymens1 as $assemblyman) {
             $parties = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
 
-            $assemblymen[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix;
+            $assemblymen[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix ?? '';
         }
 
         return [$assemblymen, $assemblymensList];
@@ -235,6 +235,10 @@ class LawsProjectController extends AppBaseController
 
         $references_project = [0 => 'Selecione'];
 
+        $lawsProjectType = $law_types->mapWithKeys(function ($item, $key) {
+            return [$item => LawsProject::where('law_type_id', $key)->get()];
+        });
+
         foreach ($references as $reference) {
             $references_project[$reference->id] = $reference->project_number.'/'.$reference->getYearLaw($reference->law_date.' - '.$reference->law_type->name);
         }
@@ -244,6 +248,7 @@ class LawsProjectController extends AppBaseController
         return view('lawsProjects.create')->with(compact('status_processing_law', 'comission', 'lawsProject', 'law_types', 'situation', 'advice_situation_law', 'advice_publication_law'))
             ->with('assemblymen', $assemblymensList[0])
             ->with('references_project', $references_project)
+            ->with('lawsProjectType', $lawsProjectType)
             ->with('assemblymensList', $assemblymensList[1]);
     }
 
@@ -323,11 +328,8 @@ class LawsProjectController extends AppBaseController
         $lawsProject = $this->lawsProjectRepository->findByID($lawProjectId);
 
         $processing_last = $lawsProject->processing()->orderBy('processing_date', 'desc')->get();
-        foreach ($processing_last as $key => $last) {
-            $array[] = $key;
-        }
 
-        $last_position = empty($array) ? [] : end($array);
+        $first_processing = $processing_last->first();
 
         if (empty($lawsProject)) {
             flash('Projeto de Leis não encontrado')->error();
@@ -355,8 +357,8 @@ class LawsProjectController extends AppBaseController
                 'advice_situation_law',
                 'advice_publication_law',
                 'status_processing_law',
-                'last_position',
                 'destinations',
+                'first_processing',
                 'processing_last',
                 'legal'
             )
@@ -1106,7 +1108,7 @@ class LawsProjectController extends AppBaseController
             $pdf->AddPage();
             $pdf->setListIndentWidth(5);
 
-            $return = '<h3 style="text-align: center">'.mb_strtoupper($advice->destination->name, 'UTF-8').'</h3>';
+            $return = '<h3 style="text-align: center">'.mb_strtoupper($advice->destination->name ?? '', 'UTF-8').'</h3>';
             $return .= '<p><strong>Solicitação: </strong>'.$advice->date.'<br><strong>Descrição: </strong>'.$advice->description.'</p>';
 
             foreach ($advice->awnser as $resp) {
@@ -1205,6 +1207,10 @@ class LawsProjectController extends AppBaseController
 
         $translation = LawsProject::$translation;
 
+        $lawsProjectType = $law_types->mapWithKeys(function ($item, $key) {
+            return [$item => LawsProject::where('law_type_id', $key)->get()];
+        });
+
         $logs = Log::where('auditable_id', $lawsProject->id)
             ->where('auditable_type', LawsProject::class)
             ->orderBy('created_at', 'desc')
@@ -1225,7 +1231,8 @@ class LawsProjectController extends AppBaseController
                 'lawsAssemblyman',
                 'references_project',
                 'advice_situation_law',
-                'advice_publication_law'
+                'advice_publication_law',
+                'lawsProjectType'
             ))
             ->with('assemblymen', $assemblymensList[0])
             ->with('assemblymensList', $assemblymensList[1]);
@@ -1516,16 +1523,54 @@ class LawsProjectController extends AppBaseController
         ];
     }
 
-    public function lawsProjectProtocolSave()
+    public function alteraNumero(Request $request)
     {
-        $params = \Illuminate\Support\Facades\Request::all();
+        $input = $request->all();
+
+        $law_project = LawsProject::find($input['law_project_id']);
+
+        $year = explode('/', $law_project->law_date);
+        $year = $year[2];
+
+        $parameter = Parameters::where('slug', 'permitir-criar-numero-de-projetos-de-lei-fora-da-sequencia')->first();
+
+        if ($parameter->value === 0) {
+            $law_project_verify = LawsProject::whereYear('law_date', '=', $year);
+
+            $law_project_verify = $law_project_verify->where('project_number', '>=', $input['law_project_id_number'])
+                ->orderBy('project_number', 'DESC')
+                ->first();
+        } else {
+            $law_project_verify = LawsProject::whereYear('law_date', '=', $year);
+
+
+            $law_project_verify = $law_project_verify->where('project_number', '=', $input['law_project_id_number'])
+                ->orderBy('project_number', 'DESC')
+                ->first();
+        }
+
+        if ($law_project_verify) {
+            return ['success' => false, 'message' => 'Número já utilizado ou inferior ao último, a sua sugestão foi atualizada!', 'next_number' => $input['law_project_id_number']];
+        } else {
+            $law_project = LawsProject::find($input['law_project_id']);
+            $law_project->project_number = $input['law_project_id_number'];
+
+            if ($law_project->save()) {
+                return ['success' => true, 'message' => 'Número foi atualizado!', 'next_number' => $input['law_project_id_number'].'/'.$year, 'id' => $law_project->id];
+            }
+        }
+    }
+
+    public function lawsProjectProtocolSave(Request $request)
+    {
+        $params = $request->all();
 
         $law_project = LawsProject::find($params['law_project_id']);
 
         Processing::create([
             'law_projects_id' => $law_project->id,
             'advice_situation_id' => AdviceSituationLaw::where('name', 'Encaminhado')->first()->id,
-            'processing_date' => now()->format('d/m/Y'),
+            'processing_date' => $params['protocoldate'],
             'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
         ]);
 
@@ -1635,7 +1680,8 @@ class LawsProjectController extends AppBaseController
 
         $date = $input['protocoldate'];
 
-        $ano = explode('/', $date);
+        $date_time = explode(' ', $date);
+        $ano = explode('/', $date_time[0]);
 
         $law_project = LawsProject::find($input['id']);
 
@@ -1860,7 +1906,6 @@ class LawsProjectController extends AppBaseController
 
             return redirect(route('lawsProjects.index'));
         }
-
 
         return view('lawsProjects.legal-option', ['lawsProject' => $lawsProject]);
     }

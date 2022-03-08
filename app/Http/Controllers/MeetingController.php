@@ -227,7 +227,7 @@ class MeetingController extends AppBaseController
      * @throws BindingResolutionException
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('meetings.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -244,6 +244,10 @@ class MeetingController extends AppBaseController
         }
 
         $this->meetingRepository->delete($meeting);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Reunião removida com sucesso.')->success();
 
@@ -780,19 +784,20 @@ class MeetingController extends AppBaseController
     {
         $input = $request->all();
 
-        $input['law_id'] = $input['law_id'] ? $input['law_id'] : null;
-        $input['document_id'] = $input['document_id'] ? $input['document_id'] : null;
-        $input['advice_id'] = $input['advice_id'] ? $input['advice_id'] : null;
-        $input['description'] = $input['description'] ? $input['description'] : null;
-        $input['observation'] = $input['observation'] ? $input['observation'] : null;
+        $input['law_id'] = $input['law_id'] ?? null;
+        $input['document_id'] = $input['document_id'] ?? null;
+        $input['advice_id'] = $input['advice_id'] ?? null;
+        $input['description'] = $input['description'] ?? null;
+        $input['observation'] = $input['observation'] ?? null;
 
         if ($input['document_id']) {
             ProcessingDocument::create([
                 'document_id' => $input['document_id'],
+                'observation' => $input['observation'],
                 'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
                 'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
                     ->first()->id,
-                'processing_document_date' => now()->format('d/m/Y'),
+                'processing_document_date' => now()->format('d/m/Y H:i'),
                 'destination_id' => Destination::where('name', 'PLENÁRIO')->first()->id,
             ]);
         }
@@ -801,7 +806,7 @@ class MeetingController extends AppBaseController
             Processing::create([
                 'law_projects_id' => $input['law_id'],
                 'advice_situation_id' => AdviceSituationLaw::where('name', 'Encaminhado')->first()->id,
-                'processing_date' => now()->format('d/m/Y'),
+                'processing_date' => now()->format('d/m/Y H:i'),
                 'destination_id' => Destination::where('name', 'PLENÁRIO')->first()->id,
             ]);
         }

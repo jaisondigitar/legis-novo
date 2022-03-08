@@ -18,8 +18,12 @@
                         </a>
                     @endis
                     @is('root')
-                        <a @popper(Deletar) href="{!! route('config.permissions.delete', [$permission->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
-                            <i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i>
+                        <a
+                            class="pointer"
+                            @popper(Deletar)
+                            onclick="sweet(event, {!! $permission->id !!})"
+                        >
+                            <i class="fa fa-remove icon-rounded icon-xs icon-danger"></i>
                         </a>
                     @endis
                 </td>
@@ -40,5 +44,14 @@
         }).success(function(result) {
             console.log(result);
         });
+    }
+</script>
+<script>
+    const sweet = (e, id) => {
+        const url = `/config/permissions/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
     }
 </script>

@@ -194,6 +194,7 @@ Route::middleware([
         ]);
 
         Route::post('/advice/create', 'AdviceController@store');
+        Route::post('/advice/replica', 'AdviceController@createAdviceReplica');
         Route::post('/advice/delete', 'AdviceController@removerAdvice');
 
         Route::get('/advice/findAwnser/{id?}', 'AdviceController@findAwnser')->name('advices.find');
@@ -235,6 +236,7 @@ Route::middleware([
         Route::post('/documents/{id}/attachament-upload', ['as' => 'documents.attachament.upload', 'uses' => 'DocumentController@attachamentUpload']);
         Route::get('document-file-delete/{id}', 'DocumentController@attachamentDelete');
         Route::post('/documents/deleteBash', 'DocumentController@deleteBash');
+        Route::post('/documents/{id}', 'DocumentController@destroy');
 
         Route::post('/documents/findTextInitial', 'DocumentController@findTextInitial');
         Route::post('/protocolo/altera-protocolo', 'DocumentController@alteraProtocolo');
@@ -325,9 +327,11 @@ Route::middleware([
         Route::get('/lawProjectApproved/{id}', 'LawsProjectController@lawProjectApproved');
         Route::post('/lawsProjectApprovedSave', 'LawsProjectController@lawsProjectApprovedSave');
         Route::post('/lawsProjectProtocolSave', 'LawsProjectController@lawsProjectProtocolSave');
+        Route::post('/lawProjects/altera-numero', 'LawsProjectController@alteraNumero');
         Route::post('/lawProjects/deleteBash', 'LawsProjectController@deleteBash');
         Route::post('/lawsProject/getNumProt', 'LawsProjectController@getNumProt');
         Route::post('/lawsProject/saveProtocolNumber', 'LawsProjectController@saveProtocolNumber');
+        Route::post('/lawsProject/{id}', 'LawsProjectController@destroy');
         Route::get('/lawsProjects/structure/{id}', ['as' => 'lawsProjects.structure', 'uses' => 'LawsProjectController@lawsProjectStructure']);
         Route::get('/lawsProjects/advices/{id}', [
             'as' => 'lawsProjects.advices',
@@ -376,9 +380,11 @@ Route::middleware([
 
         Route::resource('adviceSituationDocuments', 'AdviceSituationDocumentsController');
         Route::get('/adviceSituationDocuments/{id}/toggle', 'AdviceSituationDocumentsController@toggle');
+        Route::post('/adviceSituationDocuments/{id}', 'AdviceSituationDocumentsController@destroy');
 
         Route::resource('advicePublicationDocuments', 'AdvicePublicationDocumentsController');
         Route::get('/advicePublicationDocuments/{id}/toggle', 'AdvicePublicationDocumentsController@toggle');
+        Route::post('/advicePublicationDocuments/{id}', 'AdvicePublicationDocumentsController@destroy');
 
         Route::get('/painel-votacao', 'MeetingController@painel')->name('voting.panel');
         Route::get('/painel-votacao/default', 'MeetingController@panelDefault')->name('voting.default');

@@ -12,10 +12,10 @@
                     @if($document->document_type->parent_id)
                         {{ $document->document_type->parent->name }} ::
                     @endif
-                        {!! $document->document_type->name !!} -
-                    @if($document->number === 0)
-                        -
-                    @elseif($document->number !== 0)
+
+                    {!! $document->document_type->name !!} -
+
+                    @if($document->number)
                         @if (Auth::user()->roleHasPermission('document.editnumero'))
                             <a
                                 href="javascript:void(0)"
@@ -23,28 +23,18 @@
                                 onclick="alteraNumero('{{ $document->id }}');"
                             >
                                 {!!
-                                    $document->number
-                                !!}{!!
-                                    '/' . $document->getYear($document->date)
+                                    $document->number. '/' .$document->getYear($document->date)
                                 !!}
                             </a>
                         @else
                             <span style="color: #37BC9B">
                                 {!!
-                                    $document->number
-                                !!}{!!
-                                    '/' . $document->getYear($document->date)
+                                    $document->number. '/' .$document->getYear($document->date)
                                 !!}
                             </span>
                         @endif
                     @else
-                        @if (Auth::user()->roleHasPermission('document.editnumero'))
-                            <span style="color: #37BC9B">
-                                {!!
-                                    $document->number . '/' . $document->getYear($document->date)
-                                !!}
-                            </span>
-                        @endif
+                        -
                     @endif
                 </label>
 
@@ -85,9 +75,7 @@
                                 @else
                                     <span style="color: #37BC9B">
                                         {!!
-                                            $document->number
-                                        !!}{!!
-                                            '/' . $document->getYear($document->date)
+                                            $document->number. '/' .$document->getYear($document->date)
                                         !!}
                                     </span>
                                 @endif
@@ -202,9 +190,9 @@
                         @if($document->resume === '')
                             -
                         @else
-                            <p class="resume">
+                            <div class="resume">
                                 {!! $document->resume !!}
-                            </p>
+                           </div>
                         @endif
                     </span>
                 </label>
@@ -218,8 +206,7 @@
                                 -
                             @else
                                 {!!
-                                    $document->processingDocument->first()
-                                        ->processing_document_date
+                                    $document->processingDocument->first()->processing_document_date
                                 !!}
                             @endif
                         </span>
@@ -296,7 +283,7 @@
                 @if($document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.edit')
                         <a @popper(EDITAR) href="{!! route('documents.edit', [$document->id]) !!}" class='btn btn-default btn-xs'>
-                            <i class="glyphicon glyphicon-edit"></i>
+                            <i class="fa fa-edit"></i>
                         </a>
                     @endshield
                 @endif
@@ -304,7 +291,7 @@
                 @if(!$document->document_protocol && $document->users_id === Auth::user()->id || Auth::user()->hasRole('root'))
                     @shield('documents.delete')
                        <a @popper(REMOVER)>
-                           {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                           {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => 'sweet(event)']) !!}
                        </a>
                     @endshield
                 @endif
@@ -314,3 +301,15 @@
         {!! Form::close() !!}
     </div>
 </div>
+
+<script>
+    function sweet (e) {
+        var url = `/documents/{{$document->id}}`;
+
+        var data = {
+            '_token' : '{{csrf_token()}}'
+        };
+
+        sweetDelete(e, url, data)
+    }
+</script>

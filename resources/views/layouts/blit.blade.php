@@ -61,8 +61,14 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
+        .pointer{
+            cursor:pointer;
+        }
         .log {
             padding: 5px;
             font-size: 12px;
@@ -158,13 +164,20 @@
             color: red;
             padding-right: 3px;
         }
-        .resume {
-            overflow: hidden;
+
+        .resume{
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
             margin: 0;
         }
+
+        .resume > ol{
+            display: none;
+        }
+
     </style>
     <script type="application/javascript">
         const getDate = (number) => {
@@ -243,6 +256,29 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
+
+        const sweetDelete = (e, url, data, method) => {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Excluir Documento?',
+                text: "Não será possivel desfazer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url : url,
+                        data : data,
+                        method : method ?? 'POST'
+                    }).success(() => {
+                        window.location.reload()
+                    });
+                }
+            })
+        }
 
         const viaCep = async value => {
             const cep = parseInt(value.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, ''));
