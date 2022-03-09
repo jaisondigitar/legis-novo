@@ -1,5 +1,4 @@
-<div class="form-group col-sm-12">
-    <div class="form-group col-sm-6">
+    <div class="row">
         <h2 style="margin: 0">Dados Pessoais</h2><hr style="margin: 20px 0">
         <!-- Cpf Field -->
         <div class="form-group col-sm-6">
@@ -44,20 +43,18 @@
                     <img src="{{ (new \App\Services\StorageService())->inPeopleFolder()->getPath
                     ($people->image) }}" width="150px" class="img-thumbnail img-rounded">
                     <div style="width: 100px;padding: 5px;font-family: monospace;">
-                        <a href="#" onclick="removeImage()"><i class="fa fa-remove"></i> Remover</a>
+                        <a href="#" onclick="removeImage()"> Remover</a>
                     </div>
                 </div>
             @endif
             <div class="upload" @if(isset($people) &&  !empty($people->image)) style="display: none;" @endif >
-                <i class="fa fa-image"></i>
+{{--                <i class="fa fa-image"></i>--}}
                 {!! Form::label('image', " Foto:") !!}
                 {!! Form::file('image', ['class' => 'form-control']) !!}
             </div>
         </div>
-    </div>
 
-    <div class="form-group col-sm-6">
-        <h2 style="margin: 0">Endereço</h2><hr style="margin: 20px 0">
+        <h2 class="mt-3" style="margin: 0">Endereço</h2><hr style="margin: 20px 0">
         <!-- Zipcode Field -->
         <div class="form-group col-sm-3">
             {!! Form::label('zipcode', 'CEP:') !!}
@@ -98,13 +95,12 @@
             {!! Form::label('city_id', 'Cidade:') !!}
             {!! Form::select('city_id', $cities, null, ['class' => 'form-control cities']) !!}
         </div>
+        <!-- Submit Field -->
+        <div class="form-group col-sm-3 mt-3">
+            {!! Form::submit('Salvar', ['class' => 'btn btn-success']) !!}
+            <a href="{!! route('people.index') !!}" class="btn btn-default">Cancelar</a>
+        </div>
     </div>
-</div>
-<!-- Submit Field -->
-<div class="form-group col-sm-3">
-    {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
-    <a href="{!! route('people.index') !!}" class="btn btn-default">Cancelar</a>
-</div>
 
 @if(isset($people) && !empty($people->image))
     <script>

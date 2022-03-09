@@ -1,5 +1,4 @@
-<div class="form-group col-sm-12">
-    <div class="form-group col-sm-6">
+    <div class="row">
         <h2 style="margin: 0">Dados Pessoais</h2><hr style="margin: 20px 0">
         <!-- Cpf Field -->
         <div class="form-group col-sm-6">
@@ -48,15 +47,13 @@
                 </div>
             @endif
             <div class="upload" @if(isset($people) && !empty($people->image)) style="display: none;" @endif >
-                <i class="fa fa-image"></i>
+{{--                <i class="fa fa-image"></i>--}}
                 {!! Form::label('image', " Foto:") !!}
                 {!! Form::file('image', ['class' => 'form-control']) !!}
             </div>
         </div>
-    </div>
 
-    <div class="form-group col-sm-6">
-        <h2 style="margin: 0">Endereço</h2><hr style="margin: 20px 0">
+        <h2 class="mt-3" style="margin: 0">Endereço</h2><hr style="margin: 20px 0">
         <!-- Zipcode Field -->
         <div class="form-group col-sm-3">
             {!! Form::label('zipcode', 'CEP:') !!}
@@ -97,13 +94,9 @@
             {!! Form::label('city_id', 'Cidade:') !!}
             {!! Form::select('city_id', $cities, $people->city_id ?? '', ['class' => 'form-control cities']) !!}
         </div>
-    </div>
-</div>
 
-<div class="form-group col-sm-12">
-    <h2 style="margin: 0">Atendimento</h2><hr style="margin: 20px 0">
+        <h2 class="mt-3" style="margin: 0">Atendimento</h2><hr style="margin: 20px 0">
 
-    <div class="form-group col-sm-3">
         <!-- Date Field -->
         <div class="form-group col-sm-12">
             {!! Form::label('date', 'Data:', ['class' => 'required']) !!}
@@ -121,9 +114,7 @@
             {!! Form::label('sector_id', 'Setor:', ['class' => 'required']) !!}
             {!! Form::select('sector_id', $sector, null, ['class' => 'form-control']) !!}
         </div>
-    </div>
 
-    <div class="form-group col-sm-9">
         <!-- Type Field -->
         <div class="form-group col-sm-4">
             {!! Form::label('type_id', 'Tipo:', ['class' => 'required']) !!}
@@ -136,12 +127,12 @@
             {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => '4']) !!}
         </div>
     </div>
-</div>
 
-<!-- Submit Field -->
-<div class="form-group col-sm-3">
-    {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
-    <a href="{!! route('attendance.index') !!}" class="btn btn-default">Cancelar</a>
+    <!-- Submit Field -->
+    <div class="form-group col-sm-3 mt-3">
+        {!! Form::submit('Salvar', ['class' => 'btn btn-success']) !!}
+        <a href="{!! route('attendance.index') !!}" class="btn btn-default">Cancelar</a>
+    </div>
 </div>
 
 <script>
