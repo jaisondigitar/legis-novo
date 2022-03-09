@@ -34,37 +34,33 @@
         <hr>
          <form action="/importer/sgl/import" onSubmit="return importar()" method="post" enctype="multipart/form-data">
            {!! Form::token() !!}
-          <div class="col-md-12 importa">
+            <div class="row importa">
+                  <div class="col-md-12">
+                    <h3>Tipo de documentos</h3>
+                    <ul>
+                    @foreach ($documentType as $key => $value)
+                      <li>
+                        <label>
+                        <input type="radio" name="type" value="{{ $key }}">
+                        {{ $value }}
+                        </label>
+                      </li>
+                    @endforeach
+                    </ul>
+                  </div>
 
-            <div class="col-md-4">
-
-              <div class="col-md-12">
-                <h3>Tipo de documentos</h3>
-                <ul>
-                @foreach ($documentType as $key => $value)
-                  <li>
-                    <label>
-                    <input type="radio" name="type" value="{{ $key }}">
-                    {{ $value }}
-                    </label>
-                  </li>
-                @endforeach
-                </ul>
-              </div>
-
-            </div>
-            <div class="col-md-8 importador">
-                <div class="col-md-12">
-                  <h3>Importador</h3>
-                  @include('flash::message')
-                  <label>Selecione o arquivo:</label>
-                  <input name="file" type="file" class="form-control"/>
-                </br>
-                  <label><input type="checkbox" name="is_approved" value="1"> Marcar todos como aprovados.</label>
-                  <hr>
-                  <button type="submit" class="btn btn-primary"  name="import"> <i class="fa fa-upload"></i> IMPORTAR</button>
-                </div>
-              </div>
+                <div class="importador">
+                    <div class="col-md-12">
+                      <h3>Importador</h3>
+                      @include('flash::message')
+                      <label>Selecione o arquivo:</label>
+                      <input name="file" type="file" class="form-control"/>
+                    </br>
+                      <label><input type="checkbox" name="is_approved" value="1"> Marcar todos como aprovados.</label>
+                      <hr>
+                      <button type="submit" class="btn btn-success"  name="import"> <i class="fa fa-upload"></i> IMPORTAR</button>
+                    </div>
+                  </div>
           </div>
 
         </form>

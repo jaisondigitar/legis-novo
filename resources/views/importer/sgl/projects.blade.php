@@ -51,7 +51,7 @@
                 </br>
                   <label><input type="checkbox" name="is_approved" value="1"> Marcar todos como aprovados.</label>
                   <hr>
-                  <button type="submit" class="btn btn-primary"  name="import"> <i class="fa fa-upload"></i> IMPORTAR</button>
+                  <button type="submit" class="btn btn-success"  name="import"> <i class="fa fa-upload"></i> IMPORTAR</button>
                 </div>
               </div>
           </div>

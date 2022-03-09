@@ -90,25 +90,28 @@
     </tbody>
 </table>
 
-<div class="modal fade" id="listResultModalLegislature" role="dialog">
+<div class="modal fade" id="listResultModalLegislature" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 align="center"><span class="glyphicon"></span> Histórico</h4>
-            </div>
-            <div class="modal-body">
-                <button class="btn btn-info" id="addLegislatures">Adicionar</button>
-                {!! Form::open(['route' => 'assemblymen.addLegislatures']) !!}
-                    <div id="addLegislaturesInput"></div>
-                    <div class="row">
-                        <div class="form-group col-sm-12 col-lg-12 listResult"></div>
+            <!-- Modal content-->
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 align="center"><span></span> Histórico</h4>
+                        <button type="button" class="btn btn-default btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                {!! Form::close() !!}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Fechar</button>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-sm-12 col-lg-12 listResult"></div>
+                            <button class="col-sm-4 btn btn-info" id="addLegislatures">Adicionar</button>
+                            <div id="addLegislaturesInput"></div>
+                            {!! Form::open(['route' => 'assemblymen.addLegislatures']) !!}
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                <div class="clearfix">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -309,7 +312,7 @@
         $(".listLegislatures").click(function(){
             $(".listResult").empty();
             $("#addLegislatureInput").empty();
-            $("#listResultModalLegislature").modal();
+            $("#listResultModalLegislature").modal('show');
             var assemblyman_id = this.value;
             $.ajax({
                     url: "{{ url('assemblymen/listLegislatures') }}/"+ this.value,
@@ -336,7 +339,8 @@
         $(".listParties").click(function(){
             $(".listResult").empty();
             $("#addPartiesInput").empty();
-            $("#listResultModalParties").modal();
+            console.log($("#listResultModalParties"))
+            $("#listResultModalParties").modal('show');
             var assemblyman_id = this.value;
             $.ajax({
                     url: "{{ url('assemblymen/listParties') }}/"+ this.value,
@@ -359,7 +363,7 @@
         $(".listResponsibilities").click(function(){
             $(".listResult").empty();
             $("#addResponsibilitiesInput").empty();
-            $("#listResultModalResponsibilities").modal();
+            $("#listResultModalResponsibilities").modal('show');
             var assemblyman_id = this.value;
             $.ajax({
                     url: "{{ url('assemblymen/listResponsibilities') }}/"+ this.value,

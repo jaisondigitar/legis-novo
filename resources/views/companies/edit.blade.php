@@ -8,9 +8,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">EDITAR REGISTRO</h3>
-                </div>
+{{--                <div class="panel-heading">--}}
+{{--                    <h3 class="panel-title">EDITAR REGISTRO</h3>--}}
+{{--                </div>--}}
                 <div class="panel-body">
                     {!! Form::model($company, ['route' => ['companies.update', $company->id], 'method' => 'patch','files' => true]) !!}
                     @include('companies.fields')

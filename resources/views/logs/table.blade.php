@@ -2,9 +2,9 @@
     <thead>
         <th>Usuario</th>
         <th>Tipo</th>
-        <th>Namespace</th>
-        <th>Quando?</th>
-        <th colspan="3">Action</th>
+        <th>Diretório</th>
+        <th>Data</th>
+        <th colspan="3">Ações</th>
     </thead>
     <tbody>
     @foreach($logs as $log)

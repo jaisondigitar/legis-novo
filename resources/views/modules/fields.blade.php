@@ -12,7 +12,7 @@
     <div class="form-group col-sm-6 col-lg-4">
         {!! Form::label('token', 'Token:', ['class' => 'required']) !!}
         {!! Form::text('token', null, ['class' => 'form-control']) !!} <br>
-        <a href="#" onclick="createHfdgash('{{ $module->name ?? time() }}');return false;"><span class="btn btn-info btn-sm">Criar token</span></a>
+        <a href="#" onclick="createHfdgash('{{ $module->name ?? time() }}');return false;"><span style="color: #FFFFFF" class="btn btn-info btn-sm">Criar token</span></a>
     </div>
 
     <!--- Active Field --->

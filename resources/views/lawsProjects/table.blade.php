@@ -238,7 +238,7 @@
 
 <script>
     const answer = () => {
-        $('#answer').modal();
+        $('#answer').modal('show');
     };
 
     const alteraNumber = (id) => {

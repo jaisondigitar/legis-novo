@@ -1,36 +1,44 @@
-<!-- Id Field -->
-<div class="form-group">
-    {!! Form::label('id', 'Id:') !!}
-    <p>{!! $documentType->id !!}</p>
-</div>
+    <style>
+        #font-color{
+            color: black;
+        }
 
-<!-- Name Field -->
-<div class="form-group">
-    {!! Form::label('name', 'Nome:') !!}
-    <p>{!! $documentType->name !!}</p>
-</div>
+    </style>
+    <div class="row mt-3" id="font-color">
+        <!-- Id Field -->
+        <div class="form-group">
+            {!! Form::label('id', 'Id:') !!}
+            <p>{!! $documentType->id !!}</p>
+        </div>
 
-<!-- Prefix Field -->
-<div class="form-group">
-    {!! Form::label('prefix', 'Prefixo:') !!}
-    <p>{!! $documentType->prefix !!}</p>
-</div>
+        <!-- Name Field -->
+        <div class="form-group">
+            {!! Form::label('name', 'Nome:') !!}
+            <p>{!! $documentType->name !!}</p>
+        </div>
 
-<!-- Slug Field -->
-<div class="form-group">
-    {!! Form::label('slug', 'Sigla:') !!}
-    <p>{!! $documentType->slug !!}</p>
-</div>
+        <!-- Prefix Field -->
+        <div class="form-group">
+            {!! Form::label('prefix', 'Prefixo:') !!}
+            <p>{!! $documentType->prefix !!}</p>
+        </div>
 
-<!-- Created At Field -->
-<div class="form-group">
-    {!! Form::label('created_at', 'Created At:') !!}
-    <p>{!! $documentType->created_at !!}</p>
-</div>
+        <!-- Slug Field -->
+        <div class="form-group">
+            {!! Form::label('slug', 'Sigla:') !!}
+            <p>{!! $documentType->slug !!}</p>
+        </div>
 
-<!-- Updated At Field -->
-<div class="form-group">
-    {!! Form::label('updated_at', 'Updated At:') !!}
-    <p>{!! $documentType->updated_at !!}</p>
-</div>
+        <!-- Created At Field -->
+        <div class="form-group">
+            {!! Form::label('created_at', 'Created At:') !!}
+            <p>{!! $documentType->created_at !!}</p>
+        </div>
+
+        <!-- Updated At Field -->
+        <div class="form-group">
+            {!! Form::label('updated_at', 'Updated At:') !!}
+            <p>{!! $documentType->updated_at !!}</p>
+        </div>
+    </div>
 

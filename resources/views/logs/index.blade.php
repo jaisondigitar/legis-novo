@@ -29,12 +29,14 @@
 
                 <div class="clearfix"></div>
 
-                <div class="row">
-                    <div class="form-group col-md-10 mt-3">
-                        <button class="btn btn-block btn-primary width"><i class="fa fa-search"></i> Pesquisar</button>
-                    </div>
-                    <div class="form-group col-md-2 mt-3">
-                        <button type="reset" class="btn btn-block btn-warning width"><i class="fa fa-recycle"></i> Reset</button>
+                <div class="col-lg-12" style="text-align: start">
+                    <div class="form-group col-md mt-3">
+                        <button class="btn btn-block btn-primary">
+                            <i class="fa fa-search"></i>Pesquisar
+                        </button>
+                        <button type="reset" class="btn btn-block btn-warning">
+                            <i class="fa fa-recycle"></i>Reset
+                        </button>
                     </div>
                 </div>
             </div>

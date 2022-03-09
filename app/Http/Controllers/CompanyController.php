@@ -92,6 +92,8 @@ class CompanyController extends AppBaseController
      */
     public function store(CreateCompanyRequest $request)
     {
+        $request['active'] = isset($request->active) ? 1 : 0;
+
         if (! Defender::hasPermission('companies.create')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
 

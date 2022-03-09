@@ -8,12 +8,12 @@
         <div class="col-md-12">
             <div class="panel panel-success">
                 <div class="panel panel-heading">
-                    <h3 class="panel-title"><i class="glyphicon glyphicon-dashboard"></i>INFORMAÇÕES</h3>
+{{--                    <h3 class="panel-title"><i class="glyphicon glyphicon-dashboard"></i>INFORMAÇÕES</h3>--}}
                 </div>
                 <div class="panel-body">
                     <ul class="nav nav-pills" style="margin-bottom: 10px">
                         <li>
-                            <a href="{!! route('destinations.edit', [$destination->id]) !!}">
+                            <a style="color:black" href="{!! route('destinations.edit', [$destination->id]) !!}">
                                 Editar Registro
                             </a>
                         </li>
