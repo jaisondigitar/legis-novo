@@ -1,67 +1,69 @@
-<div class="form-group col-sm-1">
-    {!! Form::label('law_date', 'Data:', ['class' => 'required']) !!}
-    {!! Form::text('law_date', null, ['class' => 'form-control datepicker', 'required']) !!}
-</div>
-
-<div class="form-group col-sm-3">
-    {!! Form::label('law_type_id', 'Tipo de lei:', ['class' => 'required']) !!}
-    {!! Form::select('law_type_id', $law_types, null, ['class' => 'form-control']) !!}
-</div>
-
-<div class="form-group col-sm-4">
-    {!! Form::label('reference_id', 'Referente à:') !!}
-    {!! Form::select('reference_id', $references_project, null, ['class' => 'form-control chosen']) !!}
-    {{--<select name="reference_id" data-placeholder="Selecione..." style="width: 100%;" class="chosen-select" tabindex="5">
-        <option value="0">Selecione...</option>
-        @foreach($lawsProjectType as $keyOt => $itemsOt)
-            <optgroup label="{{$keyOt}}">
-                @foreach($itemsOt as $itemsOp)
-                    <option value="{{$itemsOp->id}}">{{$itemsOp->project_number.'/'.$itemsOp->getYearLaw($itemsOp->law_date.' - '.$itemsOp->law_type->name)}}</option>
-                @endforeach
-            </optgroup>
-        @endforeach
-    </select>--}}
-</div>
-
-<div class="form-group col-sm-2">
-    {!! Form::label('situation_id', 'Situação Atual:', ['class' => 'required']) !!}
-    {!! Form::select('situation_id', $situation, null, ['class' => 'form-control']) !!}
-</div>
-
-<div class="form-group col-sm-2">
-    {!! Form::label('assemblyman_id', 'Parlamentar Responsável', ['class' => 'required']) !!}
-    {!! Form::select('assemblyman_id', $assemblymensList ,null, ['class' => 'form-control', 'id' => 'owner_id']) !!}
-</div>
-
-<div class="form-group col-sm-12">
-    {!! Form::label('title', 'Ementa:', ['class' => 'required']) !!}
-    {!! Form::textarea('title', null, ['class' => 'form-control ckeditor', 'maxlength' => 680]) !!}
-</div>
-
-<div class="clearfix"></div>
-
-<div class="form-group col-sm-6">
-    {!! Form::label('sub_title', 'Texto PREFIXO:', ['class' => 'required']) !!}
-    {!! Form::textarea('sub_title', null, ['class' => 'form-control ckeditor']) !!}
-</div>
-
-<div class="form-group col-sm-6">
-    {!! Form::label('sufix', 'Texto JUSTIFICATIVA:') !!}
-    {!! Form::textarea('justify', null, ['class' => 'form-control ckeditor']) !!}
-</div>
-
-<div class="clearfix"></div>
-
-<div class="form-group col-sm-12">
-    <div class="panel panel-square panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> PARLAMENTARES ASSINANDO</h3>
+    <div class="row">
+        <div class="form-group col-sm-1">
+            {!! Form::label('law_date', 'Data:', ['class' => 'required']) !!}
+            {!! Form::text('law_date', null, ['class' => 'form-control datepicker', 'required']) !!}
         </div>
-        <div class="panel-body">
-            {!! Form::select('assemblymen[]', $assemblymen, null, ['class' => 'chosen-select', 'multiple', 'style' => 'width:100%;', 'data-placeholder' => 'Selecione o parlamentar...']) !!}
+
+        <div class="form-group col-sm-3">
+            {!! Form::label('law_type_id', 'Tipo de lei:', ['class' => 'required']) !!}
+            {!! Form::select('law_type_id', $law_types, null, ['class' => 'form-control']) !!}
+        </div>
+
+        <div class="form-group col-sm-4">
+            {!! Form::label('reference_id', 'Referente à:') !!}
+            {!! Form::select('reference_id', $references_project, null, ['class' => 'form-control chosen']) !!}
+            {{--<select name="reference_id" data-placeholder="Selecione..." style="width: 100%;" class="chosen-select" tabindex="5">
+                <option value="0">Selecione...</option>
+                @foreach($lawsProjectType as $keyOt => $itemsOt)
+                    <optgroup label="{{$keyOt}}">
+                        @foreach($itemsOt as $itemsOp)
+                            <option value="{{$itemsOp->id}}">{{$itemsOp->project_number.'/'.$itemsOp->getYearLaw($itemsOp->law_date.' - '.$itemsOp->law_type->name)}}</option>
+                        @endforeach
+                    </optgroup>
+                @endforeach
+            </select>--}}
+        </div>
+
+        <div class="form-group col-sm-2">
+            {!! Form::label('situation_id', 'Situação Atual:', ['class' => 'required']) !!}
+            {!! Form::select('situation_id', $situation, null, ['class' => 'form-control']) !!}
+        </div>
+
+        <div class="form-group col-sm-2">
+            {!! Form::label('assemblyman_id', 'Parlamentar Responsável', ['class' => 'required']) !!}
+            {!! Form::select('assemblyman_id', $assemblymensList ,null, ['class' => 'form-control', 'id' => 'owner_id']) !!}
+        </div>
+
+        <div class="form-group col-sm-12 mt-3">
+            {!! Form::label('title', 'Ementa:', ['class' => 'required']) !!}
+            {!! Form::textarea('title', null, ['class' => 'form-control ckeditor', 'maxlength' => 680]) !!}
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="form-group col-sm-6">
+            {!! Form::label('sub_title', 'Texto PREFIXO:', ['class' => 'required']) !!}
+            {!! Form::textarea('sub_title', null, ['class' => 'form-control ckeditor']) !!}
+        </div>
+
+        <div class="form-group col-sm-6">
+            {!! Form::label('sufix', 'Texto JUSTIFICATIVA:') !!}
+            {!! Form::textarea('justify', null, ['class' => 'form-control ckeditor']) !!}
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="form-group col-sm-12">
+            <div class="panel panel-square panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> PARLAMENTARES ASSINANDO</h3>
+                </div>
+                <div class="panel-body">
+                    {!! Form::select('assemblymen[]', $assemblymen, null, ['class' => 'chosen-select', 'multiple', 'style' => 'width:100%;', 'data-placeholder' => 'Selecione o parlamentar...']) !!}
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
 @if(isset($lawsProject->id) && $tramitacao)
 
@@ -167,7 +169,7 @@
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {{--{!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}--}}
-    <button type="submit" class="btn btn-primary"> Salvar</button>
+    <button type="submit" class="btn btn-success"> Salvar</button>
     <a href="{!! route('lawsProjects.index') !!}" class="btn btn-default">Cancelar</a>
 </div>
 
