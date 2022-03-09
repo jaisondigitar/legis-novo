@@ -72,16 +72,20 @@
             {!! Form::label('city', 'Cidade:') !!}
             {!! Form::select('city', $cities, null, ['class' => 'form-control cities']) !!}
         </div>
-        <div  class="col-sm-2 form-group form-check form-switch form-switch-md">
-            <input
-                style="margin: 1.5rem 0 0 -1rem"
-                name="active"
-                class="form-check-input"
-                type="checkbox"
-                @if(isset($company->active) ? $company->active == 1 : false)
-                checked
-                @endif
-            >
+        <div class="form-group col-sm-2">
+            <label>
+                Ativo:
+                <div class="form-check form-switch form-switch-md">
+                    <input
+                        name="active"
+                        class="form-check-input"
+                        type="checkbox"
+                        @if(isset($company->active) ? $company->active == 1 : false)
+                        checked
+                        @endif
+                    >
+                </div>
+            </label>
         </div>
     </div>
 <div class="row">
