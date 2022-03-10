@@ -3,7 +3,7 @@
     {!! Breadcrumbs::render('documentTypes.list') !!}
 @endsection
 @section('content')
-    <div class="the-box rounded">
+    <div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-toolbar" role="toolbar">

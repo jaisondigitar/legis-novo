@@ -31,18 +31,19 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="list-group">
-                @foreach($legislature_assemblyman as $item)
-                    <li class="list-group-item">
-                        <i class="fa fa-angle-double-right"></i> {{ $item->assemblyman->full_name }}
-                        <span class="pull-right">
-                            @shield('legislatures.edit')
-                                <a href="{!! route('legislatures.deleteAssemblyman', [$legislature->id .'/'.$item->assemblyman->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">
-                                    <button type="button" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i> Deletar</button>
-                                </a>
-                            @endshield
-                        </span>
-                    </li>
-                @endforeach
+{{--        erro ao tentar acessar  $legislature_assemblyman as $item - $item->assemblyman->full_name       --}}
+{{--                @foreach($legislature_assemblyman as $item)--}}
+{{--                    <li class="list-group-item">--}}
+{{--                        <i class="fa fa-angle"></i> {{ $item->assemblyman->full_name }}--}}
+{{--                        <span class="pull-right">--}}
+{{--                            @shield('legislatures.edit')--}}
+{{--                                <a href="{!! route('legislatures.deleteAssemblyman', [$legislature->id .'/'.$item->assemblyman->id]) !!}" onclick="return confirm('Deseja deletar este registro?')">--}}
+{{--                                    <button type="button" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i> Deletar</button>--}}
+{{--                                </a>--}}
+{{--                            @endshield--}}
+{{--                        </span>--}}
+{{--                    </li>--}}
+{{--                @endforeach--}}
             </ul>
         </div>
     </div>

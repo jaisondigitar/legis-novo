@@ -3,7 +3,7 @@
     {!! Breadcrumbs::render('lawsProjects.list') !!}
 @endsection
 @section('content')
-    <div class="the-box rounded">
+    <div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
         <form method="GET">
             <div class="row">
                 <div class="form-group col-md-2">
@@ -52,7 +52,7 @@
             </div>
         </form>
     </div>
-    <div class="the-box rounded">
+    <div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
         <div class="row">
             <div class="col-md-12">
                 @include('flash::message')

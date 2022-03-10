@@ -3,25 +3,25 @@
     {!! Breadcrumbs::render('documents.attachment') !!}
 @endsection
 @section('content')
-    <a href="{{ url('documents') }}" ><button type="button" class="btn btn-dark" style="margin-bottom: 10px; color: #0A0A0A"><i class="glyphicon glyphicon-chevron-left"></i>Voltar</button></a>
-    <div class="the-box rounded">
+
+    <div style="margin-left: 3rem; margin-right: 3rem;" class="the-box rounded">
         <div class="row">
-            <div class="col-md-3">
-                @include('flash::message')
-                {!! Form::open(['route' => ['documents.attachament.upload', $document->id], 'method' => 'post', 'files' => 'true']) !!}
+            <div class="the-box border-0">
+                <div class="col-md-12">
+                    @include('flash::message')
                     <label class="control-label">Selecione o arquivo:</label>
+                        {!! Form::open(['route' => ['documents.attachament.upload', $document->id], 'method' => 'post', 'files' => 'true']) !!}
                         {!! Form::file('file[]', array('multiple'=>true, 'class' => 'file')) !!}
-                    <button type="submit" class="btn btn-success pull-right">Incluir</button>
-                {!! Form::close() !!}
-                <br>
-                <hr class="hr">
-            </div>
-            <div class="col-md-9">
-                <h4 align="center">Anexos:</h4>
-                <table class="table table-bordered table-striped">
-                    @foreach($document_files as $file)
-                        <tr id="tr{{$file->id}}">
-                            <td width="80%">{{ $file->filename }}</td>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+
+    <div class="col-md-12">
+        <h4>Anexos:</h4>
+            <table class="table table-bordered table-striped">
+                @foreach($document_files as $file)
+                    <tr id="tr{{$file->id}}">
+                        <td width="80%">{{ $file->filename }}</td>
                             <td align="center">
                                 <a
                                     target="_blank"
@@ -29,25 +29,31 @@
                                     ->inDocumentsFolder()->getPath($file->filename) }}">
                                     <span class="label label-info">Download</span>
                                 </a>
-                                <a style="text-decoration: none" id="delFile" onclick="deleteFile({{$file->id}})">
-                                    <span class="label label-danger">Excluir</span>
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </table>
+                            <a style="text-decoration: none" id="delFile" onclick="deleteFile({{$file->id}})">
+                                <span class="label label-danger">Excluir</span>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+        <div class="clearfix"></div>
+            <div class="col-md-12">
+                <span class="pull-right">
+                    <button type="submit" class="btn btn-success pull-right">Incluir</button>
+                    <a href="{{ url('documents') }}" type="button" class="btn btn-default pull-right" >Cancelar</a>
+                </span>
             </div>
         </div>
     </div>
 
     @is(['admin','root'])
 
-    <div class="the-box rounded" style="font-size: 12px">
+    <div class="the-box rounded" style="font-size: 12px; margin-left: 3rem; margin-right: 3rem;">
         @include('common.errors')
         <div class="row">
             <div class="col-md-12">
-                <h1> Log de registro </h1>
-                <hr>
+                <h4> Log de registro </h4>
             </div>
             @foreach($logs as $key => $log)
                 <div class="col-sm-12" style="display: flex; margin: 20px 0;">

@@ -6,75 +6,71 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/css/jquery-ui.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="/assets/js/jquery.mjs.nestedSortable.js"></script>
-    <div class="row">
+
+    <div class="row" style="margin: 0 3.125rem 0 3.125rem">
         @include('common.errors')
-        <div class="container">
-            <div class="col-md-12 the-box rounded">
+        <div class="the-box rounded">
+            <div class="col-md-12" >
                 <h2 class="text-uppercase">Versão - {{$version_pauta->name}}</h2>
                 <h4 class="text-uppercase">Estrutura de pauta</h4>
                 <a href="{{route('version_pauta.index')}}" class="btn btn-default pull-right"> Voltar </a>
-                
-
             </div>
+        </div>
+
             <div class="col-md-12 the-box rounded">
-                <div class="row">
-                    <div class="col-md-12">
-                        @if(count($structurepautas)==0)
-                            <div class="well text-center">
-                                <h3>Sem dados. Insira um novo registro.</h3>
-                                <button type="button" class="editable btn btn-info" data-item="0" data-method="post" data-number="1" data-action="store" data-title="Novo registro" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Adicionar estrutura</button>
-                            </div>
-                        @else
+                @if(count($structurepautas)==0)
+                    <div class="well text-center">
+                        <h3>Sem dados. Insira um novo registro.</h3>
+                        <button type="button" class="editable btn btn-info" data-item="0" data-method="post" data-number="1" data-action="store" data-title="Novo registro" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Adicionar estrutura</button>
+                    </div>
+                @else
+                    <style>
+                        .the-box{
+                            margin-bottom: 3px;
+                        }
+                        ol {
+                            border-left: 1px dashed #cccccc;
+                            list-style: none;
+                            counter-reset: num;
+                        }
+                        ul {
+                            list-style: none;
+                            counter-reset: num;
+                        }
+                        /*
+                        ol li:before {
+                        content: counter(num)".";
+                        counter-increment: num;
+                        }
 
-                            <style>
-                                .the-box{
-                                    margin-bottom: 3px;
-                                }
-                                ol {
-                                    border-left: 1px dashed #cccccc;
-                                    list-style: none;
-                                    counter-reset: num;
-                                }
-                                ul {
-                                    list-style: none;
-                                    counter-reset: num;
-                                }
-                                /*
-                                ol li:before {
-                                content: counter(num)".";
-                                counter-increment: num;
-                                }
-
-                                ol ol li:before {
-                                content: counters(num,".") ' ';
-                                }
-                                */
-
-                            </style>
+                        ol ol li:before {
+                        content: counters(num,".") ' ';
+                        }
+                        */
+                        </style>
                             <?php
-                            function renderNode($node,$index=0,$level=0) {
-
-
-                                $html = '<li id="struc_' . $node->id. '" class="list-item"><div class="the-box rounded"><h4 style="margin-top:0px"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> ' .  ($node->isRoot() ? strtoupper($node->name) : $node->name) . '</h4>';
-                                if(!$node->isRoot()){
-                                    $html .='<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_doc\','. $node->id .')" '. ($node->add_doc ? 'checked' : '') .'> <label>Insere Documentos?</label></p>';
-                                    $html .='<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_law\','. $node->id .')" '. ($node->add_law ? 'checked' : '') .'> <label>Insere Projeto de lei?</label></p>';
-                                    $html .='<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_advice\','. $node->id .')" '. ($node->add_advice ? 'checked' : '') .'> <label>Insere parecer?</label></p>';
-                                    $html .='<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_obs\','. $node->id .')" '. ($node->add_obs ? 'checked' : '') .'> <label>Insere Campo de Obs?</label></p>';
+                            function renderNode($node, $index = 0, $level = 0)
+                            {
+                                $html = '<li id="struc_'.$node->id.'" class="list-item"><div class="the-box rounded"><h4 style="margin-top:0px"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> '.($node->isRoot() ? strtoupper($node->name) : $node->name).'</h4>';
+                                if (! $node->isRoot()) {
+                                    $html .= '<p><div class="form-check form-switch form-switch-md"><input class="form-check-input"   type="checkbox" onchange="toggle(\'add_doc\','.$node->id.')" '.($node->add_doc ? 'checked' : '').'> </div><label class="mx-2" ">Insere Documentos?</label></p>';
+                                    $html .= '<p><div class="form-check form-switch form-switch-md"><input class="form-check-input"   type="checkbox" onchange="toggle(\'add_law\','.$node->id.')" '.($node->add_law ? 'checked' : '').'> </div><label class="mx-2">Insere Projeto de lei?</label></p>';
+                                    $html .= '<p><div class="form-check form-switch form-switch-md"><input class="form-check-input"   type="checkbox" onchange="toggle(\'add_advice\','.$node->id.')" '.($node->add_advice ? 'checked' : '').'> </div><label class="mx-2">Insere parecer?</label></p>';
+                                    $html .= '<p><div class="form-check form-switch form-switch-md"><input class="form-check-input"   type="checkbox" onchange="toggle(\'add_obs\','.$node->id.')" '.($node->add_obs ? 'checked' : '').'> </div><label class="mx-2">Insere Campo de Obs?</label></p>';
                                 }
 
-                                $html .='<div class="editable">
-                                            <button type="button" class="btn btn-info"    data-item="' . ($node->parent_id>0 ? $node->parent_id : 0).'" data-number="' . ($node->order+1).'" data-method="post" data-action="store" data-title="Novo IRMAO de ' . $node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-bars"></i> abaixo</i></button>
-                                            <button type="button" class="btn btn-primary" data-item="' . $node->id.'" data-method="post" data-action="store" data-title="Novo FILHO de ' . $node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
-                                            <button type="button" class="btn btn-warning" data-item="' . $node->id.'" data-method="put"  data-number="' . $node->order.'" data-name="' . $node->name.'" data-action="update" data-title="Editando ' . $node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> editar</i></button>
-                                            <button type="button" class="btn btn-danger"  onClick="deletaReg(' . $node->id.')"><i class="fa fa-remove"></i> remover</i></button>
+                                $html .= '<div class="editable">
+                                            <button type="button" class="btn btn-default btn-sm" data-item="'.($node->parent_id > 0 ? $node->parent_id : 0).'" data-number="'.($node->order + 1).'" data-method="post" data-action="store" data-title="Novo IRMAO de '.$node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-bars"></i> abaixo</i></button>
+                                            <button type="button" class="btn btn-default btn-sm" data-item="'.$node->id.'" data-method="post" data-action="store" data-title="Novo FILHO de '.$node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
+                                            <button type="button" class="btn btn-default btn-sm" data-item="'.$node->id.'" data-method="put"  data-number="'.$node->order.'" data-name="'.$node->name.'" data-action="update" data-title="Editando '.$node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> editar</i></button>
+                                            <button type="button" class="btn btn-danger btn-sm"  onClick="deletaReg('.$node->id.')"><i class="fa fa-trash"></i> remover</i></button>
                                         </div>';
 
-                                $html .='</div>';
+                                $html .= '</div>';
                                 $html .= '<ol>';
 
-                                foreach($node->children as $child){
-                                    $html .= renderNode($child,$index,$level);
+                                foreach ($node->children as $child) {
+                                    $html .= renderNode($child, $index, $level);
                                 }
 
                                 $html .= '</ol>';
@@ -94,11 +90,9 @@
 
 
                         @endif
-                    </div>
+                    </>
                 </div>
             </div>
-        </div>
-    </div>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

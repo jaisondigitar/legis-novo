@@ -107,12 +107,12 @@
                         class="card_bg initial_document">
                     </div>
                     <div class="panel-body card_content" style="padding: 10px">
-                        <div style="margin-left: 1rem" class="text-black">
+                        <div class="text-black">
                             <h3 class="panel-title">Documentos</h3>
                         </div>
                         <div class="blue_card">
-                            <h1 style="margin-left: 1rem; color: #0A0A0A">{{ $docAll }}</h1>
-                            <h5 class="text-muted" style="margin-right: 2rem; padding-right: 20px"><small>Lidos: <strong>{{ $docRead }}</strong></small></h5>
+                            <h1 style="color: #0A0A0A">{{ $docAll }}</h1>
+                            <h5 class="text-muted" style="padding-right: 20px"><small>Lidos: <strong>{{ $docRead }}</strong></small></h5>
                         </div>
                     </div>
                 </a>

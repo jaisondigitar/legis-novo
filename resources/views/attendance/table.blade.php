@@ -1,3 +1,4 @@
+
 <table class="table table-striped table-hover" id="attendance-table">
     <thead>
         <tr>
@@ -66,6 +67,7 @@
     role="dialog"
     aria-labelledby="myModalLabel"
 >
+
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -74,10 +76,11 @@
                     class="close"
                     data-dismiss="modal"
                     aria-label="Close"
+                    id="border-btn"
                 >
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">HORA DE SAÍDA</h4>
+                <h4 class="modal-title" id="myModalLabel" style="margin: 0 auto" >HORA DE SAÍDA</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -100,13 +103,13 @@
                 <button
                     type="button"
                     class="btn btn-default"
-                    data-dismiss="modal"
+                    data-bs-dismiss="modal"
                 >
                     Fechar
                 </button>
                 <button
                     type="button"
-                    class="btn btn-primary"
+                    class="btn btn-success"
                     id="date_modal_exit"
                 >
                     SALVAR

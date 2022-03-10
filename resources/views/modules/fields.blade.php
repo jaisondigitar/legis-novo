@@ -18,7 +18,7 @@
     <!--- Active Field --->
     <div class="form-group col-sm-6 col-lg-4">
         <label>
-            Ativo
+            Ativo:
             <div class="form-check form-switch form-switch-md">
                 <input
                     id="active"
