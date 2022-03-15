@@ -14,13 +14,14 @@
                 <label>
                     <div class="col-sm-2 form-check form-switch form-switch-md">
                         <input
+                            onchange="statusActive({{ $responsibility }})"
+                            id="skip_board-{{$responsibility->id}}"
                             name="skip_board"
                             class="form-check-input"
                             type="checkbox"
                             @if(isset($responsibility->skip_board) ? $responsibility->skip_board == 1 : false)
-                            checked
+                                checked
                             @endif
-
                         >
                     </div>
                 </label>
@@ -57,5 +58,24 @@
         const method = 'DELETE'
 
         sweetDelete(e, url, null, method)
+    }
+    const statusActive = (responsibilities) => {
+        const url = `/responsibilities/${responsibilities.id}`;
+
+        const data = {
+            companies_id: responsibilities.companies_id,
+            name: responsibilities.name,
+            order: responsibilities.order,
+            skip_board: $('#skip_board-'+responsibilities.id).is(':checked'),
+            _token : '{{csrf_token()}}'
+        }
+
+        $.ajax({
+            url: url,
+            data : data,
+            method: "PUT"
+        }).success(() => {
+            toastr.success("Tipo de Atencimento alterado com sucesso");
+        });
     }
 </script>
