@@ -40,7 +40,7 @@
             border: 1px solid #9B2226;
         }
     </style>
-    <div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
+    <div style="margin: 1% 2.7% 1% 2.7%" class="the-box rounded">
         <div class="row">
             <div class="col-md-4">
                 <h2>Exportador</h2>

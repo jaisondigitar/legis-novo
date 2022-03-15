@@ -1,7 +1,7 @@
 @extends('layouts.blit')
 @section('title', 'Estados')
 @section('content')
-    <div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
+    <div style="margin: 1% 2.7% 1% 2.7%" class="the-box rounded">
         <div class="row">
             <a class="btn btn-success pull-left" style="margin: 10px" href="{!! route('states.create') !!}">Novo registro</a>
         </div>

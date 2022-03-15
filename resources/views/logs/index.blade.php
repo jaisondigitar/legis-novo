@@ -3,7 +3,7 @@
     {!! Breadcrumbs::render('home') !!}
 @endsection
 @section('content')
-    <div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
+    <div style="margin: 1% 2.7% 1% 2.7%" class="the-box rounded">
         <form method="GET">
             <div class="row">
                 <div class="form-group col-md-4">
