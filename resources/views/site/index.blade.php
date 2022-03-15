@@ -456,7 +456,7 @@
                                                 <a
                                                     target="_blank"
                                                     href="/meeting/pauta/{{ $meeting->id }}/pdf"
-                                                    class='btn btn-primary btn-xs'
+                                                    class='btn btn-success btn-xs'
                                                 >
                                                     <i class="fa fa-download"></i> PAUTA
                                                 </a>

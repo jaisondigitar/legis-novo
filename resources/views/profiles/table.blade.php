@@ -32,7 +32,7 @@
                 <input class="switch" onchange="changeStatus('{!! $profile->id !!}')" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" {!! $profile->active>0?'checked':'' !!}>
             </td>
             <td>
-                <a href="{!! route('profiles.edit', [$profile->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>
+                <a href="{!! route('profiles.edit', [$profile->id]) !!}"><i class="fa fa-edit icon-rounded icon-xs icon-warning"></i></a>
                 <a href="{!! route('profiles.delete', [$profile->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"><i class="fa fa-remove icon-rounded icon-xs icon-danger"></i></a>
             </td>
         </tr>

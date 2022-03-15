@@ -19,7 +19,7 @@
 
         <!-- Submit Field -->
         <div class="form-group col-sm-12 mt-3">
-            {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
+            {!! Form::submit('Salvar', ['class' => 'btn btn-success']) !!}
             <a href="{!! route('legislatures.index') !!}" class="btn btn-default">Cancelar</a>
         </div>
     </div>

@@ -44,7 +44,7 @@
                                                     <a href="/lawsProjects/{{$advice->project->id}}" target="_blank" class="btn btn-xs btn-info"><i class="fa fa-file-text-o"></i></a>
                                                     <a id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" href='/advice/findAwnser/{{$advice->id}}'><i class="glyphicon glyphicon-eye-open"></i></a>
                                                     @if($advice->closed == 1)
-                                                    <button id="advice_awnser_{{$advice->id}}" onclick="carrega_id({{$advice}}, {{$advice->project->getYearLawPublish($advice->project->law_date)}})" type="button" class="btn btn-info btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
+                                                    <button id="advice_awnser_{{$advice->id}}" onclick="carrega_id({{$advice}}, {{$advice->project->getYearLawPublish($advice->project->law_date)}})" type="button" class="btn btn-info btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-edit"></i></button>
                                                     @endif
                                                 </span>
                                             </td>
@@ -63,7 +63,7 @@
                                                     <a href="/documents/{{$advice->document->id}}" target="_blank" class="btn btn-xs btn-info"><i class="fa fa-file-text-o"></i></a>
                                                     <button id="advice_{{$advice->id}}" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="findAdvice({{$advice->id}})"><i class="fa fa-eye"></i></button>
                                                      @if($advice->closed == 1)
-                                                     <button id="advice_awnser_{{$advice->id}}" onclick="carrega_id({{$advice->id}})" type="button" class="btn btn-info btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
+                                                     <button id="advice_awnser_{{$advice->id}}" onclick="carrega_id({{$advice->id}})" type="button" class="btn btn-info btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-edit"></i></button>
                                                      @endif
                                                 </span>
                                             </td>

@@ -10,7 +10,7 @@
             <td>{!! $role->id !!}</td>
 			<td>{!! $role->name !!}</td>
             <td>
-                @is('root')<a href="{!! route('gerencial.roles.edit', [$role->id]) !!}"class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></a>@endis
+                @is('root')<a href="{!! route('gerencial.roles.edit', [$role->id]) !!}"class="btn btn-default btn-sm"><i class="fa fa-edit"></i></a>@endis
                 @is('root')<a href="{!! route('gerencial.roles.delete', [$role->id]) !!}" onclick="return confirm('Deseja deletar este registro?')" class="btn btn-danger btn-sm"><i class="fa fa-remove "></i></a>@endis
             </td>
         </tr>

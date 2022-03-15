@@ -141,7 +141,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Cancelar</button>
-                                        <button type="button" class="btn btn-primary saveModal"><i class="fa fa-save"></i> Salvar</button>
+                                        <button type="button" class="btn btn-success saveModal"><i class="fa fa-save"></i> Salvar</button>
                                     </div>
                                 </div>
                             </div>

@@ -3,7 +3,7 @@
     {!! Breadcrumbs::render('documents.edit') !!}
 @endsection
 @section('content')
-<div class="the-box rounded">
+<div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded">
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
@@ -16,15 +16,15 @@
 
 @is(['admin','root'])
 
-<div class="the-box rounded" style="font-size: 12px">
+<div style="margin: 1rem 3.125rem 1rem 3.125rem" class="the-box rounded" style="font-size: 12px">
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
-            <h1> Log de registro </h1>
+            <h4> Log de registro </h4>
             <hr>
         </div>
         @foreach($logs as $key => $log)
-            <div class="col-sm-12" style="display: flex; margin: 20px 0;">
+            <div class="col-sm-12">
                 <div class="<?php echo $log->event; ?>"></div>
                 <div
                     class="col-sm-12 log"
@@ -105,7 +105,7 @@
         <div class="clearfix"></div>
         <br>
         <div class="col-md-12">
-            <span class="pull-right">
+            <span class="pull-right mt-3">
                 <a href="{{route('documents.index')}}" class="btn btn-default"> Voltar </a>
             </span>
         </div>

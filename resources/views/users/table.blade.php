@@ -40,7 +40,7 @@
                 <td>
                     @is(['admin','root']) <a @popper(Hístorico) href="/users/{!! $user->id !!}/auditing" class="btn btn-default btn-sm"><i class="fa fa-user-secret"></i></a>@endis
                     @shield('users.show')<a @popper(Visualizar) href="{!! route('users.show', [$user->id]) !!}" class="btn btn-default btn-sm"><i class="fa fa-eye"></i></a>@endshield
-                    @shield('users.edit')<a @popper(Editar) href="{!! route('users.edit', [$user->id]) !!}" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></a>@endshield
+                    @shield('users.edit')<a @popper(Editar) href="{!! route('users.edit', [$user->id]) !!}" class="btn btn-default btn-sm"><i class="fa fa-edit"></i></a>@endshield
                     @shield('users.delete')
                         <a
                             class="btn btn-danger btn-sm"

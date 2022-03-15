@@ -7,7 +7,7 @@
             <span class="pull-right">
                 @shield('roles.show')
                     <a @popper(Permissões) href="{!! route('gerencial.roles.permission', [$role->id])!!}">
-                        <button type="button" class="btn btn-primary btn-sm "><i class="fa fa-list-ol"></i></button>
+                        <button type="button" class="btn btn-success btn-sm "><i class="fa fa-list-ol"></i></button>
                     </a>
                 @endshield
                 @shield('roles.edit')

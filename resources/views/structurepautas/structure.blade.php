@@ -48,29 +48,28 @@
 
                             </style>
                             <?php
-                            function renderNode($node,$index=0,$level=0) {
-
-
-                                $html = '<li id="struc_' . $node->id. '" class="list-item"><div class="the-box rounded"><h4 style="margin-top:0px"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> ' .  ($node->isRoot() ? strtoupper($node->name) : $node->name) . '</h4>';
-                                if(!$node->isRoot()){
-                                    $html .='<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_doc\','. $node->id .')" '. ($node->add_doc ? 'checked' : '') .'> <label>Insere Documentos?</label></p>';
-                                    $html .='<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_law\','. $node->id .')" '. ($node->add_law ? 'checked' : '') .'> <label>Insere Projeto de lei?</label></p>';
+                            function renderNode($node, $index = 0, $level = 0)
+                            {
+                                $html = '<li id="struc_'.$node->id.'" class="list-item"><div class="the-box rounded"><h4 style="margin-top:0px"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> '.($node->isRoot() ? strtoupper($node->name) : $node->name).'</h4>';
+                                if (! $node->isRoot()) {
+                                    $html .= '<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_doc\','.$node->id.')" '.($node->add_doc ? 'checked' : '').'> <label>Insere Documentos?</label></p>';
+                                    $html .= '<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_law\','.$node->id.')" '.($node->add_law ? 'checked' : '').'> <label>Insere Projeto de lei?</label></p>';
 //                                    $html .='<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_ass\','. $node->id .')" '. ($node->add_ass ? 'checked' : '') .'> <label>Insere Nome dos vereadores?</label></p>';
-                                    $html .='<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_obs\','. $node->id .')" '. ($node->add_obs ? 'checked' : '') .'> <label>Insere Campo de Obs?</label></p>';
+                                    $html .= '<p><input class="switch" data-on-text="Sim" data-off-text="Não" data-off-color="danger" data-on-color="success" data-size="normal"  type="checkbox" onchange="toggle(\'add_obs\','.$node->id.')" '.($node->add_obs ? 'checked' : '').'> <label>Insere Campo de Obs?</label></p>';
                                 }
 
-                                $html .='<div class="editable">
-                                            <button type="button" class="btn btn-info"    data-item="' . ($node->parent_id>0 ? $node->parent_id : 0).'" data-number="' . ($node->order+1).'" data-method="post" data-action="store" data-title="Novo IRMAO de ' . $node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-bars"></i> abaixo</i></button>
-                                            <button type="button" class="btn btn-primary" data-item="' . $node->id.'" data-method="post" data-action="store" data-title="Novo FILHO de ' . $node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
-                                            <button type="button" class="btn btn-warning" data-item="' . $node->id.'" data-method="put"  data-number="' . $node->order.'" data-name="' . $node->name.'" data-action="update" data-title="Editando ' . $node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> editar</i></button>
-                                            <button type="button" class="btn btn-danger"  onClick="deletaReg(' . $node->id.')"><i class="fa fa-remove"></i> remover</i></button>
+                                $html .= '<div class="editable">
+                                            <button type="button" class="btn btn-info"    data-item="'.($node->parent_id > 0 ? $node->parent_id : 0).'" data-number="'.($node->order + 1).'" data-method="post" data-action="store" data-title="Novo IRMAO de '.$node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-bars"></i> abaixo</i></button>
+                                            <button type="button" class="btn btn-success" data-item="'.$node->id.'" data-method="post" data-action="store" data-title="Novo FILHO de '.$node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-level-down"></i> filho</i></button>
+                                            <button type="button" class="btn btn-warning" data-item="'.$node->id.'" data-method="put"  data-number="'.$node->order.'" data-name="'.$node->name.'" data-action="update" data-title="Editando '.$node->name.'" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> editar</i></button>
+                                            <button type="button" class="btn btn-danger"  onClick="deletaReg('.$node->id.')"><i class="fa fa-remove"></i> remover</i></button>
                                         </div>';
 
-                                $html .='</div>';
+                                $html .= '</div>';
                                 $html .= '<ol>';
 
-                                foreach($node->children as $child){
-                                    $html .= renderNode($child,$index,$level);
+                                foreach ($node->children as $child) {
+                                    $html .= renderNode($child, $index, $level);
                                 }
 
                                 $html .= '</ol>';
@@ -115,7 +114,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Cancelar</button>
-                    <button type="button" class="btn btn-primary saveModal"><i class="fa fa-save"></i> Salvar</button>
+                    <button type="button" class="btn btn-success saveModal"><i class="fa fa-save"></i> Salvar</button>
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 @foreach($logs as $key => $log)
-    <div class="row">
+    <div
+        class="row">
         <div class="<?php echo $log->event; ?>"></div>
             <div
                 @if($key%2==0)

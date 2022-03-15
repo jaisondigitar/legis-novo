@@ -41,12 +41,12 @@
 
         <div class="clearfix"></div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-sm-6 mt-3">
             {!! Form::label('sub_title', 'Texto PREFIXO:', ['class' => 'required']) !!}
             {!! Form::textarea('sub_title', null, ['class' => 'form-control ckeditor']) !!}
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-sm-6 mt-3">
             {!! Form::label('sufix', 'Texto JUSTIFICATIVA:') !!}
             {!! Form::textarea('justify', null, ['class' => 'form-control ckeditor']) !!}
         </div>
@@ -56,7 +56,7 @@
         <div class="form-group col-sm-12">
             <div class="panel panel-square panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-angle-double-right"></i> PARLAMENTARES ASSINANDO</h3>
+                    <h5 class="panel-title mt-3" style="font-size: 15px"><i class="fa fa-angle-double-right" ></i> PARLAMENTARES ASSINANDO</h5>
                 </div>
                 <div class="panel-body">
                     {!! Form::select('assemblymen[]', $assemblymen, null, ['class' => 'chosen-select', 'multiple', 'style' => 'width:100%;', 'data-placeholder' => 'Selecione o parlamentar...']) !!}
@@ -69,13 +69,13 @@
 
 
 <div class="col-sm-12" disable="true">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="right-content">
-                <button type="button" class="btn btn-default btn-sm btn-rounded-lg to-collapse" data-toggle="collapse" data-target="#panel-collapse-4" aria-expanded="true"><i class="fa fa-chevron-up"></i></button>
-            </div>
-            <h3 class="panel-title"><i class="fa fa-angle-double-right"></i>TRAMITAÇÃO ANTIGA(INATIVO)</h3>
-        </div>
+{{--    <div class="panel panel-default">--}}
+{{--        <div class="panel-heading">--}}
+{{--            <div class="right-content">--}}
+{{--                <button type="button" class="btn btn-default btn-sm btn-rounded-lg to-collapse" data-toggle="collapse" data-target="#panel-collapse-4" aria-expanded="true"><i class="fa fa-chevron-up"></i></button>--}}
+{{--            </div>--}}
+{{--            <h5  class="panel-title"><i class="fa fa-angle-double-right"></i>TRAMITAÇÃO ANTIGA(INATIVO)</h5>--}}
+{{--        </div>--}}
         <div id="panel-collapse-4" class="collapse " aria-expanded="true" style="">
             <div class="panel-body">
                 <div class=" col-md-12 col-sm-12">

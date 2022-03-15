@@ -17,7 +17,7 @@
                     <div class="btn-group">
                         <a href="/advice/findAwnser/{{$advice->id}}" class="btn btn-xs btn-info"><i class="fa fa-eye"></i> </a>
                         @if(($advice->situation->last()->situation->name ?? null) == 'Contrário' && \App\Models\Advice::query()->where('advice_id', $advice->id)->doesntExist())
-                            <button id="advice_awnser_{{$advice->id}}" type="button" class="btn btn-success btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
+                            <button id="advice_awnser_{{$advice->id}}" type="button" class="btn btn-success btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-edit"></i></button>
                         @endif
                         <button class="btn btn-xs btn-danger" onclick="remove_advice({{ $advice->id }})"><i class="fa fa-trash"></i> </button>
                     </div>

@@ -257,7 +257,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                    <button type="button" onclick="addDocument()" class="btn btn-primary">Adicionar</button>
+                    <button type="button" onclick="addDocument()" class="btn btn-success">Adicionar</button>
                 </div>
             </div>
         </div>
@@ -289,7 +289,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                    <button type="button" onclick="addProjectLaw()" class="btn btn-primary">Adicionar</button>
+                    <button type="button" onclick="addProjectLaw()" class="btn btn-success">Adicionar</button>
                 </div>
             </div>
         </div>
@@ -316,7 +316,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                    <button type="button" onclick="addAdvices()" class="btn btn-primary">Adicionar</button>
+                    <button type="button" onclick="addAdvices()" class="btn btn-success">Adicionar</button>
                 </div>
             </div>
         </div>

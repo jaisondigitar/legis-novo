@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped table-hover display nowrap">
+<table class="table table-striped table-hover display nowrap">
     <thead>
         <tr>
             <th style="width: 80px">Nome</th>
@@ -25,7 +25,7 @@
                     @shield('destination.edit')
                         <a @popper(Editar) href="{!! route('destinations.edit', [$destination->id]) !!}"
                             class="btn btn-default btn-sm">
-                            <i class="fa fa-pencil"></i>
+                            <i class="fa fa-edit"></i>
                         </a>
                     @endshield
                     @shield('destination.delete')

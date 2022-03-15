@@ -37,7 +37,7 @@
     </div>
 
     <!-- Sector Field -->
-    <div class="form-group col-sm-12">
+    <div class="form-group col-sm-12 mt-3">
         {!! Form::label('sectors[]', 'Destinatário Final') !!}
         <select class="js-example-basic-multiple col-sm-12" name="sectors[]" multiple="multiple">
             @foreach($sector as $key => $name)
@@ -60,13 +60,13 @@
     </div>
 
     <!-- Content Field -->
-    <div class="form-group col-sm-12">
+    <div class="form-group col-sm-12 mt-3">
         {!! Form::label('content', 'Conteúdo', ['class' => 'required']) !!}
         {!! Form::textarea('content', null, ['class' => 'form-control ckeditor']) !!}
     </div>
 
     <!-- Assemblymen Field -->
-    <div class="form-group col-sm-12">
+    <div class="form-group col-sm-12 mt-3">
         {!! Form::label('assemblymen', 'Parlamentares Assinando') !!}
         {!! Form::select('assemblymen[]', $assemblymen, null, ['class' => 'chosen-select', 'multiple', 'style' => 'width:100%;', 'data-placeholder' => 'Selecione o parlamentar...']) !!}
     </div>

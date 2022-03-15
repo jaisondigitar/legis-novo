@@ -3,7 +3,7 @@
     {!! Breadcrumbs::render('lawsProjects.edit') !!}
 @endsection
 @section('content')
-<div class="the-box rounded">
+<div class="the-box rounded" style="margin: 1rem 3.125rem 1rem 3.125rem">
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
@@ -16,15 +16,15 @@
 
 @is(['admin','root'])
 
-<div class="the-box rounded" style="font-size: 12px">
+<div class="the-box rounded" style="font-size: 12px; margin: 1rem 3.125rem 1rem 3.125rem">
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
-            <h1> Log de registro </h1>
+            <h4> Log de registro </h4>
             <hr>
         </div>
         @foreach($logs as $key => $log)
-            <div class="col-sm-12" style="display: flex; margin: 20px 0;">
+            <div class="col-sm-12">
                 <div class="<?php echo $log->event; ?>"></div>
                 <div
                     class="col-sm-12 log"
@@ -106,7 +106,7 @@
         <br>
         <div class="col-md-12">
             <span class="pull-right">
-                <a href="{{route('lawsProjects.index')}}" class="btn btn-default"> Voltar </a>
+                <a href="{{route('lawsProjects.index')}}" class="btn btn-default mt-3"> Voltar </a>
             </span>
         </div>
     </div>

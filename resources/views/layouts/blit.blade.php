@@ -630,7 +630,7 @@ BEGIN PAGE
                             <span class="activity">Posted something on your profile page</span>
                             <span class="small-caps">Yesterday 10:45:12</span>
                         </a></li>
-                    <li class="static text-center"><button class="btn btn-primary btn-sm">See all notifications</button></li>
+                    <li class="static text-center"><button class="btn btn-success btn-sm">See all notifications</button></li>
                 </ul>
             </div>
             <div class="tab-pane fade" id="task-sidebar">
@@ -1039,7 +1039,7 @@ Placed at the end of the document so the pages load faster
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                    <a href="javascript:void(0);" id="link_voting" class="btn btn-primary" onclick="open_voting()">Painel de votação</a>
+                    <a href="javascript:void(0);" id="link_voting" class="btn btn-success" onclick="open_voting()">Painel de votação</a>
                 </div><!-- /.modal-footer -->
             </div><!-- /.modal-content .modal-no-shadow -->
         </div><!-- /.modal-dialog -->

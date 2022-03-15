@@ -112,7 +112,7 @@
                                                                 <button class="btn btn-warning btn-xs">Em andamento</button>
                                                             </a>
                                                         @else
-                                                            <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor2" onclick="voting_ata({{$last_voting}})">Abrir Votação</button>
+                                                            <button class="btn btn-success btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor2" onclick="voting_ata({{$last_voting}})">Abrir Votação</button>
                                                         @endif
                                                     @endif
                                                 @endif
@@ -206,7 +206,7 @@
                                                             @endif
                                                         @else
                                                             @if(!$item->voting()->where('meeting_id', $meeting->id)->first())
-                                                                <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor3" onclick="voting_advice({{$item}})">Abrir Votação</button>
+                                                                <button class="btn btn-success btn-xs btn-block" data-toggle="modal" data-target="#primaryModalColor3" onclick="voting_advice({{$item}})">Abrir Votação</button>
                                                             @else
                                                                 <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/advice/{{$item->id}}"> <button class="btn btn-warning btn-xs">Em andamento</button></a>
                                                             @endif
@@ -277,7 +277,7 @@
                                                             <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/document/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
                                                         @else
                                                             @if(!$item->voting()->where('meeting_id', $meeting->id)->first())
-                                                                <button class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#InfoModalColor2" onclick="voting_document({{$item}})">Abrir Votação</button>
+                                                                <button class="btn btn-success btn-xs btn-block" data-toggle="modal" data-target="#InfoModalColor2" onclick="voting_document({{$item}})">Abrir Votação</button>
                                                             @else
                                                                 <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/document/{{$item->id}}"> <button class="btn btn-warning btn-xs">Em andamento</button></a>
                                                             @endif
@@ -346,7 +346,7 @@
                                                             <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/law/{{$item->id}}"> <button class="btn btn-danger btn-xs">Encerrada</button></a>
                                                         @else
                                                             @if(!$item->voting()->where('meeting_id', $meeting->id)->first())
-                                                                <button type="button" class="btn btn-primary btn-block btn-xs" data-toggle="modal" data-target="#WarningModalColor2" onclick="voting_law({{$item}})">Abrir Votação</button>
+                                                                <button type="button" class="btn btn-success btn-block btn-xs" data-toggle="modal" data-target="#WarningModalColor2" onclick="voting_law({{$item}})">Abrir Votação</button>
                                                             @else
                                                                 <a href="/meetings/{{$meeting->id}}/voting/{{$meeting->voting->id}}/law/{{$item->id}}"> <button class="btn btn-warning btn-xs">Em andamento</button></a>
                                                             @endif
