@@ -164,8 +164,12 @@ class ResponsibilityController extends AppBaseController
         }
 
         $input = $request->all();
-        $input['skip_board'] = $input['skip_board'] === true ? 1 : 0;
+        $input['skip_board'] = $input['skip_board'] === 'true' ? 1 : 0;
         $this->responsibilityRepository->update($responsibility, $input);
+
+        if ($request->ajax()) {
+            return json_encode(['success' => true]);
+        }
 
         flash('Responsabilidade atualizada com sucesso.')->success();
 

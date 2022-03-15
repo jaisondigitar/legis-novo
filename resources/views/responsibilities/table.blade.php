@@ -63,9 +63,6 @@
         const url = `/responsibilities/${responsibilities.id}`;
 
         const data = {
-            companies_id: responsibilities.companies_id,
-            name: responsibilities.name,
-            order: responsibilities.order,
             skip_board: $('#skip_board-'+responsibilities.id).is(':checked'),
             _token : '{{csrf_token()}}'
         }

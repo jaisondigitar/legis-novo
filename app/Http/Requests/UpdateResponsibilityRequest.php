@@ -24,6 +24,14 @@ class UpdateResponsibilityRequest extends Request
      */
     public function rules()
     {
+        if ($this->ajax()) {
+            return [
+                'companies_id' => 'nullable',
+                'name' => 'nullable',
+                'order' => 'nullable',
+            ];
+        }
+
         return Responsibility::$rules;
     }
 }
