@@ -101,15 +101,15 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="form-group col-sm-12 col-lg-12 listResult"></div>
-                            <button class="col-sm-4 btn btn-info" id="addLegislatures">Adicionar</button>
-                            <div id="addLegislaturesInput"></div>
-                            {!! Form::open(['route' => 'assemblymen.addLegislatures']) !!}
                         </div>
-                        {!! Form::close() !!}
-                    </div>
                 <div class="clearfix">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal">Fechar</button>
+                        <button class="col-sm-4 btn btn-info" id="addLegislatures">Adicionar</button>
+                        <div id="addLegislaturesInput"></div>
+                        {!! Form::open(['route' => 'assemblymen.addLegislatures']) !!}
+                    </div>
+                    {!! Form::close() !!}
                     </div>
                 </div>
             </div>
@@ -117,53 +117,57 @@
     </div>
 </div>
 
-<div class="modal fade" id="listResultModalParties" role="dialog">
+<div class="modal fade" id="listResultModalParties" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 align="center"><span class="glyphicon"></span> Histórico</h4>
+                <h4 align="center"> Histórico</h4>
+                <button type="button" class="btn btn-default btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <button class="btn btn-info" id="addParty">Adicionar</button>
-                {!! Form::open(['route' => 'assemblymen.addParties']) !!}
-                <div id="addPartiesInput"></div>
-                <div class="row">
-                    <div class="form-group col-sm-12 col-lg-12 listResult"></div>
-                </div>
-                {!! Form::close() !!}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Fechar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="listResultModalResponsibilities" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 align="center"><span class="glyphicon"></span> Histórico</h4>
-            </div>
-            <div class="modal-body">
-                <button class="btn btn-info" id="addResponsibility">Adicionar</button>
-                {!! Form::open(['route' => 'assemblymen.addResponsibilities']) !!}
-                    <div id="addResponsibilitiesInput"></div>
+                <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-sm-12 col-lg-12 listResult"></div>
                     </div>
-                {!! Form::close() !!}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Fechar</button>
+                    <div class="clearfix">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal"> Fechar</button>
+                        <button class="col-sm-4 btn btn-info" id="addParty">Adicionar</button>
+                    <div id="addPartiesInput"></div>
+                        {!! Form::open(['route' => 'assemblymen.addParties']) !!}
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="modal fade" id="listResultModalResponsibilities" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+                <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 align="center"> Histórico</h4>
+                    <button type="button" class="btn btn-default btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-sm-12 col-lg-12 listResult"></div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-bs-dismiss="modal"> Fechar</button>
+                                <button class="col-sm-4 btn btn-info" id="addResponsibility">Adicionar</button>
+                                <div id="addResponsibilitiesInput"></div>
+                                {!! Form::open(['route' => 'assemblymen.addResponsibilities']) !!}
+                            </div>
+                                {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 <script>
 

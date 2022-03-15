@@ -20,17 +20,19 @@
         <div class="form-group col-sm-2">
             {!! Form::label('skip_board', 'Ignora mesa diretora:') !!}
             <div class="clearfix"></div>
-            {!! Form::checkbox('skip_board', 1, null, ['class' => 'form-control switch' , 'data-on-text' => 'Sim', 'data-off-text' => 'Não', 'data-off-color' => 'danger', 'data-on-color' => 'success', 'data-size' => 'normal', 'type' => 'checkbox' ]) !!}
-        </div>
-{{--    criar logica para a checkbox    --}}
-        <div  class="col-sm-2 form-group form-check form-switch form-switch-md">
-            <input
-                style="margin: 1.5rem 0 0 -1rem"
-                name="active"
-                class="form-check-input"
-                type="checkbox"
-            >
-        </div>
+                <label>
+                    <div class="col-sm-2 form-check form-switch form-switch-md">
+                        <input
+                            name="skip_board"
+                            class="form-check-input"
+                            type="checkbox"
+                            @if(isset($responsibility->skip_board) ? $responsibility->skip_board == 1 : false)
+                            checked
+                            @endif
+                            >
+                    </div>
+                </label>
+            </div>
 
         <!-- Submit Field -->
         <div class="form-group col-sm-12 mt-3">

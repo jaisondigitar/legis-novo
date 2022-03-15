@@ -153,7 +153,7 @@
                 @shield('document.approved')
                     <span>
                         <label>
-                        <strong style="margin-left: 2rem">Aprovado:</strong>
+                        <strong>Aprovado:</strong>
                             <input onchange="changeApproved('{!! $document->id !!}')" type="checkbox" {!! $document->approved > 0 ? 'checked' : '' !!} >
                         </label>
                     </span>

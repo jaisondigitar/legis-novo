@@ -10,7 +10,22 @@
         <tr>
             <td>{!! $responsibility->name !!}</td>
             <td>{!! $responsibility->order !!}</td>
-            <td>{!! $responsibility->skip_board ? 'Sim' : 'Não' !!}</td>
+            <td>
+                <label>
+                    <div class="col-sm-2 form-check form-switch form-switch-md">
+                        <input
+                            name="skip_board"
+                            class="form-check-input"
+                            type="checkbox"
+                            @if(isset($responsibility->skip_board) ? $responsibility->skip_board == 1 : false)
+                            checked
+                            @endif
+
+                        >
+                    </div>
+                </label>
+                {!! Form::open(['route' => ['responsibilities.update', $responsibility->skip_board], 'method' => 'update']) !!}
+            </td>
             <td>
                 <div class="pull-right">
                     {!! Form::open(['route' => ['responsibilities.destroy', $responsibility->id], 'method' => 'delete']) !!}

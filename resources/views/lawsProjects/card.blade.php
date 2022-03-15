@@ -155,7 +155,7 @@
                 </span>
             </div>
             <div class="col-md-3">
-                <label style="margin: 0 0 1rem 7.813rem; color: #0A0A0A">
+                <label style="color: #0A0A0A">
                     Aprovação:
                     <div class="form-check form-switch form-switch-lg">
                         <input
@@ -171,7 +171,7 @@
                     </div>
                 </label>
                 <br>
-                <span style="margin: 0 0 0 7.813rem">
+                <span>
                     <strong style="color: #0A0A0A">Lida:</strong>
 
                     @shield('lawsProject.read')

@@ -116,7 +116,7 @@
                     {!! Form::label('city_id', 'Cidade:') !!}
                     {!! Form::select('city_id', $cities, null, ['class' => 'form-control cities']) !!}
                 </div>
-                <div class="form-group col-sm-4">
+                <div class="form-group col-sm-2">
                     @if(isset($assemblyman) && !empty($assemblyman->image))
                         <div class="logo-inst">
                             <img

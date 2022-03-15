@@ -43,7 +43,7 @@
         </form>
     </div>
 
-    <div class="the-box rounded">
+    <div style="margin: 1% 2.7% 1% 2.7%" class="the-box rounded">
         <div class="row">
 
         </div>
