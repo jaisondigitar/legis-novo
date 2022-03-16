@@ -10,11 +10,12 @@
             {!! Form::label('anonymous', 'Anônimo:') !!}
             <div class="form-check form-switch form-switch-md">
                 <input
+                    onchange="statusActive({{ $type_voting }})"
                     id="anonymous"
                     name="anonymous"
                     class="form-check-input"
                     type="checkbox"
-                    @if(isset($type_voting->anonymous) ? $type_voting->anonymous == 1:false)
+                    @if(isset($type_voting->anonymous) && $type_voting->anonymous == 1)
                     checked
                     @endif
                 >
@@ -26,11 +27,12 @@
             {!! Form::label('active', 'Ativo:') !!}
             <div class="form-check form-switch form-switch-md">
                 <input
+                    onchange="statusActive({{ $type_voting }})"
                     id="active"
                     name="active"
                     class="form-check-input"
                     type="checkbox"
-                    @if(isset($type_voting->active) ? $type_voting->active == 1:false)
+                    @if(isset($type_voting->active) && $type_voting->active == 1)
                     checked
                     @endif
                 >

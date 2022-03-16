@@ -137,8 +137,18 @@ class TypeVotingController extends AppBaseController
         $type_voting = TypeVoting::find($id);
         $input = $request->all();
 
-        $input['anonymous'] = isset($input['anonymous']) ? 1 : 0;
-        $input['active'] = isset($input['active']) ? 1 : 0;
+        if (isset($input['anonymous'])) {
+            $input['anonymous'] = $input['anonymous'] === 'true' || $input['active'] === 'on' ? 1 : 0;
+        } else {
+            $input['anonymous'] = 0;
+        }
+
+
+        if (isset($input['active'])) {
+            $input['active'] = $input['active'] === 'true' || $input['active'] === 'on' ? 1 : 0;
+        } else {
+            $input['active'] = 0;
+        }
 
         if (empty($type_voting)) {
             flash('Tipo não encontrado')->error();

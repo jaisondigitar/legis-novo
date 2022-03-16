@@ -9,8 +9,34 @@
     @foreach($type_voting as $type)
         <tr>
             <td>{!! $type->name !!}</td>
-            <td>{!! $type->anonymous ? 'Sim' : 'Não' !!}</td>
-            <td>{!! $type->active ? 'Sim' : 'Não' !!}</td>
+            <td>
+                <div class="form-check form-switch form-switch-md">
+                    <input
+                        onchange="statusActive({{ $type }})"
+                        id="anonymous"
+                        name="anonymous"
+                        class="form-check-input"
+                        type="checkbox"
+                        @if(isset($type->anonymous) ? $type->anonymous == 1:false)
+                        checked
+                        @endif
+                    >
+                </div>
+            </td>
+            <td>
+                <div class="form-check form-switch form-switch-md">
+                    <input
+                        onchange="statusActive({{ $type }})"
+                        id="active"
+                        name="active"
+                        class="form-check-input"
+                        type="checkbox"
+                        @if(isset($type->active) ? $type->active == 1:false)
+                        checked
+                        @endif
+                    >
+                </div>
+            </td>
             <td>
                 <div class="pull-right">
                     {!! Form::open(['route' => ['typeVotings.destroy', $type->id], 'method' => 'delete']) !!}
@@ -42,5 +68,15 @@
         const method = 'DELETE'
 
         sweetDelete(e, url, null, method)
+    }
+    const statusActive = (typeVotings) => {
+        console.log(typeVotings)
+        const url = `/typeVotings/${typeVotings.id}`;
+
+        $.ajax({
+            url: url,
+        }).success(() => {
+            toastr.success("Status do documento alterado com sucesso");
+        });
     }
 </script>
