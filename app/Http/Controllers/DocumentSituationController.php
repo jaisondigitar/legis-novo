@@ -168,7 +168,11 @@ class DocumentSituationController extends AppBaseController
 
         $input = $request->all();
 
-        $input['active'] = isset($input['active']) ? 1 : 0;
+        if (isset($input['active'])) {
+            $input['active'] = $input['active'] === 'true' || $input['active'] === 'on' ? 1 : 0;
+        } else {
+            $input['active'] = 0;
+        }
 
         $this->documentSituationRepository->update($documentSituation, $input);
 

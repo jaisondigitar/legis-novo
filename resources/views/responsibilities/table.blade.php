@@ -72,7 +72,7 @@
             data : data,
             method: "PUT"
         }).success(() => {
-            toastr.success("Tipo de Atencimento alterado com sucesso");
+            toastr.success("Tipo de Atendimento alterado com sucesso");
         });
     }
 </script>
