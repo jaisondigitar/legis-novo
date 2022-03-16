@@ -1,8 +1,3 @@
-<style>
-    .form-group > input{
-        border-radius: 5px; !important;
-    }
-</style>
     <div class="row">
         <!-- Date Start Field -->
         <div class="form-group col-sm-1">
@@ -46,33 +41,53 @@
             </div>
         </div>
         <div class="clearfix"></div>
-        <div class="form-group col-sm-12">
-            <button class="btn btn-info" type="button" id="addAssemblymanBtn">Adicionar Parlamentar</button>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <button class="btn btn-info" style="color: #FFFFFF" type="button" id="addAssemblymanBtn" data-bs-toggle="modal" data-bs-target="#exampleModal">Adicionar Parlamentar</button>
+            </div>
         </div>
 
-        <div id="addAssemblymanDiv">
-            <div class="form-group col-sm-6">
-                {!! Form::label('assemblyman', 'Parlamentar:') !!}
-                {!! Form::select(null, $assemblymen, null, ['class' => 'form-control', 'id' => 'assemblyman_id' ]) !!}
-            </div>
-            <div class="form-group col-sm-6">
-                {!! Form::label('office', 'Cargo:') !!}
-                {!! Form::select(null, $office_commission, null, ['class' => 'form-control', 'id' => 'office']) !!}
-            </div>
-            <!-- Date Start Field -->
-            <div class="form-group col-sm-6">
-                {!! Form::label('start_date', 'Data início:') !!}
-                {!! Form::text('start_date', null, ['class' => 'form-control datepicker']) !!}
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Adicionar Parlamentares</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="addAssemblymanDiv">
+                            <div class="row">
+                                <div class="form-group col-sm-4 mt-2">
+                                    {!! Form::label('assemblyman', 'Parlamentar:') !!}
+                                    {!! Form::select(null, $assemblymen, null, ['class' => 'form-control', 'id' => 'assemblyman_id' ]) !!}
+                                </div>
+                                <div class="form-group col-sm-4 mt-2">
+                                    {!! Form::label('office', 'Cargo:') !!}
+                                    {!! Form::select(null, $office_commission, null, ['class' => 'form-control', 'id' => 'office']) !!}
+                                </div>
+                                <!-- Date Start Field -->
+                                <div class="form-group col-sm-2 mt-2">
+                                    {!! Form::label('start_date', 'Data início:') !!}
+                                    {!! Form::text('start_date', null, ['class' => 'form-control datepicker']) !!}
+                                </div>
+                                <!-- Date End Field -->
+                                <div class="form-group col-sm-2 mt-2">
+                                    {!! Form::label('end_date', 'Data final:') !!}
+                                    {!! Form::text('end_date', null, ['class' => 'form-control datepicker']) !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button class="btn btn-info" type="button" id="saveAssemblymanBtn">Salvar Parlamentar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Date End Field -->
-            <div class="form-group col-sm-6">
-                {!! Form::label('end_date', 'Data encerramento:') !!}
-                {!! Form::text('end_date', null, ['class' => 'form-control datepicker']) !!}
-            </div>
-            <div class="form-group col-sm-12">
-                <button class="btn btn-info pull-right" type="button" id="saveAssemblymanBtn">Salvar Parlamentar</button>
-            </div>
+
         </div>
         <div class="hidden" id="assemblyman_commission_hidden">
 
@@ -108,10 +123,10 @@
                     '<td>'+ value.end_date +'</td>'+
                     '<td>' +
                     '<button type="button" onclick="removeAssemblyman('+ value.office +','+ value.assemblyman_id+')" class="btn btn-sm btn-danger">' +
-                    '<i class="fa fa-remove"></i>' +
+                    '<i class="fa fa-trash"></i>' +
                     '</button>' +
                     '</td></tr>');
-                // extra button <button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-edit"></i></button>
+                // extra button <button class="btn btn-sm btn-info"></button>
 
                 //Adicionando hidden
                 var inputs = '<div data-assemblyman="' + value.assemblyman_id + '" id="hidden'+value.assemblyman_id+ '">';

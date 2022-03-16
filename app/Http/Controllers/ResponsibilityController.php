@@ -77,7 +77,7 @@ class ResponsibilityController extends AppBaseController
             return redirect('/admin');
         }
         $input = $request->all();
-
+        $input['skip_board'] = isset($input['skip_board']) ? 1 : 0;
         $this->responsibilityRepository->create($input);
 
         flash('Responsabilidade salva com sucesso.')->success();
@@ -164,7 +164,13 @@ class ResponsibilityController extends AppBaseController
         }
 
         $input = $request->all();
-        $input['skip_board'] = $input['skip_board'] === 'true' ? 1 : 0;
+
+        if (isset($input['skip_board'])) {
+            $input['skip_board'] = $input['skip_board'] === 'true' || $input['skip_board'] === 'on' ? 1 : 0;
+        } else {
+            $input['skip_board'] = 0;
+        }
+
         $this->responsibilityRepository->update($responsibility, $input);
 
         if ($request->ajax()) {
