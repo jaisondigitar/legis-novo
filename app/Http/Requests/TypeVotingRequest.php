@@ -23,6 +23,12 @@ class TypeVotingRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->ajax()) {
+            return [
+                'name' => 'nullable',
+            ];
+        }
+
         return [
             'name' => 'required',
         ];

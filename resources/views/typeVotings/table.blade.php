@@ -13,7 +13,7 @@
                 <div class="form-check form-switch form-switch-md">
                     <input
                         onchange="statusActive({{ $type }})"
-                        id="anonymous"
+                        id="anonymous-{{$type->id}}"
                         name="anonymous"
                         class="form-check-input"
                         type="checkbox"
@@ -27,7 +27,7 @@
                 <div class="form-check form-switch form-switch-md">
                     <input
                         onchange="statusActive({{ $type }})"
-                        id="active"
+                        id="active-{{$type->id}}"
                         name="active"
                         class="form-check-input"
                         type="checkbox"
@@ -61,22 +61,30 @@
     @endforeach
     </tbody>
 </table>
-<script>
-    const sweet = (e, id) => {
-        const url = `/typeVotings/${id}`;
+    <script>
+        const sweet = (e, id) => {
+            const url = `/typeVotings/${id}`;
 
-        const method = 'DELETE'
+            const method = 'DELETE'
 
-        sweetDelete(e, url, null, method)
-    }
-    const statusActive = (typeVotings) => {
-        console.log(typeVotings)
-        const url = `/typeVotings/${typeVotings.id}`;
+            sweetDelete(e, url, null, method)
+        }
+        const statusActive = (typeVotings) => {
+            console.log(typeVotings)
+            const url = `/typeVotings/${typeVotings.id}`;
 
-        $.ajax({
-            url: url,
-        }).success(() => {
-            toastr.success("Status do tipo de documento alterado com sucesso");
-        });
-    }
-</script>
+            const data = {
+                anonymous: $('#anonymous-'+typeVotings.id).is(':checked'),
+                active: $('#active-'+typeVotings.id).is(':checked'),
+                _token : '{{csrf_token()}}'
+            }
+
+            $.ajax({
+                url : url,
+                data : data,
+                method : 'PUT'
+            }).success(() => {
+                toastr.success("Status do tipo de documento alterado com sucesso");
+            });
+        }
+    </script>

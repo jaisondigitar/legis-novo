@@ -158,10 +158,14 @@ class TypeVotingController extends AppBaseController
 
         $type_voting = TypeVoting::find($id);
 
-        $type_voting->name = $input['name'];
+        $type_voting->name = $input['name'] ?? $type_voting['name'];
         $type_voting->active = $input['active'];
         $type_voting->anonymous = $input['anonymous'];
         $type_voting->save();
+
+        if ($request->ajax()) {
+            return json_encode(['success' => true]);
+        }
 
         flash('Tipo atualizado com sucesso.')->success();
 
