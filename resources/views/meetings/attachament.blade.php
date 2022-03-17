@@ -3,18 +3,18 @@
     {!! Breadcrumbs::render('meetings.attachment') !!}
 @endsection
 @section('content')
-    <a href="{{ url('meetings') }}" ><button type="button" class="btn btn-dark" style="margin-bottom: 10px; color: #0A0A0A"><i class="glyphicon glyphicon-chevron-left"></i>Voltar</button></a>
-    <div class="the-box rounded">
+{{--    <a href="{{ url('meetings') }}" ><button type="button" class="btn btn-default" style="margin-bottom: 10px; color: #0A0A0A"><i class="fa fa-chevron-left"></i>Voltar</button></a>--}}
+    <div style="margin: 1% 2.7% 1% 2.7%" class="the-box rounded">
         <div class="row">
             <div class="col-md-3">
                 @include('flash::message')
                 {!! Form::open(['route' => ['meetings.attachament.upload', $meeting->id], 'method' => 'post', 'files' => 'true']) !!}
                     <label class="control-label">Selecione o arquivo:</label>
-                        {!! Form::file('file[]', array('multiple'=>true, 'class' => 'file')) !!}
-                    <button type="submit" class="btn btn-success pull-right">Incluir</button>
+                        {!! Form::file('file[]', array('multiple'=>true, 'class' => 'form-control')) !!}
+                    <button type="submit" class="btn btn-success mt-2">Incluir</button>
+                <a href="{!! route('meetings.index') !!}" class="btn btn-default mt-2">Cancelar</a>
                 {!! Form::close() !!}
                 <br>
-                <hr class="hr">
             </div>
             <div class="col-md-9">
                 <h4 align="center">Anexos:</h4>
