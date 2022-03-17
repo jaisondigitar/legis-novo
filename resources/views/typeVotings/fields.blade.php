@@ -10,7 +10,6 @@
             {!! Form::label('anonymous', 'Anônimo:') !!}
             <div class="form-check form-switch form-switch-md">
                 <input
-                    onchange="statusActive({{ $type_voting }})"
                     id="anonymous"
                     name="anonymous"
                     class="form-check-input"
@@ -27,7 +26,6 @@
             {!! Form::label('active', 'Ativo:') !!}
             <div class="form-check form-switch form-switch-md">
                 <input
-                    onchange="statusActive({{ $type_voting }})"
                     id="active"
                     name="active"
                     class="form-check-input"

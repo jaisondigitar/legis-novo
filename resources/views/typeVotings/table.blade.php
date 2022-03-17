@@ -76,7 +76,7 @@
         $.ajax({
             url: url,
         }).success(() => {
-            toastr.success("Status do documento alterado com sucesso");
+            toastr.success("Status do tipo de documento alterado com sucesso");
         });
     }
 </script>
