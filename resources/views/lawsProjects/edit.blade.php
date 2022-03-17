@@ -3,7 +3,7 @@
     {!! Breadcrumbs::render('lawsProjects.edit') !!}
 @endsection
 @section('content')
-<div class="the-box rounded" style="margin: 1% 2.7% 1% 2.7%">
+<div style="margin: 1% 2.7% 1% 2.7%" class="the-box rounded" style="margin: 1% 2.7% 1% 2.7%">
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
@@ -16,7 +16,7 @@
 
 @is(['admin','root'])
 
-<div class="the-box rounded" style="font-size: 12px; margin: 1rem 3.125rem 1rem 3.125rem">
+<div style="margin: 1% 2.7% 1% 2.7%" class="the-box rounded" style="font-size: 12px; margin: 1rem 3.125rem 1rem 3.125rem">
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">

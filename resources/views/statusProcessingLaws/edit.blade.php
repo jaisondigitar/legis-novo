@@ -3,7 +3,7 @@
     {!! Breadcrumbs::render('home') !!}
 @endsection
 @section('content')
-<div class="the-box rounded">
+<div style="margin: 1% 2.7% 1% 2.7%" class="the-box rounded">
     <div class="row">
         <div class="col-md-12">
             {!! Form::model($statusProcessingLaw, ['route' => ['statusProcessingLaws.update', $statusProcessingLaw->id], 'method' => 'patch','files' => true]) !!}
