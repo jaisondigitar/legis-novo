@@ -11,30 +11,34 @@
             <td>{!! $type->name !!}</td>
             <td>
                 <div class="form-check form-switch form-switch-md">
-                    <input
-                        onchange="statusActive({{ $type }})"
-                        id="anonymous-{{$type->id}}"
-                        name="anonymous"
-                        class="form-check-input"
-                        type="checkbox"
-                        @if(isset($type->anonymous) ? $type->anonymous == 1:false)
-                        checked
-                        @endif
-                    >
+                    <label>
+                        <input
+                            onchange="statusActive({{ $type }})"
+                            id="anonymous-{{$type->id}}"
+                            name="anonymous"
+                            class="form-check-input"
+                            type="checkbox"
+                            @if(isset($type->anonymous) ? $type->anonymous == 1 : false)
+                            checked
+                            @endif
+                        >
+                    </label>
                 </div>
             </td>
             <td>
                 <div class="form-check form-switch form-switch-md">
-                    <input
-                        onchange="statusActive({{ $type }})"
-                        id="active-{{$type->id}}"
-                        name="active"
-                        class="form-check-input"
-                        type="checkbox"
-                        @if(isset($type->active) ? $type->active == 1:false)
-                        checked
-                        @endif
-                    >
+                    <label>
+                        <input
+                            onchange="statusActive({{ $type }})"
+                            id="active-{{$type->id}}"
+                            name="active"
+                            class="form-check-input"
+                            type="checkbox"
+                            @if(isset($type->active) ? $type->active == 1 : false)
+                            checked
+                            @endif
+                        >
+                    </label>
                 </div>
             </td>
             <td>
