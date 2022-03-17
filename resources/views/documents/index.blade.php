@@ -3,7 +3,7 @@
     {!! Breadcrumbs::render('documents.list') !!}
 @endsection
 @section('content')
-    <div style="margin: 1% 2.7% 1% 2.7%" class="the-box rounded">
+    <div style="margin: 0.9% 2.7% 1% 2.7%" class="the-box rounded">
         <form id="search-form" method="GET">
             <input type="hidden" name="has-filter" value="true">
             <div class="row">
