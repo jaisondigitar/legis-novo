@@ -7,13 +7,11 @@
     @include('common.errors')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-primary">
-                <div class="card-body">
-                    {!! Form::model($module, ['route' => ['modules.update', $module->id], 'method' => 'patch','files' => true]) !!}
-                    @include('modules.fields')
-                    {!! Form::close() !!}
-                </div><!-- /.card-body -->
-            </div>
+            <div class="card-body">
+                {!! Form::model($module, ['route' => ['modules.update', $module->id], 'method' => 'patch','files' => true]) !!}
+                @include('modules.fields')
+                {!! Form::close() !!}
+            </div><!-- /.card-body -->
         </div>
     </div>
 </div>

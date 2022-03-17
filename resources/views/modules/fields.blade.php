@@ -1,6 +1,6 @@
 <div class="row">
     {!! Form::token() !!}
-    <div class="form-group col-sm-12"><h3>Cadastro</h3><hr></div>
+    <div class="form-group col-sm-12"><h3>Cadastro</h3></div>
     <!--- Name Field --->
     <div class="form-group col-sm-6 col-lg-4">
         {!! Form::label('name', 'Nome:', ['class' => 'required']) !!}
