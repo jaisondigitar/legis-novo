@@ -57,8 +57,8 @@
             method: "GET",
             url: url,
             dataType: "json"
-        }).success(function(result) {
-            console.log(result);
+        }).success(() => {
+            toastr.success("Status da empresa alterado com sucesso");
         });
     }
     const sweet = (e, id) => {
