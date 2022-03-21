@@ -38,10 +38,21 @@ class ProcessingDocumentController extends Controller
     {
         $input = $request->all();
 
-        $processing = ProcessingDocument::create($request->all());
+        $date = explode(' ', $input['processing_document_date']);
+        $date_time = explode('/', $date[0]);
 
+        $date_first = explode(' ', $input['processing_document_date_first']);
+        $date_first_time = explode('/', $date_first[0]);
+
+        $documents_date = $date_time[2].'-'.$date_time[1].'-'.$date_time[0];
+        $documents_date_first = $date_first_time[2].'-'.$date_first_time[1].'-'.$date_first_time[0];
+
+        if (strtotime($documents_date) < strtotime($documents_date_first)) {
+            return json_encode(false);
+        }
+
+        $processing = ProcessingDocument::create($input);
         $processing->observation = $request->observation;
-
         $processing->save();
 
         if ($processing) {

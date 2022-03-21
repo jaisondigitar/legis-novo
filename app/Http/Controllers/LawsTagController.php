@@ -171,7 +171,7 @@ class LawsTagController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('lawsTags.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -188,6 +188,10 @@ class LawsTagController extends AppBaseController
         }
 
         $this->lawsTagRepository->delete($lawsTag);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Tag de Lei removida com sucesso.')->success();
 

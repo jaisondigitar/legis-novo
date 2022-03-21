@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -52,6 +53,7 @@ class Advice extends BaseModel
         'laws_projects_id',
         'description',
         'legal_option',
+        'date_end',
     ];
 
     public static $translation = [
@@ -85,28 +87,45 @@ class Advice extends BaseModel
         'to_id' => 'required',
     ];
 
-    public function getDateAttribute($date)
+    /**
+     * @param $date_end
+     */
+    public function setDateEndAttribute($date_end)
     {
-        return $this->asDateTime($date)->format('d/m/Y');
+        if ($date_end) {
+            $this->attributes['date_end'] = Carbon::createFromFormat('d/m/Y', $date_end);
+        } else {
+            $this->attributes['date_end'] = null;
+        }
+    }
+
+    /**
+     * @param $date_end
+     * @return string
+     */
+    public function getDateEndAttribute($date_end)
+    {
+        return isset($date_end) ? $this->asDateTime($date_end)->format('d/m/Y') : null;
+    }
+
+    public function getDateAttribute($date): string
+    {
+        return $this->asDateTime($date)->format('d/m/Y H:i');
     }
 
     public function setDateAttribute($date)
     {
-        $this->attributes['date'] = $date->format('Y-m-d');
+        $this->attributes['date'] = Carbon::createFromFormat('d/m/Y H:i', $date);
     }
 
     public function destination()
     {
-        if ($this->type == 'c') {
-            return $this->belongsTo(Commission::class, 'to_id');
-        }
+        return $this->belongsTo(Commission::class, 'to_id');
     }
 
     public function situation()
     {
-        if ($this->type == 'c') {
-            return $this->hasMany(AdviceSituation::class, 'advice_id');
-        }
+        return $this->hasMany(AdviceSituation::class, 'advice_id');
     }
 
     public function commission()

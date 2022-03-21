@@ -14,62 +14,105 @@
             text-align: left;
             list-style-type: none;
         }
+
+        .text-card {
+            text-align: start;
+            margin-left: 50px;
+        }
+
+        .display-count-danger {
+            display: none;
+        }
+
+        .panel-danger:hover .display-count-danger {
+            display: block;
+        }
+
+        .display-count-info {
+            display: none;
+        }
+
+        .panel-info:hover .display-count-info {
+            display: block;
+        }
+
+        .title-card {
+            text-decoration: none !important;
+            color: white;
+        }
+
+        .title-card:hover {
+            text-decoration: none !important;
+            color: white;
+        }
     </style>
     <h1 class="page-heading" style="margin-top: 0;">DASHBOARD <small>Algumas informações úteis</small></h1>
 
-    <div class="col-lg-3">
-        <div class="alert alert-info alert-block square fade in">
-            <p><strong>Bem vindo(a)!</strong></p>
-            <p style="text-align: justify">O GPL é um software para Gestão de Processos Legislativos. </p>
-            <p style="text-align: justify">A aplicação está em constante atualização, buscando atender todos os requesitos necessários para o controle e gestão de todo o processo em uma casa de leis.</p>
-        </div>
-    </div>
-    <a href="/lawsProjects">
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <!-- BEGIN TODAY VISITOR TILES -->
         <div class="panel panel-danger panel-square panel-no-border text-center">
             <div class="panel-heading">
-                <h3 class="panel-title">PROJETOS DE LEI</h3>
+                <a class="title-card" href="/lawsProjects">
+                    <h3 class="panel-title">PROJETOS DE LEI</h3>
+                </a>
             </div>
+
             <div class="panel-body">
                 <h1 class="bolded tiles-number text-danger">{{ $projLeiAll }}</h1>
                 <p class="text-muted"><small>APROVADOS: <strong>{{ $projLeiApr }}</strong></small></p>
+                <div class="display-count-danger">
+                    @foreach($countType as $key => $items)
+                        @if($items['count'])
+                            <a href="/lawsProjects?has-filter=true&created_at=&law_type_id={{$items['id']}}&project_number=&law_date=&assemblyman_id=">
+                                <p class="text-muted text-card"><small><strong>{{ $key }}: {{ $items['count'] }}</strong></small></p>
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
             </div><!-- /.panel-body -->
         </div><!-- /.panel panel-success panel-block-color -->
     </div>
-    </a>
 
-    <a href="/documents">
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <div class="panel panel-info panel-square panel-no-border text-center">
             <div class="panel-heading">
-                <h3 class="panel-title">DOCUMENTOS</h3>
+                <a class="title-card" href="/documents">
+                    <h3 class="panel-title">DOCUMENTOS</h3>
+                </a>
             </div>
             <div class="panel-body">
                 <h1 class="bolded tiles-number text-info">{{ $docAll }}</h1>
                 <p class="text-muted"><small>LIDOS: <strong>{{ $docRead }}</strong></small></p>
+                <div class="display-count-info">
+                    @foreach($countDoc as $key => $items)
+                        @if($items['count'])
+                            <a href="/documents?has-filter=true&reg=&document_type_id={{$items['id']}}&number=&date=&owner_id=&content=&status=0">
+                                <p class="text-muted text-card"><small><strong>{{ $key }}: {{ $items['count'] }}</strong></small></p>
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
             </div><!-- /.panel-body -->
         </div><!-- /.panel panel-success panel-block-color -->
     </div>
-    </a>
 
     <a href="/admin/commissions">
-    <div class="col-lg-3">
-        <div class="panel panel-primary panel-square panel-no-border text-center">
-            <div class="panel-heading">
-                <h3 class="panel-title">COMISSÕES</h3>
-            </div>
-            <div class="panel-body">
-                <h1
-                    class="bolded tiles-number text-primary">
-                        {{ isset($commissions)  ? count($commissions) : '0' }}
-                </h1>
-                <p class="text-muted">
-                    <small>LISTA DAS COMISSÕES ATIVAS</small>
-                </p>
-            </div><!-- /.panel-body -->
-        </div><!-- /.panel panel-success panel-block-color -->
-    </div>
+        <div class="col-lg-4">
+            <div class="panel panel-primary panel-square panel-no-border text-center">
+                <div class="panel-heading">
+                    <h3 class="panel-title">COMISSÕES</h3>
+                </div>
+                <div class="panel-body">
+                    <h1
+                        class="bolded tiles-number text-primary">
+                            {{ isset($commissions)  ? count($commissions) : '0' }}
+                    </h1>
+                    <p class="text-muted">
+                        <small>LISTA DAS COMISSÕES ATIVAS</small>
+                    </p>
+                </div><!-- /.panel-body -->
+            </div><!-- /.panel panel-success panel-block-color -->
+        </div>
     </a>
     <div class="clearfix"></div>
 

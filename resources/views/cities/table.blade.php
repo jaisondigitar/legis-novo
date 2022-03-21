@@ -13,7 +13,7 @@
 			<td>{!! $city->name !!}</td>
             <td>
                 <a href="{!! route('cities.edit', [$city->id]) !!}"><i class="fa fa-pencil icon-rounded icon-xs icon-warning"></i></a>
-                <a href="{!! route('cities.delete', [$city->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"><i class="glyphicon glyphicon-remove icon-rounded icon-xs icon-danger"></i></a>
+                <a href="{!! route('cities.delete', [$city->id]) !!}" onclick="return confirm('Deseja deletar este registro?')"><i class="fa fa-remove icon-rounded icon-xs icon-danger"></i></a>
             </td>
         </tr>
     @endforeach

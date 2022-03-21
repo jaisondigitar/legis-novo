@@ -85,13 +85,13 @@ class DocumentController extends AppBaseController
         $assemblymensList = [null => 'Selecione...'];
         foreach ($assemblymens as $assemblyman) {
             $parties = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
-            $assemblymensList[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix;
+            $assemblymensList[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix ?? '';
         }
 
         $assemblymens1 = Assemblyman::where('assemblymen.active', '=', 1)->get();
         foreach ($assemblymens1 as $assemblyman) {
             $parties = PartiesAssemblyman::where('assemblyman_id', $assemblyman->id)->orderBy('date', 'DESC')->first();
-            $assemblymen[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix;
+            $assemblymen[$assemblyman->id] = $assemblyman->short_name.' - '.$parties->party->prefix ?? '';
         }
 
         return [$assemblymen, $assemblymensList];
@@ -980,7 +980,7 @@ class DocumentController extends AppBaseController
             'document_situation_id' => DocumentSituation::where('name', 'Encaminhado')->first()->id,
             'status_processing_document_id' => StatusProcessingDocument::where('name', 'Em Trâmitação')
                 ->first()->id,
-            'processing_document_date' => now()->format('d/m/Y'),
+            'processing_document_date' => now()->format('d/m/Y H:i'),
             'destination_id' => Destination::where('name', 'SECRETARIA')->first()->id,
         ]);
 
@@ -1028,6 +1028,7 @@ class DocumentController extends AppBaseController
                 if ($document_protocol->save()) {
                     $date = explode('/', $input['protocol_date']);
                     $time = explode(' ', $date[2]);
+
 
                     $document_protocol->created_at = $time[0].'-'.$date[1].'-'.$date[0].$time[1];
                     $document_protocol->save();
@@ -1171,11 +1172,9 @@ class DocumentController extends AppBaseController
         $destinations = Destination::pluck('name', 'id')->prepend('Selecione...', '');
 
         $documents = $document->processingDocument()->orderBy('processing_document_date', 'desc')->get();
-        foreach ($documents as $key => $last) {
-            $array[] = $key;
-        }
 
-        $last_position = empty($array) ? [] : end($array);
+        $first_documents = $documents->first();
+
 
         return view(
             'documents.advices',
@@ -1186,7 +1185,7 @@ class DocumentController extends AppBaseController
                 'advice_publication_document',
                 'status_processing_document',
                 'documents',
-                'last_position',
+                'first_documents',
                 'destinations'
             )
         )

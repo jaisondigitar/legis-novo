@@ -145,9 +145,9 @@
             <div class="modal-body">
                 <div align="center"><label class="label label-danger" id="labelmessage2"></label></div>
                 <input type="hidden" name="law_project_id" id="law_project_protocol_id">
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-12">
                     {!! Form::label('date_protocol', 'Data:') !!}
-                    {!! Form::text('date_protocol', null, ['class' => 'form-control datepicker', 'id' => 'date_protocol']) !!}
+                    {!! Form::text('date_protocol', null, ['class' => 'form-control datetimepicker1', 'id' => 'date_protocol']) !!}
                 </div>
                 <div class="form-group col-sm-12">
                     {!! Form::label('project_number', 'Número projeto de lei:') !!}
@@ -163,6 +163,30 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-success pull-right" id="btn-save-protocol">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalNumberEditDoc" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Número do Projeto de Lei</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="law_project_id" id="law_project_id_edit_number">
+
+                <div class="form-group col-sm-5">
+                    {!! Form::label('law_project_number_edit', 'Número do Projeto de Lei:') !!}
+                    {!! Form::text('law_project_number_edit', null, ['class' => 'form-control', 'id' => 'law_project_number_edit']) !!}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success pull-right" id="btn-edit-protocol" onclick="editNumberDoc()" >Alterar</button>
             </div>
         </div>
     </div>
@@ -188,7 +212,7 @@
 
                 <div class="form-group col-sm-4">
                     {!! Form::label('date_protocol', 'Data do protocolo:') !!}
-                    {!! Form::text('date_protocol', null, ['class' => 'form-control datepicker', 'id' => 'date_protocol_edit']) !!}
+                    {!! Form::text('date_protocol', null, ['class' => 'form-control datetimepicker1', 'id' => 'date_protocol_edit']) !!}
                 </div>
 
                 @shield('lawsProject.editprotocollei')
@@ -218,6 +242,33 @@
         $('#answer').modal();
     };
 
+    const alteraNumber = (id) => {
+        $('#law_project_id_edit_number').val(id);
+        $('#modalNumberEditDoc').modal();
+    }
+
+    const editNumberDoc = () => {
+        const url = '/lawProjects/altera-numero';
+
+        const data = {
+            law_project_id: $('#law_project_id_edit_number').val(),
+            law_project_id_number: $('#law_project_number_edit').val(),
+            '_token': '{{csrf_token()}}'
+        };
+
+        $.ajax({
+            url: url,
+            data: data,
+            method: 'POST'
+        }).success((result) => {
+            if (result.success) {
+                $('#modalNumberEditLaw').modal('hide');
+                $('#numberEdit' + result.id).html(result.next_number);
+            } else {
+                $('#law_project_number_edit').val(result.next_number);
+            }
+        });
+    };
 
     const toogleApproved = function (id) {
 
@@ -364,10 +415,12 @@
         const dia = data.getDate() <= 9 ? '0' + data.getDate() : data.getDate() ;
         let mes = data.getMonth() + 1;
         const ano = data.getFullYear();
+        const hour = data.getHours();
+        const min = data.getMinutes();
 
         mes = mes <= 9 ? '0' + mes : mes;
 
-        return dia + '/' + mes + '/' + ano;
+        return dia + '/' + mes + '/' + ano + ' ' + hour + ':' + min;
     }
 
     $(document).ready(function () {
@@ -384,7 +437,7 @@
                 $('#law_project_protocol_id').val(id);
                 $('#project_number').val(result.project_number);
                 $('#protocol').val(result.protocol);
-                $('#date_protocol').val(data);
+                $('#date_protocol').val(dateForm + ' ' + timeForm);
                 $('#labelmessage2').html('');
                 $('#modalProtocol').modal();
             });

@@ -178,7 +178,7 @@ class LawsPlaceController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('lawsPlaces.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -195,6 +195,10 @@ class LawsPlaceController extends AppBaseController
         }
 
         $this->lawsPlaceRepository->delete($lawsPlace);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Lugar da Lei removido com sucesso.')->success();
 

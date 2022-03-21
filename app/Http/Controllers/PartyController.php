@@ -180,7 +180,7 @@ class PartyController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('parties.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -197,6 +197,10 @@ class PartyController extends AppBaseController
         }
 
         $this->partyRepository->delete($party);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Partido removido com sucesso.')->success();
 

@@ -60,32 +60,15 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <h4 class="modal-title" id="myModalLabel">PEDIDO DE DESTINO</h4>
+                        <p>Projeto de Lei: {!!$lawsProject->project_number . '/' .$lawsProject->getYearLawPublish($lawsProject->law_date)!!}</p>
                     </div>
                     <div class="modal-body">
-                        <label style="width: 100%">
-                            Selecione a comissão:
-                            <select
-                                class="form-control destination"
-                                multiple name="comission"
-                                id="comissao"
-                            >
-                                <optgroup label="Comissões">
-                                    @foreach(\App\Models\Commission::active()->get() as $comission)
-                                        <option value="c{{ $comission->id }}">
-                                            {{ $comission->name }}
-                                        </option>
-                                    @endforeach
-                                </optgroup>
-                            </select>
-                        </label>
-
-                        <label>
-                            Descrição:
-                            <textarea
-                                name="comissionDescriprion"
-                                class="form-control descricao ckeditor"
-                            ></textarea>
-                        </label>
+                        <label style="width: 100%" for="comissao">Selecione a comissão:</label>
+                        <select style="width: 100%" class="form-control js-example-basic-multiple col-sm-12" id="comissao" name="comission" multiple="multiple">
+                            @foreach($commissions as $commission)
+                                <option value="c{{ $commission->id }}">{{ $commission->name }}</option>
+                            @endforeach
+                        </select>
 
                         <label>
                             Parecer Jurídico:
@@ -98,6 +81,11 @@
                         <label>
                             {!! Form::label('date_end', 'Prazo:') !!}
                             {!! Form::text('date_end', null, ['class' => 'form-control datepicker']) !!}
+                        </label>
+
+                        <label>
+                            {!! Form::label('days', 'Dias:') !!}
+                            {!! Form::number('days', null, ['class' => 'form-control', 'disabled']) !!}
                         </label>
                     </div>
                     <div class="modal-footer">
@@ -123,7 +111,23 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
+
         document.querySelector('#date_end').value = someDateFiveForm
+
+        $('#date_end').on('change', () => {
+            const date_first_split = $('#date_end').val().split('/').reverse().join('/')
+            const date_last_split = dateForm.split('/').reverse().join('/')
+
+            let day1 = new Date(date_last_split);
+            let day2 = new Date(date_first_split);
+
+            let difference= Math.abs(day2-day1);
+
+            document.querySelector('#days').value = difference/(1000 * 3600 * 24)
+        })
 
         $(document).ready(function () {
             setTimeout(function () {
@@ -151,11 +155,11 @@
             });
 
             const data = {
+                date: dateForm + ' ' + timeForm,
                 laws_projects_id: laws_projects_id,
                 document_id: 0,
                 to_id: to_id,
                 type: type,
-                description: CKEDITOR.instances['comissionDescriprion'].getData(),
                 legal_option: CKEDITOR.instances['legal_option'].getData(),
                 date_end: $('#date_end').val(),
             };

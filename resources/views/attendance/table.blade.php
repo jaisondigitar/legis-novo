@@ -23,7 +23,7 @@
                 {!! Form::open(['route' => ['attendance.destroy', $attend->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     @shield('attendance.show')
-                        <a @popper(Visualizar) href="{!! route('attendance.show', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                        <a @popper(Visualizar) href="{!! route('attendance.show', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>
                     @endshield
 
                     <button
@@ -36,11 +36,18 @@
                     </button>
 
                     @shield('attendance.edit')
-                        <a @popper(Editar) href="{!! route('attendance.edit', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                        <a @popper(Editar) href="{!! route('attendance.edit', [$attend->id]) !!}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>
                     @endshield
 
                     @shield('attendance.delete')
-                        {!! Form::button('<i @popper(Deletar) class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                      <button
+                            @popper(Deletar)
+                            type = 'submit'
+                            class = 'btn btn-danger btn-xs'
+                            onclick="sweet(event, {!! $attend->id !!})"
+                      >
+                          <i class="fa fa-trash"></i>
+                      </button>
                     @endshield
                 </div>
                 {!! Form::close() !!}
@@ -148,4 +155,12 @@
         });
     }
 
+    const sweet = (e, id) => {
+        const url = `/attendance/${id}`;
+
+        const method = 'DELETE'
+
+        sweetDelete(e, url, null, method)
+    }
 </script>
+

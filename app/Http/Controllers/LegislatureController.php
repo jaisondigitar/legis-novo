@@ -194,7 +194,7 @@ class LegislatureController extends AppBaseController
      * @return Application|Redirector|RedirectResponse
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         if (! Defender::hasPermission('legislatures.delete')) {
             flash('Ops! Desculpe, você não possui permissão para esta ação.')->warning();
@@ -211,6 +211,10 @@ class LegislatureController extends AppBaseController
         }
 
         $this->legislatureRepository->delete($legislature);
+
+        if ($request->ajax()) {
+            return 'success';
+        }
 
         flash('Legislatura removido com sucesso.')->success();
 
