@@ -1626,6 +1626,8 @@ class LawsProjectController extends AppBaseController
             return redirect(route('lawsProjects.index'));
         }
 
-        return view('lawsProjects.legal-option', ['lawsProject' => $lawsProject]);
+        $commissions = Commission::active()->get();
+
+        return view('lawsProjects.legal-option', compact('commissions', 'lawsProject'));
     }
 }
