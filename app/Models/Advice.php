@@ -81,11 +81,7 @@ class Advice extends BaseModel
      *
      * @var array
      */
-    public static $rules = [
-        'type' => 'required',
-        'laws_projects_id' => 'required',
-        'to_id' => 'required',
-    ];
+    public static $rules = [];
 
     /**
      * @param $date_end

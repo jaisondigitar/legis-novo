@@ -164,22 +164,18 @@
                 date_end: $('#date_end').val(),
             };
 
-            if(to_id.length > 0) {
-                $.ajax({
-                    url: url,
-                    data: data,
-                    method: 'POST'
-                }).success((data) => {
-                    if (data) {
-                        toastr.success("Pedido salvo com sucesso!!");
-                        window.location.reload()
-                    } else {
-                        toastr.error("Erro ao salvar pedido!!");
-                    }
-                })
-            } else {
-                toastr.error('Selecione um destino!');
-            }
+            $.ajax({
+                url: url,
+                data: data,
+                method: 'POST'
+            }).success((data) => {
+                if (data) {
+                    toastr.success("Pedido salvo com sucesso!!");
+                    window.location.reload()
+                } else {
+                    toastr.error("Erro ao salvar pedido!!");
+                }
+            })
         }
 
         const dataAtualFormatada = (data) => {
