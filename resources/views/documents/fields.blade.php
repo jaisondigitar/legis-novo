@@ -144,7 +144,6 @@
         });
 
         $(".chosen-select").chosen();
-
         @if(isset($documentAssemblyman))
             $(".chosen-select").val({!! (isset($documentAssemblyman) ? $documentAssemblyman : '') !!}).trigger('chosen:updated');
         @endif

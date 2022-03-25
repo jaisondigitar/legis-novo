@@ -77,87 +77,87 @@
         <div id="panel-collapse-4" class="collapse " aria-expanded="true" style="">
             <div class="panel-body">
                 <div class=" col-md-12 col-sm-12">
-                    <div class="form-group col-sm-3"> 
-                        {!! Form::label('advice_publication_id', ' Publicado no:') !!} 
-                        {!! Form::text('advice_publication_id', isset($lawsProject->advicePublicationLaw) ? $lawsProject->advicePublicationLaw->name : ' ', ['class' => 'form-control', 'disabled']) !!} 
-                    </div>  
+                    <div class="form-group col-sm-3">
+                        {!! Form::label('advice_publication_id', ' Publicado no:') !!}
+                        {!! Form::text('advice_publication_id', isset($lawsProject->advicePublicationLaw) ? $lawsProject->advicePublicationLaw->name : ' ', ['class' => 'form-control', 'disabled']) !!}
+                    </div>
 
-                    <div class="form-group col-sm-3"> 
-                        {!! Form::label('advice_situation_id', 'Situação do projeto:') !!} 
-                        {!! Form::text('advice_situation_id', isset($lawsProject->adviceSituationLaw) ? $lawsProject->adviceSituationLaw->name : ' ', ['class' => 'form-control', 'disabled']) !!} 
-                    </div>  
-
-                    <div class="clearfix"></div>
-
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('date_presentation', 'Data ao plenário:') !!} 
-                        {!! Form::text('date_presentation', null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('advice_date', 'Parecer em:') !!} 
-                        {!! Form::text('advice_date', null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('first_discussion', ' Primeira discussão em:') !!} 
-                        {!! Form::text('first_discussion',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('second_discussion', ' Segunda discussão em:') !!} 
-                        {!! Form::text('second_discussion',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('third_discussion', ' Terceira discussão em:') !!} 
-                        {!! Form::text('third_discussion',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
+                    <div class="form-group col-sm-3">
+                        {!! Form::label('advice_situation_id', 'Situação do projeto:') !!}
+                        {!! Form::text('advice_situation_id', isset($lawsProject->adviceSituationLaw) ? $lawsProject->adviceSituationLaw->name : ' ', ['class' => 'form-control', 'disabled']) !!}
+                    </div>
 
                     <div class="clearfix"></div>
 
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('single_discussion', ' Única discussão em:') !!} 
-                        {!! Form::text('single_discussion',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('special_urgency', ' Urgência especial em:') !!} 
-                        {!! Form::text('special_urgency',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('approved', ' Aprovado em:') !!} 
-                        {!! Form::text('approved',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('sanctioned', ' Sancionado em:') !!} 
-                        {!! Form::text('sanctioned',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('Promulgated', ' Promulgado em:') !!} 
-                        {!! Form::text('Promulgated',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('date_presentation', 'Data ao plenário:') !!}
+                        {!! Form::text('date_presentation', null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('advice_date', 'Parecer em:') !!}
+                        {!! Form::text('advice_date', null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('first_discussion', ' Primeira discussão em:') !!}
+                        {!! Form::text('first_discussion',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('second_discussion', ' Segunda discussão em:') !!}
+                        {!! Form::text('second_discussion',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('third_discussion', ' Terceira discussão em:') !!}
+                        {!! Form::text('third_discussion',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
 
                     <div class="clearfix"></div>
 
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('Rejected', ' Rejeitado em:') !!} 
-                        {!! Form::text('Rejected',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('Vetoed', ' Vetado em:') !!} 
-                        {!! Form::text('Vetoed',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('Filed', ' Arquivado em:') !!} 
-                        {!! Form::text('Filed',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
-                    <div class="form-group col-sm-2"> 
-                        {!! Form::label('sustained', ' Mantido em:') !!} 
-                        {!! Form::text('sustained',  null, ['class' => 'form-control datepicker','disabled']) !!} 
-                    </div>  
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('single_discussion', ' Única discussão em:') !!}
+                        {!! Form::text('single_discussion',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('special_urgency', ' Urgência especial em:') !!}
+                        {!! Form::text('special_urgency',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('approved', ' Aprovado em:') !!}
+                        {!! Form::text('approved',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('sanctioned', ' Sancionado em:') !!}
+                        {!! Form::text('sanctioned',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('Promulgated', ' Promulgado em:') !!}
+                        {!! Form::text('Promulgated',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
 
-                    <div class="clearfix"></div>  
-                    <div class="form-group col-sm-12"> 
-                        {!! Form::label('observation', ' Observações:') !!} 
-                        {!! Form::textarea('observation', null, ['class' => 'form-control','disabled']) !!} 
-                    </div> 
+                    <div class="clearfix"></div>
+
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('Rejected', ' Rejeitado em:') !!}
+                        {!! Form::text('Rejected',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('Vetoed', ' Vetado em:') !!}
+                        {!! Form::text('Vetoed',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('Filed', ' Arquivado em:') !!}
+                        {!! Form::text('Filed',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        {!! Form::label('sustained', ' Mantido em:') !!}
+                        {!! Form::text('sustained',  null, ['class' => 'form-control datepicker','disabled']) !!}
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div class="form-group col-sm-12">
+                        {!! Form::label('observation', ' Observações:') !!}
+                        {!! Form::textarea('observation', null, ['class' => 'form-control','disabled']) !!}
+                    </div>
                 </div>
             </div><!-- /.panel-body -->
         </div><!-- /.collapse in -->
