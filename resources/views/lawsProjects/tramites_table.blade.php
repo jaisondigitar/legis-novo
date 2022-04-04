@@ -10,14 +10,14 @@
         @foreach($lawsProject->advices as $advice)
             <tr id="linha_{{$advice->id}}">
                 <td>{{ $advice->date }}</td>
-                <td>{{ $advice->destination->name }}</td>
+                <td>{{ $advice->destination->name ?? '' }}</td>
                 <td>{{ $advice->situation->last()->situation->name ?? null}}</td>
                 <td>{{$advice->advice_id ? 'Réplica' : ''}}</td>
                 <td>
                     <div class="btn-group">
                         <a href="/advice/findAwnser/{{$advice->id}}" class="btn btn-xs btn-info"><i class="fa fa-eye"></i> </a>
                         @if(($advice->situation->last()->situation->name ?? null) == 'Contrário' && \App\Models\Advice::query()->where('advice_id', $advice->id)->doesntExist())
-                            <button id="advice_awnser_{{$advice->id}}" type="button" class="btn btn-success btn-xs " data-toggle="modal" data-target="#myModal1" data = "{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
+                            <button onclick="modalAdvice({{$advice}})" id="advice_awnser_{{$advice->id}}" type="button" class="btn btn-success btn-xs " data-toggle="modal" data-target="#myModal1" data="{{$advice->id}}"><i class="fa fa-pencil-square-o"></i></button>
                         @endif
                         <button class="btn btn-xs btn-danger" onclick="remove_advice({{ $advice->id }})"><i class="fa fa-trash"></i> </button>
                     </div>
@@ -43,11 +43,11 @@
                     <div class="modal-body">
                         <div class="col-md-12">
 
-                            <input type="text" class="form-control hidden"  name="id" value="{{$advice->id}}"/>
-                            <input type="text" class="form-control hidden"  name="to_id[]" value="{{$advice->to_id}}"/>
-                            <input type="text" class="form-control hidden"  name="type" value="{{$advice->type}}"/>
-                            <input type="text" class="form-control hidden"  name="laws_projects_id" value="{{$advice->laws_projects_id}}"/>
-                            <input type="text" class="form-control hidden"  name="document_id" value="{{$advice->document_id}}"/>
+                            <input type="text" class="form-control hidden" id="reply_id" name="id"/>
+                            <input type="text" class="form-control hidden" id="reply_to_id" name="to_id[]"/>
+                            <input type="text" class="form-control hidden" id="reply_type" name="type"/>
+                            <input type="text" class="form-control hidden" id="reply_laws_projects_id" name="laws_projects_id"/>
+                            <input type="text" class="form-control hidden" id="reply_document_id" name="document_id"/>
 
                             <div class="col-md-3">
                                 <label> Data: </label>
@@ -94,8 +94,8 @@
 
 {{-- fim do modal --}}
 <script>
-
     $(document).ready(function () {
+        $('.js-example-basic-multiple').select2();
 
         $('#dateP').datepicker({
             format: 'dd/mm/yyyy',
@@ -116,6 +116,14 @@
         });
 
     });
+
+    var modalAdvice = function(advice) {
+        document.getElementById('reply_id').value = `${advice.id}`;
+        document.getElementById('reply_to_id').value = `${advice.to_id}`;
+        document.getElementById('reply_type').value = `${advice.type}`;
+        document.getElementById('reply_laws_projects_id').value = `${advice.laws_projects_id}`;
+        document.getElementById('reply_document_id').value = `${advice.document_id}`;
+    }
 
     var remove_advice = function(id){
 

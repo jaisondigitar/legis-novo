@@ -81,11 +81,7 @@ class Advice extends BaseModel
      *
      * @var array
      */
-    public static $rules = [
-        'type' => 'required',
-        'laws_projects_id' => 'required',
-        'to_id' => 'required',
-    ];
+    public static $rules = [];
 
     /**
      * @param $date_end
@@ -120,16 +116,12 @@ class Advice extends BaseModel
 
     public function destination()
     {
-        if ($this->type == 'c') {
-            return $this->belongsTo(Commission::class, 'to_id');
-        }
+        return $this->belongsTo(Commission::class, 'to_id');
     }
 
     public function situation()
     {
-        if ($this->type == 'c') {
-            return $this->hasMany(AdviceSituation::class, 'advice_id');
-        }
+        return $this->hasMany(AdviceSituation::class, 'advice_id');
     }
 
     public function commission()

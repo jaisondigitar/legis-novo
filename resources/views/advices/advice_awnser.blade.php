@@ -119,7 +119,7 @@
 
                                 <div class="col-md-6">
                                     <b>Comissão:</b> <br/>
-                                    {{$advice->commission->name}}
+                                    {{$advice->commission->name ?? ''}}
                                 </div>
 
                                 <div class="clearfix"></div>

@@ -63,22 +63,12 @@
                         <p>Projeto de Lei: {!!$lawsProject->project_number . '/' .$lawsProject->getYearLawPublish($lawsProject->law_date)!!}</p>
                     </div>
                     <div class="modal-body">
-                        <label style="width: 100%">
-                            Selecione a comissão:
-                            <select
-                                class="form-control destination"
-                                multiple name="comission"
-                                id="comissao"
-                            >
-                                <optgroup label="Comissões">
-                                    @foreach(\App\Models\Commission::active()->get() as $comission)
-                                        <option value="c{{ $comission->id }}">
-                                            {{ $comission->name }}
-                                        </option>
-                                    @endforeach
-                                </optgroup>
-                            </select>
-                        </label>
+                        <label style="width: 100%" for="comissao">Selecione a comissão:</label>
+                        <select style="width: 100%" class="form-control js-example-basic-multiple col-sm-12" id="comissao" name="comission" multiple="multiple">
+                            @foreach($commissions as $commission)
+                                <option value="c{{ $commission->id }}">{{ $commission->name }}</option>
+                            @endforeach
+                        </select>
 
                         <label>
                             Parecer Jurídico:
@@ -121,6 +111,10 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
+
         document.querySelector('#date_end').value = someDateFiveForm
 
         $('#date_end').on('change', () => {
@@ -170,22 +164,18 @@
                 date_end: $('#date_end').val(),
             };
 
-            if(to_id.length > 0) {
-                $.ajax({
-                    url: url,
-                    data: data,
-                    method: 'POST'
-                }).success((data) => {
-                    if (data) {
-                        toastr.success("Pedido salvo com sucesso!!");
-                        window.location.reload()
-                    } else {
-                        toastr.error("Erro ao salvar pedido!!");
-                    }
-                })
-            } else {
-                toastr.error('Selecione um destino!');
-            }
+            $.ajax({
+                url: url,
+                data: data,
+                method: 'POST'
+            }).success((data) => {
+                if (data) {
+                    toastr.success("Pedido salvo com sucesso!!");
+                    window.location.reload()
+                } else {
+                    toastr.error("Erro ao salvar pedido!!");
+                }
+            })
         }
 
         const dataAtualFormatada = (data) => {

@@ -88,16 +88,47 @@ class AdviceController extends AppBaseController
 
         $legal_option = $input['legal_option'] ?? null;
 
-        $to_id = $input['to_id'];
-        $type = $input['type'];
-
         $flag = 0;
 
-        foreach ($input['to_id'] as $key => $val) {
+
+        if (isset($input['to_id'])) {
+            $to_id = $input['to_id'];
+            $type = $input['type'];
+
+            foreach ($input['to_id'] as $key => $val) {
+                $advice = new Advice();
+                $advice->date = $input['date'];
+                $advice->type = $type[$key];
+                $advice->to_id = $to_id[$key];
+                $advice->laws_projects_id = $input['laws_projects_id'] ?? 0;
+                $advice->document_id = $input['document_id'] ?? 0;
+                $advice->legal_option = $legal_option;
+                $advice->date_end = $input['date_end'];
+
+                if ($advice->save()) {
+                    $situation = ComissionSituation::first();
+                    AdviceSituation::create([
+                        'advice_id' => $advice->id,
+                        'comission_situation_id' => $situation->id,
+                    ]);
+
+
+                    $processing = new Processing();
+                    $processing->law_projects_id = $input['laws_projects_id'];
+                    $processing->advice_publication_id = null;
+                    $processing->advice_situation_id = 1;
+                    $processing->status_processing_law_id = 8;
+                    $processing->processing_date = $input['date'];
+                    $processing->destination_id = 5;
+                    $processing->date_end = $input['date_end'];
+                    $processing->save();
+
+                    $flag = 1;
+                }
+            }
+        } else {
             $advice = new Advice();
             $advice->date = $input['date'];
-            $advice->type = $type[$key];
-            $advice->to_id = $to_id[$key];
             $advice->laws_projects_id = $input['laws_projects_id'] ?? 0;
             $advice->document_id = $input['document_id'] ?? 0;
             $advice->legal_option = $legal_option;
