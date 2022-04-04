@@ -257,7 +257,7 @@
             @endshield
 
             @if($lawsProject->town_hall == 1 && $lawsProject->is_read > 0 && Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
-                <a @popper(RESPONDER) onclick="answer()" class='btn btn-default btn-sm answer'>
+                <a @popper(RESPONDER) onclick="answer({{ $lawsProject }})" class='btn btn-default btn-sm answer' value="{!! $lawsProject->id !!}">
                     <i class="fa fa-reply"></i>
                 </a>
             @endif
