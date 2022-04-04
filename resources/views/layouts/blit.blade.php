@@ -174,7 +174,9 @@
             margin: 0;
         }
 
-        .resume > ol{
+        .resume > ol,
+        .resume > ul,
+        .resume > li {
             display: none;
         }
 

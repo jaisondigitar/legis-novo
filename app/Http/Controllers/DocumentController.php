@@ -156,7 +156,7 @@ class DocumentController extends AppBaseController
                 'externalSector',
             ])
             ->orderByDesc('created_at')
-            ->paginate(20);
+            ->paginate(21);
 
         if (! Auth::user()->hasRoles(['root', 'admin'])) {
             foreach ($documents->items() as $index => $document) {
@@ -1106,34 +1106,49 @@ class DocumentController extends AppBaseController
 
     public function alteraNumero(Request $request)
     {
-        $input = \Illuminate\Support\Facades\Request::all();
+        $input = $request->all();
 
         $document = Document::find($input['document_id']);
 
         $year = explode('/', $document->date);
         $year = $year[2];
 
-        $parameter = Parameters::where('slug', 'permitir-criar-documentos-fora-da-sequencia')->first();
-        $parameterAssemblyman = Parameters::where('slug', 'permitir-criar-numero-de-projetos-e-documentos-para-mesmo-vereadores')->first();
+        /*$parameter = Parameters::where('slug', 'permitir-criar-documentos-fora-da-sequencia')->first();
+        $parameterAssemblyman = Parameters::where('slug', 'permitir-criar-numero-de-projetos-e-documentos-para-mesmo-vereadores')->first();*/
 
-        if ($parameter->value == 0) {
-            $document_verify = Document::whereYear('date', '=', $year);
+        $document_filter = Document::where('document_type_id', $document->document_type_id)->orderByDesc('date')->orderByDesc('number');
+
+        if (explode('/', $document_filter->first()->date)[2] = $year && $document_filter->first()->number < $input['doc_number']) {
+            $document->number = $input['doc_number'];
+//                  $document->version = $input['version'];
+
+            if ($document->save()) {
+                return ['success' => true, 'message' => 'Número foi atualizado!', 'next_number' => $input['doc_number'].'/'.$year, 'id' => $document->id];
+            }
+        } else {
+            return ['success' => false, 'message' => 'Número já utilizado ou inferior ao último, a sua sugestão foi atualizada!', 'next_number' => $input['doc_number']];
+        }
+
+        /*if ($parameter->value == 0) {
+            $document_verify = Document::where('document_type_id', $document->document_type_id)
+                ->whereYear('date', $year);
 
             if ($parameterAssemblyman->value == 1) {
                 $document_verify = $document_verify->where('owner_id', $document->owner_id);
             }
 
-            $document_verify = $document_verify->where('number', '>=', $input['doc_number'])
+            $document_verify = $document_verify->where('number', $input['doc_number'])
                 ->orderBy('number', 'DESC')
                 ->first();
         } else {
-            $document_verify = Document::whereYear('date', '=', $year);
+            $document_verify = Document::where('document_type_id', $document->document_type_id)
+                ->whereYear('date', $year);
 
             if ($parameterAssemblyman->value == 1) {
                 $document_verify = $document_verify->where('owner_id', $document->owner_id);
             }
 
-            $document_verify = $document_verify->where('number', '=', $input['doc_number'])
+            $document_verify = $document_verify->where('number', $input['doc_number'])
                 ->orderBy('number', 'DESC')
                 ->first();
         }
@@ -1143,12 +1158,12 @@ class DocumentController extends AppBaseController
         } else {
             $document = Document::find($input['document_id']);
             $document->number = $input['doc_number'];
-//            $document->version = $input['version'];
+            // $document->version = $input['version'];
 
             if ($document->save()) {
                 return ['success' => true, 'message' => 'Número foi atualizado!', 'next_number' => $input['doc_number'].'/'.$year, 'id' => $document->id];
             }
-        }
+        }*/
     }
 
     public function advices($documentId)
@@ -1235,6 +1250,30 @@ class DocumentController extends AppBaseController
         DocumentNumber::insert($data);
 
         flash('Documentos migrados com sucesso!')->success();
+
+        return redirect(route('documents.index'));
+    }
+
+    public function replyDocument(Request $request)
+    {
+        $id = $request->document_id;
+        $file = $request->file('file');
+
+        $document = $this->documentRepository->findById((int) $id);
+
+        if ($file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $document->file_reply = $filename;
+        }
+
+        $document->description = $request->comissionDescriprion;
+        $document->save();
+
+        flash('Documentos respondido com sucesso!')->success();
 
         return redirect(route('documents.index'));
     }

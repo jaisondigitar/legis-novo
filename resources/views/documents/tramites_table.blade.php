@@ -11,7 +11,7 @@
         @foreach($document->advices as $advice)
             <tr id="linha_{{$advice->id}}">
                 <td>{{ $advice->date }}</td>
-                <td>{{ $advice->destination->name }}</td>
+                <td>{{ $advice->destination->name ?? '' }}</td>
                 <td>{{ $advice->situation->last()->situation->name }}</td>
                 <td>
                     <div class="btn-group">

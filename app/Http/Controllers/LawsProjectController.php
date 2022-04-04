@@ -1630,4 +1630,28 @@ class LawsProjectController extends AppBaseController
 
         return view('lawsProjects.legal-option', compact('commissions', 'lawsProject'));
     }
+
+    public function replyLawsProjects(Request $request)
+    {
+        $id = $request->lawProject_id;
+        $file = $request->file('file');
+
+        $lawProject = $this->lawsProjectRepository->findById((int) $id);
+
+        if ($file) {
+            $filename = static::$uploadService
+                ->inLawsFolder()
+                ->sendFile($file)
+                ->send();
+
+            $lawProject->file_reply = $filename;
+        }
+
+        $lawProject->description = $request->comissionDescriprion;
+        $lawProject->save();
+
+        flash('Projeto de Lei respondido com sucesso!')->success();
+
+        return redirect(route('lawsProjects.index'));
+    }
 }

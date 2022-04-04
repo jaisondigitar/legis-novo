@@ -258,7 +258,7 @@
             @endshield
 
             @if($document->read > 0 && $document->approved > 0 && Auth::user()->can_request_executive_not_root || Auth::user()->hasRole('root'))
-                <a @popper(RESPONDER) onclick="answer()" class='btn btn-default btn-xs answer'>
+                <a @popper(RESPONDER) onclick="answer({{ $document }})" class='btn btn-default btn-xs answer'>
                     <i class="fa fa-reply"></i>
                 </a>
             @endif
