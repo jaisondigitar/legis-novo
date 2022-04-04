@@ -80,7 +80,7 @@ class AdviceController extends AppBaseController
      *
      * @param CreateAdviceRequest $request
      *
-     * @return Response
+     * @return string
      */
     public function store(CreateAdviceRequest $request)
     {
@@ -90,20 +90,20 @@ class AdviceController extends AppBaseController
 
         $flag = 0;
 
+        $advice = new Advice();
+        $advice->date = $input['date'];
+        $advice->laws_projects_id = $input['laws_projects_id'] ?? 0;
+        $advice->document_id = $input['document_id'] ?? 0;
+        $advice->legal_option = $legal_option;
+        $advice->date_end = $input['date_end'];
 
         if (isset($input['to_id'])) {
             $to_id = $input['to_id'];
             $type = $input['type'];
 
             foreach ($input['to_id'] as $key => $val) {
-                $advice = new Advice();
-                $advice->date = $input['date'];
                 $advice->type = $type[$key];
                 $advice->to_id = $to_id[$key];
-                $advice->laws_projects_id = $input['laws_projects_id'] ?? 0;
-                $advice->document_id = $input['document_id'] ?? 0;
-                $advice->legal_option = $legal_option;
-                $advice->date_end = $input['date_end'];
 
                 if ($advice->save()) {
                     $situation = ComissionSituation::first();
@@ -112,28 +112,20 @@ class AdviceController extends AppBaseController
                         'comission_situation_id' => $situation->id,
                     ]);
 
-
-                    $processing = new Processing();
-                    $processing->law_projects_id = $input['laws_projects_id'];
-                    $processing->advice_publication_id = null;
-                    $processing->advice_situation_id = 1;
-                    $processing->status_processing_law_id = 8;
-                    $processing->processing_date = $input['date'];
-                    $processing->destination_id = 5;
-                    $processing->date_end = $input['date_end'];
-                    $processing->save();
+                    /*Processing::create([
+                        'law_projects_id' => $input['laws_projects_id'],
+                        'advice_publication_id' => null,
+                        'advice_situation_id' => 1,
+                        'status_processing_law_id' => 8,
+                        'processing_date' => $input['date'],
+                        'destination_id' => 5,
+                        'date_end' => $input['date_end'],
+                    ]);*/
 
                     $flag = 1;
                 }
             }
         } else {
-            $advice = new Advice();
-            $advice->date = $input['date'];
-            $advice->laws_projects_id = $input['laws_projects_id'] ?? 0;
-            $advice->document_id = $input['document_id'] ?? 0;
-            $advice->legal_option = $legal_option;
-            $advice->date_end = $input['date_end'];
-
             if ($advice->save()) {
                 $situation = ComissionSituation::first();
                 AdviceSituation::create([
@@ -141,16 +133,15 @@ class AdviceController extends AppBaseController
                     'comission_situation_id' => $situation->id,
                 ]);
 
-
-                $processing = new Processing();
-                $processing->law_projects_id = $input['laws_projects_id'];
-                $processing->advice_publication_id = null;
-                $processing->advice_situation_id = 1;
-                $processing->status_processing_law_id = 8;
-                $processing->processing_date = $input['date'];
-                $processing->destination_id = 5;
-                $processing->date_end = $input['date_end'];
-                $processing->save();
+                /*Processing::create([
+                    'law_projects_id' => $input['laws_projects_id'],
+                    'advice_publication_id' => null,
+                    'advice_situation_id' => 1,
+                    'status_processing_law_id' => 8,
+                    'processing_date' => $input['date'],
+                    'destination_id' => 5,
+                    'date_end' => $input['date_end'],
+                ]);*/
 
                 $flag = 1;
             }
